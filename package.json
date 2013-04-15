@@ -1,6 +1,11 @@
 {
   "name": "webmaker.org",
   "version": "0.0.1",
+  "dependencies": {
+    "express": "~3.2.0",
+    "habitat": "~0.4.0",
+    "nunjucks": "~0.1.8a"
+  },
   "devDependencies": {
     "grunt": "~0.4.1",
     "grunt-contrib-csslint": "~0.1.2",
