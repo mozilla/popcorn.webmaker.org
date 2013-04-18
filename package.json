@@ -2,6 +2,13 @@
   "name": "webmaker.org",
   "version": "0.0.1",
   "private": true,
+  "scripts": {
+    "test": "grunt"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/mozilla/webmaker.org.git"
+  },
   "license": "MPL-2.0",
   "dependencies": {
     "express": "3.2.0",
