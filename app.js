@@ -19,5 +19,5 @@ app.use( express.static( path.join( __dirname + "/public" )));
 app.use( app.router );
 
 app.listen( env.get( "PORT" ), function() {
-  console.log( "MIU server listening (Probably http://localhost:%d )", env.get( "PORT" ));
+  console.log( "Server listening (Probably http://localhost:%d )", env.get( "PORT" ));
 });
