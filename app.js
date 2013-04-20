@@ -18,6 +18,8 @@ app.use( express.compress());
 app.use( express.static( path.join( __dirname + "/public" )));
 app.use( app.router );
 
+app.get( "/healthcheck", routes.api.healthcheck );
+
 app.listen( env.get( "PORT" ), function() {
   console.log( "Server listening ( http://localhost:%d )", env.get( "PORT" ));
 });
