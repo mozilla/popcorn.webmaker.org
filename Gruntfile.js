@@ -8,7 +8,7 @@ module.exports = function( grunt ) {
 
          },
         src: [
-          "public/**/*.css"
+          "public/css/*.css"
         ]
       }
     },
@@ -18,7 +18,7 @@ module.exports = function( grunt ) {
         "app.js",
         "lib/**/*.js",
         "package.json",
-        "public/**/*.js",
+        "public/js/*.js",
         "routes/**/*.js"
       ]
     }

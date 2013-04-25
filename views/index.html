@@ -1,0 +1,39 @@
+{% extends "layout.html" %}
+{% block title %}Home{% endblock %}
+{% block body %}
+  <div class="main-gallery">
+
+    <div class="make" style="display: none;">
+      <div class="make-type"></div>
+      <div class="title"></div>
+    </div>
+
+  </div>
+{% endblock %}
+{% block scripts %}
+  <script>
+    var mainGallery = document.querySelector( ".main-gallery" ),
+        $mainGallery = $( mainGallery ),
+        $makeTemplate = $( ".make", $mainGallery );
+
+    var packery = new Packery( mainGallery, {
+      gutter: 10
+    });
+
+    wm.doSearch( "featured", 30, function( data ) {
+      var $el = $makeTemplate.clone( true ).css( "display", "" ),
+          el = $el[ 0],
+          makeType = data.tags.makeType;
+      $el.addClass( "make-" + makeType );
+      $( ".title", $el ).text( data.title );
+      $( ".make-type", $el ).text( makeType );
+      $mainGallery.append( $el );
+      packery.appended( el );
+
+      if ( makeType === "popcorn" ) {
+        $el.addClass( "make-big" );
+      }
+
+    });
+  </script>
+{% endblock %}
