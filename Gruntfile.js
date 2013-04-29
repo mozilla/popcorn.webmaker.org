@@ -4,9 +4,14 @@ module.exports = function( grunt ) {
 
     csslint: {
       strict: {
-         options: {
-
-         },
+        options: {
+          "box-sizing": false,
+          "ids": false,
+          "important": false,
+          "overqualified-elements": false,
+          "qualified-headings": false,
+          "unique-headings": false
+        },
         src: [
           "public/css/*.css"
         ]
