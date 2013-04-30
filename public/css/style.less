@@ -29,37 +29,41 @@ body {
   list-style: none;
   margin: 0 0 0 2em;
   padding: 0;
-}
-.nav-list > li {
-  display: inline-block;
-}
-.nav-list > li  > a {
-  display: block;
-  color: #999;
-  line-height: 83px;
-  height: 83px;
-  text-decoration: none;
-  padding: 0 1em;
-}
-.nav-list > li  > .on {
-  background: #5A5A5A;
-  color: #FFF;
-}
-.nav-list > li  > a:hover {
-  color: #B1E8DB;
-}
 
-.clearfix:after {
-  content: ".";
-  display: block;
-  clear: both;
-  visibility: hidden;
-  line-height: 0;
-  height: 0;
+  > li {
+    display: inline-block;
+
+    > a {
+      display: block;
+      color: #999;
+      line-height: 83px;
+      height: 83px;
+      text-decoration: none;
+      padding: 0 1em; 
+    }
+
+    > a:hover {
+      color: #B1E8DB;
+    }
+
+    > .on {
+      background: #5A5A5A;
+      color: #FFF;
+    }
+  }
 }
 
 .clearfix {
   display: inline-block;
+
+  &:after {
+    content: ".";
+    display: block;
+    clear: both;
+    visibility: hidden;
+    line-height: 0;
+    height: 0;
+  }
 }
 
 
