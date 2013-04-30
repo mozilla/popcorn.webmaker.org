@@ -26,7 +26,7 @@ Webmaker = function() {
     make
     .find({ tags: tags })
     .limit( limit )
-    .then( function( data )  {
+    .then( function( error, data )  {
       var hits = data.hits,
           makeData;
       for ( var i = 0; i < hits.length; i++ ) {
@@ -56,7 +56,7 @@ Webmaker = function() {
   function init( options ) {
     makeURL = options.makeURL;
     page = options.page;
-    make = Make({ makeAPI: makeURL });
+    make = Make({ apiURL: makeURL });
     SSO();
   }
 
