@@ -13,7 +13,7 @@ define(['jquery'],
       $makeBackTemplate = $body.find( 'div.make-back' ),
       $eventBackTemplate = $body.find( 'div.event-back' ),
       packery = new Packery(mainGallery, {
-        itemSelector: '.make',
+        itemSelector: 'div.make',
         gutter: '.gutter-sizer',
         columnWidth: '.grid-sizer'
       });
