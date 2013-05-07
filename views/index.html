@@ -2,38 +2,20 @@
 {% block title %}Home{% endblock %}
 {% block body %}
   <div class="main-gallery">
-
-    <div class="make" style="display: none;">
-      <div class="make-type"></div>
-      <div class="title"></div>
-    </div>
-
+    <div class="gutter-sizer"></div>
+    <div class="grid-sizer"></div>
   </div>
-{% endblock %}
-{% block scripts %}
-  <script>
-    var mainGallery = document.querySelector( ".main-gallery" ),
-        $mainGallery = $( mainGallery ),
-        $makeTemplate = $( ".make", $mainGallery );
-
-    var packery = new Packery( mainGallery, {
-      gutter: 10
-    });
-
-    wm.doSearch( "featured", 30, function( data ) {
-      var $el = $makeTemplate.clone( true ).css( "display", "" ),
-          el = $el[ 0],
-          makeType = data.tags.makeType;
-      $el.addClass( "make-" + makeType );
-      $( ".title", $el ).text( data.title );
-      $( ".make-type", $el ).text( makeType );
-      $mainGallery.append( $el );
-      packery.appended( el );
-
-      if ( makeType === "popcorn" ) {
-        $el.addClass( "make-big" );
-      }
-
-    });
-  </script>
+  <div class="make" style="display: none;"></div>
+  <div class="make-back" style="display: none;">
+    Made at <span class="place bold"></span> by <span class="author bold"></span><br />
+    Using TOOL and TEMPLATE<br /><br />
+    <span class="description"></span>
+  </div>
+  <div class="event-back" style="display: none;">
+    <h4 class="event-title"></h4>
+    <span class="date"></span><br />
+    <span class="place"></span><br /><br />
+    <span class="description"></span><br />
+    Organized by <span class="organizer"></span>
+  </div>
 {% endblock %}

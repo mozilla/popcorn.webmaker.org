@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="css/style.css">
   {% endblock %}
 </head>
-<body>
+<body id="{{ page }}" data-endpoint="{{ makeEndpoint }}">
   <div id="webmaker-nav">
     <nav class="webmaker-nav-container">
       <ul class="webmaker-nav primary">
@@ -28,27 +28,19 @@
   <header id="main-header" class="main-header">
     <img class="logo" src="img/logo.png" alt="Mozilla Webmaker">
     <ul class="nav-list">
-      <li><a id="nav-index" href="/">Make what?</a></li>
-      <li><a id="nav-learn" href="/learn">Learn</a></li>
-      <li><a id="nav-teach" href="/teach">Teach</a></li>
-      <li><a id="nav-party" href="/party">Party</a></li>
+      <li><a href="/" {% if page == 'index' %}class="on"{% endif %}>Make what?</a></li>
+      <li><a href="/learn" {% if page == 'learn' %}class="on"{% endif %}>Learn</a></li>
+      <li><a href="/teach" {% if page == 'teach' %}class="on"{% endif %}>Teach</a></li>
+      <li><a href="/party" {% if page == 'party' %}class="on"{% endif %}>Party</a></li>
       <li><a class="icon-search" id="nav-search" href="/search"></a></li>
     </ul>
   </header>
   <div id="content" class="content clearfix">{% block body %}{% endblock %}</div>
   <footer class="footer"></footer>
-  <script src="http://code.jquery.com/jquery-1.8.2.min.js"></script>
   <script src="{{ personaSSO }}/js/sso.js"></script>
   <script src="{{ makeEndpoint }}/js/make-api.js"></script>
+  {# Packery is not ready to be integrated w/ requirejs https://github.com/metafizzy/packery/issues/20 #}
   <script src="ext/js/packery.js"></script>
-  <script src="js/main.js"></script>
-  <script>
-    document.getElementById( "nav-{{ page }}" ).classList.add( "on" );
-    var wm = new Webmaker();
-    wm.init({
-      page: "{{ page }}",
-      makeURL: "{{ makeEndpoint }}"
-    });
-  </script>
+  <script src="ext/js/require.js" data-main="js/config"></script>
   {% block scripts %}{% endblock %}
 </body>
