@@ -2,123 +2,120 @@ define(['jquery'],
   function ($) {
   'use strict';
 
-  var $body = $('body');
+  var $body = $( 'body' );
 
-  var LIMIT = 30;
+  var LIMIT_DESKTOP = 30;
+  var LIMIT_MOBILE = 3;
 
-  var mainGallery = document.querySelector( ".main-gallery" ),
-      $mainGallery = $( mainGallery ),
-      $makeTemplate = $body.find( ".make" ),
-      $makeBackTemplate = $body.find( ".make-back" ),
-      $eventBackTemplate = $body.find( ".event-back" );
+  var $mainGallery = $('.main-gallery'),
+      mainGallery = $mainGallery[0],
+      $makeTemplate = $body.find( 'div.make' ),
+      $makeBackTemplate = $body.find( 'div.make-back' ),
+      $eventBackTemplate = $body.find( 'div.event-back' ),
+      packery = new Packery(mainGallery, {
+        itemSelector: '.make',
+        gutter: '.gutter-sizer',
+        columnWidth: '.grid-sizer'
+      });
 
-  var packery = new Packery( mainGallery, {
-      itemSelector: '.make',
-      gutter: '.gutter-sizer',
-      columnWidth: '.grid-sizer'
-  });
-
-  function createMakeBack ( data, $el ) {
-    var $backTemplate = $makeBackTemplate.clone( true ).css( "display", "" );
+  function createMakeBack( data, $el ) {
+    var $backTemplate = $makeBackTemplate.clone( true );
     var $placeSpan = $('.place', $backTemplate);
-    $placeSpan.text ('PLACE');
-    var j = $('<span>');
+    $placeSpan.text( 'PLACE' );
+
     var $authorSpan = $('.author', $backTemplate);
     $authorSpan.text( data.author );
+
     var $descSpan = $('.description', $backTemplate);
     $descSpan.text( data.description );
-    $el.append($backTemplate);
+    $el.append( $backTemplate );
   }
 
-  function createEventBack ( data, $el ) {
-    var $backTemplate = $eventBackTemplate.clone( true ).css( "display", "" );
-    var $eventSpan = $( '.event-title', $backTemplate );
+  function createEventBack( data, $el ) {
+    var $backTemplate = $eventBackTemplate.clone( true ),
+        $eventSpan = $('.event-title', $backTemplate),
+        $dateSpan = $('.date', $backTemplate),
+        $placeSpan = $('.place', $backTemplate),
+        $descSpan = $('.description', $backTemplate),
+        $organizerSpan = $('.organizer', $backTemplate);
+
     $eventSpan.text( data.title );
-    var $dateSpan = $('.date', $backTemplate);
-    $dateSpan.text('DATE');
-    var $placeSpan = $('.place', $backTemplate);
-    $placeSpan.text('PLACE');
-    var $descSpan = $('.description', $backTemplate);
+    $dateSpan.text( 'DATE' );
+    $placeSpan.text( 'PLACE' );
     $descSpan.text( data.description );
-    var $organizerSpan = $('.organizer', $backTemplate);
     $organizerSpan.text( 'MOZILLA' );
-    $el.append($backTemplate);
+    $el.append( $backTemplate );
   }
 
   function searchCallback( data ) {
-    var $makeContainer = $makeTemplate.clone( true ).css( "display", "" ),
-        makeContainer = $makeContainer[ 0 ];
+    var $makeContainer = $makeTemplate.clone( true ),
+        makeContainer = $makeContainer[0];
 
     // create front Element & populate
-    var $frontEl = $('<div>').addClass('front');
-    var $img = $( '<img>' ).attr( 'src', data.thumbnail );
-    $frontEl.append( $img );
+    var $frontEl = $('<div class="front"><img src="' + data.thumbnail + '"></img></div>');
 
     // create back element & populate
-    var $backEl = $('<div>').addClass('back');
+    var $backEl = $('<div class="back"></div>');
 
-    switch (data.tags.makeType) {
+    switch ( data.tags.makeType ) {
       case 'popcorn':
-        $makeContainer.addClass('make-popcorn');
-        createMakeBack( data, $backEl);
+        $makeContainer.addClass( 'make-popcorn' );
         break;
 
       case 'thimble':
-        $makeContainer.addClass('make-thimble make-w2');
-        createMakeBack( data, $backEl);
+        $makeContainer.addClass( 'make-thimble make-w2' );
         break;
 
       case 'challenge':
-        $makeContainer.addClass('make-challenge');
-        createMakeBack( data, $backEl);
+        $makeContainer.addClass( 'make-challenge' );
         break;
 
       case 'event':
-        $makeContainer.addClass('make-event make-h2');
-        createEventBack( data, $backEl);
+        $makeContainer.addClass( 'make-event make-h2' );
         break;
 
       case 'kit':
-        $makeContainer.addClass('make-kit');
-        createMakeBack( data, $backEl);
+        $makeContainer.addClass( 'make-kit' );
         break;
 
       case 'demo':
-        $makeContainer.addClass('make-demo');
-        createMakeBack( data, $backEl);
+        $makeContainer.addClass( 'make-demo' );
         break;
     }
 
+    if (data.tags.makeType) {
+      createMakeBack( data, $backEl );
+    }
+
     // add front & back elements to flip container
-    var $flip = $('<div>').addClass('flipContainer');
-    $flip.append( $frontEl );
-    $flip.append( $backEl );
+    var $flip = $('<div class="flipContainer"></div>');
+    $flip.append($frontEl).append( $backEl );
 
     // add flip container & link to make container
-    var $a = $(  '<a>' ).attr( 'href', data.url );
-    $a.append( $flip );
-    $makeContainer.append( $a );
+    var $a = $('<a href="' + data.url + '"></a>');
+    $makeContainer.append( $a.append( $flip ) );
 
     // add to gallery & packery
     $mainGallery.append( $makeContainer );
     packery.appended( makeContainer );
-
-    // re-layout
     packery.layout();
   }
 
+  // set up mouse over handlers
+  $makeTemplate.on('mouseenter focusin, mouseleave focusout', function ( e ) {
+    $('.flipContainer', this).toggleClass( 'flip' );
+  });
+
   var self = {
-    init: function (wm) {
-      wm.doSearch( "featured", LIMIT, searchCallback);
+    init: function ( wm ) {
+      var limit = LIMIT_DESKTOP;
 
-      // set up mouse over handlers
-      $makeTemplate.mouseenter(function(e){
-        $( '.flipContainer', this ).toggleClass('flip');
-      });
+      // Detect whether we are in mobile dimensions or not.
+      if ($body.find( '.mobile' ).css( 'display' ) === 'none') {
+        limit = LIMIT_MOBILE;
+      }
 
-      $makeTemplate.mouseleave(function(e){
-        $( '.flipContainer', this ).toggleClass('flip');
-      });
+      wm.doSearch( 'featured', limit, searchCallback );
     }
   };
 
