@@ -50,6 +50,7 @@ define(['jquery'],
       make
       .find({ tags: tags })
       .limit( limit )
+      .sortByField( 'createdAt', 'desc' )
       .then( function( error, data )  {
         var hits = data.hits,
             makeData;
