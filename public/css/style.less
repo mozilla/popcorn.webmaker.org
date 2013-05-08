@@ -1,118 +1,268 @@
 @import "webfonts";
 
-body {
-  background: #F5F5F5;
-  color: #555;
-  font-family: "Open Sans", "Helvetica Neue", sans-serif;
-  font-size: 100%;
-  margin: 0;
-  padding: 0;
+.border-box {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing:    border-box;
+    box-sizing:         border-box;
+}
+
+.border-radius (@radius: 5px) {
+    -webkit-border-radius: @radius;
+    -moz-border-radius:    @radius;
+    border-radius:         @radius;
+}
+
+.box-shadow {
+    -webkit-box-shadow: 0 2px 4px black;
+    -moz-box-shadow:    0 2px 4px black;
+    box-shadow:         0 2px 4px black;
+}
+
+.perspective (@p: 1000) {
+    -webkit-perspective: @p;
+    -moz-perspective:    @p;
+    perspective:         @p;
+}
+
+.backface-visibility (@value: hidden) {
+    -webkit-backface-visibility: @value;
+    -moz-backface-visibility:    @value;
+    backface-visibility:         @value;
+}
+
+.rotateX (@deg: 180deg) {
+    -webkit-transform: rotateX(@deg);
+    -moz-transform:    rotateX(@deg);
+    transform:         rotateX(@deg);
+}
+
+.rotateY (@deg: 180deg) {
+    -webkit-transform: rotateY(@deg);
+    -moz-transform:    rotateY(@deg);
+    transform:         rotateY(@deg);
+}
+
+.threedee-transition (@time: 0.3s) {
+    -webkit-transform-style: preserve-3d;
+    -moz-transform-style:    preserve-3d;
+    transform-style:         preserve-3d;
+
+    -webkit-transition: transform @time;
+    -moz-transition:    transform @time;
+    transition:         transform @time;
 }
 
 /*********************************************************
-* HEADER
-*/
+ * BODY
+ */
+body {
+    background: #F5F5F5;
+    color: #555;
+    font-family: "Open Sans", "Helvetica Neue", sans-serif;
+    font-size: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+/*********************************************************
+ * HEADER
+ */
 .main-header {
-  height: 83px;
-  margin-bottom: 1em;
-  border-bottom: 1px solid #DDD;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
+    height: 83px;
+    margin-bottom: 1em;
+    border-bottom: 1px solid #DDD;
+    .border-box;
 }
 
 .logo {
-  margin-top: 5px;
-  float: left;
+    margin-top: 5px;
+    float: left;
 }
 
 .nav-list {
-  float: left;
-  list-style: none;
-  margin: 0 0 0 2em;
-  padding: 0;
+    float: left;
+    list-style: none;
+    margin: 0 0 0 2em;
+    padding: 0;
 
-  > li {
-    display: inline-block;
+    > li {
+        display: inline-block;
 
-    > a {
-      display: block;
-      color: #999;
-      line-height: 83px;
-      height: 83px;
-      text-decoration: none;
-      padding: 0 1em;
+        > a {
+            display: block;
+            color: #999;
+            line-height: 83px;
+            height: 83px;
+            text-decoration: none;
+            padding: 0 1em;
+        }
+
+        > a:hover {
+            color: #B1E8DB;
+        }
+
+        > .on {
+            background: #5A5A5A;
+            color: #FFF;
+        }
     }
-
-    > a:hover {
-      color: #B1E8DB;
-    }
-
-    > .on {
-      background: #5A5A5A;
-      color: #FFF;
-    }
-  }
 }
 
 .clearfix {
-  display: inline-block;
+    display: inline-block;
 
-  &:after {
-    content: ".";
-    display: block;
-    clear: both;
-    visibility: hidden;
-    line-height: 0;
-    height: 0;
-  }
+    &:after {
+        content: ".";
+        display: block;
+        clear: both;
+        visibility: hidden;
+        line-height: 0;
+        height: 0;
+    }
 }
 
 
 /*********************************************************
-* MAIN
-*/
+ * MAIN
+ */
 
 .content,
 .footer {
-  display: block;
-  padding: 1em;
+    display: block;
+    padding: 1em;
 }
 
 /*********************************************************
-* MAKE
-*/
+ * MAKE
+ */
+
+@make_width: 18.4%;
+@make_height: 150px;
+
+.main-gallery:after {
+    content: ' ';
+    display: block;
+    clear: both;
+}
 
 .make {
-  position: relative;
-  width: 200px;
-  height: 150px;
-  padding: 1em;
-  border: 1px solid;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
+    color: white;
+    position: relative;
+    width: @make_width;
+    height: @make_height;
+    overflow: hidden;
+    border: 1px solid grey;
+
+    .border-radius;
+    .border-box;
+    .box-shadow;
+    .perspective(800px);
+
+    a {
+        top: 0;
+        left: 0;
+        max-width: 100%;
+        max-height: 100%;
+        width: 100%;
+    }
 }
+
+
+.gutter-sizer {
+    width: 2%;
+}
+
+.grid-sizer {
+    width: 18.4%;
+}
+.bold {
+    font-weight: bold;
+}
+
+.event-title {
+    margin: 0;
+    padding: 0;
+}
+
+.flipContainer {
+    -webkit-transform-style: preserve-3d;
+    -webkit-transition: -webkit-transform 0.3s;
+    -moz-transform-style: preserve-3d;
+    -moz-transition: -moz-transform 0.3s;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+.make-item-title {
+    color: white;
+    text-shadow: black 1px 1px;
+    position: absolute;
+    bottom: 0;
+    left: 2px;
+}
+
+.front,
+.back {
+    .backface-visibility(hidden);
+    display: block;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+.back {
+    color: black;
+    background: white;
+    .rotateY(180deg);
+}
+
+.flip {
+    .rotateY(180deg);
+}
+
+@make-border-size: 7px;
 
 .make-popcorn {
-  color: #3FB58E;
-}
-
-.make-big {
-  width: 400px;
+    border-bottom: @make-border-size solid yellow;
 }
 
 .make-thimble {
-  color: #63D9E5;
+    border-bottom: @make-border-size solid green;
 }
 
-p {
-  margin: 0;
-  padding: 0;
+.make-challenge {
+    border-bottom: @make-border-size solid orange;
 }
 
-@media (max-width: 640px) {
-  .mobile {
-    display: none;
-  }
+.make-event {
+    border-bottom: @make-border-size solid blue;
+}
+
+.make-kit {
+    border-bottom: @make-border-size solid pink;
+}
+
+.make-demo {
+    border-bottom: @make-border-size solid black;
+}
+
+.make-thimble {
+    color: #63D9E5;
+}
+
+.make-w2 {
+    width: @make_width * 2;
+}
+
+.make-w3 {
+    width: @make_width * 3;
+}
+
+.make-h2 {
+    height: @make_height * 2;
+}
+
+.make-h3 {
+    height: @make_height * 3;
 }
