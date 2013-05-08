@@ -19,14 +19,14 @@ define(['jquery'],
       });
 
   function createMakeBack( data, $el ) {
-    var $backTemplate = $makeBackTemplate.clone( true );
-    var $placeSpan = $('.place', $backTemplate);
+    var $backTemplate = $makeBackTemplate.clone( true ),
+        $placeSpan = $('.place', $backTemplate),
+        $authorSpan = $('.author', $backTemplate),
+        $authorSpan = $('.author', $backTemplate),
+        $descSpan = $('.description', $backTemplate);
+
     $placeSpan.text( 'PLACE' );
-
-    var $authorSpan = $('.author', $backTemplate);
     $authorSpan.text( data.author );
-
-    var $descSpan = $('.description', $backTemplate);
     $descSpan.text( data.description );
     $el.append( $backTemplate );
   }
