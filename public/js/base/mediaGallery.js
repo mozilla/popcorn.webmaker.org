@@ -2,30 +2,39 @@ define(['jquery'],
   function ($) {
   'use strict';
 
-  var $body = $( 'body' );
+  var countLarge = 2,
+      countMedium = 8,
+      LIMIT_DESKTOP = 20,
+      LIMIT_MOBILE = 6;
 
-  var LIMIT_DESKTOP = 30;
-  var LIMIT_MOBILE = 3;
-
-  var $mainGallery = $('.main-gallery'),
+  var $body = $( 'body' ),
+      $mainGallery = $('.main-gallery'),
       mainGallery = $mainGallery[0],
       $makeTemplate = $body.find( 'div.make' ),
       $makeBackTemplate = $body.find( 'div.make-back' ),
       $eventBackTemplate = $body.find( 'div.event-back' ),
+      isMobile = false,
       packery = new Packery(mainGallery, {
         itemSelector: 'div.make',
-        gutter: '.gutter-sizer',
-        columnWidth: '.grid-sizer'
+        gutter: '.gutter-sizer'
       });
+
+  // Detect whether we are in mobile dimensions or not.
+  if ($body.find( '.mobile' ).css( 'display' ) === 'none') {
+    isMobile = true;
+  }
 
   function createMakeBack( data, $el ) {
     var $backTemplate = $makeBackTemplate.clone( true ),
         $placeSpan = $('.place', $backTemplate),
+        $titleSpan = $('.title', $backTemplate),
+        $dateSpan = $('.date', $backTemplate),
         $authorSpan = $('.author', $backTemplate),
-        $authorSpan = $('.author', $backTemplate),
-        $descSpan = $('.description', $backTemplate);
+        $descSpan = $('.description', $backTemplate),
+        createdDate = new Date( data.createdAt );
 
-    $placeSpan.text( 'PLACE' );
+    $titleSpan.text( data.title );
+    $dateSpan = $('.date', $backTemplate),
     $authorSpan.text( data.author );
     $descSpan.text( data.description );
     $el.append( $backTemplate );
@@ -40,7 +49,7 @@ define(['jquery'],
         $organizerSpan = $('.organizer', $backTemplate);
 
     $eventSpan.text( data.title );
-    $dateSpan.text( 'DATE' );
+    $dateSpan.text( date.createdAt );
     $placeSpan.text( 'PLACE' );
     $descSpan.text( data.description );
     $organizerSpan.text( 'MOZILLA' );
@@ -49,33 +58,46 @@ define(['jquery'],
 
   function searchCallback( data ) {
     var $makeContainer = $makeTemplate.clone( true ),
-        makeContainer = $makeContainer[0];
+        makeContainer = $makeContainer[0],
+        randSize = 'large';
+
+    if (!isMobile) {
+      if (countLarge > 0) {
+        randSize = 'large';
+        countLarge --;
+      } else if (countMedium > 0) {
+        randSize = 'medium';
+        countMedium --;
+      } else {
+        randSize = 'small';
+      }
+    }
 
     // create front Element & populate
-    var $frontEl = $('<div class="front"><img src="' + data.thumbnail + '"></img></div>');
+    var $frontEl = $('<div class="front"><img src="' + data.thumbnail + '" alt="' + data.title + '"></div>');
 
     // create back element & populate
     var $backEl = $('<div class="back"></div>');
 
     switch ( data.tags.makeType ) {
       case 'popcorn':
-        $makeContainer.addClass( 'make-popcorn' );
+        $makeContainer.addClass( 'popcorn' );
         break;
 
       case 'thimble':
-        $makeContainer.addClass( 'make-thimble make-w2' );
+        $makeContainer.addClass( 'thimble' );
         break;
 
       case 'challenge':
-        $makeContainer.addClass( 'make-challenge' );
+        $makeContainer.addClass( 'challenge' );
         break;
 
       case 'event':
-        $makeContainer.addClass( 'make-event make-h2' );
+        $makeContainer.addClass( 'event' );
         break;
 
       case 'kit':
-        $makeContainer.addClass( 'make-kit' );
+        $makeContainer.addClass( 'kit' );
         break;
 
       case 'demo':
@@ -83,12 +105,12 @@ define(['jquery'],
         break;
     }
 
-    if (data.tags.makeType) {
-      createMakeBack( data, $backEl );
-    }
+    $makeContainer.addClass(randSize);
+    createMakeBack( data, $backEl );
 
     // add front & back elements to flip container
     var $flip = $('<div class="flipContainer"></div>');
+
     $flip.append($frontEl).append( $backEl );
 
     // add flip container & link to make container
@@ -98,7 +120,6 @@ define(['jquery'],
     // add to gallery & packery
     $mainGallery.append( $makeContainer );
     packery.appended( makeContainer );
-    packery.layout();
   }
 
   // set up mouse over handlers
@@ -111,11 +132,25 @@ define(['jquery'],
       var limit = LIMIT_DESKTOP;
 
       // Detect whether we are in mobile dimensions or not.
-      if ($body.find( '.mobile' ).css( 'display' ) === 'none') {
+      if (isMobile) {
         limit = LIMIT_MOBILE;
       }
 
-      wm.doSearch( 'featured', limit, searchCallback );
+      // Handles all packery-related content loading.
+      switch ($body[0].id) {
+        case 'index':
+          var $stickyBanner = $('<div class="make internal" id="banner-join">Join the Webmaker Revolution!</div>');
+          $mainGallery.append( $stickyBanner );
+
+          wm.doSearch( 'featured', limit, searchCallback );
+          packery.stamp( $stickyBanner[0] );
+          packery.layout();
+          break;
+
+        case 'teach':
+          // TODO: teach page search
+          break;
+      }
     }
   };
 
