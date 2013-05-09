@@ -1,9 +1,8 @@
 {% extends "layout.html" %}
+
+{% include 'macros.html' %}
+
 {% block title %}Teach{% endblock %}
 {% block body %}
-
-  Teach stuff!!!!!!!!!
-
-{% endblock %}
-{% block scripts %}
+  {{ gallery() }}
 {% endblock %}
