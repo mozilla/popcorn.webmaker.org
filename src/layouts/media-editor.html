@@ -1,0 +1,44 @@
+<div class="media-editor butter-editor fadable alternates-hidden allow-scrollbar">
+  <h1>Change Media Source
+    <span class="media-loading-spinner hidden" ></span>
+  </h1>
+  <div class="butter-editor-body scrollbar-container">
+    <div class="scrollbar-outer">
+      <div class="scrollbar-inner">
+        <fieldset>
+          <span class="current-media-wrapper"></span>
+          <p class="add-alternate-media-source-desc">You need .webm, .mp4, and .ogv versions of your HTML5 video to support all major browsers.</p>
+          <a class="add-alternate-media-source-btn butter-btn btn-light">Add Alternate</a>
+          <label class="media-error-message hidden">Error: one or more media sources failed to load!</label>
+        </fieldset>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="media-editor-inner-wrapper primary-media-wrapper">
+  <p>
+    <span class="fl-right">
+      <span class="media-icon youtube-icon"></span>
+      <span class="media-icon vimeo-icon"></span>
+      <span class="media-icon soundcloud-icon"></span>
+      <span class="media-icon html5-icon"></span>
+    </span>
+    Paste a link from Youtube, Vimeo, Soundcloud, or an HTML5 video
+  </p>
+  <textarea class="current-media-input" placeholder="Paste an HTML5, Youtube, or Soundcloud link here"></textarea>
+  <span class="butter-btn-slide-out">
+    <a class="butter-media-apply butter-btn btn-green butter-disabled">Apply</a>
+  </span>
+  <label class="alternate-media-label">Fallbacks<span class="icon icon-x"></span></label>
+</div>
+
+<div class="media-editor-inner-wrapper alt-media-wrapper">
+  <div class="alt-media-wrapper-inner">
+    <textarea class="current-media-input" placeholder="http://"></textarea>
+    <a class="delete-media-btn"><span class="icon icon-trash" ></span></a>
+  </div>
+  <span class="butter-btn-slide-out">
+    <a class="butter-media-apply butter-btn btn-green butter-disabled">Apply</a>
+  </span>
+</div>

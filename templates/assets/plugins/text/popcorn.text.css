@@ -1,0 +1,88 @@
+.popcorn-text {
+  color: #FFF;
+}
+
+.popcorn-text.off {
+  visibility: hidden;
+}
+
+.text-inner-div a {
+  text-decoration: none;
+}
+.text-inner-div a:after {
+  content: "";
+  display: inline-block;
+  opacity: 0.2;
+  background-position: -336px -96px;
+  background-image: url( "../../../../resources/glyphicons-halflings-green.png" );
+  width: 14px;
+  height: 14px;
+}
+.text-inner-div a:hover {
+  text-decoration: underline;
+}
+.text-inner-div a:hover:after {
+  opacity: 1;
+}
+
+.text-fixed {
+  position: absolute;
+  width: 100%;
+  top: 0;
+  bottom: 0;
+}
+.text-fixed > div {
+  display: table;
+  vertical-align: middle; 
+  width: 100%;
+  height: 100%;
+  text-align: center;
+}
+
+.text-fixed > div > span {
+  display: table-cell;
+  padding: 20px;
+}
+
+.text-fixed > div > span > a {
+  position: relative;
+  display: inline-block;
+}
+
+.center > span {
+  vertical-align: middle; 
+  text-align: center;
+}
+
+.right > span {
+  vertical-align: middle;
+  text-align: right;
+}
+
+.left > span {
+  vertical-align: middle;
+  text-align: left;
+}
+
+.bottom > span {
+  vertical-align: bottom;
+  text-align: center;
+}
+
+.top > span {
+  vertical-align: top;
+  text-align: center;
+}
+
+.text-custom {
+  display: inline-block;
+  max-width: 500px;
+}
+
+.text-custom > div > span {
+  padding: 0;
+}
+
+[contenteditable="true"]:focus {
+  outline: none;
+}

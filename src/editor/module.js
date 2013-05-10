@@ -1,0 +1,262 @@
+/* This Source Code Form is subject to the terms of the MIT license
+ * If a copy of the MIT license was not distributed with this file, you can
+ * obtain one at http://www.mozillapopcorn.org/butter-license.txt */
+
+/**
+ * Module: EditorModule
+ *
+ * Butter Module for Editors
+ */
+define( [ "core/eventmanager", "core/trackevent", "./editor",
+          "ui/toggler", "util/lang", "text!layouts/editor-area.html",
+          "./default", "core/logger", "./header",
+          "./media-editor", "./share-editor" ],
+  function( EventManager, TrackEvent, Editor,
+            Toggler, LangUtils, EDITOR_AREA_LAYOUT,
+            DefaultEditor, Logger, Header,
+
+            //included here to register themselves
+            MediaEditor, ShareEditor ){
+
+  var DEFAULT_EDITOR_NAME = "plugin-list";
+
+  // Expose DefaultEditor to external editors
+  Editor.DefaultEditor = DefaultEditor;
+
+  /**
+   * Class: EventEditor
+   *
+   * Module which provides Editor functionality to Butter
+   */
+  function EventEditor( butter, moduleOptions, ButterNamespace ){
+
+    moduleOptions = moduleOptions || {};
+
+    var _currentEditor,
+        _editorAreaDOMRoot = LangUtils.domFragment( EDITOR_AREA_LAYOUT, ".butter-editor-area" ),
+        _editorContentArea = _editorAreaDOMRoot.querySelector( ".butter-editor-content" ),
+        _header,
+        _toggler,
+        _this = this,
+        _createdEditors = {},
+        _logger = new Logger( butter.id );
+
+    EventManager.extend( _this );
+
+    ButterNamespace.Editor = Editor;
+
+    _header = new Header( _editorAreaDOMRoot, _this );
+
+    /**
+     * Member: openEditor
+     *
+     * Opens an editor corresponding to the given editor name if it exists
+     *
+     * @param {String} editorName: Name of editor to open
+     * @param {Object} options: An object storing various optional parameters that are used when opening an editor. These options are:
+     * * @param {Booelean} persist: Indicate whether or not the editor should be recreated each time it wants to be opened
+     * * @param {Object} openData: TrackEvent data used within an editors `open` method
+     */
+    _this.openEditor = function( editorName, options ) {
+      options = options || {};
+
+      var persist = options.persist;
+      persist = persist === true || persist === false ? persist : Editor.isPersistant( editorName );
+
+      // If the editor has never been used before, open it now
+      _editorAreaDOMRoot.classList.remove( "minimized" );
+      document.body.classList.remove( "editor-minimized" );
+      _toggler.state = false;
+
+      if ( _currentEditor ) {
+        _currentEditor.close();
+      }
+
+      // Some editors may not need to be created again. If so, store them in an object and open and close them as needed.
+      if ( persist && _createdEditors[ editorName ] ) {
+        _currentEditor = _createdEditors[ editorName ];
+      } else {
+        _currentEditor = _createdEditors[ editorName ] = Editor.create( editorName, butter );
+      }
+
+      _currentEditor.open( _editorContentArea, options.openData );
+
+      _currentEditor.listen( "back", function( e ) {
+        _this.openEditor( DEFAULT_EDITOR_NAME );
+      });
+
+      _header.setFocus( editorName );
+
+      butter.dispatch( "editoropened", editorName );
+
+      return _currentEditor;
+    };
+
+    /**
+     * Member: closeTrackEventEditor
+     *
+     * Closes the currently opened editor and opens the default one in it's place
+     *
+     */
+    _this.closeEditor = function() {
+      _currentEditor.close();
+      _currentEditor = null;
+      _this.openEditor( DEFAULT_EDITOR_NAME );
+    };
+
+    /**
+     * Member: closeEditor
+     *
+     * A safer means of closing an editor. This ensures that the current open editor's trackevent matches the
+     * passed in trackevent before calling its close method.
+     *
+     * @param {TrackEvent} trackEvent: The trackevent being used to compare against the current open editor.
+     */
+    _this.closeTrackEventEditor = function( trackEvent ) {
+      var isTrackEventEditor = _currentEditor.getTrackEvent;
+
+      if ( trackEvent && isTrackEventEditor &&
+          isTrackEventEditor().id === trackEvent.id ) {
+
+        _this.closeEditor();
+      }
+    };
+
+    /**
+     * Member: editTrackEvent
+     *
+     * Open the editor corresponding to the type of the given TrackEvent
+     *
+     * @param {TrackEvent} trackEvent: TrackEvent to edit
+     */
+    _this.editTrackEvent = function( trackEvent ) {
+      if ( !trackEvent || !( trackEvent instanceof TrackEvent ) ) {
+        throw new Error( "trackEvent must be valid to start an editor." );
+      }
+      var editorType = Editor.isRegistered( trackEvent.type ) ? trackEvent.type : "default";
+      return _this.openEditor( editorType, {
+        openData: trackEvent
+      });
+    };
+
+    butter.listen( "trackeventadded", function ( e ) {
+      var trackEvent = e.data,
+          view = trackEvent.view,
+          element = trackEvent.view.element;
+
+      // Open a new editor on a single click
+      var trackEventMouseUp = function ( e ) {
+        if( butter.selectedEvents.length === 1 && !trackEvent.uiInUse ) {
+          trackEvent.selected = true;
+          _this.editTrackEvent( trackEvent );
+        }
+      };
+
+      element.addEventListener( "mouseup", trackEventMouseUp, true );
+
+      view.listen( "trackeventdragstarted", function() {
+        element.removeEventListener( "mouseup", trackEventMouseUp, true );
+      });
+
+      view.listen( "trackeventdragstopped", function() {
+        element.addEventListener( "mouseup", trackEventMouseUp, true );
+      });
+
+      butter.listen( "trackeventremoved", function ( e ) {
+        if ( e.data === trackEvent ) {
+          element.removeEventListener( "mouseup", trackEventMouseUp, true );
+        }
+      });
+    });
+
+    /**
+     * Member: _start
+     *
+     * Prepares this module for Butter startup
+     *
+     * @param {Function} onModuleReady: Callback to signify that module is ready
+     */
+    this._start = function( onModuleReady ){
+      _toggler = new Toggler( _editorAreaDOMRoot.querySelector( ".butter-editor-close-btn" ),
+        function( e ) {
+          var newState = !_editorAreaDOMRoot.classList.contains( "minimized" );
+
+          var onTransitionEnd = function(){
+            LangUtils.removeTransitionEndListener( _editorAreaDOMRoot, onTransitionEnd );
+            _this.dispatch( "editorminimized", newState );
+          };
+
+          _toggler.state = newState;
+          if ( newState ) {
+            document.body.classList.add( "editor-minimized" );
+            _editorAreaDOMRoot.classList.add( "minimized" );
+          }
+          else {
+            document.body.classList.remove( "editor-minimized" );
+            _editorAreaDOMRoot.classList.remove( "minimized" );
+          }
+
+          LangUtils.applyTransitionEndListener( _editorAreaDOMRoot, onTransitionEnd );
+          
+        }, "Show/Hide Editor", true );
+
+      var editorsToLoad = [],
+          editorsLoaded = 0;
+
+      if( butter.config.value( "ui" ).enabled !== false ){
+        document.body.classList.add( "butter-editor-spacing" );
+
+        // Start minimized
+        _editorAreaDOMRoot.classList.add( "minimized" );
+        document.body.classList.add( "editor-minimized" );
+
+        butter.ui.setEditor( _editorAreaDOMRoot );
+
+        var config = butter.config.value( "editor" );
+        for ( var editorName in config ) {
+          if ( config.hasOwnProperty( editorName ) ) {
+            editorsToLoad.push({
+              url: config[ editorName ],
+              type: "js"
+            });
+          }
+        }
+
+        if ( editorsToLoad.length > 0 ){
+          butter.loader.load( editorsToLoad, function() {
+            Editor.initialize( onModuleReady, butter.config.value( "baseDir" ) );
+          }, function( e ) {
+            _logger.log( "Couldn't load editor " + e.target.src );
+            
+            if ( ++editorsLoaded === editorsToLoad.length ) {
+              onModuleReady();
+            }
+          });
+        }
+        else {
+          onModuleReady();
+        }
+
+      }
+      else {
+        onModuleReady();
+      }
+    };
+
+    Object.defineProperties( _this, {
+      currentEditor: {
+        enumerable: true,
+        get: function() {
+          return _currentEditor;
+        }
+      }
+    });
+  }
+
+  this.register = Editor.register;
+
+  EventEditor.__moduleName = "editor";
+
+  return EventEditor;
+
+}); //define

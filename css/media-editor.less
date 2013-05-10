@@ -1,0 +1,106 @@
+/*********************************************************
+* MEDIA EDITOR
+*/
+
+.media-editor {
+
+  .fl-right {
+    margin-top: 8px;
+    float: right;
+  }
+
+  .media-editor-inner-wrapper { // Textarea wrappers
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 5px;
+    &:hover .delete-media-btn {
+      right: 2px;
+    }
+    textarea {
+      font-size: 12px;
+      font-family: monaco, monospace;
+    }
+  }
+
+  .alt-media-wrapper {
+    textarea {
+      height: 70px;
+    }
+  }
+
+  .alt-media-wrapper-inner {
+    position: relative;
+  }
+
+  .alternate-media-label { // When alternate media are displayed
+    cursor: pointer;
+    font-size: 14px;
+    margin-top: 20px;
+    &:hover {
+      color: #000;
+    }
+    >.icon-x {
+      float: right;
+      opacity: 0.5;
+      &:hover {
+        opacity: 1;
+      }
+    }
+  }
+
+  &.alternates-hidden { // When alternate media are hidden
+    .butter-btn-slide-out {
+      float: left;
+    }
+    .alternate-media-label {
+      font-size: 12px;
+      float: right;
+      margin: 0;
+      >.icon-x {
+        display: none;
+      }
+      &:after {
+        content: "...";
+      }
+    }
+    .alt-media-wrapper,
+    .add-alternate-media-source-btn,
+    .add-alternate-media-source-desc {
+      display: none;
+    }
+  }
+
+  .delete-media-btn {
+    position: absolute;
+    bottom: 10px;
+    right: -20px;
+    opacity: 0.5;
+    cursor: pointer;
+    .transition( right 0.2s ease );
+  }
+
+  .error {
+    border: 1px inset #ff0000;
+  }
+
+  .media-error-message {
+    color: #ff0000;
+    &.hidden {
+      display: none;
+    }
+  }
+
+  .media-loading-spinner {
+    position: relative;
+    top: 3px;
+    left: 10px;
+    height: 16px;
+    width: 16px;
+    display: inline-block;
+    background-image: url("../resources/spinny.gif");
+    &.hidden {
+      display: none;
+    }
+  }
+}
+

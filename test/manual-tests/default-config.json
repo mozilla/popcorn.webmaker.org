@@ -1,0 +1,12 @@
+{
+  "name": "default-butter-test",
+  "baseDir": "../../",
+  "cornfield": {
+    "server": "http://localhost:8888",
+    "authtype": "browserid"
+  },
+  "ui": {
+    "trackEventHighlight": "click",
+    "title": "Popcorn Maker"
+  }
+}
