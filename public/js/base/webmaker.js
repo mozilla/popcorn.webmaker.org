@@ -25,25 +25,12 @@ define(['jquery'],
     return obj;
   }
 
-  function SSO() {
-    var personaSSO = navigator.personaSSO;
-    personaSSO.init( document.getElementById("SSO") );
-    personaSSO.id.watch({
-      onlogin: function(topic, data){
-        personaSSO.ui.checkMaker(data, $( "#webmaker-nav" ));
-      },
-      onlogout: function(){
-        personaSSO.ui.loggedOut();
-      }
-    });
-  }
 
   var self = {
     init: function( options ) {
       makeURL = options.makeURL;
       page = options.page;
       make = Make({ apiURL: makeURL });
-      SSO();
     },
 
     doSearch: function( tags, limit, each ) {

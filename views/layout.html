@@ -1,47 +1,119 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="utf-8">
-  <title>{% block title %}{% endblock %} - Mozilla Webmaker</title>
-  {% block head %}
-    <link rel="stylesheet" href="{{ personaSSO }}/css/nav.css" />
+  <head>
+    <meta charset="utf-8">
+    <title>{% block title %}{% endblock %} - Mozilla Webmaker</title>
+    {% block head %}
     <link rel="stylesheet" href="ext/css/font-awesome.css">
     <link rel="stylesheet" href="css/style.css">
-  {% endblock %}
-</head>
-<body id="{{ page }}" data-endpoint="{{ makeEndpoint }}">
-  <div id="webmaker-nav">
-    <nav class="webmaker-nav-container">
-      <ul class="webmaker-nav primary">
-        <li><a>Webmaker</a></li>
-      </ul>
-      <ul class="webmaker-nav user-info">
-        <li class="user">
-          <div class="user-name">
-            <span id="identity" class="user-name-container"></span>
-          </div>
-        </li>
-        <li><iframe id="SSO" src="{{ personaSSO }}"></iframe></li>
-      </ul>
-    </nav>
-  </div>
-  <header id="main-header" class="main-header">
-    <img class="logo" src="img/logo.png" alt="Mozilla Webmaker">
-    <ul class="nav-list">
-      <li><a href="/" {% if page == 'index' %}class="on"{% endif %}>Make what?</a></li>
-      <li><a href="/learn" {% if page == 'learn' %}class="on"{% endif %}>Learn</a></li>
-      <li><a href="/teach" {% if page == 'teach' %}class="on"{% endif %}>Teach</a></li>
-      <li><a href="/party" {% if page == 'party' %}class="on"{% endif %}>Party</a></li>
-      <li><a class="icon-search" id="nav-search" href="/search"></a></li>
-    </ul>
+    <link href="//www.mozilla.org/tabzilla/media/css/tabzilla.css" rel="stylesheet" />
+    {% endblock %}
+  </head>
+  <body id={{ page }} data-endpoint="{{ makeEndpoint }}">
+  <header>
+    <div class="persona-mobile">
+      <div class="fl">
+        <img class="persona-icon" src="http://lorempixel.com/25/25/cats/" />
+        Hi <span class="user">cassiemc</span>
+      </div>
+      <div class="fr">
+        <a class="persona-link" href="#">Dashboard</a>
+        <a class="persona-link" href="#">Sign out</a>
+      </div>
+    </div>
+    <img src="img/logo.png" alt="Mozilla Webmaker">
+    <div class="tabzilla">
+      <a href="http://www.mozilla.org/" id="tabzilla">mozilla</a>
+    </div>
+    <div class="rightHeader">
+      <div class="persona">
+        <div class="loggedIn hide">
+          <img class="persona-icon" src="http://lorempixel.com/25/25/cats/" />
+          Hi <span class="user">cassiemc</span>
+          <a class="persona-link" href="#">Dashboard</a>
+          <a class="persona-link" href="#">Sign out</a>
+        </div>
+        <div class="loggedOut">
+          <a class="persona-link" href="#">Sign in</a>
+          <a class="persona-link" id="sign-up" href="#">Sign up</a>
+        </div>
+      </div>
+      <nav>
+        <ul class="nav-list">
+          <li><a {% if page == 'index' %}class="on"{% endif %} id="nav-index" href="/">Make!</a></li>
+          <li><a {% if page == 'learn' %}class="on"{% endif %} id="nav-learn" href="/learn">Learn</a></li>
+          <li><a {% if page == 'teach' %}class="on"{% endif %} id="nav-teach" href="/teach">Teach</a></li>
+          <li><a {% if page == 'party' %}class="on"{% endif %} id="nav-party" href="/party">Events</a></li>
+          <li><a {% if page == 'search' %}class="on"{% endif %} class="icon-search" id="nav-search" href="/search"></a></li>
+        </ul>
+      </nav>
+    </div>
   </header>
-  <div id="content" class="content clearfix">{% block body %}{% endblock %}</div>
-  <footer class="footer"></footer>
+  <main id="content" class="content clearfix">{% block body %}{% endblock %}</main>
+  <footer class="footer">
+    <section class="make-footer">
+      <div class="make-wrapper">
+        <div class="make-footer-item">
+          <a href="#"><img src="http://lorempixel.com/75/75/" class="make-footer-item-img" /></a>
+          <div class="make-footer-item-text">
+            <span class="make-footer-item-title">Tools</span><br>
+            <span class="make-footer-item-desc">Discover what you can make with our
+              <a href="#">tools</a>.</span>
+          </div>
+        </div>
+        <div class="make-footer-item">
+          <a href="#"><img src="http://lorempixel.com/75/75/" class="make-footer-item-img" /></a>
+          <div class="make-footer-item-text">
+            <span class="make-footer-item-title">Challenges</span><br>
+            <span class="make-footer-item-desc">Learn something new and earn a
+              <a href="#">badge</a>.</span>
+          </div>
+        </div>
+        <div class="make-footer-item">
+          <a href="#"><img src="http://lorempixel.com/75/75/" class="make-footer-item-img" /></a>
+          <div class="make-footer-item-text">
+            <span class="make-footer-item-title">Resources</span><br>
+            <span class="make-footer-item-desc">Looking for
+              <a href="#">hacktivity kits</a>? Look no further.</span>
+          </div>
+        </div>
+        <div class="make-footer-item">
+          <a href="#"><img src="http://lorempixel.com/75/75/" class="make-footer-item-img" /></a>
+          <div class="make-footer-item-text">
+            <span class="make-footer-item-title">Events</span><br>
+            <span class="make-footer-item-desc">Check the
+              <a href="#">latest events</a> or
+              <a href="#">add your own</a>.</span>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="partners">
+      <span class="partners-header">Mozilla Webmaker is <a href="#">generously supported</a> by the following:</span>
+      <div class="partner-list">
+        <a href="#"><img src="http://lorempixel.com/150/50/" alt="Sponsor 1" class="sponsor-item" /></a>
+        <a href="#"><img src="http://lorempixel.com/150/50/" alt="Sponsor 1" class="sponsor-item" /></a>
+        <a href="#"><img src="http://lorempixel.com/150/50/" alt="Sponsor 1" class="sponsor-item" /></a>
+        <a href="#"><img src="http://lorempixel.com/150/50/" alt="Sponsor 1" class="sponsor-item" /></a>
+        <a href="#"><img src="http://lorempixel.com/150/50/" alt="Sponsor 1" class="sponsor-item" /></a>
+        <a href="#"><img src="http://lorempixel.com/150/50/" alt="Sponsor 1" class="sponsor-item" /></a>
+      </div>
+      <span class="small-partners-header">
+        and
+        <a href="https://donate.mozilla.org/page/contribute/join-mozilla?source=webmaker_home">
+          Mozillians
+      </a> like you.</span>
+      <i class="footer-social icon-twitter"></i>
+      <i class="footer-social icon-facebook"></i>
+      <i class="footer-social icon-envelope"></i>
+      </p>
+    </section>
+  </footer>
   <div class="mobile"></div>
-  <script src="{{ personaSSO }}/js/sso.js"></script>
   <script src="{{ makeEndpoint }}/js/make-api.js"></script>
-  {# Packery is not ready to be integrated w/ requirejs https://github.com/metafizzy/packery/issues/20 #}
+  <script src="//www.mozilla.org/tabzilla/media/js/tabzilla.js"></script>
   <script src="ext/js/packery.js"></script>
   <script src="ext/js/require.js" data-main="js/config"></script>
   {% block scripts %}{% endblock %}
-</body>
+  </body>
+</html>
