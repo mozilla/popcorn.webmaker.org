@@ -100,6 +100,18 @@ header {
   }
 }
 
+.arrow {
+  width: 0;
+  display: inline-block;
+  height: 0;
+  border-style: solid;
+  border-width: 12.5px 15px 12.5px 0;
+  border-color: transparent #27aae1 transparent transparent;
+  position: relative;
+  top: 6px;
+  left: 4px;
+}
+
 /*********************************************************
  * FOOTER
  */
@@ -161,6 +173,7 @@ header {
   padding-top: 40px;
   background: url("../img/bkgFooter.jpg") repeat scroll 50% 0 #f9f9f9;
   text-align: center;
+  padding-bottom: 40px;
 
   .partners-header {
     font-size: 22px;
@@ -169,8 +182,8 @@ header {
   }
 
   .partner-list {
-    margin-top: 45px;
-    margin-bottom: 60px;
+    margin-top: 40px;
+    margin-bottom: 40px;
 
     .sponsor-item {
       margin-left: 40px;
@@ -196,13 +209,19 @@ header {
     width: 640px;
   }
 
+  .content {
+    position: relative;
+    top: -15px;
+  }
+
   header {
     height: 290px;
     padding: 0 10px;
+    margin-bottom: auto;
     position: relative;
 
     .persona-mobile {
-      z-index: 1;
+      z-index: 1000; // Tabzilla has a z-index of 999, this is to bring persona box over tabzilla
       position: relative;
       left: -2%;
       display: block;
@@ -282,8 +301,6 @@ header {
     }
   }
   .partners {
-    margin: 0 auto;
-    text-align: center;
 
     .partner-list {
       text-align: left;
