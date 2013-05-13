@@ -11,8 +11,8 @@ var express = require('express'),
     lessMiddleware = require('less-middleware'),
     requirejsMiddleware = require( 'requirejs-middleware' ),
     config = require( './lib/config' ),
-    Project = require( './lib/project' )( config.database ),
-    filter = require( './lib/filter' )( Project.isDBOnline ),
+    Project,
+    filter,
     sanitizer = require( './lib/sanitizer' ),
     FileStore = require('./lib/file-store.js'),
     metrics,
@@ -21,7 +21,8 @@ var express = require('express'),
     stores = {},
     APP_HOSTNAME = config.hostname,
     WWW_ROOT = path.resolve( __dirname, config.dirs.wwwRoot ),
-    VALID_TEMPLATES = config.templates;
+    VALID_TEMPLATES = config.templates,
+    port = config.PORT;
 
 var templateConfigs = {};
 
@@ -51,6 +52,24 @@ function setupStore( storeConfig ) {
     app.use( express.static( store.root, JSON.parse( JSON.stringify( config.staticMiddleware ) ) ) );
   }
   return store;
+}
+
+if ( config.USE_WEBFAKER ) {
+  var webfaker = require( "webfaker" );
+
+  webfaker.start({
+    port: port + 1,
+    username: config.MAKE_USERNAME,
+    password: config.MAKE_PASSWORD,
+    isAdminCheck: false
+  }, function() {
+    console.log( "Started Webfaker services on http://localhost ports: FakeAPI=%s, Fogin=%s, Fubble=%s",
+                 port + 1, port + 2, port + 3 );
+
+    process.on( "exit", function() {
+      webfaker.stop();
+    });
+  });
 }
 
 app.configure( function() {
@@ -140,6 +159,12 @@ app.configure( function() {
     EMBED_HOSTNAME: config.dirs.embedHostname ? config.dirs.embedHostname : APP_HOSTNAME,
     EMBED_SUFFIX: '_'
   }, stores );
+
+  Project = require( './lib/project' )( config.database, {
+    apiURL: config.MAKE_ENDPOINT,
+    auth: config.MAKE_USERNAME + ":" + config.MAKE_PASSWORD
+  }, utils );
+  filter = require( './lib/filter' )( Project.isDBOnline );
 });
 
 require( 'express-persona' )( app, {
@@ -363,7 +388,7 @@ app.get( '/api/butterconfig', function( req, res ) {
   });
 });
 
-app.listen( config.PORT, function() {
+app.listen( port, function() {
   console.log( 'HTTP Server started on ' + APP_HOSTNAME );
   console.log( 'Press Ctrl+C to stop' );
 });

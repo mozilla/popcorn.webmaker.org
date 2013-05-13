@@ -91,6 +91,7 @@
     "knox": "0.7.0",
     "less-middleware": "0.1.9",
     "less": "1.3.3",
+    "makeapi": "0.1.5",
     "mysql": "2.0.0-alpha8",
     "makeapi": "0.1.5",
     "nconf": "0.6.7",
@@ -108,7 +109,8 @@
     "awsbox": "0.4.2",
     "html5-lint": "0.2.1",
     "supertest": "0.5.1",
-    "tap": "0.4.0"
+    "tap": "0.4.0",
+    "webfaker": "git://github.com/humphd/webfaker.git#c0c36faa2302293b84ceabad4d2db887be550ad2"
   },
   "scripts": {
     "test": "node make check && ./node_modules/.bin/tap test/*.test.js"
