@@ -78,7 +78,6 @@ a {
 }
 
 .make {
-  border-bottom: @make-border-size solid transparent;
   color: #FFF;
   position: relative;
   overflow: hidden;
@@ -126,7 +125,7 @@ a {
 .front,
 .back {
   .backface-visibility(hidden);
-  .border-top-radius;
+  .border-radius;
   bottom: 0;
   display: block;
   overflow: hidden;
@@ -201,6 +200,10 @@ h3 {
 
 .internal {
   border-bottom: @make-border-size solid #FF0B00;
+}
+
+.default {
+  border-bottom: @make-border-size solid #FFF;
 }
 
 p {
