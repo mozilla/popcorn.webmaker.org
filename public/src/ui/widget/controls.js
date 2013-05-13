@@ -15,9 +15,9 @@ define( [ "util/lang", "util/time", "text!layouts/controls.html" ],
         // variables
         muteButton, playButton, currentTimeDialog, fullscreenButton,
         durationDialog, timebar, progressBar, bigPlayButton,
-        scrubber, seeking, playStateCache, active,
-        volume, volumeProgressBar, volumeScrubber, position,
-        controlsShare, controlsRemix, controlsFullscreen, controlsLogo,
+        scrubber, seeking, playStateCache, active, thumbnailContainer,
+        volume, volumeProgressBar, volumeScrubber, position, controlsContainer,
+        controlsShare, controlsRemix, controlsFullscreen, controlsLogo, attributionContainer,
         // functions
         bigPlayClicked, activate, deactivate, volumechange,
         togglePlay, timeMouseMove, timeMouseUp,
@@ -33,15 +33,41 @@ define( [ "util/lang", "util/time", "text!layouts/controls.html" ],
         onLogoClick = options.onLogoClick || nop,
         init = options.init || nop;
 
+    bigPlayButton = document.getElementById( "controls-big-play-button" );
+    bigPlayButton.classList.add( "controls-ready" );
+    controlsContainer = document.querySelector( ".controls" );
+    thumbnailContainer = document.querySelector( "#thumbnail-container" );
+    attributionContainer = document.querySelector( "#attribution-info" );
+
+    bigPlayClicked = function() {
+      p.media.removeEventListener( "play", bigPlayClicked, false );
+      bigPlayButton.removeEventListener( "click", bigPlayClicked, false );
+      bigPlayButton.classList.remove( "controls-ready" );
+      bigPlayButton.classList.add( "hide-button" );
+      p.media.addEventListener( "mouseover", activate, false );
+      thumbnailContainer.classList.add( "hidden" );
+
+      if ( p.paused() ) {
+        p.play();
+        playButton.classList.remove( "controls-paused" );
+        playButton.classList.add( "controls-playing" );
+      }
+    };
+
     function onInit() {
 
-      document.removeEventListener( "click", onInit, false );
+      thumbnailContainer.removeEventListener( "click", onInit, false );
+      bigPlayButton.removeEventListener( "click", onInit, false );
+      thumbnailContainer.classList.remove( "preload" );
+      controlsContainer.classList.remove( "controls-hide" );
+      attributionContainer.classList.add( "show" );
       function setPopcorn( popcorn ) {
         p = popcorn;
       }
       init( setPopcorn );
 
       p.controls( false );
+      p.media.addEventListener( "play", bigPlayClicked, false );
       if ( p.readyState() >= 1 ) {
 
         ready();
@@ -60,7 +86,6 @@ define( [ "util/lang", "util/time", "text!layouts/controls.html" ],
       durationDialog = document.getElementById( "controls-duration" );
       timebar = document.getElementById( "controls-timebar" );
       progressBar = document.getElementById( "controls-progressbar" );
-      bigPlayButton = document.getElementById( "controls-big-play-button" );
       scrubber = document.getElementById( "controls-scrubber" );
       volume = document.getElementById( "controls-volume" );
       fullscreenButton = document.getElementById( "controls-fullscreen" );
@@ -80,26 +105,6 @@ define( [ "util/lang", "util/time", "text!layouts/controls.html" ],
       controlsFullscreen.addEventListener( "click", onFullscreenClick, false );
       controlsLogo.addEventListener( "click", onLogoClick, false );
 
-      if ( bigPlayButton ) {
-
-        bigPlayButton.classList.add( "controls-ready" );
-
-        bigPlayClicked = function() {
-
-          p.media.removeEventListener( "play", bigPlayClicked, false );
-          bigPlayButton.removeEventListener( "click", bigPlayClicked, false );
-          bigPlayButton.classList.remove( "controls-ready" );
-          bigPlayButton.classList.add( "hide-button" );
-          p.media.addEventListener( "mouseover", activate, false );
-          if ( p.paused() ) {
-            p.play();
-          }
-        };
-
-        bigPlayButton.addEventListener( "click", bigPlayClicked, false );
-        p.media.addEventListener( "play", bigPlayClicked, false );
-      }
-
       // this block is used to ensure that when the video is played on a mobile device that the controls and playButton overlay
       // are in the correct state when it begins playing
       if ( !p.paused() ) {
@@ -108,6 +113,10 @@ define( [ "util/lang", "util/time", "text!layouts/controls.html" ],
         }
         playButton.classList.remove( "controls-paused" );
         playButton.classList.add( "controls-playing" );
+      }
+
+      if ( !options.preload ) {
+        bigPlayClicked();
       }
 
       _controls.classList.add( "controls-ready" );
@@ -428,9 +437,11 @@ define( [ "util/lang", "util/time", "text!layouts/controls.html" ],
 
     // If we're not autoPlay, wait for user interaction before we're ready.
     if ( !options.preload ) {
-      document.addEventListener( "click", onInit, false );
+      thumbnailContainer.addEventListener( "click", onInit, false );
+      bigPlayButton.addEventListener( "click", onInit, false );
     } else {
       onInit();
+      bigPlayButton.addEventListener( "click", bigPlayClicked, false );
     }
 
     if ( !_container ) {
