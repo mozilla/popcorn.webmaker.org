@@ -61,15 +61,25 @@ define(['jquery'],
         makeContainer = $makeContainer[0],
         randSize = 'large';
 
+    // If we're not in mobile view, we want to display multiple sizes for
+    // the home page and the medium size for the teach page.
     if (!isMobile) {
-      if (countLarge > 0) {
-        randSize = 'large';
-        countLarge --;
-      } else if (countMedium > 0) {
-        randSize = 'medium';
-        countMedium --;
-      } else {
-        randSize = 'small';
+      switch( $body[0].id ) {
+        case 'index':
+          if (countLarge > 0) {
+            randSize = 'large';
+            countLarge --;
+          } else if (countMedium > 0) {
+            randSize = 'medium';
+            countMedium --;
+          } else {
+            randSize = 'small';
+          }
+          break;
+
+        case 'teach':
+          randSize = 'medium';
+          break;
       }
     }
 
@@ -142,13 +152,14 @@ define(['jquery'],
           var $stickyBanner = $('<div class="make internal" id="banner-join">Join the Webmaker Revolution!</div>');
           $mainGallery.append( $stickyBanner );
 
-          wm.doSearch( 'featured', limit, searchCallback );
+          wm.doSearch( ['featured'], limit, searchCallback );
           packery.stamp( $stickyBanner[0] );
           packery.layout();
           break;
 
         case 'teach':
           // TODO: teach page search
+          wm.doSearch( ['featured', 'teach'], limit, searchCallback );
           break;
       }
     }

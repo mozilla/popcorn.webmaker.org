@@ -1,21 +1,8 @@
 {% extends "layout.html" %}
+
+{% include 'macros.html' %}
+
 {% block title %}Home{% endblock %}
 {% block body %}
-  <div class="main-gallery">
-    <div class="gutter-sizer"></div>
-    <div class="grid-sizer"></div>
-  </div>
-  <div class="make clone-item"></div>
-  <div class="make-back clone-item">
-    <h3 class="title"></h3>
-    <p>by <span class="author"></span></p>
-    <p><span class="description"></span></p>
-  </div>
-  <div class="event-back clone-item">
-    <h3 class="event-title"></h3>
-    <p><span class="date"></span></p>
-    <p><span class="place"></span></p>
-    <p><span class="description"></span></p>
-    <p>Organized by <span class="organizer"></span></p>
-  </div>
+  {{ gallery() }}
 {% endblock %}
