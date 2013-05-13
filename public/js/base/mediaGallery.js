@@ -91,27 +91,31 @@ define(['jquery'],
 
     switch ( data.tags.makeType ) {
       case 'popcorn':
-        $makeContainer.addClass( 'popcorn' );
+        $frontEl.addClass( 'popcorn' );
         break;
 
       case 'thimble':
-        $makeContainer.addClass( 'thimble' );
+        $frontEl.addClass( 'thimble' );
         break;
 
       case 'challenge':
-        $makeContainer.addClass( 'challenge' );
+        $frontEl.addClass( 'challenge' );
         break;
 
       case 'event':
-        $makeContainer.addClass( 'event' );
+        $frontEl.addClass( 'event' );
         break;
 
       case 'kit':
-        $makeContainer.addClass( 'kit' );
+        $frontEl.addClass( 'kit' );
         break;
 
       case 'demo':
-        $makeContainer.addClass( 'make-demo' );
+        $frontEl.addClass( 'make-demo' );
+        break;
+
+      default:
+        $frontEl.addClass( 'default' );
         break;
     }
 
