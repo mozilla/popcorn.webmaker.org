@@ -42,6 +42,8 @@ app.get( "/learn", routes.page( "learn" ) );
 app.get( "/teach", routes.page( "teach" ) );
 app.get( "/party", routes.page( "party" ) );
 
+app.get( "/sso/include.js", routes.includejs( env.get( "HOSTNAME" ) ) );
+
 app.listen( env.get( "PORT" ), function() {
   console.log( "Server listening ( http://localhost:%d )", env.get( "PORT" ));
 });

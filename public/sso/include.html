@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Persona SSO</title>
+  </head>
+  <body>
+    <script src="https://login.persona.org/include.js"></script>
+    <script>
+      function proxyPersona(source, type) {
+        return function(arg) {
+          var payload = {
+            type: type,
+            data: {}
+          }
+
+          switch (type) {
+            case "sso_onlogin":
+              payload.data.assertion = arg;
+              break;
+          }
+
+          source.postMessage(JSON.stringify(payload), "*");
+        }
+      }
+
+      var myOrigin = location.protocol + "//" + location.host;
+
+      window.addEventListener("message", function(event) {
+
+        var payload = JSON.parse(event.data);
+
+        switch (payload.type) {
+          case "sso_watch":
+            navigator.id.watch({
+              loggedInUser: payload.data.loggedInUser,
+              onlogin: proxyPersona(event.source, "sso_onlogin"),
+              onlogout: proxyPersona(event.source, "sso_onlogout"),
+              onmatch: proxyPersona(event.source, "sso_onmatch")
+            });
+            break;
+          case "sso_request":
+            navigator.id.request({
+              oncancel: proxyPersona(event.source, "sso_oncancel"),
+              privacyPolicy: payload.data.privacyPolicy,
+              returnTo: payload.data.returnTo,
+              siteLogo: payload.data.siteLogo,
+              siteName: payload.data.siteName,
+              termsOfService: payload.data.termsOfService
+            });
+            break;
+          case "sso_logout":
+            navigator.id.logout();
+            break;
+        }
+      }, false);
+    </script>
+  </body>
+</html>
