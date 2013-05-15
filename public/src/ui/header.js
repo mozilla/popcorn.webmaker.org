@@ -349,7 +349,9 @@ define([ "dialog/dialog", "util/lang", "text!layouts/header.html", "text!layouts
           tutorialElement.addEventListener( "click", function() {
             iframe.src = item.url;
             viewTitle.innerHTML = "Tutorial: " + item.title;
-          tutorialView.classList.remove( "closed" );
+            tutorialView.classList.remove( "closed" );
+            tutorialView.style.height = "";
+            tutorialView.style.width = "";
           }, false );
           tutorialElement.innerHTML = item.title;
           tutorialList.appendChild( tutorialElement );
@@ -362,6 +364,8 @@ define([ "dialog/dialog", "util/lang", "text!layouts/header.html", "text!layouts
 
         closeButton.addEventListener( "click", function() {
           tutorialView.classList.add( "closed" );
+          tutorialView.style.height = 0;
+          tutorialView.style.width = 0;
         }, false );
 
         $( tutorialView ).draggable({
