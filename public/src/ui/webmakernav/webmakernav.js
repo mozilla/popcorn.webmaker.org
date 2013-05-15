@@ -4,19 +4,6 @@
 define( [ "util/lang", "text!./webmakernav.html" ],
   function( Lang,  BASE_LAYOUT ) {
 
-  var NULL_FUNCTION = function() {};
-
-      // Added to tab when it's open
-  var TAB_ACTIVE_CLASS = "webmaker-tab-active",
-      // Added to elements in primary nav when they are active
-      BTN_ACTIVE_CLASS = "webmaker-btn-active",
-      // Added to body when secondary nav is expanded
-      EXPANDED_CLASS = "webmaker-expanded",
-       // The class prefix for each individual tab
-      TAB_PREFIX = "tab-",
-      // Transition used for the user menu dropdown
-      USER_MENU_TRANSITION = "tooltip-no-transition-on";
-
   return function( options ) {
     options = options || {};
 
