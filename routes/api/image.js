@@ -3,7 +3,13 @@ module.exports = function( metrics, utils, stores ) {
 
   return function( req, res ) {
     var image = req.files.image,
-        urlPair = utils.generateFileName();
+        validMimeTypes = {
+          "image/jpeg": ".jpg",
+          "image/png": ".png",
+          "image/gif": ".gif"
+        },
+        extension = validMimeTypes[ image.type ] ? validMimeTypes[ image.type ] : "",
+        urlPair = utils.generateFileName( extension );
 
     fs.readFile( image.path, function( err, data ) {
 
