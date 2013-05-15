@@ -22,7 +22,11 @@ var express = require('express'),
     APP_HOSTNAME = config.hostname,
     WWW_ROOT = path.resolve( __dirname, config.dirs.wwwRoot ),
     VALID_TEMPLATES = config.templates,
-    port = config.PORT;
+    port = config.PORT,
+    makeapiConfig= {
+      apiURL: config.MAKE_ENDPOINT,
+      auth: config.MAKE_USERNAME + ":" + config.MAKE_PASSWORD
+    };
 
 var templateConfigs = {};
 
@@ -160,10 +164,7 @@ app.configure( function() {
     EMBED_SUFFIX: '_'
   }, stores );
 
-  Project = require( './lib/project' )( config.database, {
-    apiURL: config.MAKE_ENDPOINT,
-    auth: config.MAKE_USERNAME + ":" + config.MAKE_PASSWORD
-  }, utils );
+  Project = require( './lib/project' )( config.database, makeapiConfig, utils );
   filter = require( './lib/filter' )( Project.isDBOnline );
 });
 
@@ -172,7 +173,7 @@ require( 'express-persona' )( app, {
 });
 
 var routes = require('./routes');
-routes( app, Project, filter, sanitizer, stores, utils, metrics );
+routes( app, Project, filter, sanitizer, stores, utils, metrics, makeapiConfig );
 
 function writeEmbedShell( embedPath, url, data, callback ) {
   if( !writeEmbedShell.templateFn ) {

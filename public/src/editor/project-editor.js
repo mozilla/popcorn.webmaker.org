@@ -13,6 +13,7 @@ define([ "editor/editor", "editor/base-editor",
         _socialMedia = new SocialMedia(),
         _projectURL = _rootElement.querySelector( ".butter-project-url" ),
         _authorInput = _rootElement.querySelector( ".butter-project-author" ),
+        _tagInput = _rootElement.querySelector( ".butter-project-tags" ),
         _descriptionInput = _rootElement.querySelector( ".butter-project-description" ),
         _dropArea = _rootElement.querySelector( ".image-droparea" ),
         _thumbnailInput = _rootElement.querySelector( ".butter-project-thumbnail" ),
@@ -131,6 +132,7 @@ define([ "editor/editor", "editor/base-editor",
 
     applyInputListeners( _authorInput, "author" );
     applyInputListeners( _thumbnailInput, "thumbnail" );
+    applyInputListeners( _tagInput, "tags" );
 
     applyInputListeners( _descriptionInput, "description" );
     _descriptionInput.addEventListener( "keyup", checkDescription, false );
@@ -171,6 +173,7 @@ define([ "editor/editor", "editor/base-editor",
         _previewBtn.href = _projectURL.value = _project.publishUrl;
         _viewSourceBtn.href = "view-source:" + _project.iframeUrl;
         _thumbnailInput.value = _project.thumbnail;
+        _tagInput.value = _project.tags;
         updateEmbed( _project.iframeUrl );
 
         _previewBtn.onclick = function() {
