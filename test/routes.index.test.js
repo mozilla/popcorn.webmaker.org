@@ -299,6 +299,7 @@ test("remix project valid", function(t) {
       mockData.data.name = "Remix of " + mockData.name;
       mockData.data.template = "basic";
       mockData.data.remixedFrom = mockData.id;
+      mockData.data.remixedFromUrl = "http://localhost:8888/v/1234.html";
       mockData = mockData.data;
       t.deepEqual(res.body, mockData, "saved data is equal");
 
