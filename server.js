@@ -131,7 +131,7 @@ app.configure( function() {
 });
 
 require( 'express-persona' )( app, {
-  audience: APP_HOSTNAME
+  audience: config.AUDIENCE
 });
 
 var routes = require('./routes');

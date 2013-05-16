@@ -22,7 +22,7 @@ define([], function(){
   // Support BrowserID when missing (everyone but Firefox Mobile)
   if ( !navigator.id ) {
     var script = document.createElement( "script" );
-    script.src = "https://login.persona.org/include.js";
+    script.src = "http://webmaker.mofostaging.net/sso/include.js";
     script.type = "text/javascript";
     script.setAttribute( "data-butter-exclude", true );
     document.head.appendChild( script );
