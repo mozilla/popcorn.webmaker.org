@@ -4,9 +4,6 @@
 
 define( [ "util/xhr" ], function( xhr ) {
 
-  // Shortcut to make lint happy. Constructor is capitalized, and reference is non-global.
-  var JSSHA = window.jsSHA;
-
   var Cornfield = function( butter ) {
 
     var authenticated = false,
