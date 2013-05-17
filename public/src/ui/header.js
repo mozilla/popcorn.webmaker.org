@@ -317,7 +317,7 @@ define([ "dialog/dialog", "util/lang", "text!layouts/header.html", "text!layouts
         tutorialUrl = butter.project.remixedFromUrl;
       }
 
-      make.tags( "tutorial:" + tutorialUrl ).then( function( err, results ) {
+      make.tags( "tutorial-" + escape( tutorialUrl ) ).then( function( err, results ) {
         var tutorialView = Lang.domFragment( TUTORIAL_VIEW_TEMPLATE, ".tutorial-view" ),
             tutorialTemplate = Lang.domFragment( TUTORIAL_LIST_TEMPLATE, ".tutorial-template" ),
             iframeCover = tutorialView.querySelector( ".tutorial-iframe-cover" ),
@@ -326,7 +326,7 @@ define([ "dialog/dialog", "util/lang", "text!layouts/header.html", "text!layouts
             viewTitle = tutorialView.querySelector( ".tutorial-view-title" ),
             tutorialList = tutorialTemplate.querySelector( ".tutorial-list" );
 
-        if ( err || !results.hits.length) {
+        if ( err || !results.length) {
           return;
         }
 
@@ -369,8 +369,8 @@ define([ "dialog/dialog", "util/lang", "text!layouts/header.html", "text!layouts
         });
         $( tutorialView ).resizable();
 
-        for ( var i = 0; i < results.hits.length; i++ ) {
-          createTutorialItem( results.hits[ i ] );
+        for ( var i = 0; i < results.length; i++ ) {
+          createTutorialItem( results[ i ] );
         }
       });
     }
