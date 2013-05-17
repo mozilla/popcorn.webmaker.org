@@ -14,52 +14,47 @@ define( [ "util/xhr" ], function( xhr ) {
         email = "",
         name = "",
         username = "",
-        self = this;
+        self = this,
+        EMPTY_CALLBACK = function() {},
+        loginCallback = EMPTY_CALLBACK,
+        logoutCallback = EMPTY_CALLBACK;
 
     this.login = function( callback ) {
-      navigator.id.get( function( assertion ) {
-        if ( assertion ) {
-          xhr.post( "/persona/verify", { assertion: assertion }, function( response ) {
-            if ( response.status === "okay" ) {
-
-              // Get email, name, and username after logging in successfully
-              whoami( callback );
-              return;
-            }
-
-            // If there was an error of some sort, callback on that
-            callback( response );
-          });
-        } else {
-          callback();
-        }
-      });
+      loginCallback = callback || EMPTY_CALLBACK;
+      navigator.idSSO.request();
     };
-
-    function whoami( callback ) {
-      xhr.get( "/api/whoami", function( response ) {
-        if ( response.status === "okay" ) {
-          authenticated = true;
-          email = response.email;
-          username = response.username;
-          name = response.name;
-        }
-
-        if ( callback ) {
-          callback( response );
-        }
-      });
-    }
 
     // Check to see if we're already logged in
     butter.listen( "ready", function onMediaReady() {
       butter.unlisten( "ready", onMediaReady );
 
-      whoami( function( response ) {
-        if ( !response.error ) {
-          butter.dispatch( "autologinsucceeded", response );
+      navigator.idSSO.watch({
+        onlogin: function( assertion ) {
+          if ( assertion ) {
+            xhr.post( "/persona/verify", { assertion: assertion }, function( response ) {
+              if ( response.status === "okay" ) {
+                authenticated = true;
+                email = response.email;
+                name = response.email;
+                username = response.email;
+                butter.dispatch( "authenticated" );
+              }
+
+              loginCallback( response );
+            });
+          } else {
+            loginCallback();
+          }
+        },
+        onlogout: function() {
+          xhr.post( "/persona/logout", function( response ) {
+            authenticated = false;
+            butter.dispatch( "logout" );
+            logoutCallback( response );
+          });
         }
       });
+
     });
 
     this.email = function() {
@@ -96,17 +91,9 @@ define( [ "util/xhr" ], function( xhr ) {
       });
     }
 
-    this.logout = function(callback) {
-      xhr.post( "/persona/logout", function( response ) {
-        authenticated = false;
-        email = "";
-        username = "";
-        name = "";
-
-        if ( callback ) {
-          callback( response );
-        }
-      });
+    this.logout = function( callback ) {
+      logoutCallback = callback || EMPTY_CALLBACK;
+      navigator.idSSO.logout();
     };
 
     function savePlaceholder( id, data, callback ) {

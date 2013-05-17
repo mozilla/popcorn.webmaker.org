@@ -44,7 +44,6 @@ define( [ "dialog/dialog" ],
 
       butter.cornfield.login( function( response ) {
         if ( response.status === "okay" ) {
-          butter.dispatch( "authenticated" );
           if ( successCallback && typeof successCallback === "function" ) {
             successCallback();
             return;
@@ -91,7 +90,6 @@ define( [ "dialog/dialog" ],
         if ( callback && typeof callback === "function" ) {
           callback();
         }
-        butter.dispatch( "logout" );
       });
     };
 
