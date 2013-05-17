@@ -388,7 +388,7 @@ define([ "dialog/dialog", "util/lang", "text!layouts/header.html", "text!layouts
         container.style.position = "relative";
         iframe.style.height = "300px"
 
-        iframe.src = config.webmakerOrg + "/myprojects?app=popcorn";
+        iframe.src = config.audience + "/myprojects?app=popcorn";
       }
 
       function close() {
