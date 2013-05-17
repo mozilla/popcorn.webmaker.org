@@ -38,14 +38,13 @@ define(['jquery'],
       .find({ tags: tags })
       .limit( limit )
       .sortByField( 'createdAt', 'desc' )
-      .then( function( error, data )  {
-        var hits = data.hits,
-            makeData;
-        for ( var i = 0; i < hits.length; i++ ) {
-          makeData = hits[ i ];
-          makeData.tags = getTags( hits[ i ].tags );
+      .then( function( error, results ) {
+        var result;
+        for ( var i = 0; i < results.length; i++ ) {
+          result = results[ i ];
+          result.tags = getTags( result.tags );
           if ( each ) {
-            each( makeData );
+            each( result );
           }
         }
       });
