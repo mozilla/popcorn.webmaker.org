@@ -97,7 +97,8 @@
     "node-uuid": "1.4.0",
     "requirejs-middleware": "0.0.5",
     "sequelize": "1.6.0",
-    "shelljs": "0.1.2"
+    "shelljs": "0.1.2",
+    "mysql": "2.0.0-alpha8"
   },
   "optionalDependencies": {
     "node-statsd": "git://github.com/sivy/node-statsd.git#d6997fff",
