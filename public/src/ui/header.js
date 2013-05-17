@@ -380,24 +380,24 @@ define([ "dialog/dialog", "util/lang", "text!layouts/header.html", "text!layouts
           container = document.querySelector( ".my-projects-container" ),
           iframe = document.querySelector( ".my-projects-iframe" );
 
+     function close() {
+        myProjectsButton.addEventListener( "click", open, false );
+        myProjectsButton.removeEventListener( "click", close, false );
+
+        container.style.zIndex = "";
+        container.style.position = "";
+        iframe.style.height = "";
+      }
+
       function open() {
         myProjectsButton.addEventListener( "click", close, false );
         myProjectsButton.removeEventListener( "click", open, false );
 
         container.style.zIndex = 5;
         container.style.position = "relative";
-        iframe.style.height = "300px"
+        iframe.style.height = "300px";
 
         iframe.src = config.audience + "/myprojects?app=popcorn";
-      }
-
-      function close() {
-        myProjectsButton.addEventListener( "click", open, false );
-        myProjectsButton.removeEventListener( "click", close, false );
-
-        container.style.zIndex = "";
-        container.style.position = "";
-        iframe.style.height = ""
       }
 
       myProjectsButton.addEventListener( "click", open, false );
