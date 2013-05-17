@@ -14,7 +14,9 @@
     "express": "3.2.0",
     "habitat": "0.4.1",
     "less-middleware": "0.1.9",
-    "nunjucks": "0.1.8a"
+    "nunjucks": "0.1.8a",
+    "express-persona": "0.0.7",
+    "webmaker-loginapi": "~0.1.1"
   },
   "devDependencies": {
     "grunt": "0.4.1",

@@ -1,10 +1,10 @@
-module.exports = function( makeEndpoint, personaSSO ){
+module.exports = function( makeEndpoint, personaSSO, loginAPI ){
   return {
     api: {
       healthcheck: require( "./api/healthcheck" )
     },
     page: function( view ) {
-      return require( "./page" )( view, makeEndpoint, personaSSO );
+      return require( "./page" )( view, makeEndpoint, personaSSO, loginAPI );
     },
     includejs: function( hostname ) {
       return function( req, res ) {

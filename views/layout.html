@@ -7,9 +7,37 @@
     <link rel="stylesheet" href="ext/css/font-awesome.css">
     <link rel="stylesheet" href="css/style.css">
     <link href="//www.mozilla.org/tabzilla/media/css/tabzilla.css" rel="stylesheet" />
+    <link rel="stylesheet" href="{{ loginAPI }}/css/nav.css" />
+    <meta name="persona-email" content="{{ email }}">
     {% endblock %}
   </head>
   <body id={{ page }} data-endpoint="{{ makeEndpoint }}">
+
+  <div id="webmaker-nav">
+    <nav class="webmaker-nav-container">
+      <ul class="webmaker-nav primary">
+        <li><a>Webmaker</a></li>
+      </ul>
+      <ul class="webmaker-nav secondary">
+      </ul>
+      <ul class="webmaker-nav custom">
+      </ul>
+      <ul class="webmaker-nav user-info">
+        <li class="user">
+          <div class="user-name">
+            <span id="identity" class="user-name-container"></span>
+          </div>
+        </li>
+        <li>
+          <button id="webmaker-login" class="access-button hidden">Login</button>
+          <button id="webmaker-logout" class="access-button hidden">Logout</button>
+        </li>
+      </ul>
+    </nav>
+  </div>
+  <script src="/sso/include.js"></script>
+  <script src="{{ loginAPI }}/js/sso-ux.js"></script>
+
   <header>
     <div class="persona-mobile">
       <div class="fl">
