@@ -308,18 +308,8 @@ define([ "dialog/dialog", "util/lang", "text!layouts/header.html", "text!layouts
       _this.views.dirty();
     });
 
-    butter.listen( "ready", function() {
+    function loadTutorials() {
       var tutorialUrl;
-      if ( butter.project.name ) {
-        _projectName.textContent = butter.project.name;
-      }
-
-      if ( !butter.project.publishUrl &&
-           !butter.project.remixedFromUrl ) {
-        // Happens for a fresh, unsaved project.
-        // No tutorial to load.
-        return;
-      }
 
       if ( butter.project.publishUrl ) {
         tutorialUrl = butter.project.publishUrl;
@@ -383,6 +373,47 @@ define([ "dialog/dialog", "util/lang", "text!layouts/header.html", "text!layouts
           createTutorialItem( results.hits[ i ] );
         }
       });
+    }
+
+    function loadDashboard() {
+      var myProjectsButton = document.querySelector( ".my-projects-title" ),
+          container = document.querySelector( ".my-projects-container" ),
+          iframe = document.querySelector( ".my-projects-iframe" );
+
+      function open() {
+        myProjectsButton.addEventListener( "click", close, false );
+        myProjectsButton.removeEventListener( "click", open, false );
+
+        container.style.zIndex = 5;
+        container.style.position = "relative";
+        iframe.style.height = "300px"
+
+        iframe.src = config.audience + "/myprojects?app=popcorn";
+      }
+
+      function close() {
+        myProjectsButton.addEventListener( "click", open, false );
+        myProjectsButton.removeEventListener( "click", close, false );
+
+        container.style.zIndex = "";
+        container.style.position = "";
+        iframe.style.height = ""
+      }
+
+      myProjectsButton.addEventListener( "click", open, false );
+    }
+
+    butter.listen( "ready", function() {
+      if ( butter.project.name ) {
+        _projectName.textContent = butter.project.name;
+      }
+
+      loadDashboard();
+
+      if ( butter.project.publishUrl ||
+           butter.project.remixedFromUrl ) {
+        loadTutorials();
+      }
     });
   };
 });
