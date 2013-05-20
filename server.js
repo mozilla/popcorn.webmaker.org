@@ -100,8 +100,15 @@ app.configure( function() {
       }
     }))
     .use( express.static( tmpDir, JSON.parse( JSON.stringify( config.staticMiddleware ) ) ) )
-    .use( express.static( WWW_ROOT, JSON.parse( JSON.stringify( config.staticMiddleware ) ) ) )
-    .use( express.bodyParser() )
+    .use( express.static( WWW_ROOT, JSON.parse( JSON.stringify( config.staticMiddleware ) ) ) );
+
+  // File Store types and options come from JSON config file.
+  stores.publish = setupStore( config.publishStore );
+  stores.crash = setupStore( config.crashStore );
+  stores.feedback = setupStore( config.feedbackStore );
+  stores.images = setupStore( config.imageStore );
+
+  app.use( express.bodyParser() )
     .use( express.cookieParser() )
     .use( express.cookieSession( config.session ) )
     .use( express.csrf() )
@@ -126,12 +133,6 @@ app.configure( function() {
       res.status( 404 );
       res.render( 'error.jade', { message: "This page doesn't exist", status: 404 });
     });
-
-  // File Store types and options come from JSON config file.
-  stores.publish = setupStore( config.publishStore );
-  stores.crash = setupStore( config.crashStore );
-  stores.feedback = setupStore( config.feedbackStore );
-  stores.images = setupStore( config.imageStore );
 
   // Metrics [optional]: allow data to be collected during runtime.
   // See JSON config file for details on metrics setup.
