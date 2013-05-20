@@ -350,48 +350,7 @@ app.post( '/api/publish/:id',
 });
 
 app.get( '/dashboard', middleware.isAuthenticated, filter.isStorageAvailable, function( req, res ) {
-  var email = req.session.email;
-
-  Project.findAll( { email: email }, function( err, docs ) {
-    var userProjects = [];
-
-    docs.forEach( function( project ) {
-      if ( project.template && VALID_TEMPLATES[ project.template ] ) {
-        userProjects.push({
-          // make sure _id is a string. saw some strange double-quotes on output otherwise
-          _id: String(project.id),
-          name: sanitizer.escapeHTML( project.name ),
-          template: project.template,
-          href: utils.pathToURL( path.relative( WWW_ROOT, templateConfigs[ project.template ].template ) +
-            "?savedDataUrl=/api/project/" + project.id ),
-          updatedAt: project.updatedAt
-        });
-      }
-    });
-
-    userProjects.sort( function( a, b ) {
-      var aDate = Date.parse( a.updatedAt ),
-          bDate = Date.parse( b.updatedAt );
-
-      if ( aDate < bDate ) {
-        return 1;
-      }
-
-      if ( aDate > bDate ) {
-        return -1;
-      }
-
-      return 0;
-    });
-
-    res.render( 'dashboard.jade', {
-      user: {
-        csrf: req.session._csrf,
-        email: email
-      },
-      projects: userProjects
-    });
-  });
+  res.redirect( config.AUDIENCE + "/myprojects?app=popcorn&email=" + req.session.email );
 });
 
 app.get( '/external/make-api.js', function( req, res ) {
