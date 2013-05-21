@@ -354,7 +354,7 @@ app.get( '/dashboard', middleware.isAuthenticated, filter.isStorageAvailable, fu
 });
 
 app.get( '/external/make-api.js', function( req, res ) {
-  res.sendfile( "node_modules/makeapi/public/js/make-api.js" );
+  res.sendfile( path.resolve( __dirname, "node_modules/makeapi/public/js/make-api.js" ) );
 });
 
 app.get( '/api/butterconfig', function( req, res ) {
