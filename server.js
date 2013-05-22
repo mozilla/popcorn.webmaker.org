@@ -54,26 +54,24 @@ function setupStore( storeConfig ) {
 }
 
 app.configure( function() {
-  var optimize = config.NODE_ENV !== "development",
-      tmpDir = path.normalize( require( "os" ).tmpDir() + "/mozilla.butter/" );
+  var tmpDir = path.normalize( require( "os" ).tmpDir() + "/mozilla.butter/" );
 
   app.set( "views", __dirname + "/views" );
 
   app.use( express.logger( config.logger ) )
     .use( express.compress() )
     .use( lessMiddleware({
-      once: optimize,
-      debug: !optimize,
+      once: config.OPTIMIZE_CSS,
       dest: tmpDir,
       src: WWW_ROOT,
-      compress: optimize,
-      yuicompress: optimize,
-      optimization: optimize ? 0 : 2
+      compress: config.OPTIMIZE_CSS,
+      yuicompress: config.OPTIMIZE_CSS,
+      optimization: config.OPTIMIZE_CSS ? 0 : 2
     }))
     .use( requirejsMiddleware({
       src: WWW_ROOT,
       dest: tmpDir,
-      once: optimize,
+      once: config.OPTIMIZE_JS,
       modules: {
         "/src/butter.js": {
           include: [ "butter" ],
