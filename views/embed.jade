@@ -26,7 +26,9 @@ html(lang='en')
     #container.container
       #video-container.video.video-container
         #video.video
-      .loading-message
+    #thumbnail-container.preload
+      img(src='#{thumbnail}', class='project-thumbnail')
+    .loading-message
     #controls-big-play-button
     #post-roll-container
       #post-roll.embed-overlay
