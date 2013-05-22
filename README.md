@@ -40,7 +40,7 @@ Running Butter in development mode
 1. Run `node server`.
 2. Navigate to [http://localhost:8888/](http://localhost:8888/) in your favourite browser.
 
-If you want to change the bind IP or port check the Configuration section below. Run `NODE_ENV=production node server.js` in order to run the server in production mode.
+If you want to change the bind IP or port check the Configuration section below.
 
 Server Configuration
 --------------------
@@ -66,7 +66,6 @@ The default server configuration can be found in [lib/default-config.js](lib/def
 
   - `PORT` the port to bind the server to
   - `hostname` the hostname for the server (e.g., `http://localhost:8888`, `https://popcorn.webmaker.org`). **This must match your browser's address bar otherwise Persona login will not work**
-  - `NODE_ENV` the environment you're running the server in (e.g. `development`, `staging`, `production`)
   - `logger` settings for server logging
     - `format` the logging format to use.  Possible values include: default, short, tiny, dev.
   - `session` settings for user sessions
@@ -101,7 +100,7 @@ The default server configuration can be found in [lib/default-config.js](lib/def
   - `metrics` *[optional]* metric server configuration options for a [StatsD](https://github.com/etsy/statsd/) server
     - `host` The host to connect to. Default is `localhost`
     - `port` The port to connect to. Default is `8125`
-    - `prefix` *[optional]* prefix to assign to each stat name sent. If not given a default of `<NODE_ENV>.butter.` will be used, for example: pr`oduction.butter`
+    - `prefix` *[optional]* prefix to assign to each stat name sent. Default is `butter.`
     - `suffix` *[optional]* suffix to assign to each stat name sent.
     - `globalize` *[optional]* boolean to add `statsd` as an object in the global namespace
 
