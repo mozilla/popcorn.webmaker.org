@@ -342,7 +342,8 @@ app.post( '/api/publish/:id',
                            embedShellSrc: publishUrl,
                            embedSrc: iframeUrl,
                            baseHref: APP_HOSTNAME,
-                           thumbnail: project.thumbnail
+                           thumbnail: project.thumbnail,
+                           remixUrl: baseHref + remixUrl
                          },
                          finished );
       }
