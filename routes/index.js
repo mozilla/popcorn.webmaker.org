@@ -196,7 +196,9 @@ module.exports = function routesCtor( app, Project, filter, sanitizer,
     } else {
 
       Project.create( { email: req.session.email, data: projectData }, function( err, doc ) {
-        if ( err ) {
+        if ( err && err.makeAPI ) {
+          metrics.increment( 'error.makeapi' );
+        } else if ( err ) {
           res.json( { error: err }, 500 );
           metrics.increment( 'error.save' );
           return;
