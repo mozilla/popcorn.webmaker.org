@@ -7,15 +7,16 @@ var express = require('express'),
     fs = require('fs'),
     path = require('path'),
     helmet = require( "helmet" ),
-    jade = require('jade'),
+    nunjucks = require('nunjucks'),
+    nunjucksEnv = new nunjucks.Environment(),
     app = express(),
-    lessMiddleware = require('less-middleware'),
+    lessMiddleware = require( 'less-middleware' ),
     requirejsMiddleware = require( 'requirejs-middleware' ),
     config = require( './lib/config' ),
     Project,
     filter,
     sanitizer = require( './lib/sanitizer' ),
-    FileStore = require('./lib/file-store.js'),
+    FileStore = require( './lib/file-store.js' ),
     metrics,
     utils,
     middleware = require( './lib/middleware' ),
@@ -30,6 +31,7 @@ var express = require('express'),
     };
 
 var templateConfigs = {};
+nunjucksEnv.express( app );
 
 function readTemplateConfig( templateName, templatedPath ) {
   var configPath = templatedPath.replace( '{{templateBase}}', config.dirs.templates + '/' );
@@ -153,11 +155,11 @@ app.configure( function() {
       }
 
       res.status( err.status );
-      res.render( 'error.jade', { message: err.message, status: err.status });
+      res.render( 'views/error.html', { message: err.message, status: err.status });
     })
     .use( function( req, res, next ) {
       res.status( 404 );
-      res.render( 'error.jade', { message: "This page doesn't exist", status: 404 });
+      res.render( 'views/error.html', { message: "This page doesn't exist", status: 404 });
     });
 
   // Metrics [optional]: allow data to be collected during runtime.
@@ -181,20 +183,18 @@ var routes = require('./routes');
 routes( app, Project, filter, sanitizer, stores, utils, metrics, makeapiConfig );
 
 function writeEmbedShell( embedPath, url, data, callback ) {
-  if( !writeEmbedShell.templateFn ) {
-    writeEmbedShell.templateFn = jade.compile( fs.readFileSync( path.resolve( __dirname, 'views/embed-shell.jade' ), 'utf8' ),
-                                          { filename: 'embed-shell.jade', pretty: true } );
+  if( !writeEmbedShell.template ) {
+    writeEmbedShell.template = nunjucksEnv.getTemplate( 'views/embed-shell.html' );
   }
-  var sanitized = sanitizer.compressHTMLEntities( writeEmbedShell.templateFn( data ) );
+  var sanitized = sanitizer.compressHTMLEntities( writeEmbedShell.template.render( data ) );
   stores.publish.write( embedPath, sanitized, callback );
 }
 
 function writeEmbed( embedPath, url, data, callback ) {
-  if( !writeEmbed.templateFn ) {
-    writeEmbed.templateFn = jade.compile( fs.readFileSync( path.resolve( __dirname, 'views/embed.jade' ), 'utf8' ),
-                                          { filename: 'embed.jade', pretty: true } );
+  if( !writeEmbed.template ) {
+    writeEmbed.template = nunjucksEnv.getTemplate( 'views/embed.html' );
   }
-  var sanitized = sanitizer.compressHTMLEntities( writeEmbed.templateFn( data ) );
+  var sanitized = sanitizer.compressHTMLEntities( writeEmbed.template.render( data ) );
   stores.publish.write( embedPath, sanitized, callback );
 }
 
@@ -262,6 +262,7 @@ app.post( '/api/publish/:id',
       baseString = '\n  <base href="' + baseHref + '"/>';
 
       // look for script and link tags with data-butter-exclude in particular (e.g. butter's js script)
+      data = data.split( "{{templatePath}}" ).join( ".." );
       data = data.replace( /\s*<(script|link|meta)[\.\/='":,_\-\w\s]*data-butter-exclude[\.\/='":_\-\w\s]*>(<\/script>)?/g, '' );
 
       // Adding  to cut out the actual head tag
@@ -325,7 +326,8 @@ app.post( '/api/publish/:id',
              popcornString + data.substring( bodyEndTagIndex );
 
       // Convert 1234567890 => "kf12oi"
-      var idBase36 = utils.generateIdString( id ),
+      var description = project.description || 'Created with Popcorn Maker - part of the Mozilla Webmaker initiative',
+          idBase36 = utils.generateIdString( id ),
           publishUrl = utils.generatePublishUrl( id ),
           iframeUrl = utils.generateIframeUrl( id );
 
@@ -338,35 +340,35 @@ app.post( '/api/publish/:id',
         }
       }
 
+      // This is a query string-only URL because of the <base> tag
+      var remixUrl = "?savedDataUrl=/api/remix/" + project.id,
+          mediaUrl = projectData.media[ 0 ].url,
+          attribURL = Array.isArray( mediaUrl ) ? mediaUrl[ 0 ] : mediaUrl;
+
       function publishEmbedShell() {
         // Write out embed shell HTML
         writeEmbedShell( idBase36, publishUrl,
                          {
                            author: project.author,
                            projectName: project.name,
-                           description: project.description,
+                           description: description,
                            embedShellSrc: publishUrl,
                            embedSrc: iframeUrl,
                            baseHref: APP_HOSTNAME,
                            thumbnail: project.thumbnail,
-                           remixUrl: baseHref + remixUrl,
+                           remixUrl: APP_HOSTNAME + remixUrl,
                            makeEndpoint: config.MAKE_ENDPOINT,
                            makeID: project.makeid
                          },
                          finished );
       }
 
-      // This is a query string-only URL because of the <base> tag
-      var remixUrl = "?savedDataUrl=/api/remix/" + project.id,
-          mediaUrl = projectData.media[ 0 ].url,
-          attribURL = Array.isArray( mediaUrl ) ? mediaUrl[ 0 ] : mediaUrl;
-
       writeEmbed( idBase36 + utils.constants().EMBED_SUFFIX, iframeUrl,
                   {
                     id: id,
                     author: project.author,
                     title: project.name,
-                    description: project.description,
+                    description: description,
                     mediaSrc: attribURL,
                     embedShellSrc: publishUrl,
                     baseHref: baseHref,
@@ -384,6 +386,12 @@ app.post( '/api/publish/:id',
 
 app.get( '/dashboard', middleware.isAuthenticated, filter.isStorageAvailable, function( req, res ) {
   res.redirect( config.AUDIENCE + "/myprojects?app=popcorn&email=" + req.session.email );
+});
+
+app.get( '/basic', function( req, res ) {
+  res.render( 'public/templates/basic/index.html', {
+    templatePath: '/templates'
+  });
 });
 
 app.get( '/external/make-api.js', function( req, res ) {

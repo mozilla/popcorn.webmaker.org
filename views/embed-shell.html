@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width">
+    <meta name="author" content="{{author}}">
+    <meta name="description" content="Created with Popcorn Maker - part of the Mozilla Webmaker initiative">
+    <meta property="og:title" content="{{projectName}}">
+    <meta property="og:type" content="video.other">
+    <meta property="og:url" content="{{embedShellSrc}}">
+    <meta property="og:image" content="{{thumbnail}}">
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:image:width" content="200">
+    <meta property="og:image:height" content="200">
+    <meta property="og:description" content="{{description}}">
+    <meta property="og:site_name" content="Mozilla Webmaker">
+
+    <title>{{projectName}} - Popcorn Maker</title>
+    <link rel="stylesheet" href="{{baseHref}}/css/makedetails.css">
+    <link rel="stylesheet" href="{{baseHref}}/css/embed-shell.css">
+  </head>
+  <body>
+    <main id="content" class="content clearfix">
+      <div class="hide make-details">
+        <div class="wrapper">
+          <div class="remixed-from">
+            <div class="remix-info"><span class="remixed-from-txt">Remixed from </span><span class="remixed-user"> daleee</span><a href="#"><img src="http://placecage.com/210/120" alt="ORIGINAL TITLE" class="original-thumb"></a></div>
+            <div class="remixed-by">3 remixes by
+              <ul>
+                <li><a href="#">@cassiemc</a></li>
+                <li><a href="#">@remixmanifesto</a></li>
+                <li><a href="#">@boozineges</a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="make-details-deets">
+            <h1 class="make-title">{{projectName}}</h1>
+            <div class="make-made-by"><a href="#"><img src="http://fillmurray.com/35/35" alt="USER NAME"></a>
+              <div class="made-by">Made by <a href="#">{{author}}</a><span class="make-relative-date">1 month ago</span></div>
+            </div>
+            <div class="make-tools-languages"><span class="built-with">Built with</span><a href="//popcorn.webmaker.org"><img src="{{baseHref}}/resources/icons/icon-Popcorn.png" alt="WEBMAKER TOOL"><span class="tool-name">Popcorn</span></a><span class="languages">Languages</span>
+              <ul class="langs">
+                <li class="lang-item active-lang">English</li>
+                <li class="lang-item"><a href="#">Español</a></li>
+              </ul>
+            </div>
+            <p class="make-desc">{{description}}</p>
+          </div>
+        </div>
+      </div>
+      <div class="make-bar">
+        <div class="wrapper"><span class="logospan"><a href="#"><img src="{{baseHref}}/resources/img/logo_small.png" alt="Mozilla Webmaker"></a><span class="made-with">Made with<a href="//webmaker.org"> Webmaker</a></span></span><span class="expand-collapse">Details<img src="{{baseHref}}/resources/icons/icon-arrow-down.png"></span>
+          <div class="make-social">
+            <ul>
+              <li class="button"><a href="{{remixUrl}}" target="_blank" class="button-remix"><span>Remix</span></a></li>
+            </ul><span class="clear"></span>
+          </div>
+        </div>
+      </div>
+      <iframe id="embed" src="{{embedSrc}}" width="1280" height="745" mozallowfullscreen="mozallowfullscreen" webkitallowfullscreen="webkitallowfullscreen" allowfullscreen="allowfullscreen"></iframe>
+    </main>
+    <div class="mobile"></div>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script type="text/javascript">
+      $(document).ready(function() {
+        var img_path = "{{baseHref}}/resources/icons/",
+            img_up = "icon-arrow-up.png",
+            img_down = "icon-arrow-down.png",
+            animationSpeed = 200,
+            $toggle = $(".expand-collapse"),
+            $details = $(".make-details"),
+            $arrow = $("img", $toggle),
+            nav_open = false,
+            options = {
+              duration: animationSpeed,
+              easing: "linear"
+            },
+            toggleNav = function( e ) {
+              e.preventDefault();
+              $details.slideToggle(options);
+              if (nav_open === true) {
+                nav_open = false;
+                $arrow.attr("src", img_path + img_down);
+              } else {
+                nav_open = true;
+                $arrow.attr("src", img_path + img_up);
+              }
+            };
+        $toggle.on("click", toggleNav);
+      });
+    </script>
+  </body>
+</html>

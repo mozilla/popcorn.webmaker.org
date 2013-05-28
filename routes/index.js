@@ -90,7 +90,7 @@ module.exports = function routesCtor( app, Project, filter, sanitizer,
     filter.isLoggedIn, filter.isStorageAvailable,
     function( req, res ) {
 
-    Project.find( { email: req.session.email, id: req.params.id }, function( err, doc ) {
+    Project.find( { id: req.params.id }, function( err, doc ) {
       if ( err ) {
         res.json( { error: err }, 500 );
         return;
@@ -128,7 +128,7 @@ module.exports = function routesCtor( app, Project, filter, sanitizer,
   app.get( '/api/remix/:id',
     filter.isStorageAvailable,
     function( req, res ) {
-    Project.find( { id: req.params.id }, function( err, project ) {
+    Project.find( { email: req.session.email, id: req.params.id }, function( err, project ) {
       if ( err ) {
         res.json( { error: err }, 500 );
         return;
