@@ -5,7 +5,7 @@
 ( function( Butter, EditorHelper ) {
   document.addEventListener( "DOMContentLoaded", function() {
     Butter.init({
-      config: "config.json",
+      config: "/templates/basic/config.json",
       ready: function( butter ) {
 
         EditorHelper.init( butter );
