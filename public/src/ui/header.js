@@ -84,7 +84,7 @@ define([ "dialog/dialog", "util/lang", "text!layouts/header.html", "text!layouts
     function togglePreviewButton( on ) {
       if ( on ) {
         _previewBtn.classList.remove( "butter-disabled" );
-        _previewBtn.href = butter.project.previewUrl;
+        _previewBtn.href = butter.project.publishUrl;
         _previewBtn.onclick = function() {
           return true;
         };

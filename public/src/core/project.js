@@ -149,13 +149,6 @@ define( [ "core/eventmanager", "core/media", "util/sanitizer" ],
         enumerable: true
       },
 
-      "previewUrl": {
-        get: function() {
-          return _publishUrl + "?preview=true";
-        },
-        enumerable: true
-      },
-
       "remixedFromUrl": {
         get: function() {
           return _remixedFromUrl;

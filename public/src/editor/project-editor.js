@@ -159,8 +159,7 @@ define([ "editor/editor", "editor/base-editor",
     });
 
     butter.listen( "projectsaved", function onProjectSaved() {
-      _projectURL.value = _project.publishUrl;
-      _previewBtn.href = _project.previewUrl;
+      _previewBtn.href = _projectURL.value = _project.publishUrl;
       _viewSourceBtn.href = "view-source:" + _project.iframeUrl;
       updateEmbed( _project.iframeUrl );
     });
@@ -169,8 +168,7 @@ define([ "editor/editor", "editor/base-editor",
       open: function() {
         _project = butter.project;
 
-        _projectURL.value = _project.publishUrl;
-        _previewBtn.href = _project.previewUrl;
+        _previewBtn.href = _projectURL.value = _project.publishUrl;
         _viewSourceBtn.href = "view-source:" + _project.iframeUrl;
         _thumbnailInput.value = _project.thumbnail;
         updateEmbed( _project.iframeUrl );
