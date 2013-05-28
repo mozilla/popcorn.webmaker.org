@@ -6,7 +6,8 @@ if ( process.env.NEW_RELIC_HOME ) {
 var express = require('express'),
     fs = require('fs'),
     path = require('path'),
-    jade = require('jade'),
+    nunjucks = require('nunjucks'),
+    nunjucksEnv = new nunjucks.Environment(),
     app = express(),
     lessMiddleware = require('less-middleware'),
     requirejsMiddleware = require( 'requirejs-middleware' ),
@@ -29,6 +30,7 @@ var express = require('express'),
     };
 
 var templateConfigs = {};
+nunjucksEnv.express(app);
 
 function readTemplateConfig( templateName, templatedPath ) {
   var configPath = templatedPath.replace( '{{templateBase}}', config.dirs.templates + '/' );
@@ -119,9 +121,11 @@ app.configure( function() {
           endFile: __dirname + "/tools/wrap.end"
         }
       }
-    }))
-    .use( express.static( tmpDir, JSON.parse( JSON.stringify( config.staticMiddleware ) ) ) )
-    .use( express.static( WWW_ROOT, JSON.parse( JSON.stringify( config.staticMiddleware ) ) ) );
+    }));
+
+    app.use( express.static( tmpDir, JSON.parse( JSON.stringify( config.staticMiddleware ) ) ) );
+    app.use( express.static( WWW_ROOT, JSON.parse( JSON.stringify( config.staticMiddleware ) ) ) );
+
 
   // File Store types and options come from JSON config file.
   stores.publish = setupStore( config.publishStore );
@@ -148,11 +152,11 @@ app.configure( function() {
       }
 
       res.status( err.status );
-      res.render( 'error.jade', { message: err.message, status: err.status });
+      res.render( 'views/error.html', { message: err.message, status: err.status });
     })
     .use( function( req, res, next ) {
       res.status( 404 );
-      res.render( 'error.jade', { message: "This page doesn't exist", status: 404 });
+      res.render( 'views/error.html', { message: "This page doesn't exist", status: 404 });
     });
 
   // Metrics [optional]: allow data to be collected during runtime.
@@ -176,20 +180,18 @@ var routes = require('./routes');
 routes( app, Project, filter, sanitizer, stores, utils, metrics, makeapiConfig );
 
 function writeEmbedShell( embedPath, url, data, callback ) {
-  if( !writeEmbedShell.templateFn ) {
-    writeEmbedShell.templateFn = jade.compile( fs.readFileSync( path.resolve( __dirname, 'views/embed-shell.jade' ), 'utf8' ),
-                                          { filename: 'embed-shell.jade', pretty: true } );
+  if( !writeEmbedShell.template ) {
+    writeEmbedShell.template = nunjucksEnv.getTemplate( 'views/embed-shell.html' );
   }
-  var sanitized = sanitizer.compressHTMLEntities( writeEmbedShell.templateFn( data ) );
+  var sanitized = sanitizer.compressHTMLEntities( writeEmbedShell.template.render( data ) );
   stores.publish.write( embedPath, sanitized, callback );
 }
 
 function writeEmbed( embedPath, url, data, callback ) {
-  if( !writeEmbed.templateFn ) {
-    writeEmbed.templateFn = jade.compile( fs.readFileSync( path.resolve( __dirname, 'views/embed.jade' ), 'utf8' ),
-                                          { filename: 'embed.jade', pretty: true } );
+  if( !writeEmbed.template ) {
+    writeEmbed.template = nunjucksEnv.getTemplate( 'views/embed.html' );
   }
-  var sanitized = sanitizer.compressHTMLEntities( writeEmbed.templateFn( data ) );
+  var sanitized = sanitizer.compressHTMLEntities( writeEmbed.template.render( data ) );
   stores.publish.write( embedPath, sanitized, callback );
 }
 
@@ -257,6 +259,7 @@ app.post( '/api/publish/:id',
       baseString = '\n  <base href="' + baseHref + '"/>';
 
       // look for script and link tags with data-butter-exclude in particular (e.g. butter's js script)
+      data = data.split( "{{templatePath}}" ).join( ".." );
       data = data.replace( /\s*<(script|link|meta)[\.\/='":,_\-\w\s]*data-butter-exclude[\.\/='":_\-\w\s]*>(<\/script>)?/g, '' );
 
       // Adding  to cut out the actual head tag
@@ -339,7 +342,7 @@ app.post( '/api/publish/:id',
                          {
                            author: project.author,
                            projectName: project.name,
-                           description: project.description,
+                           description: project.description || 'Created with Popcorn Maker - part of the Mozilla Webmaker initiative',
                            embedShellSrc: publishUrl,
                            embedSrc: iframeUrl,
                            baseHref: APP_HOSTNAME,
@@ -350,16 +353,16 @@ app.post( '/api/publish/:id',
       }
 
       // This is a query string-only URL because of the <base> tag
-      var remixUrl = "?savedDataUrl=/api/remix/" + project.id,
+      var remixUrl = "/basic/" + project.id + "/remix",
           mediaUrl = projectData.media[ 0 ].url,
           attribURL = Array.isArray( mediaUrl ) ? mediaUrl[ 0 ] : mediaUrl;
-
+console.log(templateScripts);
       writeEmbed( idBase36 + utils.constants().EMBED_SUFFIX, iframeUrl,
                   {
                     id: id,
                     author: project.author,
                     title: project.name,
-                    description: project.description,
+                    description: project.description || 'Created with Popcorn Maker - part of the Mozilla Webmaker initiative',
                     mediaSrc: attribURL,
                     embedShellSrc: publishUrl,
                     baseHref: baseHref,
@@ -377,6 +380,24 @@ app.post( '/api/publish/:id',
 
 app.get( '/dashboard', middleware.isAuthenticated, filter.isStorageAvailable, function( req, res ) {
   res.redirect( config.AUDIENCE + "/myprojects?app=popcorn&email=" + req.session.email );
+});
+
+app.get( '/basic/:id/edit', function( req, res ) {
+  res.render('public/templates/basic/index.html', {
+    templatePath: '/templates'
+  });
+});
+
+app.get( '/basic/:id/remix', function( req, res ) {
+  res.render('public/templates/basic/index.html', {
+    templatePath: '/templates'
+  });
+});
+
+app.get( '/basic', function( req, res ) {
+  res.render('public/templates/basic/index.html', {
+    templatePath: '/templates'
+  });
 });
 
 app.get( '/external/make-api.js', function( req, res ) {

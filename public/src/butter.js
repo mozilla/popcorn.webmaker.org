@@ -61,7 +61,7 @@ window.Butter = {
             "./modules", "./dependencies", "./dialogs",
             "dialog/dialog", "editor/editor", "ui/ui",
             "util/xhr", "util/lang", "util/tutorial",
-            "util/warn", "text!default-config.json",
+            "util/warn", "util/uri", "text!default-config.json",
             "ui/widget/tooltip", "crashreporter", "core/project",
             "../external/ua-parser/ua-parser"
           ],
@@ -71,7 +71,7 @@ window.Butter = {
             Modules, Dependencies, Dialogs,
             Dialog, Editor, UI,
             xhr, Lang, Tutorial,
-            Warn, DEFAULT_CONFIG_JSON,
+            Warn, URI, DEFAULT_CONFIG_JSON,
             ToolTip, CrashReporter, Project,
             UAParser
           ){
@@ -836,15 +836,16 @@ window.Butter = {
        */
       function attemptDataLoad( finishedCallback ) {
         var savedDataUrl,
+            item = URI.parse( window.location ).path.split( "/" ),
             project = new Project( _this );
-
-        // see if savedDataUrl is in the page's query string
-        window.location.search.substring( 1 ).split( "&" ).forEach(function( item ){
-          item = item.split( "=" );
-          if ( item && item[ 0 ] === "savedDataUrl" ) {
-            savedDataUrl = item[ 1 ];
-          }
-        });
+console.log(item);
+// TODO: check to see if we own this or not
+        if ( item && item[ 3 ] === "remix" ) {
+          savedDataUrl = "/api/remix/" + item[ 2 ];
+        }
+        if ( item && item[ 3 ] === "edit" ) {
+          savedDataUrl = "/api/project/" + item[ 2 ];
+        }
 
         function doImport( savedData ) {
           project.import( savedData );

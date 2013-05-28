@@ -1,8 +1,8 @@
 {
   "name": "basic",
   "template": "index.html",
-  "baseDir": "../../",
-  "savedDataUrl": "saved-data.json",
+  "baseDir": "/",
+  "savedDataUrl": "/templates/basic/saved-data.json",
   "editor": {
     "googlemap": "{{baseDir}}templates/assets/editors/googlemap/googlemap-editor.js",
     "popup": "{{baseDir}}templates/assets/editors/popup/popup-editor.js",

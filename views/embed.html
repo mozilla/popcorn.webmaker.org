@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <base href="{{baseHref}}">
+    {{templateScripts}}
+    {{externalAssets}}
+    {{popcorn}}
+    <link rel="stylesheet" href="/css/embed.css">
+    <link rel="stylesheet" href="/css/controls.css">
+    <!-- This is the embed, the actual content is at the following URL -->
+    <link rel="canonical" href="{{embedShellSrc}}">
+    <meta property="og:description" content="{{description}}">
+    <meta property="og:title" content="{{title}}">
+    <meta property="og:type" content="video.other">
+    <meta property="og:url" content="{{embedShellSrc}}">
+    <style>
+      @-o-viewport { width: device-width; }
+      @-moz-viewport { width: device-width; }
+      @-ms-viewport { width: device-width; }
+      @-webkit-viewport { width: device-width; }
+      @viewport { width: device-width; }
+    </style>
+    <script src="/src/embed.js"></script>
+  </head>
+  <body class="embed">
+    <div id="container" class="container">
+      <div id="video-container" class="video video-container">
+        <div id="video" class="video"></div>
+      </div>
+    </div>
+    <div id="thumbnail-container" class="preload">
+      <img src="{{thumbnail}}" class="project-thumbnail">
+    </div>
+    <div class="loading-message"></div>
+    <div id="controls-big-play-button"></div>
+    <div id="post-roll-container">
+      <div id="post-roll" class="embed-overlay">
+        <div class="post-roll-inner"><a class="embed-logo"></a>
+          <div class="embed-project">
+            <div>
+              <div class="mozpopcorn">Popcorn Maker</div>
+              <div class="embed-title">{{title}}</div>
+              <div class="embed-author">{{author}}</div>
+            </div>
+            <div class="post-roll-description">{{description}}
+              <br>
+              <a href="/" target="_blank">Create a project like this!</a>
+            </div>
+            <ul class="embed-nav post-roll-options">
+              <li><a id="replay-post"><span>Replay</span></a></li>
+              <li><a href="{{remixUrl}}" target="_blank" id="remix-post"><span>Remix</span></a></li>
+              <li><a id="share-post"><span>Share</span></a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="share-container">
+      <div id="share" class="embed-overlay">
+        <div class="share-inner"><a id="share-close">X</a><a class="embed-logo"></a>
+          <div class="embed-project">
+            <div>
+              <div class="mozpopcorn">Popcorn Maker</div>
+              <div class="embed-title">{{title}}</div>
+              <div class="embed-author">{{author}}</div>
+            </div>
+          </div>
+          <div id="share-options" class="share-options">
+            <fieldset>
+              <label>URL</label>
+              <input id="share-url" type="url" class="share-ul">
+              <ul class="embed-nav share-buttons">
+                <li><a id="replay-share" href="#">Twitter</a></li>
+                <li><a id="share-share" href="#">Google+</a></li>
+              </ul>
+            </fieldset>
+            <fieldset>
+              <label>Embed</label>
+              <textarea id="share-iframe">
+                <iframe></iframe>
+              </textarea>
+              <div class="share-size">
+                <div class="size-options"><a href="#" class="small option"><span class="icon"></span><span class="size">Small</span><span class="dimensions">560x358</span></a><a href="#" class="medium option current"><span class="icon"></span><span class="size">Medium</span><span class="dimensions">640x403</span></a><a href="#" class="large option"><span class="icon"></span><span class="size">Large</span><span class="dimensions">853x523</span></a><a href="#" class="xlarge option"><span class="icon"></span><span class="size">X-Large</span><span class="dimensions">1280x763</span></a></div>
+              </div>
+            </fieldset>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="attribution-info" class="attribution-info">
+      <div id="attribution-logo" class="attribution-logo"><span class="attribution-text">Credits</span></div>
+      <div id="attribution-details" class="attribution-details"><span class="attribution-close"></span>
+        <div class="attribution-mopop">mozilla Popcorn</div>
+        <div class="attribution-title">{{title}}</div>
+        {% if author %}
+          <div class="attribution-author">{{author}}</div>
+        {% endif %}
+        <div class="attribution-media">
+          <span class="media-icon"></span>
+          <a href="{{mediaSrc}}" target="_blank" class="attribution-media-src">{{mediaSrc}}</a>
+        </div>
+        <div class="attribution-extra"></div>
+      </div>
+    </div>
+    <div id="controls" class="controls"></div>
+  </body>
+</html>
