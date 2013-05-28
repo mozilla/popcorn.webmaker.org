@@ -838,8 +838,7 @@ window.Butter = {
         var savedDataUrl,
             item = URI.parse( window.location ).path.split( "/" ),
             project = new Project( _this );
-console.log(item);
-// TODO: check to see if we own this or not
+
         if ( item && item[ 3 ] === "remix" ) {
           savedDataUrl = "/api/remix/" + item[ 2 ];
         }

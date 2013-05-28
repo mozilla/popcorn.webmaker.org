@@ -356,7 +356,7 @@ app.post( '/api/publish/:id',
       var remixUrl = "/basic/" + project.id + "/remix",
           mediaUrl = projectData.media[ 0 ].url,
           attribURL = Array.isArray( mediaUrl ) ? mediaUrl[ 0 ] : mediaUrl;
-console.log(templateScripts);
+
       writeEmbed( idBase36 + utils.constants().EMBED_SUFFIX, iframeUrl,
                   {
                     id: id,
