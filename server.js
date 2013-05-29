@@ -383,19 +383,19 @@ app.get( '/dashboard', middleware.isAuthenticated, filter.isStorageAvailable, fu
 });
 
 app.get( '/basic/:id/edit', function( req, res ) {
-  res.render('public/templates/basic/index.html', {
+  res.render( 'public/templates/basic/index.html', {
     templatePath: '/templates'
   });
 });
 
 app.get( '/basic/:id/remix', function( req, res ) {
-  res.render('public/templates/basic/index.html', {
+  res.render( 'public/templates/basic/index.html', {
     templatePath: '/templates'
   });
 });
 
 app.get( '/basic', function( req, res ) {
-  res.render('public/templates/basic/index.html', {
+  res.render( 'public/templates/basic/index.html', {
     templatePath: '/templates'
   });
 });
