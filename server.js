@@ -336,6 +336,11 @@ app.post( '/api/publish/:id',
         }
       }
 
+      // This is a query string-only URL because of the <base> tag
+      var remixUrl = "/basic/" + project.id + "/remix",
+          mediaUrl = projectData.media[ 0 ].url,
+          attribURL = Array.isArray( mediaUrl ) ? mediaUrl[ 0 ] : mediaUrl;
+console.log(baseHref);
       function publishEmbedShell() {
         // Write out embed shell HTML
         writeEmbedShell( idBase36, publishUrl,
@@ -347,15 +352,10 @@ app.post( '/api/publish/:id',
                            embedSrc: iframeUrl,
                            baseHref: APP_HOSTNAME,
                            thumbnail: project.thumbnail,
-                           remixUrl: baseHref + remixUrl
+                           remixUrl: APP_HOSTNAME + remixUrl
                          },
                          finished );
       }
-
-      // This is a query string-only URL because of the <base> tag
-      var remixUrl = "/basic/" + project.id + "/remix",
-          mediaUrl = projectData.media[ 0 ].url,
-          attribURL = Array.isArray( mediaUrl ) ? mediaUrl[ 0 ] : mediaUrl;
 
       writeEmbed( idBase36 + utils.constants().EMBED_SUFFIX, iframeUrl,
                   {

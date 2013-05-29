@@ -35,25 +35,25 @@
             </div>
           </div>
           <div class="make-details-deets">
-            <h1 class="make-title">My new project</h1>
+            <h1 class="make-title">{{projectName}}</h1>
             <div class="make-made-by"><a href="#"><img src="http://fillmurray.com/35/35" alt="USER NAME"></a>
-              <div class="made-by">Made by <a href="#"></a><span class="make-relative-date">1 month ago</span></div>
+              <div class="made-by">Made by <a href="#">{{author}}</a><span class="make-relative-date">1 month ago</span></div>
             </div>
-            <div class="make-tools-languages"><span class="built-with">Built with</span><a href="//popcorn.webmaker.org"><img src="http://localhost:8888/resources/icons/icon-Popcorn.png" alt="WEBMAKER TOOL"><span class="tool-name">Popcorn</span></a><span class="languages">Languages</span>
+            <div class="make-tools-languages"><span class="built-with">Built with</span><a href="//popcorn.webmaker.org"><img src="{{baseHref}}/resources/icons/icon-Popcorn.png" alt="WEBMAKER TOOL"><span class="tool-name">Popcorn</span></a><span class="languages">Languages</span>
               <ul class="langs">
                 <li class="lang-item active-lang">English</li>
                 <li class="lang-item"><a href="#">Español</a></li>
               </ul>
             </div>
-            <p class="make-desc">Created with Popcorn Maker - part of the Mozilla Webmaker initiative</p>
+            <p class="make-desc">{{description}}</p>
           </div>
         </div>
       </div>
       <div class="make-bar">
-        <div class="wrapper"><span class="logospan"><a href="#"><img src="http://localhost:8888/resources/img/logo_small.png" alt="Mozilla Webmaker"></a><span class="made-with">Made with<a href="//webmaker.org"> Webmaker</a></span></span><span class="expand-collapse">Details<img src="http://localhost:8888/resources/icons/icon-arrow-down.png"></span>
+        <div class="wrapper"><span class="logospan"><a href="#"><img src="{{baseHref}}/resources/img/logo_small.png" alt="Mozilla Webmaker"></a><span class="made-with">Made with<a href="//webmaker.org"> Webmaker</a></span></span><span class="expand-collapse">Details<img src="{{baseHref}}/resources/icons/icon-arrow-down.png"></span>
           <div class="make-social">
             <ul>
-              <li class="button"><a href="http://localhost:8888/templates/basic/?savedDataUrl=/api/remix/79" target="_blank" class="button-remix"><span>Remix</span></a></li>
+              <li class="button"><a href="{{remixUrl}}" target="_blank" class="button-remix"><span>Remix</span></a></li>
             </ul><span class="clear"></span>
           </div>
         </div>
@@ -64,7 +64,7 @@
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <script type="text/javascript">
       $(document).ready(function() {
-        var img_path = "http://localhost:8888/resources/icons/",
+        var img_path = "{{baseHref}}/resources/icons/",
             img_up = "icon-arrow-up.png",
             img_down = "icon-arrow-down.png",
             animationSpeed = 200,
