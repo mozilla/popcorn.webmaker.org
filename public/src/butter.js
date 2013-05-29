@@ -836,13 +836,18 @@ window.Butter = {
        */
       function attemptDataLoad( finishedCallback ) {
         var savedDataUrl,
+            remixOrEdit,
             item = URI.parse( window.location ).path.split( "/" ),
             project = new Project( _this );
 
-        if ( item && item[ 3 ] === "remix" ) {
+        if ( item ) {
+          remixOrEdit = item[ 3 ];
+        }
+
+        if ( remixOrEdit === "remix" ) {
           savedDataUrl = "/api/remix/" + item[ 2 ];
         }
-        if ( item && item[ 3 ] === "edit" ) {
+        if ( remixOrEdit === "edit" ) {
           savedDataUrl = "/api/project/" + item[ 2 ];
         }
 
@@ -859,19 +864,31 @@ window.Butter = {
           // if there's no savedData returned, or the returned object does not
           // contain a media attribute, load the config specified saved data
           if ( !savedData || savedData.error || !savedData.media ) {
-            // if previous attempt failed, try loading data from the savedDataUrl value in the config
+            // If nothing comes back, it means we're trying to edit a page we don't own.
+            // Try a remix.
+            if ( remixOrEdit === "edit" && savedData.error === "project not found" ) {
+              remixOrEdit = "remix";
+              loadFromSavedDataUrl( savedDataUrl, function( savedData ) {
+                if ( savedData ) {
+                  doImport( savedData );
+                }
+                finishedCallback( project );
+              });
+              return;
+            }
+            // if previous attempt failed,
+            // try loading data from the savedDataUrl value in the config
             loadFromSavedDataUrl( _config.value( "savedDataUrl" ), function( savedData ) {
               if ( savedData ) {
                 doImport( savedData );
               }
               finishedCallback( project );
             });
+            return;
           }
-          else {
-            // otherwise, attempt import
-            doImport( savedData );
-            finishedCallback( project );
-          }
+          // otherwise, attempt import
+          doImport( savedData );
+          finishedCallback( project );
         });
 
       }

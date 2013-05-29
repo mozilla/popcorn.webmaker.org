@@ -121,10 +121,9 @@ app.configure( function() {
           endFile: __dirname + "/tools/wrap.end"
         }
       }
-    }));
-
-    app.use( express.static( tmpDir, JSON.parse( JSON.stringify( config.staticMiddleware ) ) ) );
-    app.use( express.static( WWW_ROOT, JSON.parse( JSON.stringify( config.staticMiddleware ) ) ) );
+    }))
+    .use( express.static( tmpDir, JSON.parse( JSON.stringify( config.staticMiddleware ) ) ) )
+    .use( express.static( WWW_ROOT, JSON.parse( JSON.stringify( config.staticMiddleware ) ) ) );
 
 
   // File Store types and options come from JSON config file.
@@ -323,7 +322,8 @@ app.post( '/api/publish/:id',
              popcornString + data.substring( bodyEndTagIndex );
 
       // Convert 1234567890 => "kf12oi"
-      var idBase36 = utils.generateIdString( id ),
+      var description = project.description || 'Created with Popcorn Maker - part of the Mozilla Webmaker initiative',
+          idBase36 = utils.generateIdString( id ),
           publishUrl = utils.generatePublishUrl( id ),
           iframeUrl = utils.generateIframeUrl( id );
 
@@ -342,7 +342,7 @@ app.post( '/api/publish/:id',
                          {
                            author: project.author,
                            projectName: project.name,
-                           description: project.description || 'Created with Popcorn Maker - part of the Mozilla Webmaker initiative',
+                           description: description,
                            embedShellSrc: publishUrl,
                            embedSrc: iframeUrl,
                            baseHref: APP_HOSTNAME,
@@ -362,7 +362,7 @@ app.post( '/api/publish/:id',
                     id: id,
                     author: project.author,
                     title: project.name,
-                    description: project.description || 'Created with Popcorn Maker - part of the Mozilla Webmaker initiative',
+                    description: description,
                     mediaSrc: attribURL,
                     embedShellSrc: publishUrl,
                     baseHref: baseHref,

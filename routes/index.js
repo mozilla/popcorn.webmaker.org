@@ -97,27 +97,7 @@ module.exports = function routesCtor( app, Project, filter, sanitizer,
       }
 
       if ( !doc ) {
-        Project.find( { id: req.params.id }, function( err, project ) {
-          if ( err ) {
-            res.json( { error: err }, 500 );
-            return;
-          }
-
-          if ( !project ) {
-            res.json( { error: 'project not found' }, 404 );
-            metrics.increment( 'error.remix.project-not-found' );
-            return;
-          }
-
-          var projectJSON = JSON.parse( project.data, sanitizer.reconstituteHTMLinJSON );
-          projectJSON.name = "Remix of " + project.name;
-          projectJSON.template = project.template;
-          projectJSON.remixedFrom = project.id;
-          projectJSON.remixedFromUrl = utils.generatePublishUrl( project.id );
-
-          res.json( projectJSON );
-          metrics.increment( 'user.remix' );
-        });
+        res.json( { error: "project not found" }, 404 );
         return;
       }
       var projectJSON = JSON.parse( doc.data );
