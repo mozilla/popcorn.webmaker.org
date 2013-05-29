@@ -3,19 +3,19 @@ if ( process.env.NEW_RELIC_HOME ) {
   require( 'newrelic' );
 }
 
-var express = require('express'),
-    fs = require('fs'),
-    path = require('path'),
-    nunjucks = require('nunjucks'),
+var express = require( 'express' ),
+    fs = require( 'fs' ),
+    path = require( 'path' ),
+    nunjucks = require( 'nunjucks' ),
     nunjucksEnv = new nunjucks.Environment(),
     app = express(),
-    lessMiddleware = require('less-middleware'),
+    lessMiddleware = require( 'less-middleware' ),
     requirejsMiddleware = require( 'requirejs-middleware' ),
     config = require( './lib/config' ),
     Project,
     filter,
     sanitizer = require( './lib/sanitizer' ),
-    FileStore = require('./lib/file-store.js'),
+    FileStore = require( './lib/file-store.js' ),
     metrics,
     utils,
     middleware = require( './lib/middleware' ),
@@ -30,7 +30,7 @@ var express = require('express'),
     };
 
 var templateConfigs = {};
-nunjucksEnv.express(app);
+nunjucksEnv.express( app );
 
 function readTemplateConfig( templateName, templatedPath ) {
   var configPath = templatedPath.replace( '{{templateBase}}', config.dirs.templates + '/' );
