@@ -340,7 +340,7 @@ app.post( '/api/publish/:id',
       var remixUrl = "/basic/" + project.id + "/remix",
           mediaUrl = projectData.media[ 0 ].url,
           attribURL = Array.isArray( mediaUrl ) ? mediaUrl[ 0 ] : mediaUrl;
-console.log(baseHref);
+
       function publishEmbedShell() {
         // Write out embed shell HTML
         writeEmbedShell( idBase36, publishUrl,
