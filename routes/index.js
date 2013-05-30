@@ -1,12 +1,13 @@
 'use strict';
 
 module.exports = function routesCtor( app, Project, filter, sanitizer,
-                                      stores, utils, metrics ) {
+                                      stores, utils, metrics, makeapiConfig ) {
 
   var uuid = require( "node-uuid" ),
       // Keep track of whether this is production or development
       deploymentType = app.settings.env === "production" ? "production" : "development",
-      api = require( "./api" )( metrics, utils, stores );
+      api = require( "./api" )( metrics, utils, stores ),
+      makeClient = require( "makeapi" ).makeAPI( makeapiConfig );
 
   app.get( '/healthcheck', api.healthcheck );
 
@@ -112,7 +113,14 @@ module.exports = function routesCtor( app, Project, filter, sanitizer,
         projectJSON.remixedFrom = doc.remixedFrom;
         projectJSON.remixedFromUrl = utils.generateIframeUrl( doc.remixedFrom );
       }
-      res.json( projectJSON );
+
+      makeClient.url( projectJSON.publishUrl ).then(function( err, make ) {
+        if ( err ) {
+          res.json( 500, { error: err } );
+        }
+        projectJSON.tags = make[ 0 ].tags;
+        res.json( projectJSON );
+      });
     });
   });
 
@@ -120,7 +128,6 @@ module.exports = function routesCtor( app, Project, filter, sanitizer,
   app.get( '/api/remix/:id',
     filter.isStorageAvailable,
     function( req, res ) {
-
     Project.find( { id: req.params.id }, function( err, project ) {
       if ( err ) {
         res.json( { error: err }, 500 );

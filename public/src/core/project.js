@@ -13,6 +13,8 @@ define( [ "core/eventmanager", "core/media", "util/sanitizer" ],
         _id, _name, _template, _author, _description, _dataObject,
         _publishUrl, _iframeUrl, _remixedFrom, _remixedFromUrl,
 
+        _tags = [],
+
         // Whether or not a save to server is required (project data has changed)
         _isDirty = false,
 
@@ -124,6 +126,19 @@ define( [ "core/eventmanager", "core/media", "util/sanitizer" ],
         enumerable: true
        },
 
+      "tags": {
+        set: function( val ) {
+          _tags = val.split( "," ).map(function( v ) {
+            return v.trim();
+          });
+          invalidate();
+        },
+        get: function() {
+          return _tags;
+        },
+        enumerable: true
+      },
+
       "data": {
         get: function() {
           // Memoize value, since it doesn't always change
@@ -209,7 +224,6 @@ define( [ "core/eventmanager", "core/media", "util/sanitizer" ],
     _this.import = function( json ) {
       var oldTarget, targets, targetData,
           mediaData, media, m, i, l;
-
       // If JSON, convert to Object
       if ( typeof json === "string" ) {
         try {
@@ -241,6 +255,10 @@ define( [ "core/eventmanager", "core/media", "util/sanitizer" ],
 
       if ( json.description ) {
         _description = json.description;
+      }
+
+      if ( json.tags ) {
+        _tags = json.tags;
       }
 
       if ( json.thumbnail ) {
@@ -322,6 +340,7 @@ define( [ "core/eventmanager", "core/media", "util/sanitizer" ],
       data.template = _template;
       data.author = _author;
       data.description = _description;
+      data.tags = _tags.join( "," );
       data.thumbnail = _thumbnail;
       data.backupDate = Date.now();
       try {
@@ -363,6 +382,7 @@ define( [ "core/eventmanager", "core/media", "util/sanitizer" ],
         description: _description,
         thumbnail: _thumbnail,
         data: _this.data,
+        tags: _this.tags,
         remixedFrom: _remixedFrom
       };
 
