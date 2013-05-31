@@ -11,7 +11,7 @@ define( [ "core/eventmanager", "core/media", "util/sanitizer" ],
 
     var _this = this,
         _id, _name, _template, _author, _description, _dataObject,
-        _publishUrl, _iframeUrl, _remixedFrom, _remixedFromUrl, _makeID,
+        _publishUrl, _iframeUrl, _remixedFrom, _remixedFromUrl, _makeid,
 
         _tags = [],
 
@@ -139,9 +139,9 @@ define( [ "core/eventmanager", "core/media", "util/sanitizer" ],
         enumerable: true
       },
 
-       "makeID": {
+       "makeid": {
           get: function() {
-            return _makeID;
+            return _makeid;
           },
           enumerable: true
        },
@@ -260,8 +260,8 @@ define( [ "core/eventmanager", "core/media", "util/sanitizer" ],
         _author = json.author;
       }
 
-      if ( json.makeID ) {
-        _makeID = json.makeID;
+      if ( json.makeid ) {
+        _makeid = json.makeid;
       }
 
       if ( json.description ) {
@@ -395,7 +395,7 @@ define( [ "core/eventmanager", "core/media", "util/sanitizer" ],
         data: _this.data,
         tags: _this.tags,
         remixedFrom: _remixedFrom,
-        makeID: _makeID
+        makeid: _makeid
       };
 
       // Save to local storage first in case network is down.
