@@ -144,7 +144,7 @@ module.exports = function routesCtor( app, Project, filter, sanitizer,
       projectJSON.name = "Remix of " + project.name;
       projectJSON.template = project.template;
       projectJSON.remixedFrom = project.id;
-      projectJSON.makeID = project.makeID;
+      projectJSON.makeid = project.makeid;
       projectJSON.remixedFromUrl = utils.generatePublishUrl( project.id );
 
       res.json( projectJSON );
