@@ -344,7 +344,9 @@ app.post( '/api/publish/:id',
                            embedSrc: iframeUrl,
                            baseHref: APP_HOSTNAME,
                            thumbnail: project.thumbnail,
-                           remixUrl: baseHref + remixUrl
+                           remixUrl: baseHref + remixUrl,
+                           makeEndpoint: config.MAKE_ENDPOINT,
+                           makeID: project.makeid
                          },
                          finished );
       }

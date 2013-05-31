@@ -24,6 +24,7 @@ html
     title #{projectName} - Popcorn Maker
     link(rel="stylesheet", href="#{baseHref}/css/makedetails.css")
     link(rel="stylesheet", href="#{baseHref}/css/embed-shell.css")
+    script(src='#{makeEndpoint}/js/make-api.js')
   body
     main#content.content.clearfix
       .hide.make-details
@@ -35,25 +36,17 @@ html
               span.remixed-user  daleee
               a(href="#")
                 img.original-thumb(src="http://placecage.com/210/120", alt="ORIGINAL TITLE")
-            .remixed-by
-              | 3 remixes by
-              ul
-                li
-                  a(href="#") @cassiemc
-                li
-                  a(href="#") @remixmanifesto
-                li
-                  a(href="#") @boozineges
+            .remixed-by PLACEHOLDER
           //- RH side of make-details 
           .make-details-deets
             h1.make-title #{projectName}
             .make-made-by
               a(href="#")
-                img(src="http://fillmurray.com/35/35", alt="USER NAME")
+                img(src="http://fillmurray.com/35/35", alt="USER NAME", class="make-user-gravatar")
               .made-by
                 | Made by 
-                a(href="#") #{author}
-                span.make-relative-date 1 month ago
+                a(href="#") PLACEHOLDER
+                span.make-relative-date PLACEHOLDER
             .make-tools-languages
               span.built-with Built with
               a(href="//popcorn.webmaker.org")
@@ -61,9 +54,6 @@ html
                 span.tool-name Popcorn
               span.languages Languages
               ul.langs
-                li.lang-item.active-lang English
-                li.lang-item
-                  a(href="#") Español
             p.make-desc
               | #{description}
       .make-bar
@@ -113,3 +103,107 @@ html
             };
         $toggle.on("click", toggleNav);
       });
+    script(type="text/javascript")
+      var client = Make({
+            apiURL: "#{makeEndpoint}"
+          }),
+          remixedFrom,
+          locales = [];
+
+      function toPrettyString( ms ) {
+        var round = Math.round,
+            t, seconds, minutes, hours, days;
+
+        t = ms / 1000;
+        seconds = ( t % 60 ) | 0;
+        t /= 60;
+        minutes = ( t % 60 ) | 0;
+        t /= 60;
+        hours = ( t % 24 ) | 0;
+        t /= 24;
+        days = t | 0;
+
+        if( days >= 1 ) {
+          return "" + ( days === 1 ? "a day" : days + " days" );
+        } else if( hours >= 1 ) {
+          return "" + ( hours === 1 ? "an hour" : hours + " hours" );
+        } else if( minutes >= 1 ) {
+          return "" + ( minutes === 1 ? "a minute" : minutes + " minutes" );
+        } else {
+          return "less than a minute";
+        }
+      }
+
+      function getProjectChildren() {
+        client.remixedFrom( "#{makeID}" ).then(function( err, results ) {
+          if ( results && results.length ) {
+            var ul = document.createElement( "ul" );
+
+            $( ".remixed-by" ).html( results.length + " remixes by " );
+            ul.className = "remix-children";
+            $( ".remixed-by" ).append( ul );
+
+            // 4 is used here to prevent too many names being listed
+            for ( var i = 0; i < results.length && i < 4; i++ ) {
+              var result = results[ i ];
+
+              if ( locales.indexOf( result.locale ) === -1 ) {
+                locales.push( result.locale );
+                var locale = document.createElement( "li" );
+
+                locale.className = "lang-item";
+                locale.innerHTML = result.locale === "en_us" ? "English" : result.locale;
+
+                $( ".langs" ).append( locale );
+              }
+
+              var remixuser = document.createElement( "li" );
+
+              remixuser.innerHTML = "<a href='#'>@" + result.username + "</a>";
+
+              ul.appendChild( remixuser );
+            }
+          } else {
+            $( ".remixed-by" ).css( "display", "none" );
+          }
+        });
+      }
+
+      function getProjectParent() {
+        if ( remixedFrom ) {
+          client.id( remixedFrom ).then(function( err, result ) {
+            if ( result && result.length ) {
+              $( ".remixed-user" ).html( result[ 0 ].username );
+              $( ".original-thumb" ).attr( "src", result[ 0 ].thumbnail );
+
+              getProjectChildren();
+            }
+          });
+        } else {
+          $( ".remixed-from" ).css( "display", "none" );
+          getProjectChildren();
+        }
+      }
+
+      client.id( "#{makeID}" ).then(function( err, result ) {
+        if ( result && result.length ) {
+          var li = document.createElement( "li" );
+
+          li.className = "lang-item";
+          li.innerHTML = result[ 0 ].locale === "en_us" ? "English" : result[ 0 ].locale;
+
+          locales.push( result[ 0 ].locale );
+
+          $( ".made-by > a" ).html( result[ 0 ].username );
+          $( ".make-user-gravatar" ).attr( "src", "http://gravatar.com/avatar/" + result[ 0 ].emailHash + "?s=26" );
+          $( ".make-relative-date" ).html( toPrettyString( Date.now() - result[ 0 ].createdAt ) + " ago" );
+          $( ".langs" ).append( li );
+          remixedFrom = result[ 0 ].remixedFrom;
+
+          return getProjectParent();
+        }
+
+        getProjectParent();
+      });
+
+
