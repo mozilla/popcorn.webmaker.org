@@ -90,7 +90,7 @@ module.exports = function routesCtor( app, Project, filter, sanitizer,
     filter.isStorageAvailable,
     function( req, res ) {
 
-    Project.find( { email: req.session.email, id: req.params.id }, function( err, doc ) {
+    Project.find( { id: req.params.id }, function( err, doc ) {
       if ( err ) {
         res.json( { error: err }, 500 );
         return;
