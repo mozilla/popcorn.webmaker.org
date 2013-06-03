@@ -12,7 +12,6 @@ function generateMockData(id, mediaData) {
     data: JSON.stringify( projectData ),
     email: "test@example.org",
     name: "My Mock Project",
-    author: "Test User",
     template: "basic",
     publishUrl: "http://localhost:8888/v/" + id + ".html",
     iframeUrl: "http://localhost:8888/v/" + id + "_.html"

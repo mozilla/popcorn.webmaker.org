@@ -104,7 +104,6 @@ module.exports = function routesCtor( app, Project, filter, sanitizer,
 
       projectJSON.name = doc.name;
       projectJSON.projectID = doc.id;
-      projectJSON.author = doc.author;
       projectJSON.description = doc.description;
       projectJSON.template = doc.template;
       projectJSON.publishUrl = utils.generatePublishUrl( doc.id );

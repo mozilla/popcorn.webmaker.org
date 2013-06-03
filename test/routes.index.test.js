@@ -88,7 +88,6 @@ test("project data get valid", function(t) {
       mockData.data = JSON.parse(mockData.data);
       mockData.data.name = mockData.name;
       mockData.data.projectID = mockData.id;
-      mockData.data.author = mockData.author;
       mockData.data.template = mockData.template;
       mockData.data.publishUrl = mockData.publishUrl;
       mockData.data.iframeUrl = mockData.iframeUrl;

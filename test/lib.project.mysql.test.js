@@ -20,7 +20,6 @@ webfaker.start({
         },
         email: mockEmail,
         name: "Test User",
-        author: "Test User",
         template: "basic"
       },
       mockStores = require( "./mock.store" ),

@@ -12,7 +12,6 @@ define([ "editor/editor", "editor/base-editor",
     var _rootElement = rootElement,
         _socialMedia = new SocialMedia(),
         _projectURL = _rootElement.querySelector( ".butter-project-url" ),
-        _authorInput = _rootElement.querySelector( ".butter-project-author" ),
         _tagInput = _rootElement.querySelector( ".butter-project-tags" ),
         _descriptionInput = _rootElement.querySelector( ".butter-project-description" ),
         _dropArea = _rootElement.querySelector( ".image-droparea" ),
@@ -35,7 +34,6 @@ define([ "editor/editor", "editor/base-editor",
         _projectTab,
         _idx;
 
-    _authorInput.value = butter.project.author ? butter.project.author : "";
     _descriptionInput.value = butter.project.description ? butter.project.description : "";
 
     ToolTip.create({
@@ -130,7 +128,6 @@ define([ "editor/editor", "editor/base-editor",
       }, false );
     }
 
-    applyInputListeners( _authorInput, "author" );
     applyInputListeners( _thumbnailInput, "thumbnail" );
     applyInputListeners( _tagInput, "tags" );
 
@@ -139,7 +136,6 @@ define([ "editor/editor", "editor/base-editor",
 
     TextboxWrapper.applyTo( _projectURL, { readOnly: true } );
     TextboxWrapper.applyTo( _projectEmbedURL, { readOnly: true } );
-    TextboxWrapper.applyTo( _authorInput );
     TextboxWrapper.applyTo( _descriptionInput );
     TextboxWrapper.applyTo( _thumbnailInput );
 
