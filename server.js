@@ -6,6 +6,7 @@ if ( process.env.NEW_RELIC_HOME ) {
 var express = require('express'),
     fs = require('fs'),
     path = require('path'),
+    helmet = require( "helmet" ),
     jade = require('jade'),
     app = express(),
     lessMiddleware = require('less-middleware'),
@@ -81,8 +82,12 @@ app.configure( function() {
 
   app.set( "views", __dirname + "/views" );
 
-  app.use( express.logger( config.logger ) )
-    .use( express.compress() )
+  app.use( express.logger( config.logger ) );
+  if ( !!config.FORCE_SSL ) {
+    app.use( helmet.hsts() );
+    app.enable( "trust proxy" );
+  }
+  app.use( express.compress() )
     .use( lessMiddleware({
       once: config.OPTIMIZE_CSS,
       dest: tmpDir,

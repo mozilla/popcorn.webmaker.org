@@ -86,6 +86,7 @@
     "csslint": "0.9.10",
     "express-persona": "0.0.7",
     "express": "3.1.0",
+    "helmet": "0.0.9",
     "jade": "0.28.2",
     "jshint": "1.1.0",
     "knox": "0.7.0",
