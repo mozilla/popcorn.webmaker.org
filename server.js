@@ -135,7 +135,7 @@ app.configure( function() {
   app.use( express.bodyParser() )
     .use( express.cookieParser() )
     .use( express.cookieSession( config.session ) )
-    .use( express.csrf() )
+    // .use( express.csrf() )
     /* Show Zeus who's boss
      * This only affects requests under /api and /persona, not static files
      * because the static file writes the response header before we hit this middleware
@@ -174,6 +174,7 @@ app.configure( function() {
 require( 'express-persona' )( app, {
   audience: config.AUDIENCE
 });
+require( "webmaker-loginapi" )( app, config.LOGIN_SERVER_URL_WITH_AUTH );
 
 var routes = require('./routes');
 routes( app, Project, filter, sanitizer, stores, utils, metrics, makeapiConfig );
@@ -384,19 +385,22 @@ app.get( '/dashboard', middleware.isAuthenticated, filter.isStorageAvailable, fu
 
 app.get( '/basic/:id/edit', function( req, res ) {
   res.render( 'public/templates/basic/index.html', {
-    templatePath: '/templates'
+    templatePath: '/templates',
+    personaEmail: req.session.email
   });
 });
 
 app.get( '/basic/:id/remix', function( req, res ) {
   res.render( 'public/templates/basic/index.html', {
-    templatePath: '/templates'
+    templatePath: '/templates',
+    personaEmail: req.session.email
   });
 });
 
 app.get( '/basic', function( req, res ) {
   res.render( 'public/templates/basic/index.html', {
-    templatePath: '/templates'
+    templatePath: '/templates',
+    personaEmail: req.session.email
   });
 });
 
@@ -407,7 +411,8 @@ app.get( '/external/make-api.js', function( req, res ) {
 app.get( '/api/butterconfig', function( req, res ) {
   res.json({
     "makeEndpoint": config.MAKE_ENDPOINT,
-    "audience": config.AUDIENCE
+    "audience": config.AUDIENCE,
+    "userbar": config.USER_BAR
   });
 });
 
