@@ -1,6 +1,18 @@
+.tutorial-list.hidden {
+  display: none;
+}
+
+.tutorial-title {
+  cursor: pointer;
+  margin: 0 0.9em;
+}
+
 .tutorial-list {
+  margin: 0.9em 0;
+}
+
+.butter-tutorial-container {
   position: absolute;
-  background: none repeat scroll 0 0 rgb(58, 60, 60);
   padding: 0 15px;
   opacity: 0;
   transition: opacity .35s;
@@ -10,24 +22,16 @@
 
 .tutorial-list-item {
   opacity: 0.5;
+  cursor: pointer;
 }
 
 .tutorial-list-item:hover {
   opacity: 1;
 }
 
-.butter-tutorial-container:hover .tutorial-list {
+.tutorial-list:hover .butter-tutorial-container {
   opacity: 1;
   position: relative;
-}
-
-#webmaker-nav {
-  position: relative;
-  z-index: 1;
-}
-
-.butter-tutorial-container.hidden {
-  display: none;
 }
 
 .tutorial-view {
@@ -39,7 +43,7 @@
   cursor: move;
   width: 500px;
   height: 500px;
-  z-index: 100000011;
+  z-index: @TUTORIAL_VIEW_Z_INDEX;
   background-color: white;
   border: 1px solid darken( @baseLightOutline, 10% );
   box-shadow: 0 3px 10px -5px rgba( 0, 0, 0, 0.5 );
@@ -84,4 +88,13 @@
   width: 100%;
   height: 100%;
   border: 1px solid @baseLightOutline;
+}
+
+#webmaker-nav {
+  position: relative;
+  z-index: @WEBMAKERNAV_Z_INDEX;
+}
+
+.tutorial-nav {
+  float: left;
 }

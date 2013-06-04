@@ -6,11 +6,6 @@
 // Used to position absolute elements in the middle of our header bar area
 @HEADER_ALIGN_MIDDLE: 2.7;
 
-// Adds room to template to account for header
-.butter-header-spacing {
-  padding-top: @HEADER_SPACING;
-}
-
 .butter-editor-spacing {
   .butter-header {
     right: 0;
@@ -19,12 +14,14 @@
 
 .butter-header {
   z-index: @HEADER_Z_INDEX;
-  position: fixed;
-  left: 0;
-  top: 0;
   right: @EDITOR_WIDTH;
   height: @HEADER_SPACING;
   .transition( all .2s ease-in-out );
+
+  // Used to overwrite collisions from nav.css included for userbar.
+  a:hover {
+    text-decoration: none;
+  }
 }
 
 /*********************************************************
@@ -108,6 +105,7 @@
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+    color: @green;
   }
   .icon {
     opacity: 0.4;

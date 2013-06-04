@@ -20,6 +20,11 @@
   height: @_editorHeaderHeight;
   background: @baseDark;
 
+  // Used to overwrite collisions from nav.css included for userbar.
+  a:hover {
+    text-decoration: none;
+  }
+
   > ul {
     margin: 0;
     padding: 0;
@@ -154,6 +159,7 @@
         margin-right: 15px;
         display: inline-block;
         cursor: pointer;
+        color: @green;
         border-right: 1px solid @baseLightOutline;
         .triangle( "right", 5px, #FFF, 1px, @baseLightOutline );
         &:hover {
