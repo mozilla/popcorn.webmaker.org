@@ -6,12 +6,11 @@ define([ "dialog/dialog", "util/lang", "text!layouts/header.html", "text!layouts
 
     options = options || {};
 
-    HEADER_TEMPLATE = HEADER_TEMPLATE.replace( /\{\{userbar\}\}/g, config.userbar );
-
     var TOOLTIP_NAME = "name-error-header-tooltip";
 
     var _this = this,
         _rootElement = Lang.domFragment( HEADER_TEMPLATE, ".butter-header" ),
+        _bodyWrapper = document.querySelector(".body-wrapper"),
         _tutorialButtonContainer = _rootElement.querySelector( ".butter-tutorial-container" ),
         _saveButton = _rootElement.querySelector( ".butter-save-btn" ),
         _projectTitle = _rootElement.querySelector( ".butter-project-title" ),
@@ -298,7 +297,9 @@ define([ "dialog/dialog", "util/lang", "text!layouts/header.html", "text!layouts
 
     this.attachToDOM = function() {
       document.body.classList.add( "butter-header-spacing" );
-      document.body.insertBefore( _rootElement, document.body.firstChild );
+      document.body.insertBefore( _rootElement, _bodyWrapper );
+
+      loadDashboard();
     };
 
     butter.listen( "authenticated", _this.views.login, false );
@@ -387,9 +388,9 @@ define([ "dialog/dialog", "util/lang", "text!layouts/header.html", "text!layouts
     }
 
     function loadDashboard() {
-      var myProjectsButton = _rootElement.querySelector( ".user-info > .makes" ),
-          container = _rootElement.querySelector( ".my-projects-container" ),
-          iframe = _rootElement.querySelector( ".my-projects-iframe" );
+      var myProjectsButton = document.querySelector( ".user-info > .makes" ),
+          container = document.querySelector( ".my-projects-container" ),
+          iframe = document.querySelector( ".my-projects-iframe" );
 
      function close() {
         myProjectsButton.addEventListener( "click", open, false );
@@ -425,8 +426,6 @@ define([ "dialog/dialog", "util/lang", "text!layouts/header.html", "text!layouts
         toggleSaveButton( false );
         toggleProjectButton( false );
       }
-
-      loadDashboard();
 
       if ( butter.project.publishUrl ||
            butter.project.remixedFromUrl ) {

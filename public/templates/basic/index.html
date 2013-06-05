@@ -8,6 +8,7 @@
   <meta name="viewport" content="width=device-width">
   <meta name="persona-email" content="{{personaEmail}}">
   <link rel="stylesheet" href="{{templatePath}}/basic/style.css">
+  <link rel="stylesheet" href="{{userbar}}/css/nav.css">
   <link rel="stylesheet" href="{{templatePath}}/assets/css/jquery-ui/jquery.ui.butter.css" data-butter-exclude>
 
   <link rel="stylesheet" href="/css/transitions.css">
@@ -52,6 +53,33 @@
   <meta property="og:image:height" content="200">
 </head>
 <body>
+  <!-- webmaker user bar -->
+  <div id="webmaker-nav">
+    <nav class="webmaker-nav-container">
+      <a id="logo" href="https://webmaker.org"><img src="{{userbar}}/img/webmaker-logo.png" alt="Mozilla Webmaker" /></a>
+      <ul class="webmaker-nav user-info">
+        <li class="user">
+            Hi <span id="identity" class="user-name-container"></span>
+        </li>
+        <li class="makes"><button>My makes</button></li>
+        <li>
+          <button id="webmaker-login">Sign in to save <span>Sign up</span></button>
+          <button id="webmaker-logout">Sign out</button>
+        </li>
+      </ul>
+      <ul class="webmaker-nav tutorial-nav">
+        <li class="tutorial-list hidden">
+          <span class="tutorial-title">Tutorial</span>
+          <div class="tutorial-container"></div>
+        </li>
+      </ul>
+    </nav>
+    <div class="my-projects-container">
+      <iframe class="my-projects-iframe"></iframe>
+    </div>
+  </div>
+  <script src="{{audience}}/sso/include.js"></script>
+  <script src="{{userbar}}/js/sso-ux.js"></script>
   <div class="body-wrapper">
     <div id="embed-wrapper" class="wrapper cf faded">
       <div id="video-container" class="video-container" data-butter="target">

@@ -386,21 +386,27 @@ app.get( '/dashboard', middleware.isAuthenticated, filter.isStorageAvailable, fu
 app.get( '/basic/:id/edit', function( req, res ) {
   res.render( 'public/templates/basic/index.html', {
     templatePath: '/templates',
-    personaEmail: req.session.email
+    personaEmail: req.session.email,
+    userbar: config.USER_BAR,
+    audience: config.AUDIENCE
   });
 });
 
 app.get( '/basic/:id/remix', function( req, res ) {
   res.render( 'public/templates/basic/index.html', {
     templatePath: '/templates',
-    personaEmail: req.session.email
+    personaEmail: req.session.email,
+    userbar: config.USER_BAR,
+    audience: config.AUDIENCE
   });
 });
 
 app.get( '/basic', function( req, res ) {
   res.render( 'public/templates/basic/index.html', {
     templatePath: '/templates',
-    personaEmail: req.session.email
+    personaEmail: req.session.email,
+    userbar: config.USER_BAR,
+    audience: config.AUDIENCE
   });
 });
 
@@ -411,8 +417,7 @@ app.get( '/external/make-api.js', function( req, res ) {
 app.get( '/api/butterconfig', function( req, res ) {
   res.json({
     "makeEndpoint": config.MAKE_ENDPOINT,
-    "audience": config.AUDIENCE,
-    "userbar": config.USER_BAR
+    "audience": config.AUDIENCE
   });
 });
 
