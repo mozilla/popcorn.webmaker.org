@@ -143,14 +143,7 @@ define([ "editor/editor", "editor/base-editor",
     TextboxWrapper.applyTo( _descriptionInput );
     TextboxWrapper.applyTo( _thumbnailInput );
 
-    window.EditorHelper.droppable( null, _dropArea, function onDrop( uri ) {
-      _project.thumbnail = uri;
-      _project.save(function() {
-        butter.editor.openEditor( "project-editor" );
-        checkDescription();
-        _thumbnailInput.value = _project.thumbnail;
-      });
-    });
+    window.EditorHelper.droppable( null, _dropArea );
 
     butter.listen( "droppable-unsupported", function unSupported() {
       _this.setErrorState( "Sorry, but your browser doesn't support this feature." );
@@ -158,6 +151,15 @@ define([ "editor/editor", "editor/base-editor",
 
     butter.listen( "droppable-upload-failed", function failedUpload( e ) {
       _this.setErrorState( e.data );
+    });
+
+    butter.listen( "droppable-succeeded", function uploadSuceeded( e ) {
+      _project.thumbnail = _dropArea.querySelector( "img" ).src = e.data;
+      _project.save(function() {
+        butter.editor.openEditor( "project-editor" );
+        checkDescription();
+        _thumbnailInput.value = _project.thumbnail;
+      });
     });
 
     butter.listen( "projectsaved", function onProjectSaved() {

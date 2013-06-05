@@ -244,7 +244,7 @@
        * @param {DOMElement} dropContainer: The container that listens for the drop events
        */
 
-      global.EditorHelper.droppable = function( trackEvent, dropContainer, callback ) {
+      global.EditorHelper.droppable = function( trackEvent, dropContainer ) {
         dropContainer.addEventListener( "dragover", function( e ) {
           e.preventDefault();
           dropContainer.classList.add( "butter-dragover" );
@@ -281,9 +281,9 @@
             if ( !data.error ) {
               if ( trackEvent ) {
                 trackEvent.update( { src: data.url } );
-              } else {
-                callback( data.url );
               }
+
+              butter.dispatch( "droppable-succeeded", data.url );
             } else {
               butter.dispatch( "droppable-upload-failed", data.error );
             }

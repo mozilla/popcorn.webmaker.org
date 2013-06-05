@@ -52,6 +52,10 @@
       butter.listen( "droppable-upload-failed", function failedUpload( e ) {
         _this.setErrorState( e.data );
       });
+
+      butter.listen( "droppable-succeeded", function uploadSuceeded( e ) {
+        _dropArea.querySelector( "img" ).src = e.data;
+      });
     }
 
     function calcImageTime() {
@@ -200,7 +204,7 @@
             src = te.popcornTrackEvent.src;
           }
 
-          _cachedValues.src.data = src;
+          _dropArea.querySelector( "img" ).src = _cachedValues.src.data = src;
 
           updateTrackEvent( te, {
             src: src,
@@ -404,6 +408,7 @@
 
         _this.applyExtraHeadTags( compiledLayout );
         _trackEvent = trackEvent;
+        _dropArea.querySelector( "img" ).src = _trackEvent.popcornOptions.src;
 
         // The current popcorn instance
         _popcornInstance.on( "invalid-flickr-image", function() {
