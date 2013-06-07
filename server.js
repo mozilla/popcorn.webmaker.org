@@ -249,7 +249,6 @@ app.post( '/api/publish/:id',
           currentTrack,
           currentTrackEvent,
           mediaPopcornOptions,
-          templateURL,
           baseString,
           headStartTagIndex,
           templateScripts,
@@ -257,8 +256,7 @@ app.post( '/api/publish/:id',
           numSources,
           j, k, len;
 
-      templateURL = templateFile.substring( templateFile.indexOf( '/templates' ), templateFile.lastIndexOf( '/' ) );
-      baseHref = APP_HOSTNAME + templateURL + "/";
+      baseHref = APP_HOSTNAME + "/editor/";
       baseString = '\n  <base href="' + baseHref + '"/>';
 
       // look for script and link tags with data-butter-exclude in particular (e.g. butter's js script)
@@ -356,7 +354,7 @@ app.post( '/api/publish/:id',
                            embedSrc: iframeUrl,
                            baseHref: APP_HOSTNAME,
                            thumbnail: project.thumbnail,
-                           remixUrl: APP_HOSTNAME + remixUrl,
+                           remixUrl: baseHref + remixUrl,
                            makeEndpoint: config.MAKE_ENDPOINT,
                            makeID: project.makeid
                          },
@@ -372,7 +370,7 @@ app.post( '/api/publish/:id',
                     mediaSrc: attribURL,
                     embedShellSrc: publishUrl,
                     baseHref: baseHref,
-                    remixUrl: remixUrl,
+                    remixUrl: baseHref + remixUrl,
                     templateScripts: templateScripts,
                     externalAssets: externalAssetsString,
                     popcorn: popcornString,
@@ -388,7 +386,7 @@ app.get( '/dashboard', middleware.isAuthenticated, filter.isStorageAvailable, fu
   res.redirect( config.AUDIENCE + "/myprojects?app=popcorn&email=" + req.session.email );
 });
 
-app.get( '/basic', function( req, res ) {
+app.get( '/editor', function( req, res ) {
   res.render( 'public/templates/basic/index.html', {
     templatePath: '/templates'
   });
