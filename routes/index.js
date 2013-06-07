@@ -118,7 +118,7 @@ module.exports = function routesCtor( app, Project, filter, sanitizer,
         if ( err ) {
           res.json( 500, { error: err } );
         }
-        projectJSON.tags = make[ 0 ].tags;
+        projectJSON.tags = make[ 0 ].rawTags;
         res.json( projectJSON );
       });
     });
