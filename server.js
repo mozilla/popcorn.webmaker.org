@@ -8,7 +8,7 @@ var express = require('express'),
     path = require('path'),
     helmet = require( "helmet" ),
     nunjucks = require('nunjucks'),
-    nunjucksEnv = new nunjucks.Environment(),
+    nunjucksEnv = new nunjucks.Environment(new nunjucks.FileSystemLoader('views')),
     app = express(),
     lessMiddleware = require( 'less-middleware' ),
     requirejsMiddleware = require( 'requirejs-middleware' ),
@@ -155,11 +155,11 @@ app.configure( function() {
       }
 
       res.status( err.status );
-      res.render( 'views/error.html', { message: err.message, status: err.status });
+      res.render( 'error.html', { message: err.message, status: err.status });
     })
     .use( function( req, res, next ) {
       res.status( 404 );
-      res.render( 'views/error.html', { message: "This page doesn't exist", status: 404 });
+      res.render( 'error.html', { message: "This page doesn't exist", status: 404 });
     });
 
   // Metrics [optional]: allow data to be collected during runtime.
@@ -184,7 +184,7 @@ routes( app, Project, filter, sanitizer, stores, utils, metrics, makeapiConfig )
 
 function writeEmbedShell( embedPath, url, data, callback ) {
   if( !writeEmbedShell.template ) {
-    writeEmbedShell.template = nunjucksEnv.getTemplate( 'views/embed-shell.html' );
+    writeEmbedShell.template = nunjucksEnv.getTemplate( 'embed-shell.html' );
   }
   var sanitized = sanitizer.compressHTMLEntities( writeEmbedShell.template.render( data ) );
   stores.publish.write( embedPath, sanitized, callback );
@@ -192,7 +192,7 @@ function writeEmbedShell( embedPath, url, data, callback ) {
 
 function writeEmbed( embedPath, url, data, callback ) {
   if( !writeEmbed.template ) {
-    writeEmbed.template = nunjucksEnv.getTemplate( 'views/embed.html' );
+    writeEmbed.template = nunjucksEnv.getTemplate( 'embed.html' );
   }
   var sanitized = sanitizer.compressHTMLEntities( writeEmbed.template.render( data ) );
   stores.publish.write( embedPath, sanitized, callback );
