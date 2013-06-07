@@ -260,7 +260,6 @@ app.post( '/api/publish/:id',
       baseString = '\n  <base href="' + baseHref + '"/>';
 
       // look for script and link tags with data-butter-exclude in particular (e.g. butter's js script)
-      data = data.split( "{{templatePath}}" ).join( "/templates/" );
       data = data.replace( /\s*<(script|link|meta)[\.\/='":,_\-\w\s]*data-butter-exclude[\.\/='":_\-\w\s]*>(<\/script>)?/g, '' );
 
       // Adding  to cut out the actual head tag
@@ -387,9 +386,7 @@ app.get( '/dashboard', middleware.isAuthenticated, filter.isStorageAvailable, fu
 });
 
 app.get( '/editor', function( req, res ) {
-  res.render( 'public/templates/basic/index.html', {
-    templatePath: '/templates'
-  });
+  res.render( 'public/templates/basic/index.html');
 });
 
 app.get( '/external/make-api.js', function( req, res ) {
