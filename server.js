@@ -135,7 +135,7 @@ app.configure( function() {
   app.use( express.bodyParser() )
     .use( express.cookieParser() )
     .use( express.cookieSession( config.session ) )
-    // .use( express.csrf() )
+    .use( express.csrf() )
     /* Show Zeus who's boss
      * This only affects requests under /api and /persona, not static files
      * because the static file writes the response header before we hit this middleware
@@ -386,7 +386,8 @@ app.get( '/editor', function( req, res ) {
   res.render( 'public/templates/basic/index.html', {
     personaEmail: req.session.email,
     audience: config.AUDIENCE,
-    userbar: config.USER_BAR
+    userbar: config.USER_BAR,
+    csrfToken: req.session._csrf
   });
 });
 
