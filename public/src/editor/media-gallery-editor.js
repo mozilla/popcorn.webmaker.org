@@ -21,7 +21,7 @@ define( [ "util/lang", "util/uri", "util/keys", "util/mediatypes", "editor/edito
       _GALLERYITEM = LangUtils.domFragment( EDITOR_LAYOUT, ".media-gallery-item" ),
 
       _durationInput = _parentElement.querySelector( ".media-base-duration" ),
-
+      
       _butter,
       _media,
       _mediaLoadTimeout,
@@ -220,12 +220,8 @@ define( [ "util/lang", "util/uri", "util/keys", "util/mediatypes", "editor/edito
     if ( !url ) {
       return;
     }
-
-    // data.source = url;
-
     var checkUrl = URI.parse( url );
     data.source = ( checkUrl.protocol === "https" ) ? "https://" + checkUrl.source : "http://" + checkUrl.source;
-    
     data.type = "sequencer";
     _mediaLoadTimeout = setTimeout( function() {
       _errorMessage.innerHTML = TIMEOUT_ERROR;
