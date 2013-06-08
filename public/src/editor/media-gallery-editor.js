@@ -1,15 +1,12 @@
-/* This Source Code Form is subject to the terms of the MIT license
- * If a copy of the MIT license was not distributed with this file, you can
- * obtain one at https://raw.github.com/mozilla/butter/master/LICENSE */
 
 define( [ "util/lang", "util/uri", "util/keys", "util/mediatypes", "editor/editor",
  "util/time", "util/dragndrop", "text!layouts/media-editor.html" ],
   function( LangUtils, URI, KeysUtils, MediaUtils, Editor, Time, DragNDrop, EDITOR_LAYOUT ) {
+ "use strict";
 
   var _parentElement =  LangUtils.domFragment( EDITOR_LAYOUT,".media-editor" ),
       _addMediaTitle = _parentElement.querySelector( ".add-new-media" ),
       _addMediaPanel = _parentElement.querySelector( ".add-media-panel" ),
-
       _urlInput = _addMediaPanel.querySelector( ".add-media-input" ),
       _addBtn = _addMediaPanel.querySelector( ".add-media-btn" ),
       _errorMessage = _parentElement.querySelector( ".media-error-message" ),
@@ -21,7 +18,6 @@ define( [ "util/lang", "util/uri", "util/keys", "util/mediatypes", "editor/edito
       _GALLERYITEM = LangUtils.domFragment( EDITOR_LAYOUT, ".media-gallery-item" ),
 
       _durationInput = _parentElement.querySelector( ".media-base-duration" ),
-      
       _butter,
       _media,
       _mediaLoadTimeout,
