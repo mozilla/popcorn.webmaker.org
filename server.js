@@ -8,7 +8,7 @@ var express = require('express'),
     path = require('path'),
     helmet = require( "helmet" ),
     nunjucks = require('nunjucks'),
-    nunjucksEnv = new nunjucks.Environment(new nunjucks.FileSystemLoader('views')),
+    nunjucksEnv = new nunjucks.Environment(new nunjucks.FileSystemLoader( __dirname + '/views' )),
     app = express(),
     lessMiddleware = require( 'less-middleware' ),
     requirejsMiddleware = require( 'requirejs-middleware' ),
@@ -81,8 +81,6 @@ if ( config.USE_WEBFAKER ) {
 
 app.configure( function() {
   var tmpDir = path.normalize( require( "os" ).tmpDir() + "/mozilla.butter/" );
-
-  app.set( "views", __dirname + "/views" );
 
   app.use( express.logger( config.logger ) );
   if ( !!config.FORCE_SSL ) {
