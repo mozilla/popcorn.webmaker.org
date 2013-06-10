@@ -79,6 +79,13 @@ if ( config.USE_WEBFAKER ) {
   });
 }
 
+app.locals({
+  config: {
+    ga_account: config.GA_ACCOUNT,
+    ga_domain: config.GA_DOMAIN
+  }
+});
+
 app.configure( function() {
   var tmpDir = path.normalize( require( "os" ).tmpDir() + "/mozilla.butter/" );
 
@@ -341,6 +348,7 @@ app.post( '/api/publish/:id',
         writeEmbedShell( idBase36, publishUrl,
                          {
                            author: project.author,
+                           config: app.locals.config,
                            projectName: project.name,
                            description: description,
                            embedShellSrc: publishUrl,
@@ -358,6 +366,7 @@ app.post( '/api/publish/:id',
                   {
                     id: id,
                     author: project.author,
+                    config: app.locals.config,
                     title: project.name,
                     description: description,
                     mediaSrc: attribURL,
@@ -373,6 +382,14 @@ app.post( '/api/publish/:id',
 
     });
   });
+});
+
+app.get( '/', function( req, res ) {
+  res.render( 'landing.html' );
+});
+
+app.get( '/index.html', function( req, res ) {
+  res.render( 'landing.html' );
 });
 
 app.get( '/dashboard', middleware.isAuthenticated, filter.isStorageAvailable, function( req, res ) {
