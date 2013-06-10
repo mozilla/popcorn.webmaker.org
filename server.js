@@ -108,10 +108,6 @@ app.configure( function() {
         "/src/embed.js": {
           include: [ "embed" ],
           mainConfigFile: WWW_ROOT + "/src/popcorn.js",
-        },
-        "/src/webmakernav.js": {
-          include: [ "webmakernav" ],
-          mainConfigFile: WWW_ROOT + "/src/webmakernav.js",
         }
       },
       defaults: {
@@ -176,6 +172,7 @@ app.configure( function() {
 require( 'express-persona' )( app, {
   audience: config.AUDIENCE
 });
+require( "webmaker-loginapi" )( app, config.LOGIN_SERVER_URL_WITH_AUTH );
 
 var routes = require('./routes');
 routes( app, Project, filter, sanitizer, stores, utils, metrics, makeapiConfig );
@@ -384,7 +381,12 @@ app.get( '/dashboard', middleware.isAuthenticated, filter.isStorageAvailable, fu
 });
 
 app.get( '/editor', function( req, res ) {
-  res.render( 'public/templates/basic/index.html');
+  res.render( 'public/templates/basic/index.html', {
+    personaEmail: req.session.email,
+    audience: config.AUDIENCE,
+    userbar: config.USER_BAR,
+    csrfToken: req.session._csrf
+  });
 });
 
 app.get( '/external/make-api.js', function( req, res ) {

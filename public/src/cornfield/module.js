@@ -2,7 +2,7 @@
  * If a copy of the MIT license was not distributed with this file, you can
  * obtain one at https://raw.github.com/mozilla/butter/master/LICENSE */
 
-define( [ "util/xhr", "http://webmaker.mofostaging.net/sso/include.js" ], function( xhr ) {
+define( [ "util/xhr" ], function( xhr ) {
 
   // Shortcut to make lint happy. Constructor is capitalized, and reference is non-global.
   var JSSHA = window.jsSHA;
@@ -14,47 +14,25 @@ define( [ "util/xhr", "http://webmaker.mofostaging.net/sso/include.js" ], functi
         email = "",
         name = "",
         username = "",
-        self = this,
-        EMPTY_CALLBACK = function() {},
-        loginCallback = EMPTY_CALLBACK,
-        logoutCallback = EMPTY_CALLBACK;
+        self = this;
 
-    this.login = function( callback ) {
-      loginCallback = callback || EMPTY_CALLBACK;
-      navigator.idSSO.request();
+    navigator.idSSO.app = {
+      onlogin: function( loggedInUser ) {
+        authenticated = true;
+        email = loggedInUser;
+        name = loggedInUser;
+        username = loggedInUser;
+        butter.dispatch( "authenticated" );
+      },
+      onlogout: function() {
+        authenticated = false;
+        butter.dispatch( "logout" );
+      }
     };
 
     // Check to see if we're already logged in
     butter.listen( "ready", function onMediaReady() {
       butter.unlisten( "ready", onMediaReady );
-
-      navigator.idSSO.watch({
-        onlogin: function( assertion ) {
-          if ( assertion ) {
-            xhr.post( "/persona/verify", { assertion: assertion }, function( response ) {
-              if ( response.status === "okay" ) {
-                authenticated = true;
-                email = response.email;
-                name = response.email;
-                username = response.email;
-                butter.dispatch( "authenticated" );
-              }
-
-              loginCallback( response );
-            });
-          } else {
-            loginCallback();
-          }
-        },
-        onlogout: function() {
-          xhr.post( "/persona/logout", function( response ) {
-            authenticated = false;
-            butter.dispatch( "logout" );
-            logoutCallback( response );
-          });
-        }
-      });
-
     });
 
     this.email = function() {
@@ -90,11 +68,6 @@ define( [ "util/xhr", "http://webmaker.mofostaging.net/sso/include.js" ], functi
         callback( response );
       });
     }
-
-    this.logout = function( callback ) {
-      logoutCallback = callback || EMPTY_CALLBACK;
-      navigator.idSSO.logout();
-    };
 
     function savePlaceholder( id, data, callback ) {
       console.warn( "Warning: Popcorn Maker save is already in progress. Ignoring request." );
