@@ -339,7 +339,7 @@ app.post( '/api/publish/:id',
       }
 
       // This is a query string-only URL because of the <base> tag
-      var remixUrl = "?savedDataUrl=/api/remix/" + project.id,
+      var remixUrl = project.id + "/remix",
           mediaUrl = projectData.media[ 0 ].url,
           attribURL = Array.isArray( mediaUrl ) ? mediaUrl[ 0 ] : mediaUrl;
 
@@ -397,6 +397,31 @@ app.get( '/dashboard', middleware.isAuthenticated, filter.isStorageAvailable, fu
 });
 
 app.get( '/editor', function( req, res ) {
+  res.render( 'editor.html', {
+    csrf: req.session._csrf,
+    personaEmail: req.session.email,
+    userbar: config.USER_BAR
+  });
+});
+
+// Default operation is edit if owned, remix if not owned
+app.get( '/editor/:id', function( req, res ) {
+  res.render( 'editor.html', {
+    csrf: req.session._csrf,
+    personaEmail: req.session.email,
+    userbar: config.USER_BAR
+  });
+});
+
+app.get( '/editor/:id/edit', function( req, res ) {
+  res.render( 'editor.html', {
+    csrf: req.session._csrf,
+    personaEmail: req.session.email,
+    userbar: config.USER_BAR
+  });
+});
+
+app.get( '/editor/:id/remix', function( req, res ) {
   res.render( 'editor.html', {
     csrf: req.session._csrf,
     personaEmail: req.session.email,
