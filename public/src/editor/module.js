@@ -46,7 +46,7 @@ define( [ "core/eventmanager", "core/trackevent", "./editor",
     _header = new Header( _editorAreaDOMRoot, _this );
 
     function setupHeader() {
-      if ( butter.project.isSaved ) {
+      if ( butter.project.isPublished ) {
         _header.views.saved();
       } else {
         _header.views.unSaved();
@@ -211,12 +211,10 @@ define( [ "core/eventmanager", "core/trackevent", "./editor",
 
         // Set up views for project editor
         butter.listen( "ready", setupHeader );
-        butter.listen( "autologinsucceeded", setupHeader );
         butter.listen( "authenticated", setupHeader );
 
         butter.listen( "projectsaved", _header.views.saved );
         butter.listen( "logout", _header.views.unSaved );
-        butter.listen( "projectchanged", _header.views.unSaved );
 
         // Set up views for plugin list editor
         butter.listen( "mediacontentchanged", _header.views.disablePlugins );

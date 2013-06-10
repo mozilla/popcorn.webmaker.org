@@ -178,6 +178,13 @@ define( [ "core/eventmanager", "core/media", "util/sanitizer" ],
           return _isPublished && !_isDirty;
         },
         enumerable: true
+      },
+
+      "isPublished": {
+        get: function() {
+          return _isPublished;
+        },
+        enumerable: true
       }
 
     });

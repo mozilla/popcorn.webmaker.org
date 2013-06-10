@@ -110,12 +110,6 @@ define([ "editor/editor", "editor/base-editor",
         target = e.target;
         if ( target.value !== _project[ key ] ) {
           _project[ key ] = target.value;
-          if ( butter.cornfield.authenticated() ) {
-            _project.save(function() {
-              butter.editor.openEditor( "project-editor" );
-              checkDescription();
-            });
-          }
         }
       }
 
@@ -151,16 +145,13 @@ define([ "editor/editor", "editor/base-editor",
 
     butter.listen( "droppable-succeeded", function uploadSuceeded( e ) {
       _project.thumbnail = _dropArea.querySelector( "img" ).src = e.data;
-      _project.save(function() {
-        butter.editor.openEditor( "project-editor" );
-        checkDescription();
-        _thumbnailInput.value = _project.thumbnail;
-      });
     });
 
     butter.listen( "projectsaved", function onProjectSaved() {
       _previewBtn.href = _projectURL.value = _project.publishUrl;
       _viewSourceBtn.href = "view-source:" + _project.iframeUrl;
+      checkDescription();
+      _thumbnailInput.value = _project.thumbnail;
       updateEmbed( _project.iframeUrl );
     });
 
