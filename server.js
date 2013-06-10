@@ -229,10 +229,9 @@ app.post( '/api/publish/:id',
 
     var projectData = JSON.parse( project.data, sanitizer.escapeHTMLinJSON ),
         templateConfig = templateConfigs[ template ],
-        templateFile = templateConfig.template,
         baseHref;
 
-    fs.readFile( templateFile, 'utf8', function( err, data ){
+    fs.readFile( __dirname + "/views/editor.html", 'utf8', function( err, data ){
       if ( err ) {
         res.json( { error: 'error reading template file' }, 500 );
         return;
@@ -384,7 +383,10 @@ app.get( '/dashboard', middleware.isAuthenticated, filter.isStorageAvailable, fu
 });
 
 app.get( '/editor', function( req, res ) {
-  res.render( 'public/templates/basic/index.html');
+  res.render( 'editor.html');
+});
+app.get( '/templates/basic', function( req, res ) {
+  res.render( 'editor.html');
 });
 
 app.get( '/external/make-api.js', function( req, res ) {
