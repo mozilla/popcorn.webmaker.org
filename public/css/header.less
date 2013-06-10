@@ -25,6 +25,11 @@
   right: @EDITOR_WIDTH;
   height: @HEADER_SPACING;
   .transition( all .2s ease-in-out );
+
+  // Used to overwrite collisions from nav.css included for userbar.
+  a:hover {
+    text-decoration: none;
+  }
 }
 
 /*********************************************************
@@ -108,6 +113,7 @@
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+    color: @green;
   }
   .icon {
     opacity: 0.4;

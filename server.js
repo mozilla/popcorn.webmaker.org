@@ -25,7 +25,7 @@ var express = require('express'),
     WWW_ROOT = path.resolve( __dirname, config.dirs.wwwRoot ),
     VALID_TEMPLATES = config.templates,
     port = config.PORT,
-    makeapiConfig= {
+    makeapiConfig = {
       apiURL: config.MAKE_ENDPOINT,
       auth: config.MAKE_USERNAME + ":" + config.MAKE_PASSWORD
     };
@@ -108,10 +108,6 @@ app.configure( function() {
         "/src/embed.js": {
           include: [ "embed" ],
           mainConfigFile: WWW_ROOT + "/src/popcorn.js",
-        },
-        "/src/webmakernav.js": {
-          include: [ "webmakernav" ],
-          mainConfigFile: WWW_ROOT + "/src/webmakernav.js",
         }
       },
       defaults: {
@@ -176,6 +172,7 @@ app.configure( function() {
 require( 'express-persona' )( app, {
   audience: config.AUDIENCE
 });
+require( "webmaker-loginapi" )( app, config.LOGIN_SERVER_URL_WITH_AUTH );
 
 var routes = require('./routes');
 routes( app, Project, filter, sanitizer, stores, utils, metrics, makeapiConfig );
@@ -384,12 +381,17 @@ app.get( '/dashboard', middleware.isAuthenticated, filter.isStorageAvailable, fu
 
 app.get( '/editor', function( req, res ) {
   res.render( 'editor.html', {
-    csrf: req.session._csrf
+    csrf: req.session._csrf,
+    personaEmail: req.session.email,
+    userbar: config.USER_BAR
   });
 });
+
 app.get( '/templates/basic', function( req, res ) {
   res.render( 'editor.html', {
-    csrf: req.session._csrf
+    csrf: req.session._csrf,
+    personaEmail: req.session.email,
+    userbar: config.USER_BAR
   });
 });
 
@@ -400,7 +402,7 @@ app.get( '/external/make-api.js', function( req, res ) {
 app.get( '/api/butterconfig', function( req, res ) {
   res.json({
     "makeEndpoint": config.MAKE_ENDPOINT,
-    "audience": config.AUDIENCE
+    "userbar": config.USER_BAR
   });
 });
 

@@ -109,12 +109,13 @@ module.exports = function routesCtor( app, Project, filter, sanitizer,
       projectJSON.template = doc.template;
       projectJSON.publishUrl = utils.generatePublishUrl( doc.id );
       projectJSON.iframeUrl = utils.generateIframeUrl( doc.id );
+      projectJSON.makeid = doc.makeid;
       if ( doc.remixedFrom || doc.remixedFrom === 0 ) {
         projectJSON.remixedFrom = doc.remixedFrom;
         projectJSON.remixedFromUrl = utils.generateIframeUrl( doc.remixedFrom );
       }
 
-      makeClient.url( projectJSON.publishUrl ).then(function( err, make ) {
+      makeClient.id( doc.makeid ).then(function( err, make ) {
         if ( err ) {
           res.json( 500, { error: err } );
         }

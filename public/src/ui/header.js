@@ -1,17 +1,19 @@
 /*global $*/
-define([ "dialog/dialog", "util/lang", "text!layouts/header.html", "text!layouts/tutorial-list.html","text!layouts/tutorial-view.html", "ui/user-data", "ui/webmakernav/webmakernav", "ui/widget/textbox", "ui/widget/tooltip", "/external/make-api.js", "json!/api/butterconfig" ],
-  function( Dialog, Lang, HEADER_TEMPLATE, TUTORIAL_LIST_TEMPLATE, TUTORIAL_VIEW_TEMPLATE, UserData, WebmakerBar, TextBoxWrapper, ToolTip, Make, config ) {
+define([ "dialog/dialog", "util/lang", "text!layouts/header.html", "text!layouts/tutorial-list.html","text!layouts/tutorial-view.html", "ui/widget/textbox", "ui/widget/tooltip", "/external/make-api.js", "json!/api/butterconfig" ],
+  function( Dialog, Lang, HEADER_TEMPLATE, TUTORIAL_LIST_TEMPLATE, TUTORIAL_VIEW_TEMPLATE, TextBoxWrapper, ToolTip, Make, config ) {
 
   return function( butter, options ){
 
     options = options || {};
 
+    HEADER_TEMPLATE = HEADER_TEMPLATE.replace( /\{\{userbar\}\}/g, config.userbar );
+
     var TOOLTIP_NAME = "name-error-header-tooltip";
 
     var _this = this,
-        _userData = new UserData( butter, options ),
         _rootElement = Lang.domFragment( HEADER_TEMPLATE, ".butter-header" ),
-        _tutorialButtonContainer = _rootElement.querySelector( ".butter-tutorial-container" ),
+        _bodyWrapper = document.querySelector( ".body-wrapper" ),
+        _tutorialButtonContainer = document.querySelector( ".butter-tutorial-container" ),
         _saveButton = _rootElement.querySelector( ".butter-save-btn" ),
         _projectTitle = _rootElement.querySelector( ".butter-project-title" ),
         _projectName = _projectTitle.querySelector( ".butter-project-name" ),
@@ -23,12 +25,22 @@ define([ "dialog/dialog", "util/lang", "text!layouts/header.html", "text!layouts
         _projectMenuList = _projectMenu.querySelector( ".butter-btn-menu" ),
         _noProjectNameToolTip,
         _projectTitlePlaceHolderText = _projectName.innerHTML,
-        _toolTip;
+        _toolTip, _loginTooltip;
 
     // create a tooltip for the plrojectName element
     _toolTip = ToolTip.create({
       title: "header-title-tooltip",
       message: "Change the name of your project",
+      element: _projectTitle,
+      top: "60px"
+    });
+
+    // Default state
+    _toolTip.hidden = true;
+
+    _loginTooltip = ToolTip.create({
+      title: "header-title-tooltip",
+      message: "Login to save your project!",
       element: _projectTitle,
       top: "60px"
     });
@@ -41,19 +53,48 @@ define([ "dialog/dialog", "util/lang", "text!layouts/header.html", "text!layouts
 
     ToolTip.apply( _projectTitle );
 
+    function showErrorDialog( message ) {
+      var dialog = Dialog.spawn( "error-message", {
+        data: message,
+        events: {
+          cancel: function() {
+            dialog.close();
+          }
+        }
+      });
+      dialog.open();
+    }
+
     function saveProject() {
-      if ( !butter.cornfield.authenticated() ) {
-        _userData.authenticationRequired();
+      function afterSave() {
+        butter.editor.openEditor( "project-editor" );
+        togglePreviewButton( true );
+        toggleProjectNameListeners( true );
       }
-      else if ( butter.project.isSaved ) {
+
+      if ( butter.project.isSaved ) {
         return;
-      }
-      else if ( checkProjectName( butter.project.name ) ) {
-        _userData.authenticationRequired( prepare, nameError );
-        return;
-      }
-      else {
+      } else if ( !checkProjectName( butter.project.name ) ) {
         nameError();
+      } else {
+        if ( !butter.project.isSaved ) {
+          toggleSaveButton( false );
+
+          butter.project.save(function( e ) {
+            if ( e.error === "okay" ) {
+              afterSave();
+              return;
+            } else {
+              toggleSaveButton( true );
+              togglePreviewButton( false );
+              toggleProjectNameListeners( true );
+              showErrorDialog(  "There was a problem saving your project, so it was backed up to your browser's storage" +
+                                " (i.e., you can close or reload this page and it will be recovered). Please try again." );
+            }
+          });
+        } else {
+          afterSave();
+        }
       }
     }
 
@@ -107,16 +148,20 @@ define([ "dialog/dialog", "util/lang", "text!layouts/header.html", "text!layouts
       }
     }
 
-    function toggleProjectNameListeners( state ) {
+    function toggleProjectNameListeners( state, tooltipIgnore ) {
       if ( state ) {
         _projectTitle.addEventListener( "click", projectNameClick, false );
-        _projectTitle.classList.remove( "no-click" );
+        _projectName.classList.remove( "butter-disabled" );
         _projectName.addEventListener( "click", projectNameClick, false );
-        _toolTip.hidden = false;
       } else {
         _projectTitle.removeEventListener( "click", projectNameClick, false );
         _projectName.removeEventListener( "click", projectNameClick, false );
-        _toolTip.hidden = true;
+        _projectName.classList.add( "butter-disabled" );
+      }
+
+      if ( !tooltipIgnore ) {
+        _loginTooltip.hidden = state;
+        _toolTip.hidden = !state;
       }
     }
 
@@ -130,7 +175,7 @@ define([ "dialog/dialog", "util/lang", "text!layouts/header.html", "text!layouts
       input.value = _projectName.textContent !== _projectTitlePlaceHolderText ? _projectName.textContent : "";
       TextBoxWrapper.applyTo( input );
       _projectTitle.replaceChild( input, _projectName );
-      toggleProjectNameListeners( false );
+      toggleProjectNameListeners( false, true );
       input.focus();
       input.addEventListener( "blur", onBlur, false );
       input.addEventListener( "keypress", onKeyPress, false );
@@ -160,28 +205,15 @@ define([ "dialog/dialog", "util/lang", "text!layouts/header.html", "text!layouts
       login: function() {
         var isSaved = butter.project.isSaved;
 
-        _projectTitle.style.display = "";
-        _saveButton.innerHTML = "Save";
-
+        toggleProjectNameListeners( butter.cornfield.authenticated() );
         togglePreviewButton( isSaved );
-        toggleSaveButton( !isSaved );
+        toggleSaveButton( !isSaved && butter.cornfield.authenticated() );
         toggleProjectButton( isSaved );
       },
       logout: function() {
         togglePreviewButton( false );
-        toggleSaveButton( true );
-        toggleProjectButton( false );
-        _projectTitle.style.display = "none";
-        _saveButton.innerHTML = "Sign in to save";
-      },
-      mediaReady: function() {
-        _projectTitle.classList.remove( "butter-disabled" );
-        toggleSaveButton( !butter.project.isSaved );
-        toggleProjectNameListeners( true );
-      },
-      mediaChanging: function() {
-        _projectTitle.classList.add( "butter-disabled" );
         toggleSaveButton( false );
+        toggleProjectButton( false );
         toggleProjectNameListeners( false );
       }
     };
@@ -207,27 +239,6 @@ define([ "dialog/dialog", "util/lang", "text!layouts/header.html", "text!layouts
       if ( _noProjectNameToolTip && !_noProjectNameToolTip.destroyed ) {
         _projectTitle.removeEventListener( "mouseover", destroyToolTip, false );
         _noProjectNameToolTip.destroy();
-      }
-    }
-
-    function prepare() {
-      function afterSave() {
-        butter.editor.openEditor( "project-editor" );
-        togglePreviewButton( true );
-        toggleProjectNameListeners( true );
-      }
-
-      if ( !butter.project.isSaved ) {
-        toggleSaveButton( false );
-        _projectTitle.classList.add( "no-click" );
-
-        // If saving fails, restore the "Save" button so the user can try again.
-        _userData.save( function() { afterSave(); },
-                        function() { toggleSaveButton( true );
-                                     togglePreviewButton( false );
-                                     toggleProjectNameListeners( true ); } );
-      } else {
-        afterSave();
       }
     }
 
@@ -277,7 +288,7 @@ define([ "dialog/dialog", "util/lang", "text!layouts/header.html", "text!layouts
       _projectName.textContent = node.value || _projectTitlePlaceHolderText;
       if( checkProjectName( _projectName.textContent ) ) {
         butter.project.name = _projectName.textContent;
-        _userData.authenticationRequired( prepare );
+        saveProject();
       } else {
         nameError();
         toggleProjectNameListeners( true );
@@ -289,13 +300,12 @@ define([ "dialog/dialog", "util/lang", "text!layouts/header.html", "text!layouts
     this.attachToDOM = function() {
       document.body.classList.add( "butter-header-spacing" );
       document.body.insertBefore( _rootElement, document.body.firstChild );
+
+      loadDashboard();
     };
 
-    butter.listen( "autologinsucceeded", _this.views.login, false );
     butter.listen( "authenticated", _this.views.login, false );
     butter.listen( "logout", _this.views.logout, false );
-    butter.listen( "mediaready", _this.views.mediaReady );
-    butter.listen( "mediacontentchanged", _this.views.mediaChanging );
 
     butter.listen( "projectsaved", function() {
       // Disable "Save" button
@@ -324,17 +334,19 @@ define([ "dialog/dialog", "util/lang", "text!layouts/header.html", "text!layouts
             iframe = tutorialView.querySelector( ".tutorial-iframe" ),
             closeButton = tutorialView.querySelector( ".tutorial-close-button" ),
             viewTitle = tutorialView.querySelector( ".tutorial-view-title" ),
-            tutorialList = tutorialTemplate.querySelector( ".tutorial-list" );
+            tutorialList = document.querySelector( ".tutorial-list" ),
+            tutorialContainer = document.querySelector( ".butter-tutorial-container" );
 
-        if ( err || !results.length) {
+        if ( err || !results.length ) {
           return;
         }
 
-        _tutorialButtonContainer.appendChild( tutorialTemplate );
+        tutorialList.classList.remove( "hidden" );
 
         var onCoverMouseUp = function() {
           iframeCover.style.display = "none";
           tutorialView.addEventListener( "mousedown", onCoverMouseDown, false );
+          document.removeEventListener( "mouseup", onCoverMouseUp, false );
         };
 
         var onCoverMouseDown = function() {
@@ -354,7 +366,7 @@ define([ "dialog/dialog", "util/lang", "text!layouts/header.html", "text!layouts
             tutorialView.style.width = "";
           }, false );
           tutorialElement.innerHTML = item.title;
-          tutorialList.appendChild( tutorialElement );
+          tutorialContainer.appendChild( tutorialElement );
         };
 
         tutorialView.addEventListener( "mousedown", onCoverMouseDown, false );
@@ -380,7 +392,7 @@ define([ "dialog/dialog", "util/lang", "text!layouts/header.html", "text!layouts
     }
 
     function loadDashboard() {
-      var myProjectsButton = document.querySelector( ".my-projects-title" ),
+      var myProjectsButton = document.querySelector( ".user-info > .makes" ),
           container = document.querySelector( ".my-projects-container" ),
           iframe = document.querySelector( ".my-projects-iframe" );
 
@@ -412,7 +424,12 @@ define([ "dialog/dialog", "util/lang", "text!layouts/header.html", "text!layouts
         _projectName.textContent = butter.project.name;
       }
 
-      loadDashboard();
+      if ( !butter.cornfield.authenticated() ) {
+        toggleProjectNameListeners( false );
+        togglePreviewButton( false );
+        toggleSaveButton( false );
+        toggleProjectButton( false );
+      }
 
       if ( butter.project.publishUrl ||
            butter.project.remixedFromUrl ) {
