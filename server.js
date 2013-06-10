@@ -383,10 +383,14 @@ app.get( '/dashboard', middleware.isAuthenticated, filter.isStorageAvailable, fu
 });
 
 app.get( '/editor', function( req, res ) {
-  res.render( 'editor.html');
+  res.render( 'editor.html', {
+    csrf: req.session._csrf
+  });
 });
 app.get( '/templates/basic', function( req, res ) {
-  res.render( 'editor.html');
+  res.render( 'editor.html', {
+    csrf: req.session._csrf
+  });
 });
 
 app.get( '/external/make-api.js', function( req, res ) {
