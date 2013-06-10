@@ -139,12 +139,12 @@ define( [ "core/eventmanager", "core/media", "util/sanitizer" ],
         enumerable: true
       },
 
-       "makeid": {
-          get: function() {
-            return _makeid;
-          },
-          enumerable: true
-       },
+      "makeid": {
+        get: function() {
+          return _makeid;
+        },
+        enumerable: true
+      },
 
       "data": {
         get: function() {

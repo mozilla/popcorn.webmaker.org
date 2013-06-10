@@ -210,6 +210,9 @@ function checkHTML( callback ) {
       // Let <li> be in fragments.
       text: "Element “li” not allowed as child of element “body” in this context. (Suppressing further errors from this subtree.)",
       when: isHTMLFragment
+    },
+    {
+      text: "Bad value “persona-email” for attribute “name” on element “meta”: Keyword “persona-email” is not registered."
     }
   ];
 
