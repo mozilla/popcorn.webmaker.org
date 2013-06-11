@@ -82,7 +82,8 @@ if ( config.USE_WEBFAKER ) {
 app.locals({
   config: {
     ga_account: config.GA_ACCOUNT,
-    ga_domain: config.GA_DOMAIN
+    ga_domain: config.GA_DOMAIN,
+    user_bar: config.USER_BAR
   }
 });
 
@@ -182,7 +183,7 @@ require( 'express-persona' )( app, {
 require( "webmaker-loginapi" )( app, config.LOGIN_SERVER_URL_WITH_AUTH );
 
 var routes = require('./routes');
-routes( app, Project, filter, sanitizer, stores, utils, metrics, makeapiConfig );
+routes = routes( app, Project, filter, sanitizer, stores, utils, metrics, makeapiConfig );
 
 function writeEmbedShell( embedPath, url, data, callback ) {
   if( !writeEmbedShell.template ) {
@@ -384,58 +385,19 @@ app.post( '/api/publish/:id',
   });
 });
 
-app.get( '/', function( req, res ) {
-  res.render( 'landing.html' );
-});
-
-app.get( '/index.html', function( req, res ) {
-  res.render( 'landing.html' );
-});
+app.get( '/', routes.pages.landing );
+app.get( '/index.html', routes.pages.landing );
 
 app.get( '/dashboard', middleware.isAuthenticated, filter.isStorageAvailable, function( req, res ) {
   res.redirect( config.AUDIENCE + "/myprojects?app=popcorn&email=" + req.session.email );
 });
 
-app.get( '/editor', function( req, res ) {
-  res.render( 'editor.html', {
-    csrf: req.session._csrf,
-    personaEmail: req.session.email,
-    userbar: config.USER_BAR
-  });
-});
-
-// Default operation is edit if owned, remix if not owned
-app.get( '/editor/:id', function( req, res ) {
-  res.render( 'editor.html', {
-    csrf: req.session._csrf,
-    personaEmail: req.session.email,
-    userbar: config.USER_BAR
-  });
-});
-
-app.get( '/editor/:id/edit', function( req, res ) {
-  res.render( 'editor.html', {
-    csrf: req.session._csrf,
-    personaEmail: req.session.email,
-    userbar: config.USER_BAR
-  });
-});
-
-app.get( '/editor/:id/remix', function( req, res ) {
-  res.render( 'editor.html', {
-    csrf: req.session._csrf,
-    personaEmail: req.session.email,
-    userbar: config.USER_BAR
-  });
-});
-
-app.get( '/templates/basic', function( req, res ) {
-  res.render( 'editor.html', {
-    csrf: req.session._csrf,
-    personaEmail: req.session.email,
-    userbar: config.USER_BAR
-  });
-});
+app.get( '/editor', routes.pages.editor );
+app.get( '/editor/:id', routes.pages.editor );
+app.get( '/editor/:id/edit', routes.pages.editor );
+app.get( '/editor/:id/remix', routes.pages.editor );
+app.get( '/templates/basic', routes.pages.editor );
+app.get( '/templates/basic/index.html', routes.pages.editor );
 
 app.get( '/external/make-api.js', function( req, res ) {
   res.sendfile( path.resolve( __dirname, "node_modules/makeapi/public/js/make-api.js" ) );
@@ -444,7 +406,7 @@ app.get( '/external/make-api.js', function( req, res ) {
 app.get( '/api/butterconfig', function( req, res ) {
   res.json({
     "makeEndpoint": config.MAKE_ENDPOINT,
-    "userbar": config.USER_BAR
+    "user_bar": app.locals.config.user_bar
   });
 });
 

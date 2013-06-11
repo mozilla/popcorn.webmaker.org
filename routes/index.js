@@ -273,4 +273,9 @@ module.exports = function routesCtor( app, Project, filter, sanitizer,
     metrics.increment( 'user.feedback' );
   });
 
+  var routes = {
+    pages: require( "./pages" )
+  };
+
+  return routes;
 };
