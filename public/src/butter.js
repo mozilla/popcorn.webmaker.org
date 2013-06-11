@@ -849,6 +849,11 @@ window.Butter = {
           }
         });
 
+        // Backwards compat for urls loaded as <HOSTNAME>/templates/basic/?savedDataUrl=someConfig.json
+        if ( savedDataUrl ) {
+          savedDataUrl = "/templates/basic/" + savedDataUrl;
+        }
+
         // the new way to load a project is with /editor/:id/edit
         if ( !savedDataUrl ) {
           item = window.location.pathname.split( "/" );
@@ -858,9 +863,11 @@ window.Butter = {
             remixOrEdit = item[ 3 ];
             if ( remixOrEdit === "remix" ) {
               savedDataUrl = "/api/remix/" + item[ 2 ];
-            } else {
-              remixOrEdit = "edit";
+            } else if ( remixOrEdit === "edit" ) {
               savedDataUrl = "/api/project/" + item[ 2 ];
+            } else {
+              // Backwards compat for urls that link to empty project as <HOSTNAME>/templates/basic
+              savedDataUrl = _config.savedDataUrl;
             }
           }
         }
