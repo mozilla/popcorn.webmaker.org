@@ -147,7 +147,7 @@ app.configure( function() {
   metrics = require('./lib/metrics.js').create( config.metrics );
 
   utils = require( './lib/utils' )({
-    EMBED_HOSTNAME: config.dirs.embedHostname ? config.dirs.embedHostname : APP_HOSTNAME,
+    EMBED_HOSTNAME: config.EMBED_HOSTNAME ? config.EMBED_HOSTNAME : APP_HOSTNAME,
     EMBED_SUFFIX: '_'
   }, stores );
 
