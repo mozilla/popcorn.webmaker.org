@@ -433,6 +433,10 @@ define( [ "core/eventmanager", "core/media", "util/sanitizer" ],
             // Let consumers know that the project is now saved;
             _this.dispatch( "projectsaved" );
 
+            if ( window.history.replaceState ) {
+              window.history.replaceState({}, "", "/editor/" + _id + "/edit" );
+            }
+
             callback( e );
           });
         } else {

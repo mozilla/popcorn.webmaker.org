@@ -836,15 +836,34 @@ window.Butter = {
        */
       function attemptDataLoad( finishedCallback ) {
         var savedDataUrl,
+            remixOrEdit = "",
+            item = [],
             project = new Project( _this );
 
         // see if savedDataUrl is in the page's query string
+        // using query string here is kept for backwards comp
         window.location.search.substring( 1 ).split( "&" ).forEach(function( item ){
           item = item.split( "=" );
           if ( item && item[ 0 ] === "savedDataUrl" ) {
             savedDataUrl = item[ 1 ];
           }
         });
+
+        // the new way to load a project is with /editor/:id/edit
+        if ( !savedDataUrl ) {
+          item = window.location.pathname.split( "/" );
+          // item[ 2 ] is the id
+          if ( item[ 2 ] ) {
+            // item[ 3 ] is remix or edit
+            remixOrEdit = item[ 3 ];
+            if ( remixOrEdit === "remix" ) {
+              savedDataUrl = "/api/remix/" + item[ 2 ];
+            } else {
+              remixOrEdit = "edit";
+              savedDataUrl = "/api/project/" + item[ 2 ];
+            }
+          }
+        }
 
         function doImport( savedData ) {
           project.import( savedData );
@@ -859,19 +878,31 @@ window.Butter = {
           // if there's no savedData returned, or the returned object does not
           // contain a media attribute, load the config specified saved data
           if ( !savedData || savedData.error || !savedData.media ) {
-            // if previous attempt failed, try loading data from the savedDataUrl value in the config
+            // If nothing comes back, it means we're trying to edit a page we don't own.
+            // Try a remix.
+            if ( remixOrEdit === "edit" && savedData.error === "project not found" ) {
+              remixOrEdit = "remix";
+              loadFromSavedDataUrl( savedDataUrl, function( savedData ) {
+                if ( savedData ) {
+                  doImport( savedData );
+                }
+                finishedCallback( project );
+              });
+              return;
+            }
+            // if previous attempt failed,
+            // try loading data from the savedDataUrl value in the config
             loadFromSavedDataUrl( _config.value( "savedDataUrl" ), function( savedData ) {
               if ( savedData ) {
                 doImport( savedData );
               }
               finishedCallback( project );
             });
+            return;
           }
-          else {
-            // otherwise, attempt import
-            doImport( savedData );
-            finishedCallback( project );
-          }
+          // otherwise, attempt import
+          doImport( savedData );
+          finishedCallback( project );
         });
 
       }
