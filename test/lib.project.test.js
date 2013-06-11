@@ -20,7 +20,6 @@ webfaker.start({
         },
         email: mockEmail,
         name: "Test User",
-        author: "Test User",
         template: "basic"
       },
       mockStores = require( "./mock.store" ),
@@ -68,7 +67,7 @@ webfaker.start({
   });
 
   test( "create valid parameters", function( t ) {
-    t.plan( 6 );
+    t.plan( 5 );
 
     var mockCallback = function( err, project ) {
       // Store ID for later tests
@@ -78,7 +77,6 @@ webfaker.start({
       t.equal( project.data, JSON.stringify( mockData.data ), "Properly Set Data of Project" );
       t.equal( project.email, mockData.email, "Properly Set Email of Project" );
       t.equal( project.name, mockData.name, "Properly Set Name of Project" );
-      t.equal( project.author, mockData.author, "Properly Set Author of Project" );
       t.equal( project.template, mockData.template, "Properly Set Template of Project" );
 
       t.end();
@@ -208,7 +206,7 @@ webfaker.start({
   });
 
   test( "find valid parameters", function( t ) {
-    t.plan( 7 );
+    t.plan( 6 );
 
     var mockCallback = function( err, project ) {
           t.ok( project, "Project was retrieved" );
@@ -216,7 +214,6 @@ webfaker.start({
           t.equal( project.data, JSON.stringify( mockData.data ), "Properly Set Data of Project" );
           t.equal( project.email, mockData.email, "Properly Set Email of Project" );
           t.equal( project.name, mockData.name, "Properly Set Name of Project" );
-          t.equal( project.author, mockData.author, "Properly Set Author of Project" );
           t.equal( project.template, mockData.template, "Properly Set Template of Project" );
 
           t.end();
@@ -239,20 +236,18 @@ webfaker.start({
   });
 
   test( "update valid parameters", function( t ) {
-    t.plan( 4 );
+    t.plan( 3 );
 
     var updateData = {
           data: {
             test: "NEW TEXT"
           },
           name: "Test Userd",
-          author: "Test Userd",
           template: "advanced"
         },
         mockCallback = function( err, project ) {
           t.equal( project.data, JSON.stringify( updateData.data ), "Properly updated Data of Project" );
           t.equal( project.name, updateData.name, "Properly updated Name of Project" );
-          t.equal( project.author, updateData.author, "Properly updated Author of Project" );
           t.equal( project.template, updateData.template, "Properly updated Template of Project" );
 
           t.end();

@@ -11,17 +11,13 @@ define( [ "util/xhr", "http://webmaker.mofostaging.net/sso/include.js" ], functi
   var Cornfield = function( butter ) {
 
     var authenticated = false,
-        email = "",
-        name = "",
         username = "",
         self = this;
 
     navigator.idSSO.app = {
-      onlogin: function( loggedInUser ) {
+      onlogin: function( webmakerEmail, webmakerUserName ) {
         authenticated = true;
-        email = loggedInUser;
-        name = loggedInUser;
-        username = loggedInUser;
+        username = webmakerUserName;
         butter.dispatch( "authenticated" );
       },
       onlogout: function() {
@@ -34,14 +30,6 @@ define( [ "util/xhr", "http://webmaker.mofostaging.net/sso/include.js" ], functi
     butter.listen( "ready", function onMediaReady() {
       butter.unlisten( "ready", onMediaReady );
     });
-
-    this.email = function() {
-      return email;
-    };
-
-    this.name = function() {
-      return name;
-    };
 
     this.username = function() {
       return username;

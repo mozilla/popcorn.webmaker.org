@@ -10,7 +10,7 @@ define( [ "core/eventmanager", "core/media", "util/sanitizer" ],
   function Project( butter ) {
 
     var _this = this,
-        _id, _name, _template, _author, _description, _dataObject,
+        _id, _name, _template, _description, _dataObject,
         _publishUrl, _iframeUrl, _remixedFrom, _remixedFromUrl, _makeid,
 
         _tags = [],
@@ -83,19 +83,6 @@ define( [ "core/eventmanager", "core/media", "util/sanitizer" ],
         set: function( value ) {
           if ( value !== _template ) {
             _template = value;
-            invalidate();
-          }
-        },
-        enumerable: true
-      },
-
-      "author": {
-        get: function() {
-          return _author;
-        },
-        set: function( value ) {
-          if ( value !== _author ) {
-            _author = value;
             invalidate();
           }
         },
@@ -256,10 +243,6 @@ define( [ "core/eventmanager", "core/media", "util/sanitizer" ],
         _template = json.template;
       }
 
-      if ( json.author ) {
-        _author = json.author;
-      }
-
       if ( json.makeid ) {
         _makeid = json.makeid;
       }
@@ -349,7 +332,7 @@ define( [ "core/eventmanager", "core/media", "util/sanitizer" ],
       var data = _this.data;
       data.name = _name;
       data.template = _template;
-      data.author = _author;
+      data.author = butter.cornfield.username();
       data.description = _description;
       data.tags = _tags.join( "," );
       data.thumbnail = _thumbnail;
@@ -389,7 +372,7 @@ define( [ "core/eventmanager", "core/media", "util/sanitizer" ],
         id: _id,
         name: _name,
         template: _template,
-        author: _author,
+        author: butter.cornfield.username(),
         description: _description,
         thumbnail: _thumbnail,
         data: _this.data,
