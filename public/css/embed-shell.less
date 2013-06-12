@@ -20,7 +20,11 @@ body {
   background: #FFF;
 }
 
-iframe {
+.wrapper {
+  margin: 0 auto;
+}
+
+#embed {
   width: 100%;
   height: 100%;
   border: 0;
@@ -34,25 +38,37 @@ iframe {
 * Media queries
 */
 @media only screen and ( max-width: @medium ) {
-  iframe {
+  #embed {
     .height-width( @small );
+  }
+  .wrapper {
+    width: @small;
   }
 }
 
 @media only screen and ( min-width: @medium ) {
-  iframe {
+  #embed {
     .height-width( @medium );
+  }
+  .wrapper {
+    width: @medium;
   }
 }
 
 @media only screen and ( min-width: @large ) {
-  iframe {
+  #embed {
     .height-width( @large );
+  }
+  .wrapper {
+    width: @large;
   }
 }
 
 @media only screen and ( min-width: @xlarge ) {
-  iframe {
+  #embed {
     .height-width( @xlarge );
+  }
+  .wrapper {
+    width: @xlarge;
   }
 }
