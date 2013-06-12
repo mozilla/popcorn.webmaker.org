@@ -1,13 +1,12 @@
 'use strict';
 
-var metrics = require( "../lib/metrics" );
+var metrics = require( "../lib/metrics" ),
+    utilities = require( "../lib/utilities" );
 
 module.exports = function routesCtor( app, Project, filter, sanitizer,
-                                      stores, utils, makeapiConfig ) {
+                                      stores, makeapiConfig ) {
 
-  // Keep track of whether this is production or development
-  var deploymentType = app.settings.env === "production" ? "production" : "development",
-      makeClient = require( "makeapi" ).makeAPI( makeapiConfig );
+  var makeClient = require( "makeapi" ).makeAPI( makeapiConfig );
 
   // Strip away project data, email, etc.
   function pruneSearchResults( results ) {
@@ -21,8 +20,9 @@ module.exports = function routesCtor( app, Project, filter, sanitizer,
         createdAt: result.createdAt,
         updatedAt: result.updatedAt,
         // Add URLs for embed, embed shell
-        publishUrl: utils.generatePublishUrl( result.id ),
-        iframeUrl: utils.generateIframeUrl( result.id ),
+        // XXX Using result.email is wrong, need to add a new column
+        publishUrl: utilities.embedShellURL( result.email, result.id ),
+        iframeUrl: utilities.embedURL( result.email, result.id ),
         thumbnail: result.thumbnail
       };
     });
@@ -82,12 +82,13 @@ module.exports = function routesCtor( app, Project, filter, sanitizer,
       projectJSON.projectID = doc.id;
       projectJSON.description = doc.description;
       projectJSON.template = doc.template;
-      projectJSON.publishUrl = utils.generatePublishUrl( doc.id );
-      projectJSON.iframeUrl = utils.generateIframeUrl( doc.id );
+      projectJSON.publishUrl = utilities.embedShellURL( req.session.username, doc.id );
+      projectJSON.iframeUrl = utilities.embedURL( req.session.username, doc.id );
       projectJSON.makeid = doc.makeid;
       if ( doc.remixedFrom || doc.remixedFrom === 0 ) {
         projectJSON.remixedFrom = doc.remixedFrom;
-        projectJSON.remixedFromUrl = utils.generateIframeUrl( doc.remixedFrom );
+        // TODO should be loading something from the document
+        projectJSON.remixedFromUrl = utilities.embedURL( doc.email, doc.remixedFrom );
       }
 
       makeClient.id( doc.makeid ).then(function( err, make ) {
@@ -146,8 +147,8 @@ module.exports = function routesCtor( app, Project, filter, sanitizer,
       }
 
       // Delete published projects, too
-      var embedShell = utils.generateIdString( id ),
-          embedDoc = embedShell + utils.constants().EMBED_SUFFIX;
+      var embedShell = utilities.generateIdString( id ),
+          embedDoc = embedShell + "_";
 
       // If we can't delete the file, it's already gone, ignore errors.
       // Fire-and-forget.

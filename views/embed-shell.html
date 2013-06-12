@@ -17,18 +17,18 @@
     <meta property="og:site_name" content="Mozilla Webmaker">
 
     <title>{{projectName}} - Popcorn Maker</title>
-    <link rel="stylesheet" href="{{baseHref}}/css/makedetails.css">
-    <link rel="stylesheet" href="{{baseHref}}/css/embed-shell.css">
-    <script src="{{makeEndpoint}}/js/make-api.js"></script>
+    <link rel="stylesheet" href="{{config.app_hostname}}/css/makedetails.css">
+    <link rel="stylesheet" href="{{config.app_hostname}}/css/embed-shell.css">
+    <script src="{{config.make_endpoint}}/js/make-api.js"></script>
     {% include "googleanalytics.html" %}
   </head>
   <body>
     <main id="content" class="content clearfix">
       <div class="hide make-details">
-        <iframe id="details-iframe" src="{{config.audience}}/details/{{makeID}}"></iframe>
+        <iframe id="details-iframe" src="{{config.app_hostname}}/details/{{makeID}}"></iframe>
       </div>
       <div class="make-bar">
-        <div class="wrapper"><span class="logospan"><a href="#"><img src="{{baseHref}}/resources/img/logo_small.png" alt="Mozilla Webmaker"></a><span class="made-with">Made with<a href="//webmaker.org"> Webmaker</a></span></span><span class="expand-collapse">Details<img src="{{baseHref}}/resources/icons/icon-arrow-down.png"></span>
+        <div class="wrapper"><span class="logospan"><a href="#"><img src="{{config.app_hostname}}/resources/img/logo_small.png" alt="Mozilla Webmaker"></a><span class="made-with">Made with<a href="//webmaker.org"> Webmaker</a></span></span><span class="expand-collapse">Details<img src="{{config.app_hostname}}/resources/icons/icon-arrow-down.png"></span>
         <div class="button"><a href="{{projectUrl}}/remix" target="_blank" class="button-remix"><span>Remix</span></a></div>
         </div>
       </div>
@@ -40,7 +40,7 @@
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <script type="text/javascript">
       $(document).ready(function() {
-        var img_path = "{{baseHref}}/resources/icons/",
+        var img_path = "{{config.app_hostname}}/resources/icons/",
             img_up = "icon-arrow-up.png",
             img_down = "icon-arrow-down.png",
             animationSpeed = 200,

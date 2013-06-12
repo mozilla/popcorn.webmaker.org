@@ -48,7 +48,7 @@ define([ "dialog/dialog", "util/lang", "text!layouts/header.html", "text!layouts
     });
 
     var make = new Make({
-      apiURL: config.makeEndpoint
+      apiURL: config.make_endpoint
     });
 
     _this.element = _rootElement;

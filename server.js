@@ -18,7 +18,6 @@ var express = require('express'),
     sanitizer = require( './lib/sanitizer' ),
     FileStore = require( './lib/file-store.js' ),
     metrics = require('./lib/metrics.js'),
-    utils,
     middleware = require( './lib/middleware' ),
     stores = {},
     APP_HOSTNAME = config.hostname,
@@ -59,9 +58,10 @@ if ( config.USE_WEBFAKER ) {
 
 app.locals({
   config: {
-    audience: config.AUDIENCE,
+    app_hostname: APP_HOSTNAME,
     ga_account: config.GA_ACCOUNT,
     ga_domain: config.GA_DOMAIN,
+    make_endpoint: config.MAKE_ENDPOINT,
     user_bar: config.USER_BAR
   }
 });
@@ -148,12 +148,7 @@ app.configure( function() {
       res.render( 'error.html', { message: "This page doesn't exist", status: 404 });
     });
 
-  utils = require( './lib/utils' )({
-    EMBED_HOSTNAME: config.EMBED_HOSTNAME ? config.EMBED_HOSTNAME : APP_HOSTNAME,
-    EMBED_SUFFIX: '_'
-  }, stores );
-
-  Project = require( './lib/project' )( config.database, makeapiConfig, utils );
+  Project = require( './lib/project' )( config.database, makeapiConfig );
   filter = require( './lib/filter' )( Project.isDBOnline );
 });
 
@@ -163,136 +158,14 @@ require( 'express-persona' )( app, {
 require( "webmaker-loginapi" )( app, config.LOGIN_SERVER_URL_WITH_AUTH );
 
 var routes = require('./routes');
-routes = routes( app, Project, filter, sanitizer, stores, utils, makeapiConfig );
+routes = routes( app, Project, filter, sanitizer, stores, makeapiConfig );
 
-function writeEmbedShell( embedPath, url, data, callback ) {
-  if( !writeEmbedShell.template ) {
-    writeEmbedShell.template = nunjucksEnv.getTemplate( 'embed-shell.html' );
-  }
-  var sanitized = sanitizer.compressHTMLEntities( writeEmbedShell.template.render( data ) );
-  stores.publish.write( embedPath, sanitized, callback );
-}
+app.param( "project", middleware.loadOwnProject( Project ));
 
-function writeEmbed( embedPath, url, data, callback ) {
-  if( !writeEmbed.template ) {
-    writeEmbed.template = nunjucksEnv.getTemplate( 'embed.html' );
-  }
-  var sanitized = sanitizer.compressHTMLEntities( writeEmbed.template.render( data ) );
-  stores.publish.write( embedPath, sanitized, callback );
-}
-
-app.post( '/api/publish/:id',
+app.post( '/api/publish/:project',
   filter.isLoggedIn, filter.isStorageAvailable,
-  function publishRoute( req, res ) {
-
-  var email = req.session.email,
-      id = parseInt( req.params.id, 10 );
-
-  if ( isNaN( id ) ) {
-    res.json( { error: "ID was not a number" }, 500 );
-    return;
-  }
-
-  Project.find( { id: id, email: email }, function( err, project ) {
-    if ( err ) {
-      res.json( { error: err }, 500);
-      return;
-    }
-
-    if ( !project ) {
-      res.json( { error: 'project not found' }, 404);
-      return;
-    }
-
-    var projectData = JSON.parse( project.data, sanitizer.escapeHTMLinJSON );
-
-      var baseHref = APP_HOSTNAME + "/editor/",
-          popcornString = '<script>';
-
-      projectData.media.forEach(function( currentMedia ) {
-        // We expect a string (one url) or an array of url strings.
-        // Turn a single url into an array of 1 string.
-        var mediaUrls = typeof currentMedia.url === "string" ? [ currentMedia.url ] : currentMedia.url;
-        var mediaUrlsString = '[ "' + mediaUrls.join('", "') + '" ]';
-
-        var mediaPopcornOptions = currentMedia.popcornOptions || {};
-        // Force the Popcorn instance we generate to have an ID we can query.
-        mediaPopcornOptions.id = "Butter-Generated";
-
-        // src/embed.js initializes Popcorn by executing the global popcornDataFn()
-        popcornString += '\nvar popcornDataFn = function(){';
-        popcornString += '\nvar popcorn = Popcorn.smart("#' + currentMedia.target + '", ' +
-                         mediaUrlsString + ', ' + JSON.stringify( mediaPopcornOptions ) + ');';
-        currentMedia.tracks.forEach(function( currentTrack ) {
-          currentTrack.trackEvents.forEach(function( currentTrackEvent ) {
-            popcornString += '\npopcorn.' + currentTrackEvent.type + '(';
-            popcornString += JSON.stringify( currentTrackEvent.popcornOptions, null, 2 );
-            popcornString += ');';
-          });
-        });
-
-        popcornString += '};\n';
-      });
-
-      popcornString += '</script>\n';
-
-      // Convert 1234567890 => "kf12oi"
-      var description = project.description || 'Created with Popcorn Maker - part of the Mozilla Webmaker initiative',
-          idBase36 = utils.generateIdString( id ),
-          publishUrl = utils.generatePublishUrl( id ),
-          iframeUrl = utils.generateIframeUrl( id );
-
-      function finished( err ) {
-        if ( err ) {
-          res.json({ error: 'internal server error' }, 500);
-        } else {
-          res.json({ error: 'okay', publishUrl: publishUrl, iframeUrl: iframeUrl });
-          metrics.increment( 'project.publish' );
-        }
-      }
-
-      // This is a query string-only URL because of the <base> tag
-      var remixUrl = project.id + "/remix",
-          mediaUrl = projectData.media[ 0 ].url,
-          attribURL = Array.isArray( mediaUrl ) ? mediaUrl[ 0 ] : mediaUrl;
-
-      function publishEmbedShell() {
-        // Write out embed shell HTML
-        writeEmbedShell( idBase36, publishUrl,
-                         {
-                           author: project.author,
-                           config: app.locals.config,
-                           projectName: project.name,
-                           description: description,
-                           embedShellSrc: publishUrl,
-                           embedSrc: iframeUrl,
-                           baseHref: APP_HOSTNAME,
-                           thumbnail: project.thumbnail,
-                           remixUrl: baseHref + remixUrl,
-                           makeEndpoint: config.MAKE_ENDPOINT,
-                           makeID: project.makeid
-                         },
-                         finished );
-      }
-
-      writeEmbed( idBase36 + utils.constants().EMBED_SUFFIX, iframeUrl,
-                  {
-                    id: id,
-                    author: project.author,
-                    config: app.locals.config,
-                    title: project.name,
-                    description: description,
-                    mediaSrc: attribURL,
-                    embedShellSrc: publishUrl,
-                    baseHref: baseHref,
-                    remixUrl: baseHref + remixUrl,
-                    popcorn: popcornString,
-                    thumbnail: project.thumbnail
-                  },
-                  publishEmbedShell );
-
-  });
-});
+  routes.api.publish
+);
 
 app.get( '/dashboard', middleware.isAuthenticated, filter.isStorageAvailable, function( req, res ) {
   res.redirect( config.AUDIENCE + "/me?app=popcorn" );
@@ -321,7 +194,7 @@ app.get( '/healthcheck', routes.api.healthcheck );
 
 app.get( '/api/butterconfig', function( req, res ) {
   res.json({
-    "makeEndpoint": config.MAKE_ENDPOINT,
+    "make_endpoint": app.locals.config.make_endpoint,
     "user_bar": app.locals.config.user_bar,
     "audience": app.locals.config.audience
   });
