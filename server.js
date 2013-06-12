@@ -296,7 +296,7 @@ app.get( '/', routes.pages.landing );
 app.get( '/index.html', routes.pages.landing );
 
 app.get( '/dashboard', middleware.isAuthenticated, filter.isStorageAvailable, function( req, res ) {
-  res.redirect( config.AUDIENCE + "/myprojects?app=popcorn&email=" + req.session.email );
+  res.redirect( config.AUDIENCE + "/me?app=popcorn" );
 });
 
 app.get( '/editor', routes.pages.editor );
