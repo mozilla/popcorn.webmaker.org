@@ -90,10 +90,18 @@ app.configure( function() {
         "/src/butter.js": {
           include: [ "butter" ],
           mainConfigFile: WWW_ROOT + "/src/popcorn.js",
+          paths: {
+            "make-api": path.resolve( __dirname, "node_modules/makeapi/public/js/make-api" ),
+            "sso-include": path.resolve( __dirname, "node_modules/webmaker-sso/include" )
+          }
         },
         "/src/embed.js": {
           include: [ "embed" ],
           mainConfigFile: WWW_ROOT + "/src/popcorn.js",
+        },
+        "/templates/assets/editors/editorhelper.js": {
+          include: [ "../templates/assets/editors/editorhelper" ],
+          mainConfigFile: WWW_ROOT + "/src/popcorn.js"
         }
       },
       defaults: {
@@ -301,6 +309,9 @@ app.get( '/templates/basic/index.html', routes.pages.editor );
 
 app.get( '/external/make-api.js', function( req, res ) {
   res.sendfile( path.resolve( __dirname, "node_modules/makeapi/public/js/make-api.js" ) );
+});
+app.get( '/external/sso-include.js', function( req, res ) {
+  res.sendfile( path.resolve( __dirname, "node_modules/webmaker-sso/include.js" ) );
 });
 
 app.post( '/crash', routes.api.crash );

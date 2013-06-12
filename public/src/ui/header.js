@@ -1,5 +1,5 @@
 /*global $*/
-define([ "dialog/dialog", "util/lang", "text!layouts/header.html", "text!layouts/tutorial-list.html","text!layouts/tutorial-view.html", "ui/widget/textbox", "ui/widget/tooltip", "/external/make-api.js", "json!/api/butterconfig" ],
+define([ "dialog/dialog", "util/lang", "text!layouts/header.html", "text!layouts/tutorial-list.html","text!layouts/tutorial-view.html", "ui/widget/textbox", "ui/widget/tooltip", "make-api", "json!/api/butterconfig" ],
   function( Dialog, Lang, HEADER_TEMPLATE, TUTORIAL_LIST_TEMPLATE, TUTORIAL_VIEW_TEMPLATE, TextBoxWrapper, ToolTip, Make, config ) {
 
   return function( butter, options ){

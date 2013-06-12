@@ -2,7 +2,7 @@
  * If a copy of the MIT license was not distributed with this file, you can
  * obtain one at https://raw.github.com/mozilla/butter/master/LICENSE */
 
-define( [ "util/xhr", "http://webmaker.mofostaging.net/sso/include.js" ], function( xhr ) {
+define( [ "util/xhr", "sso-include" ], function( xhr ) {
 
   var Cornfield = function( butter ) {
 

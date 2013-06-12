@@ -33,7 +33,11 @@ requirejs.config({
 
     // RequireJS
     "text": "../external/require/text",
-    "json": "../external/require/json"
+    "json": "../external/require/json",
+
+    // Our other APIs
+    "make-api": "../external/make-api",
+    "sso-include": "../external/sso-include"
   },
   // shim config defines dependencies between non-AMD modules, which is all of the Popcorn code
   shim: {
