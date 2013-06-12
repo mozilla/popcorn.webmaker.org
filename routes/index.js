@@ -9,10 +9,6 @@ module.exports = function routesCtor( app, Project, filter, sanitizer,
       api = require( "./api" )( metrics, utils, stores ),
       makeClient = require( "makeapi" ).makeAPI( makeapiConfig );
 
-  app.get( '/healthcheck', api.healthcheck );
-
-  app.put( "/api/image", filter.isImage, api.image );
-
   // Strip away project data, email, etc.
   function pruneSearchResults( results ) {
     return results.map( function( result ) {
@@ -253,6 +249,7 @@ module.exports = function routesCtor( app, Project, filter, sanitizer,
   });
 
   var routes = {
+    api: api,
     pages: require( "./pages" )
   };
 

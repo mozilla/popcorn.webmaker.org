@@ -310,12 +310,16 @@ app.get( '/external/make-api.js', function( req, res ) {
   res.sendfile( path.resolve( __dirname, "node_modules/makeapi/public/js/make-api.js" ) );
 });
 
+app.get( '/healthcheck', routes.api.healthcheck );
+
 app.get( '/api/butterconfig', function( req, res ) {
   res.json({
     "makeEndpoint": config.MAKE_ENDPOINT,
     "user_bar": app.locals.config.user_bar
   });
 });
+
+app.put( "/api/image", filter.isImage, routes.api.image );
 
 app.listen( port, function() {
   console.log( 'HTTP Server started on ' + APP_HOSTNAME );
