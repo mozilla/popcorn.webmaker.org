@@ -17,7 +17,7 @@ var express = require('express'),
     filter,
     sanitizer = require( './lib/sanitizer' ),
     FileStore = require( './lib/file-store.js' ),
-    metrics,
+    metrics = require('./lib/metrics.js'),
     utils,
     middleware = require( './lib/middleware' ),
     stores = {},
@@ -142,10 +142,6 @@ app.configure( function() {
       res.render( 'error.html', { message: "This page doesn't exist", status: 404 });
     });
 
-  // Metrics [optional]: allow data to be collected during runtime.
-  // See JSON config file for details on metrics setup.
-  metrics = require('./lib/metrics.js').create( config.metrics );
-
   utils = require( './lib/utils' )({
     EMBED_HOSTNAME: config.EMBED_HOSTNAME ? config.EMBED_HOSTNAME : APP_HOSTNAME,
     EMBED_SUFFIX: '_'
@@ -161,7 +157,7 @@ require( 'express-persona' )( app, {
 require( "webmaker-loginapi" )( app, config.LOGIN_SERVER_URL_WITH_AUTH );
 
 var routes = require('./routes');
-routes = routes( app, Project, filter, sanitizer, stores, utils, metrics, makeapiConfig );
+routes = routes( app, Project, filter, sanitizer, stores, utils, makeapiConfig );
 
 function writeEmbedShell( embedPath, url, data, callback ) {
   if( !writeEmbedShell.template ) {

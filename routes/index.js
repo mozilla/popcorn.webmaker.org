@@ -1,12 +1,14 @@
 'use strict';
 
+var metrics = require( "../lib/metrics" );
+
 module.exports = function routesCtor( app, Project, filter, sanitizer,
-                                      stores, utils, metrics, makeapiConfig ) {
+                                      stores, utils, makeapiConfig ) {
 
   var uuid = require( "node-uuid" ),
       // Keep track of whether this is production or development
       deploymentType = app.settings.env === "production" ? "production" : "development",
-      api = require( "./api" )( metrics, utils, stores ),
+      api = require( "./api" )( utils, stores ),
       makeClient = require( "makeapi" ).makeAPI( makeapiConfig );
 
   // Strip away project data, email, etc.
