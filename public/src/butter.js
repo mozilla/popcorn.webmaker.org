@@ -1018,7 +1018,7 @@ window.Butter = {
   });
 
   // butter depends on popcorn, so don't change this unless you know what you're doing
-  require([ "util/shims", "../external/jsSHA/sha1" ], function() {
+  require([ "util/shims" ], function() {
     require([ "popcorn" ], function() {
       require([ "butter-main" ]);
     });
