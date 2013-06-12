@@ -114,7 +114,6 @@ app.configure( function() {
   stores.publish = setupStore( config.publishStore );
   stores.crash = setupStore( config.crashStore );
   stores.feedback = setupStore( config.feedbackStore );
-  stores.images = setupStore( config.imageStore );
 
   app.use( express.bodyParser() )
     .use( express.cookieParser() )

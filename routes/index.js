@@ -8,7 +8,6 @@ module.exports = function routesCtor( app, Project, filter, sanitizer,
   var uuid = require( "node-uuid" ),
       // Keep track of whether this is production or development
       deploymentType = app.settings.env === "production" ? "production" : "development",
-      api = require( "./api" )( utils, stores ),
       makeClient = require( "makeapi" ).makeAPI( makeapiConfig );
 
   // Strip away project data, email, etc.
@@ -251,7 +250,7 @@ module.exports = function routesCtor( app, Project, filter, sanitizer,
   });
 
   var routes = {
-    api: api,
+    api: require( "./api" ),
     pages: require( "./pages" )
   };
 
