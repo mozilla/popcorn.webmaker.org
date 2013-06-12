@@ -82,7 +82,7 @@
     "url": "https://github.com/mozilla/butter.git"
   },
   "dependencies": {
-    "async": "0.2.6",
+    "async": "0.2.9",
     "csslint": "0.9.10",
     "express-persona": "0.0.7",
     "express": "3.1.0",
