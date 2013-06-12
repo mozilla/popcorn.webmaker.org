@@ -335,13 +335,13 @@ define([ "dialog/dialog", "util/lang", "text!layouts/header.html", "text!layouts
             closeButton = tutorialView.querySelector( ".tutorial-close-button" ),
             viewTitle = tutorialView.querySelector( ".tutorial-view-title" ),
             tutorialList = document.querySelector( ".tutorial-list" ),
-            tutorialContainer = document.querySelector( ".butter-tutorial-container" );
+            tutorialBtn = document.querySelector( ".tutorial-btn" );
 
         if ( err || !results.length ) {
           return;
         }
 
-        tutorialList.classList.remove( "hidden" );
+        tutorialBtn.classList.remove( "hidden" );
 
         var onCoverMouseUp = function() {
           iframeCover.style.display = "none";
@@ -366,7 +366,7 @@ define([ "dialog/dialog", "util/lang", "text!layouts/header.html", "text!layouts
             tutorialView.style.width = "";
           }, false );
           tutorialElement.innerHTML = item.title;
-          tutorialContainer.appendChild( tutorialElement );
+          tutorialList.appendChild( tutorialElement );
         };
 
         tutorialView.addEventListener( "mousedown", onCoverMouseDown, false );
@@ -378,6 +378,10 @@ define([ "dialog/dialog", "util/lang", "text!layouts/header.html", "text!layouts
           tutorialView.classList.add( "closed" );
           tutorialView.style.height = 0;
           tutorialView.style.width = 0;
+        }, false );
+
+        tutorialBtn.addEventListener( "click", function() {
+          tutorialList.classList.toggle( "open" );
         }, false );
 
         $( tutorialView ).draggable({
