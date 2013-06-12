@@ -112,8 +112,6 @@ app.configure( function() {
 
   // File Store types and options come from JSON config file.
   stores.publish = setupStore( config.publishStore );
-  stores.crash = setupStore( config.crashStore );
-  stores.feedback = setupStore( config.feedbackStore );
 
   app.use( express.bodyParser() )
     .use( express.cookieParser() )
@@ -304,6 +302,9 @@ app.get( '/templates/basic/index.html', routes.pages.editor );
 app.get( '/external/make-api.js', function( req, res ) {
   res.sendfile( path.resolve( __dirname, "node_modules/makeapi/public/js/make-api.js" ) );
 });
+
+app.post( '/crash', routes.api.crash );
+app.post( '/feedback', routes.api.feedback );
 
 app.get( '/healthcheck', routes.api.healthcheck );
 

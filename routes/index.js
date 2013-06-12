@@ -5,9 +5,8 @@ var metrics = require( "../lib/metrics" );
 module.exports = function routesCtor( app, Project, filter, sanitizer,
                                       stores, utils, makeapiConfig ) {
 
-  var uuid = require( "node-uuid" ),
-      // Keep track of whether this is production or development
-      deploymentType = app.settings.env === "production" ? "production" : "development",
+  // Keep track of whether this is production or development
+  var deploymentType = app.settings.env === "production" ? "production" : "development",
       makeClient = require( "makeapi" ).makeAPI( makeapiConfig );
 
   // Strip away project data, email, etc.
@@ -195,58 +194,6 @@ module.exports = function routesCtor( app, Project, filter, sanitizer,
         }
       });
     }
-  });
-
-  function formatDate( d ) {
-    // YYYY-MM-DD
-    d = d || new Date();
-
-    function pad( n ) {
-      return n < 10 ? '0' + n : n;
-    }
-    return ( d.getUTCFullYear() + '-' +
-             pad( d.getUTCMonth() + 1 ) + '-' +
-             pad( d.getUTCDate() ) );
-  }
-
-  function generateUniqueName( keys ) {
-    // Generate a unique name, with formatting to support analysis later on.
-    // The format is:
-    // <key1>=<value1>/<key2>=<value2>/<key..>=<value..>/<unique blob name>
-    // For example:
-    // dt=2012-05-31T20:00/deployment=production/64432AE8-7132-4C01-BD5E-AE49BC343CC8
-
-    // Serialize keys array
-    var keysString = '';
-    keys.forEach( function( key ) {
-      keysString += key.name + '=' + key.value + '/';
-    });
-    keysString = keysString.replace( /\/$/, '' );
-
-    return keysString + '/' + uuid.v4();
-  }
-
-  function storeData( req, res, store ) {
-    var name = generateUniqueName([
-      { name: 'dt', value: formatDate() },
-      { name: 'deployment', value: deploymentType }
-    ]);
-
-    store.write( name, JSON.stringify( req.body ), function() {
-      res.send( 200 );
-    });
-  }
-
-  // Store crash reports
-  app.post( '/crash', function( req, res ) {
-    storeData( req, res, stores.crash );
-    metrics.increment( 'user.crash' );
-  });
-
-  // Store feedback reports
-  app.post( '/feedback', function( req, res ) {
-    storeData( req, res, stores.feedback );
-    metrics.increment( 'user.feedback' );
   });
 
   var routes = {
