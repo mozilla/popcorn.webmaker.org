@@ -3,7 +3,7 @@
  * obtain one at https://raw.github.com/mozilla/butter/master/LICENSE */
 
 (function() {
-  var __csrfToken;
+  var __csrfToken = document.querySelector("meta[name=X-CSRF-Token]").content;
 
   var defaultErrorHandler = function( xhr, statusText, errorThrown ) {
     if ( console && console.error ) {
@@ -92,11 +92,6 @@
       });
     }
   };
-
-  // Get the CSRF token from the server so we can send POST requests
-  xhrModule.get( "/api/whoami", function( response ) {
-    __csrfToken = response.csrf;
-  });
 
   define([], function() {
     return xhrModule;

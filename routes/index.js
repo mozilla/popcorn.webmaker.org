@@ -13,26 +13,6 @@ module.exports = function routesCtor( app, Project, filter, sanitizer,
 
   app.put( "/api/image", filter.isImage, api.image );
 
-  app.get( '/api/whoami', function( req, res ) {
-    var email = req.session.email;
-
-    if (email) {
-      res.json({
-        status: "okay",
-        csrf: req.session._csrf,
-        email: email,
-        name: email,
-        username: email
-      });
-      metrics.increment( 'user.login' );
-    } else {
-      res.json({
-        error: 'unauthorized',
-        csrf: req.session._csrf
-      });
-    }
-  });
-
   // Strip away project data, email, etc.
   function pruneSearchResults( results ) {
     return results.map( function( result ) {

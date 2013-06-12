@@ -25,24 +25,6 @@ require("../routes")(app, mockProject, mockFilter, mockSanitizer, mockStore, uti
 
 app = app.listen(0);
 
-test("whoami API valid", function(t) {
-  request(app)
-    .get("/api/whoami")
-    .end(function(err, res) {
-      t.equal(res.statusCode, 200, "status code is 200");
-      t.equal(res.type, "application/json", "response type is json");
-      t.deepEqual(res.body, {
-        status: "okay",
-        email: mockEmail,
-        name: mockEmail,
-        username: mockEmail,
-        csrf: "FDaS435D2z"
-      }, "response should have 5 attributes");
-
-      t.end();
-    });
-});
-
 test("project data get with error", function(t) {
   mockProject.error = true;
   mockProject.doc = false;
