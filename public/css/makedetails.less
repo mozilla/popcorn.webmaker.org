@@ -20,6 +20,7 @@
 @small-font-size: 14px;
 @normal-font-size: 18px;
 @large-font-size: 29px;
+@blue: #27AAE1;
 
 body {
   color: #555;
@@ -29,11 +30,12 @@ body {
 }
 
 a {
-  color: #27aae1;
+  color: @blue;
   text-decoration: none;
 
   &:hover {
-    color: #056c97;
+    color: lighten(@blue,10%);
+    text-decoration: underline;
   }
 }
 
@@ -48,51 +50,42 @@ a {
 }
 
 .wrapper {
+  position: relative;
   width: 1020px;
   margin: 0 auto;
-  position: relative;
 }
 
 .make-bar {
   background: #e3eaee;
   height: 37px;
-  border-bottom: 1px solid white;
+  border-top: 1px solid darken(#e3eaee,7%);
+  border-bottom: 1px solid darken(#e3eaee,5%);
   padding: 0;
   width: 100%;
   z-index: 5;
-  -webkit-box-shadow: 0 3px 5px rgba(0,0,0,0.1);
-  -moz-box-shadow: 0 3px 5px rgba(0,0,0,0.1);
-  box-shadow: 0 3px 5px rgba(0,0,0,0.1);
-
-  .make-social {
-    margin: 0 auto;
-    ul {
-      margin: 0;
-      padding: 0;
-
-      a {
-        color: white;
-      }
-    }
-    .clearfix;
-  }
+  box-shadow: 0 0 8px rgba(0,0,0,0.1);
 
   .button {
+    margin-top: 2px;
     color: white;
-    background: #27aae1;
+    background: @green;
     list-style: none;
     float: right;
     font-size: (@small-font-size - 1);
-    height: 25px;
-    width: 60px;
     text-align: center;
-    margin-top: 7px;
-    margin-left: 5px;
-    padding-top: 4px;
+    border: 1px solid #FFF;
     .box-sizing( border-box );
 
+    a {
+      color: #FFF;
+      padding: 0.5em 1em 0.5em;
+      &:hover {
+        text-decoration: none;
+      }
+    }
+
     &:hover {
-      background: #4abff0;
+      background: lighten( @green, 10% );
     }
   }
 
@@ -100,8 +93,8 @@ a {
     width: 180px;
     height: 35px;
     img {
-      margin-top: 2px;
-      height: 35px;
+      margin-top: 4px;
+      height: 32px;
     }
 
     .made-with {
@@ -116,12 +109,20 @@ a {
 
 
   .expand-collapse {
-    color: #27aae1;
-    width: 700px;
+    color: @blue;
+    position: absolute;
+    right: 180px;
+    left: 180px;
+    top: 0;
+    bottom: 0;
     text-align: center;
     vertical-align: top;
     font-size: @normal-font-size;
     padding-top: 6px;
+    cursor: pointer;
+    &:hover {
+      color: lighten(@blue,10%);
+    }
     .clearfix;
 
     .toggle-ec {
@@ -129,7 +130,8 @@ a {
     }
 
     img {
-      padding-bottom: 2px;
+      margin-left: 2px;
+      margin-bottom: 2px;
     }
   }
 
@@ -140,190 +142,19 @@ a {
   }
 }
 
-
 .make-details {
-  height: 335px;
+  height: 300px;
+}
 
-  .wrapper {
-    margin-bottom: 60px;
-    padding-top: 30px;
-  }
-
-  margin: 0 auto;
+#details-iframe {
+  border: none;
   width: 100%;
-  font-weight: 300;
-  font-size: @small-font-size;
-  overflow: hidden;
-  background-image: url("/resources/icons/bkg-stripe.png");
+  height: 100%;
+}
 
-  .remixed-user {
-    font-weight: 700;
-  }
-
-  .remixed-from {
-    width: 270px;
-    margin-top: 10px;
-    float: left;
-    .box-sizing( border-box );
-
-    .remix-info {
-      width: 210px;
-      position: relative;
-      background: #e3eaee;
-      padding: 10px 13px 6px 10px;
-      border-radius: 5px;
-
-      .remixed-from-txt,
-      .remixed-user {
-        position: relative;
-        bottom: 4px;
-      }
-
-      .remixed-from-txt {
-        color: #787878;
-      }
-
-      .remixed-user {
-        color: #484848;
-      }
-
-      .original-thumb {
-        width: 210px;
-        height: 120px;
-        border-radius: 5px;
-        border: 1px solid white;
-      }
-    }
-
-    .remixed-by {
-      color: #787878;
-      padding-left: 10px;
-      width: 210px;
-      margin-top: 15px;
-
-      ul {
-        list-style: none;
-        display: inline;
-        padding: 0;
-
-        li {
-          display: inline;
-
-          a {
-            text-decoration: underline;
-          }
-
-          &:not(:last-child):after {
-            content: ', ';
-          } // &:not
-        } // li
-      } // ul
-    } /// remixed-by
-  } // remixed-from
-
-  .make-details-deets {
-    width: 750px;
-    float: right;
-    font-size: @small-font-size;
-
-    .make-title {
-      color: #55575c;
-      font-size: @large-font-size;
-      margin: 0;
-      font-weight: 300;
-      margin-bottom: 10px;
-    }
-
-    .make-desc {
-      color: #4c4c4c;
-      margin: 0;
-      height: 110px;
-      font-weight: normal;
-      margin-top: 20px;
-      margin-bottom: 60px;
-      line-height: 22px;
-    }
-
-    .make-tools-languages {
-
-      .built-with,
-      .languages{
-        color: #787878;
-        display: inline-block;
-        height: 20px;
-        padding: 2px 5px;
-        background: #e3eaee;
-        border-radius: 5px;
-      }
-
-      .built-with {
-        margin-right: 15px;
-      }
-
-      .tool-name {
-        margin-left: 5px;
-      }
-
-      .languages {
-        margin-left: 30px;
-      }
-
-      img {
-        position: relative;
-        top: 6px;
-      }
-
-      .languages {
-        margin-right: 10px;
-      }
-      .langs {
-        list-style: none;
-        display: inline;
-        padding: 0;
-
-        li {
-          display: inline;
-          color: #787878;
-
-          &:not(:last-child):after {
-            content: ' | ';
-            color: #9b9b9b;
-            font-size: (@small-font-size - 1);
-            padding: 0 5px;
-          } // &:not
-        } // li
-      }
-    } ///make-tools-languages
-
-    .make-made-by {
-      position: relative;
-      margin-top: 10px;
-
-      .made-by {
-        display: inline;
-        color: #787878;
-        font-size: @normal-font-size;
-        margin-left: 3px;
-        position: relative;
-      }
-
-      .make-relative-date {
-        color: #787878;
-        margin-left: 10px;
-        font-size: @small-font-size;
-      }
-
-      img {
-        border-radius: 50em;
-        border: 1px solid #b5b5b5;
-      }
-    }
-  }
-} //make-details
-
-.button-remix ,
-.button-share {
+.button-remix {
   background-repeat: no-repeat;
+  background-position: left 3px;
   display: block;
   margin-left: 5px;
   margin-top: 2px;
@@ -339,6 +170,3 @@ a {
   background-image: url( "/resources/icons/icon-Remix.png" );
 }
 
-.button-share {
-  background-image: url( "/resources/icons/icon-Share.png" );
-}

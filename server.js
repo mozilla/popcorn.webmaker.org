@@ -59,6 +59,7 @@ if ( config.USE_WEBFAKER ) {
 
 app.locals({
   config: {
+    audience: config.AUDIENCE,
     ga_account: config.GA_ACCOUNT,
     ga_domain: config.GA_DOMAIN,
     user_bar: config.USER_BAR

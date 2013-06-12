@@ -25,32 +25,16 @@
   <body>
     <main id="content" class="content clearfix">
       <div class="hide make-details">
-        <div class="wrapper">
-          <div class="remixed-from">
-            <div class="remix-info"><span class="remixed-from-txt">Remixed from </span><span class="remixed-user"> daleee</span><a href="#"><img src="http://placecage.com/210/120" alt="ORIGINAL TITLE" class="original-thumb"></a></div>
-            <div class="remixed-by">PLACEHOLDER</div>
-          </div>
-          <div class="make-details-deets">
-            <h1 class="make-title">{{projectName}}</h1>
-            <div class="make-made-by"><a href="#"><img class="make-user-gravatar" src="http://fillmurray.com/35/35" alt="USER NAME"></a>
-              <div class="made-by">Made by <a href="#">PLACEHOLDER</a><span class="make-relative-date">PLACEHOLDER</span></div>
-            </div>
-            <div class="make-tools-languages"><span class="built-with">Built with</span><a href="//popcorn.webmaker.org"><img src="{{baseHref}}/resources/icons/icon-Popcorn.png" alt="WEBMAKER TOOL"><span class="tool-name">Popcorn</span></a><span class="languages">Languages</span>
-            </div>
-            <p class="make-desc">{{description}}</p>
-          </div>
-        </div>
+        <iframe id="details-iframe" src="{{config.audience}}/details/{{makeID}}"></iframe>
       </div>
       <div class="make-bar">
         <div class="wrapper"><span class="logospan"><a href="#"><img src="{{baseHref}}/resources/img/logo_small.png" alt="Mozilla Webmaker"></a><span class="made-with">Made with<a href="//webmaker.org"> Webmaker</a></span></span><span class="expand-collapse">Details<img src="{{baseHref}}/resources/icons/icon-arrow-down.png"></span>
-          <div class="make-social">
-            <ul>
-              <li class="button"><a href="{{remixUrl}}" target="_blank" class="button-remix"><span>Remix</span></a></li>
-            </ul><span class="clear"></span>
-          </div>
+        <div class="button"><a href="{{remixUrl}}" target="_blank" class="button-remix"><span>Remix</span></a></div>
         </div>
       </div>
-      <iframe id="embed" src="{{embedSrc}}" width="1280" height="745" mozallowfullscreen="mozallowfullscreen" webkitallowfullscreen="webkitallowfullscreen" allowfullscreen="allowfullscreen"></iframe>
+      <div class="wrapper">
+        <iframe id="embed" src="{{embedSrc}}" width="1280" height="745" mozallowfullscreen="mozallowfullscreen" webkitallowfullscreen="webkitallowfullscreen" allowfullscreen="allowfullscreen"></iframe>
+      </div>
     </main>
     <div class="mobile"></div>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
@@ -81,107 +65,7 @@
             };
         $toggle.on("click", toggleNav);
       });
-      var client = Make({
-            apiURL: "{{makeEndpoint}}"
-          }),
-          remixedFrom,
-          locales = [];
 
-      function toPrettyString( ms ) {
-        var round = Math.round,
-            t, seconds, minutes, hours, days;
-
-        t = ms / 1000;
-        seconds = ( t % 60 ) | 0;
-        t /= 60;
-        minutes = ( t % 60 ) | 0;
-        t /= 60;
-        hours = ( t % 24 ) | 0;
-        t /= 24;
-        days = t | 0;
-
-        if( days >= 1 ) {
-          return "" + ( days === 1 ? "a day" : days + " days" );
-        } else if( hours >= 1 ) {
-          return "" + ( hours === 1 ? "an hour" : hours + " hours" );
-        } else if( minutes >= 1 ) {
-          return "" + ( minutes === 1 ? "a minute" : minutes + " minutes" );
-        } else {
-          return "less than a minute";
-        }
-      }
-
-      function getProjectChildren() {
-        client.remixedFrom( "{{makeID}}" ).then(function( err, results ) {
-          if ( results && results.length ) {
-            var ul = document.createElement( "ul" );
-
-            $( ".remixed-by" ).html( results.length + " remixes by " );
-            ul.className = "remix-children";
-            $( ".remixed-by" ).append( ul );
-
-            // 4 is used here to prevent too many names being listed
-            for ( var i = 0; i < results.length && i < 4; i++ ) {
-              var result = results[ i ];
-
-              if ( locales.indexOf( result.locale ) === -1 ) {
-                locales.push( result.locale );
-                var locale = document.createElement( "li" );
-
-                locale.className = "lang-item";
-                locale.innerHTML = result.locale === "en_us" ? "English" : result.locale;
-
-                $( ".langs" ).append( locale );
-              }
-
-              var remixuser = document.createElement( "li" );
-
-              remixuser.innerHTML = "<a href='#'>@" + result.username + "</a>";
-
-              ul.appendChild( remixuser );
-            }
-          } else {
-            $( ".remixed-by" ).css( "display", "none" );
-          }
-        });
-      }
-
-      function getProjectParent() {
-        if ( remixedFrom ) {
-          client.id( remixedFrom ).then(function( err, result ) {
-            if ( result && result.length ) {
-              $( ".remixed-user" ).html( result[ 0 ].username );
-              $( ".original-thumb" ).attr( "src", result[ 0 ].thumbnail );
-
-              getProjectChildren();
-            }
-          });
-        } else {
-          $( ".remixed-from" ).css( "display", "none" );
-          getProjectChildren();
-        }
-      }
-
-      client.id( "{{makeID}}" ).then(function( err, result ) {
-        if ( result && result.length ) {
-          var li = document.createElement( "li" );
-
-          li.className = "lang-item";
-          li.innerHTML = result[ 0 ].locale === "en_us" ? "English" : result[ 0 ].locale;
-
-          locales.push( result[ 0 ].locale );
-
-          $( ".made-by > a" ).html( result[ 0 ].username );
-          $( ".make-user-gravatar" ).attr( "src", "http://gravatar.com/avatar/" + result[ 0 ].emailHash + "?s=26" );
-          $( ".make-relative-date" ).html( toPrettyString( Date.now() - result[ 0 ].createdAt ) + " ago" );
-          $( ".langs" ).append( li );
-          remixedFrom = result[ 0 ].remixedFrom;
-
-          return getProjectParent();
-        }
-
-        getProjectParent();
-      });
     </script>
   </body>
 </html>
