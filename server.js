@@ -158,7 +158,7 @@ require( 'express-persona' )( app, {
 require( "webmaker-loginapi" )( app, config.LOGIN_SERVER_URL_WITH_AUTH );
 
 var routes = require('./routes');
-routes = routes( app, Project, filter, sanitizer, stores, makeapiConfig );
+routes = routes( Project, stores, makeapiConfig );
 
 app.param( "project", middleware.loadOwnProject( Project ));
 
@@ -186,6 +186,18 @@ app.get( '/external/make-api.js', function( req, res ) {
 app.get( '/external/sso-include.js', function( req, res ) {
   res.sendfile( path.resolve( __dirname, "node_modules/webmaker-sso/include.js" ) );
 });
+
+// Project Endpoints
+app.post( '/api/project/:id?', filter.isLoggedIn, filter.isStorageAvailable, routes.api.synchronize );
+app.post( '/api/delete/:id?', filter.isLoggedIn, filter.isStorageAvailable, routes.api.remove );
+app.get( '/api/remix/:id', filter.isStorageAvailable, routes.api.remix );
+app.get( '/api/project/:id?', filter.isLoggedIn, filter.isStorageAvailable, routes.api.find );
+
+// Forehose Endpoints
+app.get( '/api/project/:id/remixes', filter.isStorageAvailable, filter.crossOriginAccessible, routes.firehose.remixes );
+app.get( '/api/projects/recentlyUpdated/:limit?', filter.isStorageAvailable, filter.crossOriginAccessible, routes.firehose.recentlyUpdated );
+app.get( '/api/projects/recentlyCreated/:limit?', filter.isStorageAvailable, filter.crossOriginAccessible, routes.firehose.recentlyCreated );
+app.get( '/api/projects/recentlyRemixed/:limit?', filter.isStorageAvailable, filter.crossOriginAccessible, routes.firehose.recentlyRemixed );
 
 app.post( '/crash', routes.api.crash );
 app.post( '/feedback', routes.api.feedback );
