@@ -6,7 +6,9 @@ define([ "dialog/dialog", "util/lang", "text!layouts/header.html", "text!layouts
 
     options = options || {};
 
-    HEADER_TEMPLATE = HEADER_TEMPLATE.replace( /\{\{user_bar\}\}/g, config.user_bar );
+    // this is terrible templating and needs to be replaced ASAP
+    HEADER_TEMPLATE = HEADER_TEMPLATE.replace( /\{\{user_bar\}\}/g, config.user_bar )
+                                     .replace( /\{\{audience\}\}/g, config.audience );
 
     var TOOLTIP_NAME = "name-error-header-tooltip";
 
