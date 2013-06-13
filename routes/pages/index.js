@@ -4,7 +4,3 @@ module.exports.editor = function( req, res ) {
     personaEmail: req.session.email
   });
 };
-
-module.exports.landing = function( req, res ) {
-  res.render( 'landing.html' );
-};

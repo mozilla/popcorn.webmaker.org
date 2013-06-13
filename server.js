@@ -294,13 +294,12 @@ app.post( '/api/publish/:id',
   });
 });
 
-app.get( '/', routes.pages.landing );
-app.get( '/index.html', routes.pages.landing );
-
 app.get( '/dashboard', middleware.isAuthenticated, filter.isStorageAvailable, function( req, res ) {
   res.redirect( config.AUDIENCE + "/me?app=popcorn" );
 });
 
+app.get( '/', routes.pages.editor );
+app.get( '/index.html', routes.pages.editor );
 app.get( '/editor', routes.pages.editor );
 app.get( '/editor/:id', routes.pages.editor );
 app.get( '/editor/:id/edit', routes.pages.editor );
