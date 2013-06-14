@@ -1,5 +1,4 @@
 var async = require( "async" ),
-    loginapi = require( "../../lib/loginapi" )
     metrics = require( "../../lib/metrics" ),
     s3 = require( "../../lib/s3" ),
     sanitizer = require( "../../lib/sanitizer" ),
@@ -85,7 +84,7 @@ module.exports = function( req, res ) {
           "Content-Type": "text/html; charset=UTF-8"
         }).on( "error",
           asyncCallback
-        ).on( "response", function() {
+        ).on( "response", function( s3res ) {
           if ( s3res.statusCode !== 200 ) {
             return asyncCallback( "S3.write " + suffix + " redirect returned HTTP " + s3res.statusCode );
           }
@@ -105,7 +104,7 @@ module.exports = function( req, res ) {
           "Content-Type": "text/html; charset=UTF-8"
         }).on( "error",
           asyncCallback
-        ).on( "response", function() {
+        ).on( "response", function( s3res ) {
           if ( s3res.statusCode !== 200 ) {
             return asyncCallback( "S3.write " + suffix + " redirect returned HTTP " + s3res.statusCode );
           }

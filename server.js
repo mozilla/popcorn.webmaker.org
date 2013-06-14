@@ -158,7 +158,6 @@ require( 'express-persona' )( app, {
 require( "./lib/loginapi" )( app, config.LOGIN_SERVER_URL_WITH_AUTH );
 
 var routes = require('./routes');
-routes = routes( Project, stores, makeapiConfig );
 
 app.param( "project", middleware.loadOwnProject( Project ));
 
