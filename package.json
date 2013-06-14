@@ -115,7 +115,7 @@
     "webfaker": "git://github.com/humphd/webfaker.git#c0c36faa2302293b84ceabad4d2db887be550ad2"
   },
   "scripts": {
-    "test": "node make check && ./node_modules/.bin/tap test/*.test.js"
+    "test": "node make check"
   },
   "license": "MIT",
   "engines": {
