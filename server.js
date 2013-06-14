@@ -322,7 +322,8 @@ app.get( '/healthcheck', routes.api.healthcheck );
 app.get( '/api/butterconfig', function( req, res ) {
   res.json({
     "makeEndpoint": config.MAKE_ENDPOINT,
-    "user_bar": app.locals.config.user_bar
+    "user_bar": app.locals.config.user_bar,
+    "audience": app.locals.config.audience
   });
 });
 

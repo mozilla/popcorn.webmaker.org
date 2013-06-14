@@ -2,7 +2,7 @@
  * If a copy of the MIT license was not distributed with this file, you can
  * obtain one at https://raw.github.com/mozilla/butter/master/LICENSE */
 
-define( [ "util/xhr", "sso-include" ], function( xhr ) {
+define( [ "util/xhr" ], function( xhr ) {
 
   var Cornfield = function( butter ) {
 
@@ -10,17 +10,20 @@ define( [ "util/xhr", "sso-include" ], function( xhr ) {
         username = "",
         self = this;
 
-    navigator.idSSO.app = {
-      onlogin: function( webmakerEmail, webmakerUserName ) {
-        authenticated = true;
-        username = webmakerUserName;
-        butter.dispatch( "authenticated" );
-      },
-      onlogout: function() {
-        authenticated = false;
-        butter.dispatch( "logout" );
-      }
-    };
+    butter.listen( "ready", function onReady() {
+      butter.unlisten( "ready", onReady );
+      navigator.idSSO.app = {
+        onlogin: function( webmakerEmail, webmakerUserName ) {
+          authenticated = true;
+          username = webmakerUserName;
+          butter.dispatch( "authenticated" );
+        },
+        onlogout: function() {
+          authenticated = false;
+          butter.dispatch( "logout" );
+        }
+      };
+    });
 
     this.username = function() {
       return username;
