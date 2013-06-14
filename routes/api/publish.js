@@ -10,7 +10,7 @@ module.exports = function( req, res ) {
       iframeUrl = utilities.embedURL( req.session.username, idBase36 ),
       projectData = JSON.parse( res.locals.project.data, sanitizer.escapeHTMLinJSON ),
       publishUrl = utilities.embedShellURL( req.session.username, idBase36 ),
-      remixUrl = "/editor/" + res.locals.project.id + "/remix";
+      projectUrl = "/editor/" + res.locals.project.id;
 
   var mediaUrl = projectData.media[ 0 ].url,
       attribURL = Array.isArray( mediaUrl ) ? mediaUrl[ 0 ] : mediaUrl;
@@ -24,7 +24,7 @@ module.exports = function( req, res ) {
         description: description,
         mediaSrc: attribURL,
         embedShellSrc: publishUrl,
-        remixUrl: remixUrl,
+        projectUrl: projectUrl,
         popcorn: utilities.generatePopcornString( projectData ),
         thumbnail: res.locals.project.thumbnail
       }, function( err, html ) {
@@ -53,7 +53,7 @@ module.exports = function( req, res ) {
          embedShellSrc: publishUrl,
          embedSrc: iframeUrl,
          thumbnail: res.locals.project.thumbnail,
-         remixUrl: remixUrl,
+         projectUrl: projectUrl,
          makeID: res.locals.project.makeid
        }, function( err, html ) {
         var sanitized = sanitizer.compressHTMLEntities( html );
@@ -71,6 +71,46 @@ module.exports = function( req, res ) {
 
           asyncCallback();
         }).end( sanitized );
+      });
+    },
+    function( asyncCallback ) {
+      [ "edit", "remix" ].forEach(function( suffix ) {
+        var redirectTarget = res.locals.app_hostname + projectUrl + "/" + suffix,
+            redirectData = "<html><head><meta http-equiv='refresh' content='0; url=" + redirectTarget + "'></head><body>" + suffix + " page soft-redirect</body></html>";
+
+        s3.put( utilities.embedPath( req.session.username, idBase36 ), {
+          "x-amz-acl": "public-read",
+          "Content-Length": Buffer.byteLength( redirectData, "utf8" ),
+          "Content-Type": "text/html; charset=UTF-8"
+        }).on( "error",
+          asyncCallback
+        ).on( "response", function() {
+          if ( s3res.statusCode !== 200 ) {
+            return asyncCallback( "S3.write " + suffix + " redirect returned HTTP " + s3res.statusCode );
+          }
+
+          asyncCallback();
+        }).end( redirectData );
+      });
+    },
+    function( asyncCallback ) {
+      [ "edit", "remix" ].forEach(function( suffix ) {
+        var redirectTarget = res.locals.app_hostname + projectUrl + "/" + suffix,
+            redirectData = "<html><head><meta http-equiv='refresh' content='0; url=" + redirectTarget + "'></head><body>" + suffix + " page soft-redirect</body></html>";
+
+        s3.put( utilities.embedShellPath( req.session.username, idBase36 ), {
+          "x-amz-acl": "public-read",
+          "Content-Length": Buffer.byteLength( redirectData, "utf8" ),
+          "Content-Type": "text/html; charset=UTF-8"
+        }).on( "error",
+          asyncCallback
+        ).on( "response", function() {
+          if ( s3res.statusCode !== 200 ) {
+            return asyncCallback( "S3.write " + suffix + " redirect returned HTTP " + s3res.statusCode );
+          }
+
+          asyncCallback();
+        }).end( redirectData );
       });
     }
   ], function( err, results ) {
