@@ -77,7 +77,7 @@ module.exports = function( req, res ) {
     function( asyncCallback ) {
       [ "edit", "remix" ].forEach(function( suffix ) {
         var redirectTarget = res.locals.app_hostname + projectUrl + "/" + suffix,
-            redirectData = "<html><head><meta http-equiv='refresh' content='0; url=" + redirectTarget + "'></head><body>" + suffix + " page soft-redirect</body></html>";
+            redirectData = "<html><head><meta http-equiv='refresh' content='0; url=" + redirectTarget + "'></head><body></body></html>";
 
         s3.put( utilities.embedPath( req.session.username, idBase36 ), {
           "x-amz-acl": "public-read",
@@ -97,7 +97,7 @@ module.exports = function( req, res ) {
     function( asyncCallback ) {
       [ "edit", "remix" ].forEach(function( suffix ) {
         var redirectTarget = res.locals.app_hostname + projectUrl + "/" + suffix,
-            redirectData = "<html><head><meta http-equiv='refresh' content='0; url=" + redirectTarget + "'></head><body>" + suffix + " page soft-redirect</body></html>";
+            redirectData = "<html><head><meta http-equiv='refresh' content='0; url=" + redirectTarget + "'></head><body></body></html>";
 
         s3.put( utilities.embedShellPath( req.session.username, idBase36 ), {
           "x-amz-acl": "public-read",
