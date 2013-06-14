@@ -1,4 +1,5 @@
 var async = require( "async" ),
+    loginapi = require( "../../lib/loginapi" )
     metrics = require( "../../lib/metrics" ),
     s3 = require( "../../lib/s3" ),
     sanitizer = require( "../../lib/sanitizer" ),

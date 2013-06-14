@@ -155,7 +155,7 @@ app.configure( function() {
 require( 'express-persona' )( app, {
   audience: config.AUDIENCE
 });
-require( "webmaker-loginapi" )( app, config.LOGIN_SERVER_URL_WITH_AUTH );
+require( "./lib/loginapi" )( app, config.LOGIN_SERVER_URL_WITH_AUTH );
 
 var routes = require('./routes');
 routes = routes( Project, stores, makeapiConfig );
