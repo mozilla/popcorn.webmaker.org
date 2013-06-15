@@ -188,7 +188,7 @@ app.get( '/external/sso-include.js', function( req, res ) {
 });
 
 // Project Endpoints
-app.post( '/api/project/:id?', filter.isLoggedIn, filter.isStorageAvailable, routes.api.synchronize );
+app.post( '/api/project/:id?', filter.isLoggedIn, filter.isStorageAvailable, routes.api.synchronize( Project ));
 //app.post( '/api/delete/:id?', filter.isLoggedIn, filter.isStorageAvailable, routes.api.remove );
 app.get( '/api/remix/:id', filter.isStorageAvailable, routes.api.remix );
 app.get( '/api/project/:id?', filter.isLoggedIn, filter.isStorageAvailable, routes.api.find );

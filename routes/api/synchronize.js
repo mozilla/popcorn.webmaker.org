@@ -1,4 +1,6 @@
-module.exports = function( Project, metrics ) {
+var metrics = require( "../../lib/metrics" );
+
+module.exports = function( Project ) {
 
   return function( req, res ) {
 
