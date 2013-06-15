@@ -30,17 +30,10 @@ var async = require( "async" ),
     // helper vars
     limit = 50,
     completed = 0
-    hostname = config.dirs.embedHostname ? config.dirs.embedHostname : config.hostname,
-    prefix = config.publishStore.namePrefix || "",
-    suffix = config.publishStore.nameSuffix || "";
-
-function expand( name ) {
-  name = name + '';
-  return path.join( prefix, name ) + suffix;
-}
+    hostname = config.EMBED_HOSTNAME;
 
 function generatePublishUrl( id ) {
-  return ( hostname + '/' + expand( id.toString( 36 ) ) ).replace( /\\/g, '/' );
+  return hostname + '/' + id.toString( 36 );
 }
 
 // Add the newly generated Make ID to the project
@@ -49,6 +42,7 @@ function updateWithMakeID( project, makeid, callback ) {
   project.save().error(function( error ){
       callback(error);
   }).success(function() {
+    console.log( project.id + " successfully imported into MakeAPI with ID: " + makeid );
     callback();
   });
 }
@@ -63,6 +57,7 @@ function createMake( project, remixID, callback ) {
     email: project.email,
     contentType: "application/x-popcorn",
     thumbnail: project.thumbnail,
+    tags:["popcorn-import"],
     description: project.description || "",
     remixedFrom: remixID || null
   };
