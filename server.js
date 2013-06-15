@@ -161,8 +161,9 @@ require( "./lib/loginapi" )( app, config.LOGIN_SERVER_URL_WITH_AUTH );
 var routes = require('./routes');
 
 app.param( "myproject", middleware.loadOwnProject( Project ));
+app.param( "anyproject", middleware.loadAnyProject( Project ));
 
-app.post( '/api/publish/:project',
+app.post( '/api/publish/:myproject',
   filter.isLoggedIn, filter.isStorageAvailable,
   routes.api.publish
 );
@@ -190,7 +191,7 @@ app.get( '/external/sso-include.js', function( req, res ) {
 // Project Endpoints
 app.post( '/api/project/:id?', filter.isLoggedIn, filter.isStorageAvailable, routes.api.synchronize( Project ));
 //app.post( '/api/delete/:id?', filter.isLoggedIn, filter.isStorageAvailable, routes.api.remove );
-app.get( '/api/remix/:id', filter.isStorageAvailable, routes.api.remix );
+app.get( '/api/remix/:anyproject', filter.isStorageAvailable, routes.api.remix );
 app.get( '/api/project/:myproject', filter.isLoggedIn, filter.isStorageAvailable, routes.api.find( Project ));
 
 // Firehose Endpoints

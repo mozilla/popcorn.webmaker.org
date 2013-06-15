@@ -1,30 +1,26 @@
-module.exports = function( Project, metrics ) {
-  var utils = require( "../../lib/utilities" ),
-      sanitizer = require( "../../lib/sanitizer" );
+module.exports = function( req, res ) {
+  var metrics = require( "../../lib/metrics" ),
+      sanitizer = require( "../../lib/sanitizer" ),
+      utils = require( "../../lib/utilities" ),
+      projectJSON = JSON.parse( res.locals.project.data, sanitizer.reconstituteHTMLinJSON ),
+      loginClient = require( "../../lib/loginapi" );
 
-  return function( req, res ) {
-    Project.find( { id: req.params.id }, function( err, project ) {
-      if ( err ) {
-        res.json( { error: err }, 500 );
-        return;
-      }
+  projectJSON.name = "Remix of " + res.locals.project.name;
+  projectJSON.template = res.locals.project.template;
+  projectJSON.remixedFrom = res.locals.project.id;
+  projectJSON.makeid = res.locals.project.makeid;
 
-      if ( !project ) {
-        res.json( { error: 'project not found' }, 404 );
-        metrics.increment( 'error.remix.project-not-found' );
-        return;
-      }
+  loginClient.getUser( res.locals.project.email, function( err, user ) {
+    if ( err || !user ) {
+      // If there's an error, user doesn't exist on loginapi so we use popcorn.wmc.o
+      // Or there could actually be an error of some sort.
+      // TODO FIX THIS API
+      projectJSON.remixedFromUrl = "http://popcorn.webmadecontent.org/" + res.locals.project.id.toString( 36 );
+    } else {
+      projectJSON.remixedFromUrl = utils.embedShellURL( user.username, res.locals.project.id );
+    }
 
-      var projectJSON = JSON.parse( project.data, sanitizer.reconstituteHTMLinJSON );
-      projectJSON.name = "Remix of " + project.name;
-      projectJSON.template = project.template;
-      projectJSON.remixedFrom = project.id;
-      projectJSON.makeid = project.makeid;
-      projectJSON.remixedFromUrl = utils.embedShellURL( project.id );
-
-      res.json( projectJSON );
-      metrics.increment( 'user.remix' );
-    });
-  };
+    res.json( projectJSON );
+    metrics.increment( 'user.remix' );
+  });
 };
-
