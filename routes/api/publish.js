@@ -74,45 +74,77 @@ module.exports = function( req, res ) {
       });
     },
     function( asyncCallback ) {
-      [ "edit", "remix" ].forEach(function( suffix ) {
-        var redirectTarget = res.locals.app_hostname + projectUrl + "/" + suffix,
-            redirectData = "<!doctype html><html><head><meta http-equiv='refresh' content='0; url=" + redirectTarget + "'></head><body></body></html>";
+      var redirectTarget = res.locals.app_hostname + projectUrl + "/edit",
+          redirectData = "<!doctype html><html><head><meta http-equiv='refresh' content='0; url=" + redirectTarget + "'></head><body></body></html>";
 
-        s3.put( utilities.embedPath( req.session.username, idBase36 ), {
-          "x-amz-acl": "public-read",
-          "Content-Length": Buffer.byteLength( redirectData, "utf8" ),
-          "Content-Type": "text/html; charset=UTF-8"
-        }).on( "error",
-          asyncCallback
-        ).on( "response", function( s3res ) {
-          if ( s3res.statusCode !== 200 ) {
-            return asyncCallback( "S3.write " + suffix + " redirect returned HTTP " + s3res.statusCode );
-          }
+      s3.put( utilities.embedPath( req.session.username, idBase36 ), {
+        "x-amz-acl": "public-read",
+        "Content-Length": Buffer.byteLength( redirectData, "utf8" ),
+        "Content-Type": "text/html; charset=UTF-8"
+      }).on( "error",
+        asyncCallback
+      ).on( "response", function( s3res ) {
+        if ( s3res.statusCode !== 200 ) {
+          return asyncCallback( "S3.writeEmbed/edit redirect returned HTTP " + s3res.statusCode );
+        }
 
-          asyncCallback();
-        }).end( redirectData );
-      });
+        asyncCallback();
+      }).end( redirectData );
     },
     function( asyncCallback ) {
-      [ "edit", "remix" ].forEach(function( suffix ) {
-        var redirectTarget = res.locals.app_hostname + projectUrl + "/" + suffix,
-            redirectData = "<!doctype html><html><head><meta http-equiv='refresh' content='0; url=" + redirectTarget + "'></head><body></body></html>";
+      var redirectTarget = res.locals.app_hostname + projectUrl + "/remix",
+          redirectData = "<!doctype html><html><head><meta http-equiv='refresh' content='0; url=" + redirectTarget + "'></head><body></body></html>";
 
-        s3.put( utilities.embedShellPath( req.session.username, idBase36 ), {
-          "x-amz-acl": "public-read",
-          "Content-Length": Buffer.byteLength( redirectData, "utf8" ),
-          "Content-Type": "text/html; charset=UTF-8"
-        }).on( "error",
-          asyncCallback
-        ).on( "response", function( s3res ) {
-          if ( s3res.statusCode !== 200 ) {
-            return asyncCallback( "S3.write " + suffix + " redirect returned HTTP " + s3res.statusCode );
-          }
+      s3.put( utilities.embedPath( req.session.username, idBase36 ), {
+        "x-amz-acl": "public-read",
+        "Content-Length": Buffer.byteLength( redirectData, "utf8" ),
+        "Content-Type": "text/html; charset=UTF-8"
+      }).on( "error",
+        asyncCallback
+      ).on( "response", function( s3res ) {
+        if ( s3res.statusCode !== 200 ) {
+          return asyncCallback( "S3.writeEmbed/remix redirect returned HTTP " + s3res.statusCode );
+        }
 
-          asyncCallback();
-        }).end( redirectData );
-      });
-    }
+        asyncCallback();
+      }).end( redirectData );
+    },
+    function( asyncCallback ) {
+      var redirectTarget = res.locals.app_hostname + projectUrl + "/edit",
+          redirectData = "<!doctype html><html><head><meta http-equiv='refresh' content='0; url=" + redirectTarget + "'></head><body></body></html>";
+
+      s3.put( utilities.embedShellPath( req.session.username, idBase36 ), {
+        "x-amz-acl": "public-read",
+        "Content-Length": Buffer.byteLength( redirectData, "utf8" ),
+        "Content-Type": "text/html; charset=UTF-8"
+      }).on( "error",
+        asyncCallback
+      ).on( "response", function( s3res ) {
+        if ( s3res.statusCode !== 200 ) {
+          return asyncCallback( "S3.writeEmbedShell/edit redirect returned HTTP " + s3res.statusCode );
+        }
+
+        asyncCallback();
+      }).end( redirectData );
+    },
+    function( asyncCallback ) {
+      var redirectTarget = res.locals.app_hostname + projectUrl + "/remix",
+          redirectData = "<!doctype html><html><head><meta http-equiv='refresh' content='0; url=" + redirectTarget + "'></head><body></body></html>";
+
+      s3.put( utilities.embedShellPath( req.session.username, idBase36 ), {
+        "x-amz-acl": "public-read",
+        "Content-Length": Buffer.byteLength( redirectData, "utf8" ),
+        "Content-Type": "text/html; charset=UTF-8"
+      }).on( "error",
+        asyncCallback
+      ).on( "response", function( s3res ) {
+        if ( s3res.statusCode !== 200 ) {
+          return asyncCallback( "S3.writeEmbedShell/remix redirect returned HTTP " + s3res.statusCode );
+        }
+
+        asyncCallback();
+      }).end( redirectData );
+    },
   ], function( err, results ) {
     if ( err ) {
       return res.json({ error: err }, 500);
