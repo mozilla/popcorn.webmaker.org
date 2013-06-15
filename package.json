@@ -100,7 +100,8 @@
     "requirejs-middleware": "0.0.5",
     "sequelize": "1.6.0",
     "shelljs": "0.1.2",
-    "webmaker-loginapi": "0.1.5"
+    "webmaker-loginapi": "0.1.5",
+    "webmaker-sso": "https://github.com/jbuck/node-webmaker-sso/tarball/v0.0.3"
   },
   "optionalDependencies": {
     "node-statsd": "git://github.com/sivy/node-statsd.git#d6997fff",

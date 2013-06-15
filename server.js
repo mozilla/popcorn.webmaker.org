@@ -59,6 +59,7 @@ if ( config.USE_WEBFAKER ) {
 app.locals({
   config: {
     app_hostname: APP_HOSTNAME,
+    audience: config.AUDIENCE,
     ga_account: config.GA_ACCOUNT,
     ga_domain: config.GA_DOMAIN,
     make_endpoint: config.MAKE_ENDPOINT,
@@ -205,9 +206,9 @@ app.get( '/healthcheck', routes.api.healthcheck );
 
 app.get( '/api/butterconfig', function( req, res ) {
   res.json({
+    "audience": app.locals.config.audience,
     "make_endpoint": app.locals.config.make_endpoint,
-    "user_bar": app.locals.config.user_bar,
-    "audience": app.locals.config.audience
+    "user_bar": app.locals.config.user_bar
   });
 });
 
