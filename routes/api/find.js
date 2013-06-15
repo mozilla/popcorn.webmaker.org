@@ -1,41 +1,55 @@
-module.exports = function( Project, makeConfig ) {
-  var utils = require( "../../lib/utilities" ),
-      makeClient = require( "makeapi" ).makeAPI( makeConfig );
+var loginClient = require( "../../lib/loginapi" ),
+    makeClient = require( "../../lib/makeapi" ),
+    utils = require( "../../lib/utilities" );
+
+module.exports = function( Project ) {
 
   return function( req, res ) {
-    Project.find( { email: req.session.email, id: req.params.id }, function( err, doc ) {
+    var projectJSON = JSON.parse( res.locals.project.data );
+
+    projectJSON.name = res.locals.project.name;
+    projectJSON.projectID = res.locals.project.id;
+    projectJSON.description = res.locals.project.description;
+    projectJSON.template = res.locals.project.template;
+    projectJSON.publishUrl = utils.embedShellURL( req.session.username, res.locals.project.id );
+    projectJSON.iframeUrl = utils.embedURL( req.session.username, res.locals.project.id );
+    projectJSON.makeid = res.locals.project.makeid;
+
+    makeClient.id( res.locals.project.makeid ).then(function( err, make ) {
       if ( err ) {
-        res.json( { error: err }, 500 );
+        return res.json( 500, { error: err } );
+      }
+      projectJSON.tags = make[ 0 ].rawTags;
+
+      if ( res.locals.project.remixedFrom || res.locals.project.remixedFrom === 0 ) {
+        Project.find({ id: res.locals.project.remixedFrom}, function( err, doc ) {
+          if ( err ) {
+            return res.json( 500, { error: err } );
+          }
+
+          if ( !doc ) {
+            return res.json( projectJSON );
+          }
+
+          projectJSON.remixedFrom = doc.id;
+
+          loginClient.getUser( doc.email, function( err, user ) {
+            if ( err || !user ) {
+              // If there's an error, user doesn't exist on loginapi so we use popcorn.wmc.o
+              // Or there could actually be an error of some sort.
+              // TODO FIX THIS API
+              projectJSON.remixedFromUrl = "http://popcorn.webmadecontent.org/" + doc.id.toString( 36 );
+            } else {
+              projectJSON.remixedFromUrl = utils.embedShellURL( user, doc.id );
+            }
+
+            res.json( projectJSON );
+          });
+        });
         return;
       }
 
-      if ( !doc ) {
-        res.json( { error: "project not found" }, 404 );
-        return;
-      }
-      var projectJSON = JSON.parse( doc.data );
-
-      projectJSON.name = doc.name;
-      projectJSON.projectID = doc.id;
-      projectJSON.description = doc.description;
-      projectJSON.template = doc.template;
-      projectJSON.publishUrl = utils.embedShellURL( req.session.username, doc.id );
-      projectJSON.iframeUrl = utils.embedURL( req.session.username, doc.id );
-      projectJSON.makeid = doc.makeid;
-      if ( doc.remixedFrom || doc.remixedFrom === 0 ) {
-        projectJSON.remixedFrom = doc.remixedFrom;
-        // TODO should be loading something from the document
-        projectJSON.remixedFromUrl = utils.embedURL( doc.email, doc.remixedFrom );
-      }
-
-      makeClient.id( doc.makeid ).then(function( err, make ) {
-        if ( err ) {
-          res.json( 500, { error: err } );
-        }
-        projectJSON.tags = make[ 0 ].rawTags;
-        res.json( projectJSON );
-      });
+      res.json( projectJSON );
     });
   };
 };
-
