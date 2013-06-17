@@ -160,8 +160,8 @@ require( "./lib/loginapi" )( app, config.LOGIN_SERVER_URL_WITH_AUTH );
 
 var routes = require('./routes');
 
-app.param( "myproject", middleware.loadOwnProject( Project ));
-app.param( "anyproject", middleware.loadAnyProject( Project ));
+app.param( "myproject", middleware.loadOwnProject( Project, app.locals.config ));
+app.param( "anyproject", middleware.loadAnyProject( Project, app.locals.config ));
 
 app.post( '/api/publish/:myproject',
   filter.isLoggedIn, filter.isStorageAvailable,

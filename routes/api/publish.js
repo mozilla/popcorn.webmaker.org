@@ -74,10 +74,10 @@ module.exports = function( req, res ) {
       });
     },
     function( asyncCallback ) {
-      var redirectTarget = res.locals.app_hostname + projectUrl + "/edit",
+      var redirectTarget = res.locals.config.app_hostname + projectUrl + "/edit",
           redirectData = "<!doctype html><html><head><meta http-equiv='refresh' content='0; url=" + redirectTarget + "'></head><body></body></html>";
 
-      s3.put( utilities.embedPath( req.session.username, idBase36 ), {
+      s3.put( utilities.embedPath( req.session.username, idBase36 ) + "/edit", {
         "x-amz-acl": "public-read",
         "Content-Length": Buffer.byteLength( redirectData, "utf8" ),
         "Content-Type": "text/html; charset=UTF-8"
@@ -92,10 +92,10 @@ module.exports = function( req, res ) {
       }).end( redirectData );
     },
     function( asyncCallback ) {
-      var redirectTarget = res.locals.app_hostname + projectUrl + "/remix",
+      var redirectTarget = res.locals.config.app_hostname + projectUrl + "/remix",
           redirectData = "<!doctype html><html><head><meta http-equiv='refresh' content='0; url=" + redirectTarget + "'></head><body></body></html>";
 
-      s3.put( utilities.embedPath( req.session.username, idBase36 ), {
+      s3.put( utilities.embedPath( req.session.username, idBase36 ) + "/remix", {
         "x-amz-acl": "public-read",
         "Content-Length": Buffer.byteLength( redirectData, "utf8" ),
         "Content-Type": "text/html; charset=UTF-8"
@@ -110,10 +110,10 @@ module.exports = function( req, res ) {
       }).end( redirectData );
     },
     function( asyncCallback ) {
-      var redirectTarget = res.locals.app_hostname + projectUrl + "/edit",
+      var redirectTarget = res.locals.config.app_hostname + projectUrl + "/edit",
           redirectData = "<!doctype html><html><head><meta http-equiv='refresh' content='0; url=" + redirectTarget + "'></head><body></body></html>";
 
-      s3.put( utilities.embedShellPath( req.session.username, idBase36 ), {
+      s3.put( utilities.embedShellPath( req.session.username, idBase36 ) + "/edit", {
         "x-amz-acl": "public-read",
         "Content-Length": Buffer.byteLength( redirectData, "utf8" ),
         "Content-Type": "text/html; charset=UTF-8"
@@ -128,10 +128,10 @@ module.exports = function( req, res ) {
       }).end( redirectData );
     },
     function( asyncCallback ) {
-      var redirectTarget = res.locals.app_hostname + projectUrl + "/remix",
+      var redirectTarget = res.locals.config.app_hostname + projectUrl + "/remix",
           redirectData = "<!doctype html><html><head><meta http-equiv='refresh' content='0; url=" + redirectTarget + "'></head><body></body></html>";
 
-      s3.put( utilities.embedShellPath( req.session.username, idBase36 ), {
+      s3.put( utilities.embedShellPath( req.session.username, idBase36 ) + "/remix", {
         "x-amz-acl": "public-read",
         "Content-Length": Buffer.byteLength( redirectData, "utf8" ),
         "Content-Type": "text/html; charset=UTF-8"
