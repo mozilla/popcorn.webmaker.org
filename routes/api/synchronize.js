@@ -1,9 +1,9 @@
 var metrics = require( "../../lib/metrics" ),
-    escapeHTML = sanitizer = require( "../../lib/sanitizer" ).escapeHTML;
+    escapeHTML = require( "../../lib/sanitizer" ).escapeHTML;
 
 function sanitizeProjectData( projectData ) {
   projectData.name = escapeHTML( projectData.name || '' );
-  projectData.description = escapeHTML( projectData.description || '' );  
+  projectData.description = escapeHTML( projectData.description || '' );
   return projectData;
 }
 
