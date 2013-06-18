@@ -45,7 +45,10 @@ define( [ "util/lang", "util/time", "text!layouts/controls.html" ],
       bigPlayButton.classList.remove( "controls-ready" );
       bigPlayButton.classList.add( "hide-button" );
       p.media.addEventListener( "mouseover", activate, false );
-      thumbnailContainer.classList.add( "hidden" );
+
+      if ( thumbnailContainer ) {
+        thumbnailContainer.classList.add( "hidden" );
+      }
 
       if ( p.paused() ) {
         p.play();
@@ -56,9 +59,12 @@ define( [ "util/lang", "util/time", "text!layouts/controls.html" ],
 
     function onInit() {
 
-      thumbnailContainer.removeEventListener( "click", onInit, false );
+      if ( thumbnailContainer ) {
+        thumbnailContainer.removeEventListener( "click", onInit, false );
+        thumbnailContainer.classList.remove( "preload" );
+      }
+
       bigPlayButton.removeEventListener( "click", onInit, false );
-      thumbnailContainer.classList.remove( "preload" );
       controlsContainer.classList.remove( "controls-hide" );
       attributionContainer.classList.add( "show" );
       function setPopcorn( popcorn ) {
@@ -437,7 +443,9 @@ define( [ "util/lang", "util/time", "text!layouts/controls.html" ],
 
     // If we're not autoPlay, wait for user interaction before we're ready.
     if ( !options.preload ) {
-      thumbnailContainer.addEventListener( "click", onInit, false );
+      if ( thumbnailContainer ) {
+        thumbnailContainer.addEventListener( "click", onInit, false );
+      }
       bigPlayButton.addEventListener( "click", onInit, false );
     } else {
       onInit();
