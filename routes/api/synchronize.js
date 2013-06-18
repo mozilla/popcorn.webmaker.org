@@ -1,10 +1,18 @@
-var metrics = require( "../../lib/metrics" );
+var metrics = require( "../../lib/metrics" ),
+    escapeHTML = sanitizer = require( "../../lib/sanitizer" ).escapeHTML;
+
+function sanitizeProjectData( projectData ) {
+  projectData.name = escapeHTML( projectData.name || '' );
+  projectData.description = escapeHTML( projectData.description || '' );  
+  return projectData;
+}
 
 module.exports = function( Project ) {
 
   return function( req, res ) {
 
-    var projectData = req.body;
+    // Sanitize project name (i.e., title) and description.
+    var projectData = sanitizeProjectData( req.body );
 
     if ( req.body.id ) {
 
