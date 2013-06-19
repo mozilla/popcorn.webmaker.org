@@ -55,6 +55,13 @@ body.editor-minimized .body-wrapper {
   right: 0;
 }
 
+.show-loading .loading-message {
+  opacity: 1;
+  // this zindex puts it above all track events
+  z-index: 1000;
+  visibility: visible;
+}
+
 .loading-message {
   position: absolute;
 
@@ -70,13 +77,6 @@ body.editor-minimized .body-wrapper {
   top: 0;
   line-height: 1;
 
-  &.show-global,
-  &.show-media {
-    opacity: 1;
-    // this zindex puts it above all track events
-    z-index: 1000;
-    visibility: visible;
-  }
   &.show-waiting {
     opacity: 1;
     background: rgba( 0,0,0,1 );

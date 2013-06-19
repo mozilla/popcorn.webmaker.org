@@ -51,20 +51,12 @@
         target.appendChild( container );
       };
       options.displayLoading = function() {
-        var bigPlay = document.getElementById( "controls-big-play-button" );
         _this.on( "play", options._surpressPlayEvent );
-        if ( bigPlay ) {
-          bigPlay.classList.add( "hide-button" );
-        }
-        document.querySelector( ".loading-message" ).classList.add( "show-media" );
+        document.querySelector( ".embed" ).classList.add( "show-loading" );
       };
       options.hideLoading = function() {
-        var bigPlay = document.getElementById( "controls-big-play-button" );
         _this.off( "play", options._surpressPlayEvent );
-        if ( bigPlay && !options.playWhenReady ) {
-          bigPlay.classList.remove( "hide-button" );
-        }
-        document.querySelector( ".loading-message" ).classList.remove( "show-media" );
+        document.querySelector( ".embed" ).classList.remove( "show-loading" );
       };
 
       if ( !options.from || options.from > options.duration ) {
