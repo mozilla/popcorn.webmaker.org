@@ -168,7 +168,7 @@ app.post( '/api/publish/:myproject',
   routes.api.publish
 );
 
-app.get( '/dashboard', middleware.isAuthenticated, filter.isStorageAvailable, function( req, res ) {
+app.get( '/dashboard', function( req, res ) {
   res.redirect( config.AUDIENCE + "/me?app=popcorn" );
 });
 
