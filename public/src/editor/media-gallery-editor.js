@@ -222,7 +222,11 @@ define( [ "util/lang", "util/uri", "util/keys", "util/mediatypes", "editor/edito
     }
 
     var checkUrl = URI.parse( url );
-    data.source = ( checkUrl.protocol === "https" ) ? "https://" + checkUrl.source : "http://" + checkUrl.source;
+
+    if ( !checkUrl.protocol ) {
+      url = window.location.protocol + "//" + url;
+    }
+    data.source = url;
     data.type = "sequencer";
     _mediaLoadTimeout = setTimeout( function() {
       _errorMessage.innerHTML = TIMEOUT_ERROR;
