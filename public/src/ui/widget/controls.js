@@ -34,7 +34,7 @@ define( [ "util/lang", "util/time", "text!layouts/controls.html" ],
         init = options.init || nop;
 
     bigPlayButton = document.getElementById( "controls-big-play-button" );
-    bigPlayButton.classList.add( "controls-ready" );
+    bigPlayButton.classList.remove( "hide-button" );
     controlsContainer = document.querySelector( ".controls" );
     thumbnailContainer = document.querySelector( "#thumbnail-container" );
     attributionContainer = document.querySelector( "#attribution-info" );
@@ -42,7 +42,6 @@ define( [ "util/lang", "util/time", "text!layouts/controls.html" ],
     bigPlayClicked = function() {
       p.media.removeEventListener( "play", bigPlayClicked, false );
       bigPlayButton.removeEventListener( "click", bigPlayClicked, false );
-      bigPlayButton.classList.remove( "controls-ready" );
       bigPlayButton.classList.add( "hide-button" );
       p.media.addEventListener( "mouseover", activate, false );
 
