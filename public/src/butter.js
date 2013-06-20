@@ -850,7 +850,7 @@ window.Butter = {
         });
 
         // Backwards compat for urls loaded as <HOSTNAME>/templates/basic/?savedDataUrl=someConfig.json
-        if ( savedDataUrl ) {
+        if ( savedDataUrl && savedDataUrl.indexOf( "/api/" ) === -1 ) {
           savedDataUrl = "/templates/basic/" + savedDataUrl;
         }
 
