@@ -429,7 +429,7 @@ function init() {
   );
 
   require(["util/shims"], function() {
-    require(["embed-main"]);
+    require([ "embed-main" ]);
   });
 }
 

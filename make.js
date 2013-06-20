@@ -103,7 +103,6 @@ function checkCSS( callback ) {
     "public/css/embed-shell.less",
     "public/css/makedetails.less",
     "public/templates/assets/css/jquery-ui/jquery.ui.butter.less",
-    "public/templates/assets/plugins/twitter/popcorn.twitter.less",
     "public/templates/assets/plugins/wikipedia/popcorn.wikipedia.less",
     "public/templates/basic/style.less"
   ];

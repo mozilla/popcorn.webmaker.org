@@ -34,10 +34,6 @@
         "icon": "{{baseDir}}resources/icons/map.png"
       },
       {
-        "type": "twitter",
-        "icon": "{{baseDir}}templates/assets/plugins/twitter/twitter-icon.png"
-      },
-      {
         "type": "image",
         "icon": "{{baseDir}}templates/assets/plugins/image/image-icon.png"
       },
