@@ -256,6 +256,10 @@
         trackEvent._container.style.height = trackEvent.height + "%";
       }
 
+      if ( options.hasOwnProperty( "zindex" ) ) {
+        trackEvent._container.style.zIndex = trackEvent.zindex = +options.zindex;
+      }
+
     }
   };
 
