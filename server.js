@@ -142,12 +142,23 @@ app.configure( function() {
         err.status = 500;
       }
 
+      if ( req.accepts( "application/json" ) ) {
+        return res.json( err.status, { error: err.message } );
+      }
+
       res.status( err.status );
-      res.render( 'error.html', { message: err.message, status: err.status });
+      res.render( 'error.html', { message: err.message, status: err.status } );
     })
     .use( function( req, res, next ) {
-      res.status( 404 );
-      res.render( 'error.html', { message: "This page doesn't exist", status: 404 });
+      var code = 404,
+          message = "This page doesn't exist";
+
+      if ( req.accepts( "application/json" ) ) {
+        return res.json( code, { error: message } );
+      }
+
+      res.status( code );
+      res.render( 'error.html', { message: message, status: code } );
     });
 
   Project = require( './lib/project' )( config.database, makeapiConfig );

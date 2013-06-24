@@ -880,6 +880,17 @@ window.Butter = {
           }
         }
 
+        function loadConfigDefault() {
+          // if previous attempt failed,
+          // try loading data from the savedDataUrl value in the config
+          loadFromSavedDataUrl( _config.value( "savedDataUrl" ), function( savedData ) {
+            if ( savedData ) {
+              doImport( savedData );
+            }
+            finishedCallback( project );
+          });
+        }
+
         // attempt to load data from savedDataUrl in query string
         loadFromSavedDataUrl( savedDataUrl, function( savedData ) {
           // if there's no savedData returned, or the returned object does not
@@ -887,25 +898,24 @@ window.Butter = {
           if ( !savedData || savedData.error || !savedData.media ) {
             // If nothing comes back, it means we're trying to edit a page we don't own.
             // Try a remix.
-            if ( remixOrEdit === "edit" && savedData.error === "project not found" ) {
+            // This is covering edits for projects they don't own or if they aren't logged in.
+            if ( remixOrEdit === "edit" &&
+               ( savedData.error === "unauthorized" || savedData.error === "Not Found" ) ) {
               remixOrEdit = "remix";
-              loadFromSavedDataUrl( savedDataUrl, function( savedData ) {
-                if ( savedData ) {
+              loadFromSavedDataUrl( "/api/remix/" + item[ 2 ], function( savedData ) {
+                if ( savedData && !savedData.error ) {
                   doImport( savedData );
+                  finishedCallback( project );
+                  return;
                 }
-                finishedCallback( project );
+                // If we hit this there was an error trying to remix. This means the project
+                // most likely didn't exist at all. Use template default.
+                loadConfigDefault();
+                return;
               });
               return;
             }
-            // if previous attempt failed,
-            // try loading data from the savedDataUrl value in the config
-            loadFromSavedDataUrl( _config.value( "savedDataUrl" ), function( savedData ) {
-              if ( savedData ) {
-                doImport( savedData );
-              }
-              finishedCallback( project );
-            });
-            return;
+            return loadConfigDefault();
           }
           // otherwise, attempt import
           doImport( savedData );
