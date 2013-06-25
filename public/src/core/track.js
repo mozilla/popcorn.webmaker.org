@@ -231,6 +231,11 @@ define( [ "./eventmanager", "./trackevent", "./views/track-view", "util/sanitize
         trackEvent.selected = false;
       }
 
+
+      if ( trackEvent.manifest.deprecated ) {
+        return;
+      }
+
       if ( trackEvent.track ) {
         throw "TrackEvent still bound to track. Please use `track.removeTrackEvent` first.";
       }
