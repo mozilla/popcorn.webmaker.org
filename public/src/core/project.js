@@ -310,8 +310,13 @@ define( [ "core/eventmanager", "core/media", "util/sanitizer" ],
 
       // If this is a restored backup, restart backups now (vs. on first save)
       // since the user indicated they want it.
-      if( json.backupDate ) {
+      if ( json.backupDate ) {
         startBackups();
+      }
+
+      // This is an old project. Force it into a dirty state to encourage resaving.
+      if ( _isPublished && !_makeid ) {
+        _isDirty = true;
       }
 
     };
