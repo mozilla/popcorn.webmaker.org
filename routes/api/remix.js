@@ -17,7 +17,7 @@ module.exports = function( req, res ) {
       // TODO FIX THIS API
       projectJSON.remixedFromUrl = "http://popcorn.webmadecontent.org/" + res.locals.project.id.toString( 36 );
     } else {
-      projectJSON.remixedFromUrl = utils.embedShellURL( user.username, res.locals.project.id );
+      projectJSON.remixedFromUrl = utils.embedShellURL( user.username, res.locals.project.name );
     }
 
     res.json( projectJSON );

@@ -11,8 +11,8 @@ module.exports = function( Project ) {
     projectJSON.projectID = res.locals.project.id;
     projectJSON.description = res.locals.project.description;
     projectJSON.template = res.locals.project.template;
-    projectJSON.publishUrl = utils.embedShellURL( req.session.username, res.locals.project.id );
-    projectJSON.iframeUrl = utils.embedURL( req.session.username, res.locals.project.id );
+    projectJSON.publishUrl = utils.embedShellURL( req.session.username, res.locals.project.name );
+    projectJSON.iframeUrl = utils.embedURL( req.session.username, res.locals.project.name );
     projectJSON.makeid = res.locals.project.makeid;
 
     makeClient.id( res.locals.project.makeid ).then(function( err, make ) {
@@ -40,7 +40,7 @@ module.exports = function( Project ) {
               // TODO FIX THIS API
               projectJSON.remixedFromUrl = "http://popcorn.webmadecontent.org/" + doc.id.toString( 36 );
             } else {
-              projectJSON.remixedFromUrl = utils.embedShellURL( user, doc.id );
+              projectJSON.remixedFromUrl = utils.embedShellURL( user, doc.name );
             }
 
             res.json( projectJSON );
