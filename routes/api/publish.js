@@ -6,9 +6,9 @@ var async = require( "async" ),
 
 module.exports = function( req, res ) {
   var description = res.locals.project.description || "Created with Popcorn Maker - part of the Mozilla Webmaker initiative",
-      iframeUrl = utilities.embedURL( req.session.username, res.locals.project.id ),
+      iframeUrl = utilities.embedURL( req.session.username, res.locals.project.name ),
       projectData = JSON.parse( res.locals.project.data, sanitizer.escapeHTMLinJSON ),
-      publishUrl = utilities.embedShellURL( req.session.username, res.locals.project.id ),
+      publishUrl = utilities.embedShellURL( req.session.username, res.locals.project.name ),
       projectUrl = "/editor/" + res.locals.project.id;
 
   var mediaUrl = projectData.media[ 0 ].url,
@@ -29,7 +29,7 @@ module.exports = function( req, res ) {
       }, function( err, html ) {
         var sanitized = sanitizer.compressHTMLEntities( html );
 
-        s3.put( utilities.embedPath( req.session.username, res.locals.project.id ), {
+        s3.put( utilities.embedPath( req.session.username, res.locals.project.name ), {
           "x-amz-acl": "public-read",
           "Content-Length": Buffer.byteLength( sanitized, "utf8" ),
           "Content-Type": "text/html; charset=UTF-8"
@@ -57,7 +57,7 @@ module.exports = function( req, res ) {
        }, function( err, html ) {
         var sanitized = sanitizer.compressHTMLEntities( html );
 
-        s3.put( utilities.embedShellPath( req.session.username, res.locals.project.id ), {
+        s3.put( utilities.embedShellPath( req.session.username, res.locals.project.name ), {
           "x-amz-acl": "public-read",
           "Content-Length": Buffer.byteLength( sanitized, "utf8" ),
           "Content-Type": "text/html; charset=UTF-8"
@@ -76,7 +76,7 @@ module.exports = function( req, res ) {
       res.render( "redirect.html", {
         target: projectUrl + "/edit"
       }, function( err, html ) {
-        s3.put( utilities.embedPath( req.session.username, res.locals.project.id ) + "/edit", {
+        s3.put( utilities.embedPath( req.session.username, res.locals.project.name ) + "/edit", {
           "x-amz-acl": "public-read",
           "Content-Length": Buffer.byteLength( html, "utf8" ),
           "Content-Type": "text/html; charset=UTF-8"
@@ -95,7 +95,7 @@ module.exports = function( req, res ) {
       res.render( "redirect.html", {
         target: projectUrl + "/remix"
       }, function( err, html ) {
-        s3.put( utilities.embedPath( req.session.username, res.locals.project.id ) + "/remix", {
+        s3.put( utilities.embedPath( req.session.username, res.locals.project.name ) + "/remix", {
           "x-amz-acl": "public-read",
           "Content-Length": Buffer.byteLength( html, "utf8" ),
           "Content-Type": "text/html; charset=UTF-8"
@@ -114,7 +114,7 @@ module.exports = function( req, res ) {
       res.render( "redirect.html", {
         target: projectUrl + "/edit"
       }, function( err, html ) {
-        s3.put( utilities.embedShellPath( req.session.username, res.locals.project.id ) + "/edit", {
+        s3.put( utilities.embedShellPath( req.session.username, res.locals.project.name ) + "/edit", {
           "x-amz-acl": "public-read",
           "Content-Length": Buffer.byteLength( html, "utf8" ),
           "Content-Type": "text/html; charset=UTF-8"
@@ -133,7 +133,7 @@ module.exports = function( req, res ) {
       res.render( "redirect.html", {
         target: projectUrl + "/remix"
       }, function( err, html ) {
-        s3.put( utilities.embedShellPath( req.session.username, res.locals.project.id ) + "/remix", {
+        s3.put( utilities.embedShellPath( req.session.username, res.locals.project.name ) + "/remix", {
           "x-amz-acl": "public-read",
           "Content-Length": Buffer.byteLength( html, "utf8" ),
           "Content-Type": "text/html; charset=UTF-8"
