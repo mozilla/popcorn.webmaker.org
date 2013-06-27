@@ -9,7 +9,7 @@ function sanitizeProjectData( projectData ) {
 
 module.exports = function( Project ) {
 
-  return function( req, res ) {
+  return function( req, res, next ) {
 
     // Sanitize project name (i.e., title) and description.
     var projectData = sanitizeProjectData( req.body );
@@ -23,8 +23,10 @@ module.exports = function( Project ) {
           return;
         }
 
-        res.json( { error: 'okay', project: doc } );
+        req.project = doc;
+        req.makeTags = projectData.tags;
         metrics.increment( 'project.save' );
+        next();
       });
     } else {
 
@@ -35,12 +37,13 @@ module.exports = function( Project ) {
           return;
         }
 
-        // Send back the newly added row's ID
-        res.json( { error: 'okay', projectId: doc.id } );
+        req.project = doc;
+        req.remixedMakeId = projectData.makeid;
         metrics.increment( 'project.create' );
         if ( doc.remixedFrom ) {
           metrics.increment( 'project.remix' );
         }
+        next();
       });
     }
   };

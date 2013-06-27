@@ -1,33 +1,32 @@
-module.exports = function( Project, metrics, stores ) {
-  var utils = require( "../../lib/utilities" );
+module.exports = function( req, res, next ) {
+  var utils = require( "../../lib/utilities" ),
+      metrics = require( "../../lib/metrics" );
 
-  return function( req, res ) {
+  var project = res.locals.project;
 
-    var id = parseInt( req.params.id, 10 );
+  if ( !project ) {
+    return next( utils.error( 404, "project not found" ) );
+  }
 
-    if ( isNaN( id ) ) {
-      res.json( 500, { error: "ID was not a number" } );
-      return;
-    }
+  project.destroy()
+  .success(function() {
+    // Delete published projects, too
+    var embedShell = utils.generateIdString( project.id ),
+        embedDoc = embedShell + "_";
 
-    Project.delete( { email: req.session.email, id: req.params.id }, function( err ) {
-      if ( err ) {
-        res.json( 404, { error: 'project not found' } );
-        return;
-      }
-
-      // Delete published projects, too
-      var embedShell = utils.generateIdString( id ),
-          embedDoc = embedShell + "_";
-
-      // If we can't delete the file, it's already gone, ignore errors.
-      // Fire-and-forget.
+    /*
+      If we can't delete the file, it's already gone, ignore errors.
+      Fire-and-forget.
+      TODO: WE NEED TO ACTUALLY RE IMPLEMENT THIS WHEN WE DO CASCADING DELETES
       stores.publish.remove( embedShell );
       stores.publish.remove( embedDoc );
+     */
 
-      res.json( { error: 'okay' } );
-      metrics.increment( 'project.delete' );
-    });
-  };
+    metrics.increment( 'project.delete' );
+    next();
+  })
+  .error(function( err ) {
+    next( utils.error( 500, err.toString() ) );
+  });
 };
 

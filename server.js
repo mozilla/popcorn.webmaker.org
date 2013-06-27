@@ -143,7 +143,7 @@ app.configure( function() {
       res.render( 'error.html', { message: message, status: code } );
     });
 
-  Project = require( './lib/project' )( config.database, makeapiConfig );
+  Project = require( './lib/project' )( config.database );
   filter = require( './lib/filter' )( Project.isDBOnline );
 });
 
@@ -183,8 +183,17 @@ app.get( '/external/sso-include.js', function( req, res ) {
 });
 
 // Project Endpoints
-app.post( '/api/project/:id?', filter.isLoggedIn, filter.isStorageAvailable, routes.api.synchronize( Project ));
-//app.post( '/api/delete/:id?', filter.isLoggedIn, filter.isStorageAvailable, routes.api.remove );
+app.post( '/api/project/:id?',
+  filter.isLoggedIn,
+  filter.isStorageAvailable,
+  routes.api.synchronize( Project ),
+  middleware.synchronizeMake,
+  function( req, res ) {
+    res.json( { error: 'okay', project: req.project } );
+});
+//app.post( '/api/delete/:myproject?', filter.isLoggedIn, filter.isStorageAvailable, routes.api.remove, middleware.removeMake, function( req, res ) {
+  // res.json( { error: 'okay' }, 200 );
+//});
 app.get( '/api/remix/:anyproject', filter.isStorageAvailable, routes.api.remix );
 app.get( '/api/project/:myproject', filter.isLoggedIn, filter.isStorageAvailable, routes.api.find( Project ));
 
