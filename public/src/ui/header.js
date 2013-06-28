@@ -196,7 +196,7 @@ define([ "dialog/dialog", "util/lang", "text!layouts/header.html", "text!layouts
     this.views = {
       dirty: function() {
         togglePreviewButton( false );
-        toggleSaveButton( true );
+        toggleSaveButton( butter.cornfield.authenticated() );
         toggleProjectButton( false );
       },
       clean: function() {
