@@ -50,7 +50,8 @@ define( [ "core/logger", "core/eventmanager", "util/dragndrop" ],
 
             // Avoid using width values to derive end value to circumvent padding/border issues.
             duration = trackEvent.popcornOptions.end - trackEvent.popcornOptions.start;
-            left = trackEventRect.left - trackRect.left;
+            // Account for 2 pixel border.
+            left = ( trackEventRect.left + 2 ) - trackRect.left;
             start = left / trackRect.width * _duration;
             end = start + duration;
 
