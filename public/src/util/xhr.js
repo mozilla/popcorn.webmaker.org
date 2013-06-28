@@ -61,6 +61,9 @@
       xhrModule.ajax({
         method: "GET",
         url: url,
+        header: {
+          "Accept": "application/json"
+        },
         success: success
       });
     },
@@ -74,7 +77,8 @@
         method: "POST",
         url: url,
         header: {
-          "x-csrf-token": __csrfToken
+          "x-csrf-token": __csrfToken,
+          "Accept": "application/json"
         },
         data: data,
         success: success
@@ -85,7 +89,8 @@
         method: "PUT",
         url: url,
         header: {
-          "x-csrf-token": __csrfToken
+          "x-csrf-token": __csrfToken,
+          "Accept": "application/json"
         },
         data: data,
         success: success
