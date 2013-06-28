@@ -93,7 +93,7 @@ app.configure( function() {
           include: [ "butter" ],
           mainConfigFile: WWW_ROOT + "/src/popcorn.js",
           paths: {
-            "make-api": path.resolve( __dirname, "node_modules/makeapi/public/js/make-api" ),
+            "make-api": path.resolve( __dirname, "node_modules/makeapi-client/src/make-api" ),
             "sso-include": path.resolve( __dirname, "node_modules/webmaker-sso/include" )
           }
         },
@@ -194,7 +194,7 @@ app.get( '/templates/basic', routes.pages.editor );
 app.get( '/templates/basic/index.html', routes.pages.editor );
 
 app.get( '/external/make-api.js', function( req, res ) {
-  res.sendfile( path.resolve( __dirname, "node_modules/makeapi/public/js/make-api.js" ) );
+  res.sendfile( path.resolve( __dirname, "node_modules/makeapi-client/src/make-api.js" ) );
 });
 app.get( '/external/sso-include.js', function( req, res ) {
   res.sendfile( path.resolve( __dirname, "node_modules/webmaker-sso/include.js" ) );
