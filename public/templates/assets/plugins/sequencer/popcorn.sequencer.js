@@ -58,6 +58,13 @@
         _this.off( "play", options._surpressPlayEvent );
         document.querySelector( ".embed" ).classList.remove( "show-loading" );
       };
+      options.setZIndex = function() {
+        if ( !options.hidden && options.active ) {
+          options._container.style.zIndex = +options.zindex;
+        } else {
+          options._container.style.zIndex = 0;
+        }
+      };
 
       if ( !options.from || options.from > options.duration ) {
         options.from = 0;
@@ -112,9 +119,7 @@
       options.fail = function() {
         _this.off( "play", options._playWhenReadyEvent );
         options.failed = true;
-        if ( !options.hidden && options.active ) {
-          options._container.style.zIndex = +options.zindex;
-        }
+        options.setZIndex();
         options.hideLoading();
         if ( options.playWhenReady ) {
           _this.play();
@@ -255,11 +260,7 @@
             // This way if an initial load never happens, we never pause.
             options._clip.on( "progress", options._onProgress );
             options.hideLoading();
-            if ( !options.hidden && options.active ) {
-              options._container.style.zIndex = +options.zindex;
-            } else {
-              options._container.style.zIndex = 0;
-            }
+            options.setZIndex();
             if ( options.playWhenReady ) {
               _this.play();
             } else {
@@ -348,7 +349,7 @@
         _this.on( "pause", options._pauseEvent );
       };
 
-      // event to seek the slip if the main timeline seeked.
+      // event to seek the clip if the main timeline seeked.
       options._onSeeked = function() {
         options._setClipCurrentTime();
       };
@@ -374,11 +375,7 @@
       }
       if ( updates.hasOwnProperty( "zindex" ) ) {
         options.zindex = updates.zindex;
-        if ( !options.hidden && options.active ) {
-          options._container.style.zIndex = +options.zindex;
-        } else {
-          options._container.style.zIndex = 0;
-        }
+        options.setZIndex();
       }
       if ( updates.title ) {
         options.title = updates.title;
@@ -388,11 +385,7 @@
       }
       if ( updates.hasOwnProperty( "hidden" ) ) {
         options.hidden = updates.hidden;
-        if ( !options.hidden && options.active ) {
-          options._container.style.zIndex = +options.zindex;
-        } else {
-          options._container.style.zIndex = 0;
-        }
+        options.setZIndex();
       }
       if ( updates.fallback ) {
         options.sourceToArray( updates, "fallback" );
@@ -504,11 +497,9 @@
         }
         // reset current time so next play from start is smooth. We've pre seeked.
         options._setClipCurrentTime( +options.from );
-      }
-      options._container.style.zIndex = 0;
-      if ( options.ready ) {
         options._clip.mute();
       }
+      options._container.style.zIndex = 0;
     },
     manifest: {
       about: {},
