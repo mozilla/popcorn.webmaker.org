@@ -25,7 +25,7 @@
 
   var MEDIA_LOAD_TIMEOUT = 10000;
 
-  /*var loadingHandler = {
+  var loadingHandler = {
     loading: [],
     add: function( callback ) {
       this.loading.push( callback );
@@ -38,11 +38,8 @@
       if ( this.loading[ 0 ] ) {
         this.loading[ 0 ]();
       }
-    },
-    fail: function() {
-      // handle when a clip failed to load.
     }
-  };*/
+  };
 
   Popcorn.plugin( "sequencer", {
     _setup: function( options ) {
