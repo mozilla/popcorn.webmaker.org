@@ -38,24 +38,6 @@ function setupStore( storeConfig ) {
   return store;
 }
 
-if ( config.USE_WEBFAKER ) {
-  var webfaker = require( "webfaker" );
-
-  webfaker.start({
-    port: port + 1,
-    username: config.MAKE_USERNAME,
-    password: config.MAKE_PASSWORD,
-    isAdminCheck: false
-  }, function() {
-    console.log( "Started Webfaker services on http://localhost ports: FakeAPI=%s, Fogin=%s, Fubble=%s",
-                 port + 1, port + 2, port + 3 );
-
-    process.on( "exit", function() {
-      webfaker.stop();
-    });
-  });
-}
-
 app.locals({
   config: {
     app_hostname: APP_HOSTNAME,

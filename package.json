@@ -115,8 +115,7 @@
     "awsbox": "0.4.2",
     "html5-lint": "0.2.1",
     "supertest": "0.5.1",
-    "tap": "0.4.0",
-    "webfaker": "git://github.com/humphd/webfaker.git#c0c36faa2302293b84ceabad4d2db887be550ad2"
+    "tap": "0.4.0"
   },
   "scripts": {
     "test": "node make check"
