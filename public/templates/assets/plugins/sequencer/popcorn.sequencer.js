@@ -30,7 +30,9 @@
     add: function( callback ) {
       this.loading.push( callback );
       if ( this.loading.length === 1 ) {
-        this.loading[ 0 ]();
+        setTimeout( function() {
+          callback();
+        }, 0 );
       }
     },
     next: function() {
@@ -260,7 +262,7 @@
         if ( options.fallback ) {
           options.source = options.source.concat( options.fallback );
         }
-        loadingHandler( options.addSource );
+        loadingHandler.add( options.addSource );
       }
 
       options._startEvent = function() {
@@ -449,7 +451,7 @@
               options._clip.pause();
             }
           }
-          loadingHandler(options.addSource );
+          loadingHandler.add(options.addSource );
         }
       }
       if ( updates.hasOwnProperty( "mute" ) ) {
