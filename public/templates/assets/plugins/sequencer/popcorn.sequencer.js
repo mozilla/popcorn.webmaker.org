@@ -25,6 +25,24 @@
 
   var MEDIA_LOAD_TIMEOUT = 10000;
 
+  var loadingHandler = {
+    loading: [],
+    add: function( callback ) {
+      this.loading.push( callback );
+      if ( this.loading.length === 1 ) {
+        setTimeout( function() {
+          callback();
+        }, 0 );
+      }
+    },
+    next: function() {
+      this.loading.shift();
+      if ( this.loading[ 0 ] ) {
+        this.loading[ 0 ]();
+      }
+    }
+  };
+
   Popcorn.plugin( "sequencer", {
     _setup: function( options ) {
       var _this = this;
@@ -84,7 +102,6 @@
       };
 
       options.readyEvent = function() {
-        clearTimeout( options.loadTimeout );
         // If teardown was hit before ready, ensure we teardown.
         if ( options._cancelLoad ) {
           if ( options.playWhenReady ) {
@@ -106,6 +123,12 @@
         }
       };
 
+      options.clearLoading = function() {
+        clearTimeout( options.loadTimeout );
+        loadingHandler.next();
+        options._clip.off( "loadedmetadata", options.clearLoading );
+      };
+
       // Function to ensure the mixup as to if a clip is an array
       // or string is normalized to an array as often as possible.
       options.sourceToArray = function( object, type ) {
@@ -117,6 +140,7 @@
       // The clip that failed to load would be ignored,
       // and everything else playable.
       options.fail = function() {
+        options.clearLoading();
         _this.off( "play", options._playWhenReadyEvent );
         options.failed = true;
         options.setZIndex();
@@ -177,8 +201,10 @@
         options._container.style.height = "100%";
         if ( options._clip.media.readyState >= 1 ) {
           options.readyEvent();
+          options.clearLoading();
         } else {
           options._clip.on( "loadedmetadata", options.readyEvent );
+          options._clip.on( "loadedmetadata", options.clearLoading );
         }
       };
 
@@ -241,7 +267,7 @@
         if ( options.fallback ) {
           options.source = options.source.concat( options.fallback );
         }
-        options.addSource();
+        loadingHandler.add( options.addSource );
       }
 
       options._startEvent = function() {
@@ -418,7 +444,7 @@
               options._clip.pause();
             }
           }
-          options.addSource();
+          loadingHandler.add( options.addSource );
         }
       }
       if ( updates.hasOwnProperty( "mute" ) ) {
@@ -470,7 +496,6 @@
         this.on( "play", options._playWhenReadyEvent );
         if ( !this.paused() ) {
           options.playWhenReady = true;
-          options._clip.pause();
         }
         if ( options.ready ) {
           options._startEvent();
