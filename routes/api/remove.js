@@ -6,13 +6,13 @@ module.exports = function( Project, metrics, stores ) {
     var id = parseInt( req.params.id, 10 );
 
     if ( isNaN( id ) ) {
-      res.json( { error: "ID was not a number" }, 500 );
+      res.json( 500, { error: "ID was not a number" } );
       return;
     }
 
     Project.delete( { email: req.session.email, id: req.params.id }, function( err ) {
       if ( err ) {
-        res.json( { error: 'project not found' }, 404 );
+        res.json( 404, { error: 'project not found' } );
         return;
       }
 
@@ -25,7 +25,7 @@ module.exports = function( Project, metrics, stores ) {
       stores.publish.remove( embedShell );
       stores.publish.remove( embedDoc );
 
-      res.json( { error: 'okay' }, 200 );
+      res.json( { error: 'okay' } );
       metrics.increment( 'project.delete' );
     });
   };

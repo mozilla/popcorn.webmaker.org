@@ -19,7 +19,7 @@ module.exports = function( Project ) {
       Project.update( { email: req.session.email, id: req.body.id, data: projectData },
                       function( err, doc ) {
         if ( err ) {
-          res.json( { error: err }, 500 );
+          res.json( 500, { error: err } );
           return;
         }
 
@@ -30,7 +30,7 @@ module.exports = function( Project ) {
 
       Project.create( { email: req.session.email, data: projectData }, function( err, doc ) {
         if ( err ) {
-          res.json( { error: err }, 500 );
+          res.json( 500, { error: err } );
           metrics.increment( 'error.save' );
           return;
         }
