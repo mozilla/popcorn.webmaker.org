@@ -1,0 +1,707 @@
+(function( Popcorn ) {
+  var importMousetrap = document.createElement( "script" );
+
+  importMousetrap.src = "http://cdn.craig.is/js/mousetrap/mousetrap.min.js";
+  importMousetrap.type = "text/javascript";
+
+  document.head.appendChild( importMousetrap );
+  importMousetrap.onload = function() {
+    /**
+     * mouseTrapHelperFactory()
+     * ----
+     * Returns an object with five methods:
+     *
+     * bindInputTag( tag, sequence )
+     *  | Sets up key-selection functionality in the passed
+     *  | `tag`, and stores the sequence entered by the user in
+     *  | the passed `sequence` array.  When a `blur` event fires
+     *  | on the `tag`, pressing the sequence of keys the user selected
+     *  | will fire a default callback.
+     *  |
+     *  | `tag` = Dom reference to an input tag
+     *  | `sequence` = Array containing keys to be pressed in order
+     *
+     * updateCallback( newCallback )
+     *  | If passed a function, sets it as the callback to fire
+     *  | when a user-specified and bound key-combination is pressed
+     *
+     * bindSequence( sequence, callback )
+     *  | Binds the key sequence represented by an array of strings
+     *  | to fire `callback`
+     *
+     * unbindSequence( sequence )
+     *  | Release the key sequence being monitored by
+     *  | the Mousetrap library.
+     *
+     * bindAll( callback )
+     *  | Bind a callback to each individual key
+     *
+     * bindKeyup( key, callback )
+     *  | Bind callback to the keyup event on the passed key
+     *
+     * sequenceToString( key, callback )
+     *  | Returns a human-readable string representing the sequence
+     *  | in the passed array
+     */
+    var _mousetrapHelper = (function mouseTrapHelperFactory( options ) {
+      var KEYS = options.keys || {
+        // Non Alphanumeric
+        alt: "alt",
+        backspace: "backspace",
+        capslock: "capslock",
+        ctrl: "ctrl",
+        del: "del",
+        down: "down",
+        enter: "enter",
+        esc: "esc",
+        end: "end",
+        escape: "escape",
+        home: "home",
+        ins: "ins",
+        left: "left",
+        meta: "meta",
+        pageup: "pageup",
+        pagedown: "pagedown",
+        "return": "return",
+        right: "right",
+        shift: "shift",
+        space: "space",
+        tab: "tab",
+        up: "up",
+
+        // Numbers
+        0: "0",
+        1: "1",
+        2: "2",
+        3: "3",
+        4: "4",
+        5: "5",
+        6: "6",
+        7: "7",
+        8: "8",
+        9: "9",
+
+        // Alphabet
+        a: "a",
+        b: "b",
+        c: "c",
+        d: "d",
+        e: "e",
+        f: "f",
+        g: "g",
+        h: "h",
+        i: "i",
+        j: "j",
+        k: "k",
+        l: "l",
+        m: "m",
+        n: "n",
+        o: "o",
+        p: "p",
+        q: "q",
+        r: "r",
+        s: "s",
+        t: "t",
+        u: "u",
+        v: "v",
+        w: "w",
+        x: "x",
+        y: "y",
+        z: "z"
+      },
+      modifiers = options.modifiers || {
+        ctrl: "ctrl",
+        alt: "alt",
+        shift: "shift",
+        meta: "meta",
+        option: "option"
+      };
+
+      var keyComboCallback = function keyComboCallback( e ) {
+        console.error( "No callback has been specified for the mouseTrapHelper." );
+        e.preventDefault();
+      };
+      var _self = this;
+
+      options = options || {};
+
+      // Removes all elements from the passed array reference
+      function cleanArray( array ) {
+        if ( array && array.length ) {
+          var length = array.length,
+              i;
+
+          for ( i = 0; i < length; i++ ) {
+            array.pop();
+          }
+        }
+      }
+
+      function bindAll( callback ) {
+        callback = callback || function() {
+          console.log( "No bindAll callback specified!" );
+        };
+
+        for ( var key in KEYS ) {
+          if ( KEYS.hasOwnProperty( key ) ) {
+            Mousetrap.bind( key, callback );
+          }
+        }
+      }
+
+      function unbindAll() {
+        for ( var key in KEYS ) {
+          if ( KEYS.hasOwnProperty( key ) ) {
+            Mousetrap.unbind( key );
+          }
+        }
+      }
+
+      function listenForAssignment( tag, sequence ) {
+        function addKeyToSequence( e, combo ) {
+          e.preventDefault();
+          if ( sequence.length < 4 ) {
+            sequence.push( combo );
+          } else {
+            cleanArray( sequence );
+            sequence.push( combo );
+          }
+
+          tag.value = sequenceToString( sequence );
+        }
+
+        bindAll( addKeyToSequence );
+      }
+
+      // Generates a string indicating the allowed
+      // key-combos in a way the Mousetrap library
+      // will understand
+      function sequenceToKeycombo( sequence ) {
+        var modKeys = [],
+            modSequence = "",
+            modLength,
+            otherKeys = [],
+            otherLength,
+            length = sequence && sequence.length,
+            key,
+            ret = "",
+            i;
+
+        if ( length ) {
+          // Split modifier and other keys into
+          // seperate arrays
+          for ( i = 0; i < length; i++ ) {
+            key = sequence[ i ];
+            if ( modifiers[ key ] ) {
+              modKeys.push( key );
+            } else {
+              otherKeys.push( key );
+            }
+          }
+
+          // Create first part of keycombo (modifiers)
+          modLength = modKeys.length;
+          if ( modLength ) {
+            for ( i = 0; i < modLength - 1; i++ ) {
+              modSequence += modKeys[ i ] + "+";
+            }
+            modSequence += modKeys[ i ];
+          }
+
+          // Create second part of keycombo (non-modifiers)
+          // and return result
+          otherLength = otherKeys.length;
+          if ( otherLength > 1 ) {
+            for ( i = 0; i < otherLength - 1; i++ ) {
+              ret += modSequence + "+" + otherKeys[ i ] + " ";
+            }
+            ret += modSequence + "+" + otherKeys[ i ];
+          } else {
+            ret += modSequence + ( otherLength ? "+" + otherKeys[ 0 ] : "" );
+          }
+        }
+
+        return ret;
+      }
+
+      function sequenceToString( sequence ) {
+        var length = sequence.length,
+            ret = "";
+        if ( length ) {
+            var i = 0;
+
+            for ( ; i < length - 1; i++ ) {
+                ret += sequence[ i ] + "+";
+            }
+            ret += sequence[ i ];
+        }
+        return ret;
+      }
+
+      return {
+        bindInputTag: function( tag, sequence, callback ) {
+          // Set user-keypress callback
+          keyComboCallback = callback || keyComboCallback;
+
+          // On focus, reset array & unbind old listeners
+          // then clear tag value and listen for new keystrokes
+          tag.onfocus = function onFocus( e ) {
+            Mousetrap.unbind( sequenceToKeycombo( sequence ) );
+            cleanArray( sequence );
+            tag.value = "";
+            listenForAssignment( tag, sequence );
+          };
+
+          // On blur, stop listening for key-combos
+          // and listen for the user defined key-combos
+          tag.onblur = function onBlur( e ) {
+            unbindAll();
+          };
+        },
+        updateCallback: function( newCallback ) {
+          keyComboCallback = newCallback;
+        },
+        bindSequence: function( sequence, callback ) {
+          callback = callback || keyComboCallback;
+
+          Mousetrap.bind( sequenceToKeycombo( sequence ), callback );
+        },
+        unbindSequence: function( sequence ) {
+          Mousetrap.unbind( sequenceToKeycombo( sequence ) );
+        },
+        bindKeyup: function( key, callback ) {
+          Mousetrap.bind( key, callback, "keyup" );
+        },
+        bindAll: bindAll,
+        unbindAll: unbindAll,
+        sequenceToString: sequenceToString
+      };
+    })({});
+
+    /**
+     * keyboardHelperFactory()
+     * ----
+     * Returns an object with eight methods:
+     *
+     * insertKeyboard( element )
+     *  | Inserts keyboard into the passed element
+     *
+     * showKeyboard()
+     *  | Fades in the keyboard
+     *
+     * hideKeyboard()
+     *  | Fades out the keyboard
+     *
+     * correctKey( key )
+     *  | Highlights the passed key in green
+     *
+     * incorrectKey( key )
+     *  | Highlights the passed key in red
+     *
+     * keyOff( key )
+     *  | Removes the highlight from the passed key
+     *
+     * clearKeys()
+     *  | Removes all key highlights
+     *
+     */
+    var _keyboardHelper = (function keyboardHelperFactory( options ){
+      var keyboardCode = "<div class=\"keyboard_left\"><!-- row 1 --><div class=\"keyboard_row\"><div class=\"key key_backtick\">`</div><div class=\"key key_1\"><span>1</span></div><div class=\"key key_2\"><span>2</span></div><div class=\"key key_3\"><span>3</span></div><div class=\"key key_4\"><span>4</span></div><div class=\"key key_5\"><span>5</span></div><div class=\"key key_6\"><span>6</span></div><div class=\"key key_7\"><span>7</span></div><div class=\"key key_8\"><span>8</span></div><div class=\"key key_9\"><span>9</span></div><div class=\"key key_0\"><span>0</span></div><div class=\"key key_minus\"><span>-</span></div><div class=\"key key_equals\"><span>=</span></div><div class=\"key key_backspace\"><span>Backsp</span></div><div class=\"key key_backspace key_macBackspace off\"><span>Delete</span></div></div><!-- row 2 --><div class=\"keyboard_row\"><div class=\"key key_tab\"><span>Tab</span></div><div class=\"key key_q\"><span>Q</span></div><div class=\"key key_w\"><span>W</span></div><div class=\"key key_e\"><span>E</span></div><div class=\"key key_r\"><span>R</span></div><div class=\"key key_t\"><span>T</span></div><div class=\"key key_y\"><span>Y</span></div><div class=\"key key_u\"><span>U</span></div><div class=\"key key_i\"><span>I</span></div><div class=\"key key_o\"><span>O</span></div><div class=\"key key_p\"><span>P</span></div><div class=\"key key_openBracket\"><span>[</span></div><div class=\"key key_closeBracket\"><span>]</span></div><div class=\"key key_\\\"><span>\\</span></div></div><!-- row 3 --><div class=\"keyboard_row\"><div class=\"key key_capslock\"><span>CAPS</span></div><div class=\"key key_a\"><span>A</span></div><div class=\"key key_s\"><span>S</span></div><div class=\"key key_d\"><span>D</span></div><div class=\"key key_f\"><span>F</span></div><div class=\"key key_g\"><span>G</span></div><div class=\"key key_h\"><span>H</span></div><div class=\"key key_j\"><span>J</span></div><div class=\"key key_k\"><span>K</span></div><div class=\"key key_l\"><span>L</span></div><div class=\"key key_;\"><span>;</span></div><div class=\"key key_'\"><span>'</span></div><div class=\"key key_enter\"><span>Enter</span></div><div class=\"key key_enter key_macEnter off\"><span>Return</span></div></div><!-- row 4 --><div class=\"keyboard_row\"><div class=\"key key_shift\"><span>Shift</span></div><div class=\"key key_z\"><span>Z</span></div><div class=\"key key_x\"><span>X</span></div><div class=\"key key_c\"><span>C</span></div><div class=\"key key_v\"><span>V</span></div><div class=\"key key_b\"><span>B</span></div><div class=\"key key_n\"><span>N</span></div><div class=\"key key_m\"><span>M</span></div><div class=\"key key_,\"><span>,</span></div><div class=\"key key_.\"><span>.</span></div><div class=\"key key_/\"><span>/</span></div><div class=\"key key_shift\"><span>Shift</span></div></div><!-- row5 --><div class=\"keyboard_row\"><div class=\"key key_ctrl\"><span>Ctrl</span></div><div class=\"key key_meta\"><span>Win</span></div><div class=\"key key_meta key_macMeta off\"><span>Cmd</span></div><div class=\"key key_alt\"><span>Alt</span></div><div class=\"key key_alt key_macAlt off\"><span>Option</span></div><div class=\"key key_space\"><span>Space</span></div><div class=\"key key_alt\"><span>Alt</span></div><div class=\"key key_alt key_macAlt off\"><span>Option</span></div><div class=\"key key_ctrl\"><span>Ctrl</span></div></div></div><div class=\"keyboard_right\"><!-- row 1 --><div class=\"keyboard_row\"><div class=\"key key_ins\"><span>Ins</span></div><div class=\"key key_home\"><span>Home</span></div><div class=\"key key_pgup\"><span>PgUp</span></div></div><!-- row 2 --><div class=\"keyboard_row\"><div class=\"key key_minorDel\"><span>Del</span></div><div class=\"key key_end\"><span>End</span></div><div class=\"key key_pgdwn\"><span>PgDn</span></div></div><!-- row 3 --><div class=\"keyboard_row\"><div class=\"key key_blank\">&nbsp</div></div><!-- row 4 --><div class=\"keyboard_arrows\"><div class=\"keyboard_row\"><div class=\"key key_up\"><span>Up</span></div></div><!-- row5 --><div class=\"keyboard_row\"><div class=\"key key_left\"><span>Left</span></div><div class=\"key key_down\"><span>Down</span></div><div class=\"key key_right\"><span>Right</span></div></div></div></div>";
+
+      var keyboard,
+          localContainer,
+          keyElement;
+
+      // Create & cache keyboard container
+      keyboard = {
+        source: keyboardCode
+      };
+      keyboard.el = document.createElement( "div" );
+      keyboard.el.innerHTML = keyboard.source;
+
+      // Add initial classes
+      keyboard.classes = keyboard.el.classList;
+      keyboard.classes.add( "keyboard", "off" );
+
+      // Cache reference to "styles"
+      var styleReference = keyboard.el.style;
+
+      // This should match the length of the css transition
+      var transitionDelay = 1000;
+
+      return {
+        insertKeyboard: function ( element ) {
+          var macRegex = /Mac/g,
+              macKeys = [
+                "key_macAlt",
+                "key_macMeta",
+                "key_macEnter",
+                "key_macBackspace"
+              ],
+              winKeys = [
+                "key_alt",
+                "key_meta",
+                "key_enter",
+                "key_backspace"
+              ],
+              keys = keyboard.el,
+              currentKey,
+              i, j;
+
+          // Process OS specific keyboard keys
+          if ( window.navigator.userAgent.match( macRegex ) ) {
+            for ( i = 0; i < winKeys.length; i++ ) {
+              currentKey = keys.getElementsByClassName( winKeys[ i ] );
+
+              for ( j = 0; j < currentKey.length; j++ ) {
+                currentKey[ j ].classList.add( "off" );
+              }
+            }
+
+            for ( i = 0; i < macKeys.length; i++ ) {
+              currentKey = keys.getElementsByClassName( macKeys[ i ] );
+
+              for ( j = 0; j < currentKey.length; j++ ) {
+                currentKey[ j ].classList.remove( "off" );
+              }
+            }
+          }
+
+          element.appendChild( keys );
+          localContainer = element;
+        },
+        showKeyboard: function () {
+          var opacity;
+
+          if ( keyboard.classes.contains( "off" ) ) {
+            keyboard.classes.remove( "off" );
+          }
+
+          // A delay was needed in order for the removal of the "off"
+          // class not to interfere with the transition
+          window.setTimeout(function() {
+            styleReference.opacity = 1;
+          }, 100 );
+        },
+        hideKeyboard: function () {
+          var opacity;
+
+          if ( typeof( styleReference.opacity ) === "undefined" ) {
+            styleReference.opacity = 1;
+          }
+
+          // Triggers the transition and hides the div after the it finishes
+          styleReference.opacity = 0;
+          window.setTimeout(function() {
+            if ( !keyboard.classes.contains( "off" ) ) {
+              keyboard.classes.add( "off" );
+            }
+          }, transitionDelay );
+        },
+        correctKey: function ( key ) {
+          keyElement = keyboard.el.getElementsByClassName( "key_" + key );
+          var length = keyElement && keyElement.length;
+
+          if ( length ) {
+            for ( var i = 0; i < length; i++ ) {
+              keyElement[ i ].classList.remove( "invalid" );
+              keyElement[ i ].classList.add( "valid" );
+            }
+          }
+        },
+        incorrectKey: function ( key ) {
+          keyElement = keyboard.el.getElementsByClassName( "key_" + key );
+          var length = keyElement && keyElement.length;
+
+          if ( length ) {
+            for ( var i = 0; i < length; i++ ) {
+              keyElement[ i ].classList.remove( "valid" );
+              keyElement[ i ].classList.add( "invalid" );
+            }
+          }
+        },
+        keyOff: function ( key ) {
+          keyElement = keyboard.el.getElementsByClassName( "key_" + key );
+          var length = keyElement && keyElement.length,
+              classes;
+
+          if ( length ) {
+            for ( var i = 0; i < length; i++ ) {
+              classes = keyElement[ i ].classList;
+
+              if ( classes.contains( "valid" ) ) {
+                classes.remove( "valid" );
+              }
+
+              if ( classes.contains( "invalid" ) ) {
+                classes.remove( "invalid" );
+              }
+            }
+          }
+        },
+        clearKeys: function () {
+          var validKeys = keyboard.el.getElementsByClassName( "valid" ),
+              invalidKeys = keyboard.el.getElementsByClassName( "invalid" ),
+              validLength = validKeys && validKeys.length,
+              invalidLength = invalidKeys && invalidKeys.length,
+              i;
+
+          // Notice the static '0's in the for loops.
+          // Accessing an element "pops" it off the
+          // HTMLCollection object, so we loop through
+          // as many times as there are elements.
+          if ( validLength ) {
+            for ( i = 0; i < validLength; i++ ) {
+              validKeys[ 0 ].classList.remove( "valid" );
+            }
+          }
+          if ( invalidLength ) {
+            for ( i = 0; i < invalidLength; i++ ) {
+              invalidKeys[ 0 ].classList.remove( "invalid" );
+            }
+          }
+        }
+      }
+    })();
+
+    function keyByValue( obj, value ) {
+      var key;
+
+      for ( key in obj ) {
+        if ( obj[ key ] === value ) {
+          return key;
+        }
+      }
+
+      return -1;
+    }
+
+    function keyUpCallback( e, combo ){
+      e.preventDefault();
+
+      _keyboardHelper.keyOff( combo );
+    }
+
+    // Returns the callback that fires when a keycombination
+    // is pressed. Add extra logic here.
+    function resumePlaybackConstructor( combo ) {
+      return function ( e ) {
+        e.preventDefault();
+        if ( combo.length ) {
+          for ( var i = 0; i < combo.length; i++ ) {
+            _keyboardHelper.correctKey( combo[ i ] );
+          }
+        }
+
+        window.setTimeout(function(){
+          _keyboardHelper.clearKeys();
+
+          // TODO: Display congrats message
+          self.play();
+        }, 1500)
+      }
+    }
+
+    /**
+     * Plugin Definition
+     */
+    Popcorn.plugin( "interaction", function() {
+      var self = this,
+          sequences = [],
+          sequencePosition = 0,
+          workingSequence,
+          rKeyPosition,
+          i;
+
+      return {
+        _setup: function( options ) {
+          // Cache mousetrap helper & sequence arrays
+          options._mousetrapHelper = _mousetrapHelper;
+          options.sequences = options.sequences || sequences;
+          sequences[ 0 ] = options.sequences[ 0 ] = options.sequences[ 0 ] || [];
+          sequences[ 1 ] = options.sequences[ 1 ] = options.sequences[ 1 ] || [];
+          sequences[ 2 ] = options.sequences[ 2 ] = options.sequences[ 2 ] || [];
+
+          // Force the duration of the track event
+          options.end = options.start + 0.5;
+
+          // Cache resume playback callback
+          var resumePlaybackConstructor = function ( combo ) {
+            return function ( e ) {
+              e.preventDefault();
+              if ( combo.length ) {
+                for ( var i = 0; i < combo.length; i++ ) {
+                  _keyboardHelper.correctKey( combo[ i ] );
+                }
+              }
+
+              // TODO: Display congrats message
+              window.setTimeout(function(){
+                _keyboardHelper.clearKeys();
+
+                self.play();
+              }, 1500)
+            }
+          }
+          options._resumePlaybackConstructor = resumePlaybackConstructor;
+
+          var target = Popcorn.dom.find( options.target );
+
+          if ( !target ) {
+            target = this.media.parentNode;
+          }
+
+          options._target = target;
+
+          // Insert keyboard
+          _keyboardHelper.insertKeyboard( target );
+
+          // Build image
+          if ( options.imgSrc ) {
+            var imgDiv = document.createElement( "div" );
+
+            options._container = document.createElement( "div" );
+            options._container.style.position = "absolute";
+            options._container.style.width = options.width + "%";
+            options._container.style.height = options.height + "%";
+            options._container.style.top = options.top + "%";
+            options._container.style.left = options.left + "%";
+            options._container.style.zIndex = +options.zindex;
+            options._container.classList.add( options.transition );
+            options._container.classList.add( "off" );
+
+            imgDiv.style.borderStyle = "none";
+            imgDiv.style.width = "100%";
+            imgDiv.style.height = "100%";
+            imgDiv.style.backgroundPosition = "center center";
+            imgDiv.style.backgroundSize = "contain";
+            imgDiv.style.backgroundRepeat = "no-repeat";
+            imgDiv.style.backgroundImage = "url( \"" + options.imgSrc + "\" )";
+
+            options._container.appendChild( imgDiv );
+            options._target.appendChild( options._container );
+          }
+
+          options.toString = function() {
+            return "";
+          };
+        },
+        start: function( event, options ) {
+          this.emit( "interactionStart" );
+          _keyboardHelper.showKeyboard();
+
+          // Bind key listeners
+          if ( sequences[ 0 ] && sequences[ 0 ].length ) {
+            _mousetrapHelper.bindSequence( sequences[ 0 ], options._resumePlaybackConstructor( sequences[ 0 ] ) );
+          }
+          if ( sequences[ 1 ] && sequences[ 1 ].length ) {
+            _mousetrapHelper.bindSequence( sequences[ 1 ], options._resumePlaybackConstructor( sequences[ 1 ] ) );
+          }
+          if ( sequences[ 2 ] && sequences[ 2 ].length ) {
+            _mousetrapHelper.bindSequence( sequences[ 2 ], options._resumePlaybackConstructor( sequences[ 2 ] ) );
+          }
+
+          this.pause();
+        },
+        end: function() {
+          this.emit( "interactionEnd" );
+          _keyboardHelper.hideKeyboard();
+
+          if ( sequences[ 0 ] ) {
+            _mousetrapHelper.unbindSequence( sequences [ 0 ] );
+          }
+          if ( sequences[ 1 ] ) {
+            _mousetrapHelper.unbindSequence( sequences [ 1 ] );
+          }
+          if ( sequences[ 2 ] ) {
+            _mousetrapHelper.unbindSequence( sequences [ 2 ] );
+          }
+        }
+      };
+    },
+    // Manifest
+    {
+      options: {
+        // Standard
+        start: {
+          elem: "input",
+          type: "text",
+          label: "In",
+          units: "seconds"
+        },
+        end: {
+          elem: "input",
+          type: "text",
+          label: "Out",
+          units: "seconds"
+        },
+
+        // Custom
+        target: {
+          hidden: true
+        },
+        imgSrc: {
+          hidden: true
+        },
+        combo1: {
+          label: "combo1",
+          elem: "input",
+          type: "text",
+          readonly: true
+        },
+        combo2: {
+          label: "combo2",
+          elem: "input",
+          type: "text",
+          readonly: true
+        },
+        combo3: {
+          label: "combo3",
+          elem: "input",
+          type: "text",
+          readonly: true
+        },
+
+        // Positioning
+        width: {
+          elem: "input",
+          type: "number",
+          label: "Width",
+          "units": "%",
+          "default": 150,
+          hidden: true
+        },
+        height: {
+          elem: "input",
+          type: "number",
+          label: "Height",
+          "units": "%",
+          "default": 150,
+          hidden: true
+        },
+        left: {
+          elem: "input",
+          type: "number",
+          label: "X Position",
+          "units": "%",
+          "default": 2,
+          hidden: true
+        },
+        top: {
+          elem: "input",
+          type: "number",
+          label: "Y Position",
+          "units": "%",
+          "default": 60,
+          hidden: true
+        },
+        zindex: {
+          elem: "input",
+          type: "number",
+          label: "Height",
+          hidden: true
+        }
+      }
+    });
+  };
+}( Popcorn ));
