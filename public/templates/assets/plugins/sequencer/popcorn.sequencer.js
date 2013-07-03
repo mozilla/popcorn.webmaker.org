@@ -451,7 +451,7 @@
               options._clip.pause();
             }
           }
-          loadingHandler.add(options.addSource );
+          loadingHandler.add( options.addSource );
         }
       }
       if ( updates.hasOwnProperty( "mute" ) ) {
