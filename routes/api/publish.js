@@ -150,7 +150,7 @@ module.exports = function( req, res ) {
     },
   ], function( err, results ) {
     if ( err ) {
-      return res.json({ error: err }, 500);
+      return res.json(500, { error: err });
     }
 
     res.json({
