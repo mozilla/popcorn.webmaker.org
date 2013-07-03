@@ -503,7 +503,6 @@
         this.on( "play", options._playWhenReadyEvent );
         if ( !this.paused() ) {
           options.playWhenReady = true;
-          options._clip.pause();
         }
         if ( options.ready ) {
           options._startEvent();
