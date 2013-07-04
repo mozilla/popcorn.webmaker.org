@@ -147,10 +147,10 @@ app.configure( function() {
   filter = require( './lib/filter' )( Project.isDBOnline );
 });
 
-require( 'express-persona' )( app, {
-  audience: config.AUDIENCE
+require( './lib/loginapi' )( app, {
+  audience: config.AUDIENCE,
+  loginURL: config.LOGIN_SERVER_URL_WITH_AUTH
 });
-require( "./lib/loginapi" )( app, config.LOGIN_SERVER_URL_WITH_AUTH );
 
 var routes = require('./routes');
 
