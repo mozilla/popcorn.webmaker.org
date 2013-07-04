@@ -88,7 +88,6 @@
   "dependencies": {
     "async": "0.2.9",
     "csslint": "0.9.10",
-    "express-persona": "0.0.7",
     "express": "3.1.0",
     "helmet": "0.0.9",
     "jshint": "1.1.0",
@@ -104,7 +103,7 @@
     "requirejs-middleware": "0.0.5",
     "sequelize": "1.6.0",
     "shelljs": "0.1.2",
-    "webmaker-loginapi": "0.1.6",
+    "webmaker-loginapi": "0.1.8",
     "webmaker-sso": "https://github.com/jbuck/node-webmaker-sso/tarball/v0.0.3"
   },
   "optionalDependencies": {
