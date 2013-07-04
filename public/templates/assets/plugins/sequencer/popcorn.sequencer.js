@@ -74,7 +74,9 @@
       };
       options.hideLoading = function() {
         _this.off( "play", options._surpressPlayEvent );
-        document.querySelector( ".embed" ).classList.remove( "show-loading" );
+        if ( !loadingHandler.loading.length ) {
+          document.querySelector( ".embed" ).classList.remove( "show-loading" );
+        }
       };
       options.setZIndex = function() {
         if ( !options.hidden && options.active ) {
@@ -104,9 +106,7 @@
       options.readyEvent = function() {
         // If teardown was hit before ready, ensure we teardown.
         if ( options._cancelLoad ) {
-          if ( options.playWhenReady ) {
-            _this.play();
-          }
+          options.playIfReady();
           options._cancelLoad = false;
           options.tearDown();
         }
@@ -145,9 +145,7 @@
         options.failed = true;
         options.setZIndex();
         options.hideLoading();
-        if ( options.playWhenReady ) {
-          _this.play();
-        }
+        options.playIfReady();
       };
 
       options.tearDown = function() {
@@ -224,10 +222,7 @@
           if ( buffered.start( i ) <= options._clip.currentTime() &&
                buffered.end( i ) > options._clip.currentTime() ) {
             // We found a valid range so playing can resume.
-            if ( options.playWhenReady ) {
-              options.playWhenReady = false;
-              _this.play();
-            }
+            options.playIfReady();
             return;
           }
         }
@@ -260,6 +255,16 @@
         _this.pause();
       };
 
+      // While clip is loading, do not let the timeline play.
+      options.playIfReady = function() {
+        if ( options.playWhenReady && !loadingHandler.loading.length ) {
+          options.playWhenReady = false;
+          _this.play();
+          return true;
+        }
+        return false;
+      };
+
       options.setupContainer();
       if ( options.source ) {
         options.sourceToArray( options, "source" );
@@ -287,9 +292,7 @@
             options._clip.on( "progress", options._onProgress );
             options.hideLoading();
             options.setZIndex();
-            if ( options.playWhenReady ) {
-              _this.play();
-            } else {
+            if ( !options.playIfReady() ) {
               options._clip.pause();
             }
             options._clip.on( "play", options._clipPlayEvent );
@@ -332,7 +335,7 @@
 
       // Two events for playing the clip timeline if the main is playing.
       options._playEvent = function() {
-        if ( options._clip.paused() ) {
+        if ( options._clip.paused() && !loadingHandler.loading.length ) {
           options._clip.off( "play", options._clipPlayEvent );
           options._clip.on( "play", options._clipPlayEventSwitch );
           options._clip.play();
