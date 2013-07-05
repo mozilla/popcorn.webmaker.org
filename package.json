@@ -103,7 +103,7 @@
     "requirejs-middleware": "0.0.5",
     "sequelize": "1.6.0",
     "shelljs": "0.1.2",
-    "webmaker-loginapi": "0.1.8",
+    "webmaker-loginapi": "https://github.com/mozilla/node-webmaker-loginapi/tarball/v0.1.9",
     "webmaker-sso": "https://github.com/jbuck/node-webmaker-sso/tarball/v0.0.3"
   },
   "optionalDependencies": {
