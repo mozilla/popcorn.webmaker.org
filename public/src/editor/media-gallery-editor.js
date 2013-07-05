@@ -89,6 +89,7 @@ define( [ "util/lang", "util/uri", "util/keys", "util/mediatypes", "editor/edito
     var deleteBtn = el.querySelector( ".mg-delete-btn" ),
         thumbnailBtn = el.querySelector( ".mg-thumbnail" ),
         thumbnailImg,
+        thumbnailSrc = data.thumbnail,
         source = data.source;
 
     DragNDrop.helper( thumbnailBtn, {
@@ -132,13 +133,15 @@ define( [ "util/lang", "util/uri", "util/keys", "util/mediatypes", "editor/edito
     el.querySelector( ".mg-type-text" ).innerHTML = data.type;
     el.querySelector( ".mg-duration" ).innerHTML = Time.toTimecode( data.duration, 0 );
     if ( data.type === "HTML5" ) {
-      thumbnailImg = data.thumbnail;
+      if ( typeof data.thumbnail === "object" ) {
+        thumbnailSrc = URI.makeUnique( data.source ).toString();
+      }
+      thumbnailImg = document.createElement( "video" );
     } else {
       thumbnailImg = document.createElement( "img" );
-      thumbnailImg.src = data.thumbnail;
     }
     thumbnailBtn.appendChild( thumbnailImg );
-    thumbnailBtn.src = data.thumbnail;
+    thumbnailImg.src = thumbnailSrc;
 
     el.classList.add( "mg-" + data.type.toLowerCase() );
 
