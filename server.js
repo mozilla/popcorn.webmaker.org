@@ -4,7 +4,6 @@ if ( process.env.NEW_RELIC_HOME ) {
 }
 
 var express = require('express'),
-    fs = require('fs'),
     path = require('path'),
     helmet = require( "helmet" ),
     nunjucks = require('nunjucks'),
@@ -16,27 +15,16 @@ var express = require('express'),
     Project,
     filter,
     sanitizer = require( './lib/sanitizer' ),
-    FileStore = require( './lib/file-store.js' ),
     metrics = require('./lib/metrics.js'),
     middleware = require( './lib/middleware' ),
-    stores = {},
     APP_HOSTNAME = config.hostname,
     WWW_ROOT =  __dirname + '/public',
-    port = config.PORT,
     makeapiConfig = {
       apiURL: config.MAKE_ENDPOINT,
       auth: config.MAKE_USERNAME + ":" + config.MAKE_PASSWORD
     };
 
 nunjucksEnv.express( app );
-
-function setupStore( storeConfig ) {
-  var store = FileStore.create( storeConfig.type, storeConfig.options );
-  if ( store.requiresFileSystem ) {
-    app.use( express.static( store.root, JSON.parse( JSON.stringify( config.staticMiddleware ) ) ) );
-  }
-  return store;
-}
 
 app.locals({
   config: {
@@ -101,9 +89,6 @@ app.configure( function() {
     }))
     .use( express.static( tmpDir, JSON.parse( JSON.stringify( config.staticMiddleware ) ) ) )
     .use( express.static( WWW_ROOT, JSON.parse( JSON.stringify( config.staticMiddleware ) ) ) );
-
-  // File Store types and options come from JSON config file.
-  stores.publish = setupStore( config.publishStore );
 
   app.use( express.bodyParser() )
     .use( express.cookieParser() )
@@ -218,7 +203,7 @@ app.get( '/api/butterconfig', function( req, res ) {
 
 app.put( "/api/image", filter.isImage, routes.api.image );
 
-app.listen( port, function() {
+app.listen( config.PORT, function() {
   console.log( 'HTTP Server started on ' + APP_HOSTNAME );
   console.log( 'Press Ctrl+C to stop' );
 });
