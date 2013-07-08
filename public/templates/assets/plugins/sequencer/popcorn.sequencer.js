@@ -23,7 +23,8 @@
     return quarantine;
   }
 
-  var MEDIA_LOAD_TIMEOUT = 10000;
+  var MEDIA_LOAD_TIMEOUT = 10000,
+      _waiting = 0;
 
   var loadingHandler = {
     loading: [],
@@ -69,12 +70,14 @@
         target.appendChild( container );
       };
       options.displayLoading = function() {
+        _waiting++;
         _this.on( "play", options._surpressPlayEvent );
         document.querySelector( ".embed" ).classList.add( "show-loading" );
       };
       options.hideLoading = function() {
         _this.off( "play", options._surpressPlayEvent );
-        if ( !loadingHandler.loading.length ) {
+
+        if ( _waiting === 0 || --_waiting === 0 ) {
           document.querySelector( ".embed" ).classList.remove( "show-loading" );
         }
       };
