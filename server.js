@@ -109,23 +109,15 @@ app.configure( function() {
         err.status = 500;
       }
 
-      if ( req.accepts( "application/json" ) ) {
-        return res.json( err.status, { error: err.message } );
-      }
-
-      res.status( err.status );
-      res.render( 'error.html', { message: err.message, status: err.status } );
+      middleware.errorHandler( err, req, res );
     })
     .use( function( req, res, next ) {
-      var code = 404,
-          message = "This page doesn't exist";
+      var err = {
+        message: "This page doesn't exist",
+        status: 404
+      };
 
-      if ( req.accepts( "application/json" ) ) {
-        return res.json( code, { error: message } );
-      }
-
-      res.status( code );
-      res.render( 'error.html', { message: message, status: code } );
+      middleware.errorHandler( err, req, res );
     });
 
   Project = require( './lib/project' )( config.database );
