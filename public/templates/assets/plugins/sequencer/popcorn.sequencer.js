@@ -193,6 +193,9 @@
           options.loadTimeout = setTimeout( options.fail, MEDIA_LOAD_TIMEOUT );
         }
         options._clip = Popcorn.smart( options._container, options.source, { frameAnimation: true } );
+        options._clip.on( "ended", function() {
+          options._playedEvent();
+        });
         options._clip.media.style.width = "100%";
         options._clip.media.style.height = "100%";
         options._container.style.width = "100%";
@@ -213,7 +216,7 @@
         // We're likely in a wrapper that does not support buffered.
         // Assume we are buffered.
         // Once these wrappers have a buffered time range object, it should just work.
-        if ( buffered.length === 0 ) {
+        if ( buffered.length === 0 || options._clip.ended() ) {
           return;
         }
 
@@ -275,34 +278,35 @@
         loadingHandler.add( options.addSource );
       }
 
+      options._playedEvent = function() {
+        options._clip.off( "play", options._playedEvent );
+        _this.off( "play", options._playWhenReadyEvent );
+        _this.on( "play", options._playEvent );
+        _this.on( "pause", options._pauseEvent );
+        _this.on( "seeked", options._onSeeked );
+        // Setup on progress after initial load.
+        // This way if an initial load never happens, we never pause.
+        options._clip.on( "progress", options._onProgress );
+        options.hideLoading();
+        options.setZIndex();
+        if ( !options.playIfReady() ) {
+          options._clip.pause();
+        }
+        options._clip.on( "play", options._clipPlayEvent );
+        options._clip.on( "pause", options._clipPauseEvent );
+        if ( options.active ) {
+          options._volumeEvent();
+        }
+      };
+
       options._startEvent = function() {
         // wait for this seek to finish before displaying it
         // we then wait for a play as well, because youtube has no seek event,
         // but it does have a play, and won't play until after the seek.
         // so we know if the play has finished, the seek is also finished.
         var seekedEvent = function () {
-          var playedEvent = function() {
-            options._clip.off( "play", playedEvent );
-            _this.off( "play", options._playWhenReadyEvent );
-            _this.on( "play", options._playEvent );
-            _this.on( "pause", options._pauseEvent );
-            _this.on( "seeked", options._onSeeked );
-            // Setup on progress after initial load.
-            // This way if an initial load never happens, we never pause.
-            options._clip.on( "progress", options._onProgress );
-            options.hideLoading();
-            options.setZIndex();
-            if ( !options.playIfReady() ) {
-              options._clip.pause();
-            }
-            options._clip.on( "play", options._clipPlayEvent );
-            options._clip.on( "pause", options._clipPauseEvent );
-            if ( options.active ) {
-              options._volumeEvent();
-            }
-          };
           options._clip.off( "seeked", seekedEvent );
-          options._clip.on( "play", playedEvent );
+          options._clip.on( "play", options._playedEvent );
           options._clip.play();
         };
         options._clip.mute();
@@ -350,7 +354,7 @@
 
       // Two events for pausing the main timeline if the clip is paused.
       options._clipPauseEvent = function() {
-        if ( !_this.paused() ) {
+        if ( !_this.paused() && !options._clip.ended() ) {
           _this.off( "pause", options._pauseEvent );
           _this.on( "pause", options._pauseEventSwitch );
           _this.pause();
