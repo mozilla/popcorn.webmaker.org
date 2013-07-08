@@ -280,6 +280,7 @@ define( [ "./eventmanager", "./trackevent", "./views/track-view", "util/sanitize
      * Method removeTrackEvent
      *
      * @param {Object} trackEvent: The trackEvent to be removed from this track
+     * @param {Boolean} preventRemove: This prevents the removal of the trackevent from the Popcorn Instance.
      */
     this.removeTrackEvent = function( trackEvent, preventRemove ) {
       var idx = _trackEvents.indexOf( trackEvent );

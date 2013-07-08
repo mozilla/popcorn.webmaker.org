@@ -383,7 +383,7 @@ define( [ "core/eventmanager", "./toggler",
           track = trackEvent.track;
           nextTrack = butter.currentMedia.getLastTrack( track );
           if ( nextTrack && !nextTrack.findOverlappingTrackEvent( trackEvent ) ) {
-            track.removeTrackEvent( trackEvent );
+            track.removeTrackEvent( trackEvent, true );
             nextTrack.addTrackEvent( trackEvent );
           }
         }
@@ -435,7 +435,7 @@ define( [ "core/eventmanager", "./toggler",
           track = trackEvent.track;
           nextTrack = butter.currentMedia.getNextTrack( track );
           if ( nextTrack && !nextTrack.findOverlappingTrackEvent( trackEvent ) ) {
-            track.removeTrackEvent( trackEvent );
+            track.removeTrackEvent( trackEvent, true );
             nextTrack.addTrackEvent( trackEvent );
           }
         }
