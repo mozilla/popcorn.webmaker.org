@@ -87,13 +87,13 @@
       options: {
         start: {
           elem: "input",
-          type: "number",
+          type: "text",
           label: "In",
           "units": "seconds"
         },
         end: {
           elem: "input",
-          type: "number",
+          type: "text",
           label: "Out",
           "units": "seconds"
         },
