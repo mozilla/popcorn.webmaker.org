@@ -294,9 +294,10 @@
         options.setZIndex();
         if ( !options.playIfReady() ) {
           options._clip.pause();
+          options._clip.on( "play", options._clipPlayEvent );
+        } else {
+          options._clip.on( "pause", options._clipPauseEvent );
         }
-        options._clip.on( "play", options._clipPlayEvent );
-        options._clip.on( "pause", options._clipPauseEvent );
         if ( options.active ) {
           options._volumeEvent();
         }
