@@ -16,6 +16,7 @@ define( [ "util/uri" ],
         "null": /^\s*#t=(?:\d*(?:(?:\.|\:)?\d+)?),?(\d+(?:(?:\.|\:)\d+)?)\s*$/
       },
       YOUTUBE_EMBED_DISABLED = "Embedding of this YouTube video is disabled",
+      YOUTUBE_EMBED_UNPLAYABLE = "This YouTube video is unplayable",
       SOUNDCLOUD_EMBED_DISABLED = "Embedding of this SoundCloud audio source is disabled";
 
   return {
@@ -75,8 +76,16 @@ define( [ "util/uri" ],
             return;
           }
 
+          function errorEvent() {
+            popcorn.off( "loadedmetadata", readyEvent );
+            popcorn.off( "error", errorEvent );
+            errorCallback( YOUTUBE_EMBED_UNPLAYABLE );
+            popcorn.destroy();
+          }
+
           function readyEvent() {
             popcorn.off( "loadedmetadata", readyEvent );
+            popcorn.off( "error", errorEvent );
             document.body.removeChild( div );
             popcorn.destroy();
 
@@ -103,6 +112,7 @@ define( [ "util/uri" ],
 
           source = "http://www.youtube.com/watch?v=" + id;
           popcorn = Popcorn.smart( div, source );
+          popcorn.on( "error", errorEvent );
           if ( popcorn.media.readyState >= 1 ) {
             readyEvent();
           } else {
