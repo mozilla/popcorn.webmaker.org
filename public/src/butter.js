@@ -904,7 +904,7 @@ window.Butter = {
             // Try a remix.
             // This is covering edits for projects they don't own or if they aren't logged in.
             if ( remixOrEdit === "edit" &&
-               ( savedData.error === "unauthorized" || savedData.error === "Not Found" ) ) {
+               ( savedData.message === "unauthorized" || savedData.message === "Not Found" ) ) {
               remixOrEdit = "remix";
               loadFromSavedDataUrl( "/api/remix/" + item[ 2 ], function( savedData ) {
                 if ( savedData && !savedData.error ) {
