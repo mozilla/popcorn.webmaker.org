@@ -667,13 +667,13 @@ var googleCallback;
     options: {
       start: {
         elem: "input",
-        type: "number",
+        type: "text",
         label: "Start",
         "units": "seconds"
       },
       end: {
         elem: "input",
-        type: "number",
+        type: "text",
         label: "End",
         "units": "seconds"
       },
