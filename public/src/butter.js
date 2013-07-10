@@ -346,7 +346,7 @@ window.Butter = {
       _this.pasteTrackEvents = function() {
         var popcornOptions,
             offset = 0,
-            trackEvent;
+            trackEvent, trackIndex, track;
         // get the first events start time to compare with the current time,
         // to find the paste offset.
         if ( _copiedEvents[ 0 ] ) {
@@ -368,7 +368,10 @@ window.Butter = {
               // cut off events that overlap the duration
               popcornOptions.end = _currentMedia.duration;
             }
-            trackEvent = _this.generateSafeTrackEvent( _copiedEvents[ i ].type, popcornOptions );
+            trackIndex = _currentMedia.maxPluginZIndex - popcornOptions.zindex;
+            track = _currentMedia.orderedTracks[ trackIndex ];
+
+            trackEvent = _this.generateSafeTrackEvent( _copiedEvents[ i ].type, popcornOptions, track );
             trackEvent.selected = true;
           }
         }
