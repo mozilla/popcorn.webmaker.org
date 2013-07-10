@@ -284,8 +284,6 @@
       options._playedEvent = function() {
         options._clip.off( "play", options._playedEvent );
         _this.off( "play", options._playWhenReadyEvent );
-        _this.on( "play", options._playEvent );
-        _this.on( "pause", options._pauseEvent );
         _this.on( "seeked", options._onSeeked );
         // Setup on progress after initial load.
         // This way if an initial load never happens, we never pause.
@@ -295,8 +293,10 @@
         if ( !options.playIfReady() ) {
           options._clip.pause();
           options._clip.on( "play", options._clipPlayEvent );
+          _this.on( "play", options._playEvent );
         } else {
           options._clip.on( "pause", options._clipPauseEvent );
+          _this.on( "pause", options._pauseEvent );
         }
         if ( options.active ) {
           options._volumeEvent();
@@ -338,7 +338,8 @@
       // Switch event is used to ensure we don't listen in loops.
       options._clipPlayEventSwitch = function() {
         options._clip.off( "play", options._clipPlayEventSwitch );
-        options._clip.on( "play", options._clipPlayEvent );
+        options._clip.on( "pause", options._clipPauseEvent );
+        _this.on( "pause", options._pauseEvent );
       };
 
       // Two events for playing the clip timeline if the main is playing.
@@ -353,7 +354,8 @@
       // Switch event is used to ensure we don't listen in loops.
       options._playEventSwitch = function() {
         _this.off( "play", options._playEventSwitch );
-        _this.on( "play", options._playEvent );
+        _this.on( "pause", options._pauseEvent );
+        options._clip.on( "pause", options._clipPauseEvent );
       };
 
       // Two events for pausing the main timeline if the clip is paused.
@@ -368,7 +370,8 @@
       // Switch event is used to ensure we don't listen in loops.
       options._clipPauseEventSwitch = function() {
         options._clip.off( "pause", options._clipPauseEventSwitch );
-        options._clip.on( "pause", options._clipPauseEvent );
+        options._clip.on( "play", options._clipPlayEvent );
+        _this.on( "play", options._playEvent );
       };
 
       // Two events for pausing the clip timeline if the main is paused.
@@ -383,7 +386,8 @@
       // Switch event is used to ensure we don't listen in loops.
       options._pauseEventSwitch = function() {
         _this.off( "pause", options._pauseEventSwitch );
-        _this.on( "pause", options._pauseEvent );
+        _this.on( "play", options._playEvent );
+        options._clip.on( "play", options._clipPlayEvent );
       };
 
       // event to seek the clip if the main timeline seeked.
