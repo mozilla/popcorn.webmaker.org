@@ -218,6 +218,7 @@ define( [ "core/trackevent", "core/track", "core/eventmanager",
         if ( popcornOptions && popcornOptions.end ) {
           popcornOptions.end = popcornOptions.end + start;
         }
+        butter.deselectAllTrackEvents();
         trackEvent = butter.generateSafeTrackEvent( type, popcornOptions, track );
         butter.editor.editTrackEvent( trackEvent );
       }

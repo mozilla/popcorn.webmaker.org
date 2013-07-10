@@ -228,7 +228,6 @@ window.Butter = {
           type: type
         });
 
-        _this.deselectAllTrackEvents();
         trackEvent.selected = true;
 
         _defaultTarget.view.blink();
@@ -255,6 +254,7 @@ window.Butter = {
           if ( popcornOptions && popcornOptions.end ) {
             popcornOptions.end = popcornOptions.end + start;
           }
+          _this.deselectAllTrackEvents();
           trackEvent = _this.generateSafeTrackEvent( e.data.element.getAttribute( "data-popcorn-plugin-type" ), popcornOptions, e.data.position );
           _this.editor.editTrackEvent( trackEvent );
         }
@@ -266,6 +266,7 @@ window.Butter = {
       function mediaTrackEventRequested( e ) {
         var trackEvent;
         if ( _currentMedia.ready ) {
+          _this.deselectAllTrackEvents();
           trackEvent = _this.generateSafeTrackEvent( e.data.getAttribute( "data-popcorn-plugin-type" ), _currentMedia.currentTime );
           _this.editor.editTrackEvent( trackEvent );
         }
