@@ -167,6 +167,7 @@ define( [ "util/lang", "util/uri", "util/keys", "util/mediatypes", "editor/edito
           hidden: data.hidden || false
         };
 
+        _butter.deselectAllTrackEvents();
         trackEvent = _butter.generateSafeTrackEvent( "sequencer", popcornOptions );
       }
 
