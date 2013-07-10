@@ -531,6 +531,8 @@
         // We need to also clear these events.
         options._clip.off( "play", options._clipPlayEvent );
         options._clip.off( "pause", options._clipPauseEvent );
+        options._clip.off( "play", options._clipPlayEventSwitch );
+        options._clip.off( "pause", options._clipPauseEventSwitch );
         options._clip.off( "progress", options._onProgress );
         if ( !options._clip.paused() ) {
           options._clip.pause();
