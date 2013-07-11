@@ -97,16 +97,46 @@
     <div id="attribution-info" class="attribution-info">
       <div id="attribution-logo" class="attribution-logo"><span class="attribution-text">Credits</span></div>
       <div id="attribution-details" class="attribution-details"><span class="attribution-close"></span>
-        <div class="attribution-mopop">mozilla Popcorn</div>
+        <div class="attribution-mopop">Mozilla Popcorn</div>
         <div class="attribution-title">{{title}}</div>
         {% if author %}
           <div class="attribution-author">{{author}}</div>
         {% endif %}
-        <div class="attribution-media">
-          <span class="media-icon"></span>
-          <a href="{{mediaSrc}}" target="_blank" class="attribution-media-src">{{mediaSrc}}</a>
-        </div>
-        <div class="attribution-extra"></div>
+        {% if clips %}
+          <div class="attribution-media">
+            <span class="container-label">Media</span>
+            <div class="data-container">
+              {% for clip in clips %}
+                <span class="media-icon {{clip.type + '-icon'}}"></span>
+                <a href="{{clip.source}}" target="_blank" class="attribution-media-src">{{clip.title}}</a>
+                <br>
+              {% endfor %}
+            </div>
+          </div>
+        {% endif %}
+        {% if images %}
+          <div class="attribution-images">
+            <span class="container-label">Images</span>
+            <div class="data-container">
+              {% for image in images %}
+              {% set src = image.src or image.photosetId or image.tags %}
+              {% set href = src %}
+              {% if image.tags %}
+                {% set href = "http://www.flickr.com/search/?m=tags&q=" + image.tags %}
+              {% endif %}
+                <img class="media-icon" src="/resources/icons/flickr-black.png"></img>
+                <a href="{{href}}" target="_blank" class="attribution-media-src">{{src}}</a>
+                <br>
+              {% endfor %}
+            </div>
+          </div>
+        {% endif %}
+        {% if maps %}
+          <div class="attribution-extra">
+            <span class="container-label">Maps</span>
+            <div class="data-container"></div>
+          </div>
+        {% endif %}
       </div>
     </div>
     <div id="controls" class="controls"></div>

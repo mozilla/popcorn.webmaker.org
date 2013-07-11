@@ -156,6 +156,9 @@
 
             _flickrStaticImage = function( data ) {
 
+              // Store the image search type to be used in embeds.
+              options.type = "flickr";
+
               if ( data.stat === "ok" ) {
 
                 // Unfortunately not all requests contain an "Original" size option
@@ -191,6 +194,9 @@
             if ( !_photos ) {
               return;
             }
+
+            // Store the image search type to be used in embeds.
+            options.type = "flickr";
 
             Popcorn.forEach( _photos, function ( item, i ) {
 

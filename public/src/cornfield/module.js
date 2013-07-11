@@ -49,12 +49,12 @@ define( [ "util/xhr", "sso-include" ], function( xhr ) {
       callback( { error: "Publish is already in progress. Ignoring request." } );
     }
 
-    function publishFunction( id, callback ) {
+    function publishFunction( id, data, callback ) {
       // Re-route successive calls to `publish` until a complete response has been
       // received from the server.
       self.publish = publishPlaceholder;
 
-      xhr.post( "/api/publish/" + id, function( response ) {
+      xhr.post( "/api/publish/" + id, data, function( response ) {
         // Reset publish function to its original incarnation.
         self.publish = publishFunction;
 
