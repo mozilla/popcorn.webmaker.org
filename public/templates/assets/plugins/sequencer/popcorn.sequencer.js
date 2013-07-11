@@ -23,8 +23,7 @@
     return quarantine;
   }
 
-  var MEDIA_LOAD_TIMEOUT = 10000,
-      _waiting = 0;
+  var _waiting = 0;
 
   var loadingHandler = {
     loading: [],
@@ -127,7 +126,6 @@
       };
 
       options.clearLoading = function() {
-        clearTimeout( options.loadTimeout );
         loadingHandler.next();
         options._clip.off( "loadedmetadata", options.clearLoading );
       };
@@ -185,15 +183,10 @@
       };
 
       options.addSource = function() {
-        if ( options.loadTimeout ) {
-          clearTimeout( options.loadTimeout );
-        }
         // if the video is denied for any reason, most cases youtube embedding disabled,
         // don't bother waiting and display fail case.
         if ( options.denied ) {
           options.fail();
-        } else {
-          options.loadTimeout = setTimeout( options.fail, MEDIA_LOAD_TIMEOUT );
         }
         options._clip = Popcorn.smart( options._container, options.source, { frameAnimation: true } );
         options._clip.on( "ended", function() {
