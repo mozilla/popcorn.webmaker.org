@@ -144,6 +144,15 @@
         }
       }
 
+      _this.listen( "trackeventremoved", function adjustDuration() {
+        var popcorn = _popcornWrapper.popcorn,
+            byEnd = popcorn.data.trackEvents.byEnd;
+
+        if ( byEnd.length > 2 ) {
+          _this.url = "#t=," + byEnd[ byEnd.length - 2 ].end;
+        }
+      });
+
       this.addTrack = function ( track ) {
         track = ensureNewTrackIsTrack( track );
 
