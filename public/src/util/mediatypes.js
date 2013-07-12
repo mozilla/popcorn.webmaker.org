@@ -175,17 +175,61 @@ define( [ "localized", "util/uri" ],
           duration: +REGEX_MAP[ "null" ].exec( baseUrl )[ 1 ]
         });
       } else if ( type === "HTML5" ) {
+(function() {
+          var popcorn,
+              div = document.createElement( "div" ),
+              source;
+
+          div.style.height = "400px";
+          div.style.width = "400px";
+          div.style.left = "-400px";
+          div.style.position = "absolute";
+
+          document.body.appendChild( div );
+
+
+          function errorEvent() {
+            popcorn.off( "loadedmetadata", readyEvent );
+            popcorn.off( "error", errorEvent );
+            errorCallback( YOUTUBE_EMBED_UNPLAYABLE );
+            popcorn.destroy();
+          }
+
+          function readyEvent() {
+            popcorn.off( "loadedmetadata", readyEvent );
+            popcorn.off( "error", errorEvent );
+            document.body.removeChild( div );
+            popcorn.destroy();
+
+            successCallback({
+              source: baseUrl,
+              title: baseUrl,
+              type: type,
+              thumbnail: "",
+              duration: popcorn.duration()
+            });
+          }
+          source = baseUrl;
+          popcorn = Popcorn.smart( div, source );
+          popcorn.on( "error", errorEvent );
+          if ( popcorn.media.readyState >= 1 ) {
+            readyEvent();
+          } else {
+            popcorn.on( "loadedmetadata", readyEvent );
+          }
+}());
+/*
         videoElem = document.createElement( "video" );
         videoElem.addEventListener( "loadedmetadata", function() {
           successCallback ({
             source: baseUrl,
             type: type,
             title: baseUrl.substring( baseUrl.lastIndexOf( "/" ) + 1 ),
-            thumbnail: URI.makeUnique( baseUrl ).toString(),
+            thumbnail: "", //URI.makeUnique( baseUrl ).toString(),
             duration: videoElem.duration
           });
         }, false );
-        videoElem.src = URI.makeUnique( baseUrl ).toString();
+        videoElem.src = URI.makeUnique( baseUrl ).toString();*/
       }
     }
   };

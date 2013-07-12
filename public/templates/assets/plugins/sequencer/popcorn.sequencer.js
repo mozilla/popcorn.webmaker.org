@@ -128,6 +128,7 @@
       };
 
       options.readyEvent = function() {
+console.log("now loaded");
         // If teardown was hit before ready, ensure we teardown.
         if ( options._cancelLoad ) {
           options.playIfReady();
@@ -302,6 +303,7 @@
       }
 
       options._playedEvent = function() {
+console.log("in played event");
         options._clip.off( "play", options._playedEvent );
         options._clip.off( "ended", options._playedEvent );
         _this.off( "play", options._playWhenReadyEvent );
@@ -325,11 +327,13 @@
       };
 
       options._startEvent = function() {
+console.log("start event");
         // wait for this seek to finish before displaying it
         // we then wait for a play as well, because youtube has no seek event,
         // but it does have a play, and won't play until after the seek.
         // so we know if the play has finished, the seek is also finished.
         var seekedEvent = function () {
+console.log("seeked event");
           options._clip.off( "seeked", seekedEvent );
           options._clip.on( "play", options._playedEvent );
           // if a user seeks into ended time, a play event is never hit.
