@@ -189,9 +189,6 @@
           options.fail();
         }
         options._clip = Popcorn.smart( options._container, options.source, { frameAnimation: true } );
-        options._clip.on( "ended", function() {
-          options._playedEvent();
-        });
         options._clip.media.style.width = "100%";
         options._clip.media.style.height = "100%";
         options._container.style.width = "100%";
@@ -276,6 +273,7 @@
 
       options._playedEvent = function() {
         options._clip.off( "play", options._playedEvent );
+        options._clip.off( "ended", options._playedEvent );
         _this.off( "play", options._playWhenReadyEvent );
         _this.on( "seeked", options._onSeeked );
         // Setup on progress after initial load.
@@ -304,6 +302,10 @@
         var seekedEvent = function () {
           options._clip.off( "seeked", seekedEvent );
           options._clip.on( "play", options._playedEvent );
+          // if a user seeks into ended time, a play event is never hit.
+          // an end event is, though, so one or the other
+          // of these events are going to be triggered.
+          options._clip.on( "ended", options._playedEvent );
           options._clip.play();
         };
         options._clip.mute();
