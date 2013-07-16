@@ -27,6 +27,7 @@ requirejs.config({
     "popcorn.popup": "../templates/assets/plugins/popup/popcorn.popup",
     "popcorn.sequencer": "../templates/assets/plugins/sequencer/popcorn.sequencer",
     "popcorn.skip": "../templates/assets/plugins/skip/popcorn.skip",
+    "popcorn.slider": "../templates/assets/plugins/slider/popcorn.slider",
     "popcorn.text": "../templates/assets/plugins/text/popcorn.text",
     "popcorn.wikipedia": "../templates/assets/plugins/wikipedia/popcorn.wikipedia",
     "popcorn.deprecated": "../src/util/deprecated",
@@ -67,6 +68,7 @@ requirejs.config({
     "popcorn.popup": [ "popcorn.core"],
     "popcorn.sequencer": [ "popcorn.core", "popcorn.player" ],
     "popcorn.skip": [ "popcorn.core" ],
+    "popcorn.slider": [ "popcorn.core" ],
     "popcorn.text": [ "popcorn.core" ],
     "popcorn.wikipedia": [ "popcorn.core" ],
     "popcorn.deprecated": [ "popcorn.core" ]
@@ -86,6 +88,7 @@ define([
   "popcorn.popup",
   "popcorn.sequencer",
   "popcorn.skip",
+  "popcorn.slider",
   "popcorn.text",
   "popcorn.wikipedia",
   "popcorn.deprecated",
