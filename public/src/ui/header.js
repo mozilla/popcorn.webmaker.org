@@ -361,7 +361,7 @@ define([ "dialog/dialog", "util/lang", "text!layouts/header.html", "text!layouts
           var tutorialElement = document.createElement( "div" );
           tutorialElement.classList.add( "tutorial-list-item" );
           tutorialElement.addEventListener( "click", function() {
-            iframe.src = item.url;
+            iframe.src = item.url + "?details=hidden";
             viewTitle.innerHTML = "Tutorial: " + item.title;
             tutorialView.classList.remove( "closed" );
             tutorialView.style.height = "";
