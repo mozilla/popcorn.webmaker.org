@@ -47,6 +47,9 @@
         "icon": "{{baseDir}}templates/assets/plugins/skip/skip-icon.png"
       },
       {
+        "type": "slider"
+      },
+      {
         "type": "pausePlugin",
         "displayName": "Pause",
         "icon": "{{baseDir}}templates/assets/plugins/pausePlugin/pause-icon.png"
