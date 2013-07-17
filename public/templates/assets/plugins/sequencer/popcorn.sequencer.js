@@ -294,6 +294,16 @@
         }
       };
 
+      options._seekWhileEnded = function() {
+        options._clip.off( "seeked", options._seekWhileEnded );
+        options.setZIndex();
+      };
+
+      options._hideOnEnded = function() {
+        options._container.style.zIndex = 0;
+        options._clip.on( "seeked", options._seekWhileEnded );
+      };
+
       options._startEvent = function() {
         // wait for this seek to finish before displaying it
         // we then wait for a play as well, because youtube has no seek event,
@@ -306,6 +316,7 @@
           // an end event is, though, so one or the other
           // of these events are going to be triggered.
           options._clip.on( "ended", options._playedEvent );
+          options._clip.on( "ended", options._hideOnEnded );
           options._clip.play();
         };
         options._clip.mute();
@@ -314,6 +325,25 @@
         // fire the seekedEvent right away.
         if ( !options._setClipCurrentTime() ) {
           seekedEvent();
+        }
+      };
+
+      options._endEvent = function() {
+        options._clip.off( "pause", options._endEvent );
+        options._clip.off( "timeupdate", options._endTimeupdateEvent );
+        if ( !options._clip.paused() ) {
+          options._clip.pause();
+        }
+        // reset current time so next play from start is smooth. We've pre seeked.
+        options._setClipCurrentTime( +options.from );
+        options._clip.mute();
+        options._container.style.zIndex = 0;
+      };
+
+      options._endTimeupdateEvent = function() {
+        var clipTime = ( options._clip.currentTime() + options.start ) - ( +options.from );
+        if ( options.end <= clipTime ) {
+          options._endEvent();
         }
       };
 
@@ -339,7 +369,9 @@
 
       // Two events for playing the clip timeline if the main is playing.
       options._playEvent = function() {
-        if ( options._clip.paused() && !loadingHandler.loading.length ) {
+        if ( options._clip.paused() &&
+             !loadingHandler.loading.length &&
+             !options._clip.ended() ) {
           options._clip.off( "play", options._clipPlayEvent );
           options._clip.on( "play", options._clipPlayEventSwitch );
           options._clip.play();
@@ -529,14 +561,21 @@
         options._clip.off( "play", options._clipPlayEventSwitch );
         options._clip.off( "pause", options._clipPauseEventSwitch );
         options._clip.off( "progress", options._onProgress );
-        if ( !options._clip.paused() ) {
-          options._clip.pause();
+        options._clip.off( "seeked", options._seekWhileEnded );
+        options._clip.off( "ended", options._hideOnEnded );
+
+        if ( this.paused() || options._clip.ended() ) {
+          options._endEvent();
+        } else {
+          // this pause event ensures we fire an event if the user
+          // seeked after we hit ended, but before the timeupdate.
+          options._clip.on( "pause", options._endEvent );
+          // this timeupdate ensures we turn this event off after its designated time is hit.
+          options._clip.on( "timeupdate", options._endTimeupdateEvent );
         }
-        // reset current time so next play from start is smooth. We've pre seeked.
-        options._setClipCurrentTime( +options.from );
-        options._clip.mute();
+      } else {
+        options._container.style.zIndex = 0;
       }
-      options._container.style.zIndex = 0;
     },
     manifest: {
       about: {},
