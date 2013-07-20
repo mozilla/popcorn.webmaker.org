@@ -10,6 +10,7 @@ EditorHelper.addPlugin( "wikipedia", function( trackEvent ) {
  target = _popcornOptions._target;
 
   if ( window.jQuery ) {
+    window.EditorHelper.selectable( trackEvent, _container );
     window.EditorHelper.draggable( trackEvent, _container, target );
     window.EditorHelper.resizable( trackEvent, _container, target, {
       minWidth: 40,

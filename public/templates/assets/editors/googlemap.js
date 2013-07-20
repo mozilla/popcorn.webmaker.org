@@ -2,18 +2,17 @@
 
 EditorHelper.addPlugin( "googlemap", function( trackEvent, popcorn ) {
 
-  var container,
-      target,
+  var container = trackEvent.popcornTrackEvent._container,
+      target = trackEvent.popcornTrackEvent._target,
       popcornEventMapReference;
 
+  EditorHelper.selectable( trackEvent, container );
+
   function setup() {
-    container = trackEvent.popcornTrackEvent._container;
 
     if ( trackEvent.popcornOptions.fullscreen ) {
       return;
     }
-
-    target = trackEvent.popcornTrackEvent._target;
 
     EditorHelper.draggable( trackEvent, container, target );
 
