@@ -241,13 +241,11 @@
           if ( options.width ) {
             container.style.width = options.width + "%";
           }
-          container.style.zIndex = +options.zindex;
         }
         else {
           container.classList.add( "text-fixed" );
           innerContainer.classList.add( position );
           innerContainer.classList.add( alignment );
-          innerDiv.style.zIndex = +options.zindex;
         }
 
         if ( linkUrl ) {
@@ -273,6 +271,7 @@
         }
       };
       fontSheet.href = "//fonts.googleapis.com/css?family=" + options.fontFamily.replace( /\s/g, "+" ) + ":400,700";
+      container.style.zIndex = +options.zindex;
 
       options.toString = function() {
         // use the default option if it doesn't exist

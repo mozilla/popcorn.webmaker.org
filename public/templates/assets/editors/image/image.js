@@ -19,6 +19,7 @@ EditorHelper.addPlugin( "image", function( trackEvent ) {
       window.EditorHelper.droppable( trackEvent, _container );
     }
 
+    window.EditorHelper.selectable( trackEvent, _container );
     window.EditorHelper.draggable( trackEvent, _container, _target );
     window.EditorHelper.resizable( trackEvent, _container, _target, {
       minWidth: 5,

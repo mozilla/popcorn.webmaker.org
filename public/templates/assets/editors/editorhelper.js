@@ -14,9 +14,8 @@
 
   function calculateFinalPositions( event, ui, trackEvent, targetContainer, container, options ) {
     var target = targetContainer.getBoundingClientRect(),
-        cont = container.getBoundingClientRect(),
-        height = cont.height,
-        width = cont.width,
+        height = container.clientHeight,
+        width = container.clientWidth,
         top = ui.position.top,
         left = ui.position.left,
         targetHeight = target.height,
@@ -61,6 +60,60 @@
   EditorHelper.init = function( butter ) {
 
     require( [ "util/xhr" ], function( XHR ) {
+
+      global.EditorHelper.selectable = function( trackEvent, dragContainer ) {
+
+        var highlight = function() {
+
+          var media,
+              manifest
+              track = trackEvent.track;
+
+          if ( !track || !track._media ) {
+            return;
+          }
+
+          if ( !trackEvent.manifest || !trackEvent.manifest.options ) {
+            return;
+          }
+
+          media = track._media;
+          manifestOptions = trackEvent.manifest.options;
+
+          if ( "zindex" in manifestOptions ) {
+            var newZIndex = media.maxPluginZIndex - track.order;
+            if ( trackEvent.selected ) {
+              dragContainer.classList.add( "track-event-selected" );
+              dragContainer.style.zIndex = newZIndex + media.maxPluginZIndex;
+            } else {
+              dragContainer.style.zIndex = newZIndex;
+              dragContainer.classList.remove( "track-event-selected" );
+            }
+          }
+        };
+
+        var onSelect = function( e ) {
+          if ( !e.shiftKey ) {
+            butter.deselectAllTrackEvents();
+          }
+          trackEvent.selected = true;
+        };
+
+        var update = function() {
+          dragContainer.removeEventListener( "click", onSelect, false );
+          trackEvent.unlisten( "trackeventselected", highlight );
+          trackEvent.unlisten( "trackeventdeselected", highlight );
+          trackEvent.unlisten( "trackeventupdated", update );
+        };
+
+        highlight();
+
+        dragContainer.addEventListener( "click", onSelect, false );
+        trackEvent.listen( "trackeventselected", highlight );
+        trackEvent.listen( "trackeventdeselected", highlight );
+        trackEvent.listen( "trackeventupdated", update );
+      };
+
       /**
        * Member: draggable
        *
