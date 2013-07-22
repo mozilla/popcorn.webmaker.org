@@ -66,7 +66,8 @@
         var highlight = function() {
 
           var media,
-              manifest
+              manifest,
+              manifestOptions,
               track = trackEvent.track;
 
           if ( !track || !track._media ) {
