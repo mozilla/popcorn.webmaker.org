@@ -8,17 +8,11 @@
        <a class="butter-project-name">My Cool Remix</a><i class="icon icon-pencil"></i>
       </li>
       <li>
-        <button class="butter-btn btn-green butter-save-btn">Save</button>
-        <div class="butter-btn-menu-container butter-project-menu">
-          <a class="butter-btn btn-light butter-project-menu-control butter-btn-menu-control"><span class="icon icon-only icon-cog"></span></a>
-          <ul class="butter-btn-menu">
-            <li><a class="butter-btn" href="/" target="_blank"> New</a></li>
-            <li><a class="butter-btn butter-clear-events-btn" target="_blank"> Clear Events</a></li>
-            <li><a class="butter-preview-btn butter-btn btn-light butter-disabled"
-                   target="_blank"><span class="icon icon-only icon-share-alt"></span> Preview</a></li>
-            <li><a class="butter-project-btn butter-btn btn-light butter-disabled"
-                   target="_blank"><span class="icon icon-only icon-edit"></span> Project</a></li>
-          </ul>
+        <div class="butter-btn-menu-container">
+          <a class="butter-btn btn-green butter-save-btn"><span class="icon icon-only icon-white icon-save"></span></a>
+          <a class="butter-preview-btn butter-btn btn-light butter-disabled" target="_blank"><span class="icon icon-only icon-share-alt"></span></a>
+          <a class="butter-clear-events-btn butter-btn btn-light butter-disabled" target="_blank"><span class="icon icon-only icon-trash"></span></a>
+          <a class="butter-tutorial-btn butter-btn btn-light butter-disabled" target="_blank"><span class="icon icon-only icon-question-sign"></span></a>
         </div>
       </li>
     </ul>
@@ -29,7 +23,6 @@
           <li class="user">
               Hi <span id="identity" class="user-name-container"></span>
           </li>
-          <li class="tutorial-btn hidden"><button>Tutorials</button></li>
           <li class="makes"><button>My makes</button></li>
           <li>
             <iframe src="{{audience}}/sso/include.html" class="include-frame"></iframe>
