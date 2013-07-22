@@ -12,9 +12,23 @@ define( [ "util/xhr", "sso-include" ], function( xhr ) {
 
     navigator.idSSO.app = {
       onlogin: function( webmakerEmail, webmakerUserName ) {
-        authenticated = true;
-        username = webmakerUserName;
-        butter.dispatch( "authenticated" );
+        function finishCallback() {
+          authenticated = true;
+          username = webmakerUserName;
+          butter.dispatch( "authenticated" );
+        }
+        if ( butter.project.id ) {
+          xhr.get( "/api/project/" + butter.project.id, function( res ) {
+            if ( res.status !== 404 ) {
+              return finishCallback();
+            }
+
+            // They didn't own the project. Use the logic we have to force remixes on butter load.
+            window.location.reload();
+          });
+        } else {
+          finishCallback();
+        }
       },
       onlogout: function() {
         authenticated = false;
