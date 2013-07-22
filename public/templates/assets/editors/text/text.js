@@ -15,6 +15,8 @@ EditorHelper.addPlugin( "text", function( trackEvent ) {
         handlePositions: "e,w"
       });
     }
+
+    EditorHelper.selectable( trackEvent, _container );
     EditorHelper.contentEditable( trackEvent, _container.querySelectorAll( "span" ) );
   }
 });

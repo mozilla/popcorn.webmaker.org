@@ -9,6 +9,7 @@ EditorHelper.addPlugin( "popup", function( trackEvent ) {
 
   if ( window.jQuery ) {
     EditorHelper.contentEditable( trackEvent, _container.querySelectorAll( "span" ) );
+    EditorHelper.selectable( trackEvent, _container );
     EditorHelper.draggable( trackEvent, _container, target );
     EditorHelper.resizable( trackEvent, _container, target, {
       handlePositions: "e",
