@@ -1,7 +1,7 @@
 /*********************************************************
 * HEADER
 */
-@_logoWidth: 245px;
+@_logoWidth: 220px;
 
 // Used to position absolute elements in the middle of our header bar area
 @HEADER_ALIGN_MIDDLE: 2.7;
@@ -51,10 +51,11 @@
 .butter-logo {
   position: absolute;
   top: 0;
-  left: 30px;
+  left: 15px;
   height: 62px;
   width: @_logoWidth;
-  background: url( "../resources/logo.png" ) no-repeat;
+  background: url( "../resources/popcorn-logo.svg" ) center no-repeat;
+  background-size: contain;
 }
 
 .butter-nav {
@@ -62,11 +63,11 @@
   top: 0;
   margin: 0;
   padding: 0;
-  margin-left: @_logoWidth + 50;
+  margin-left: @_logoWidth + 30;
   list-style: none;
   width: 60%;
-  height: @PRIMARYHEADER_SPACING;
-  line-height: @PRIMARYHEADER_SPACING;
+  height: @HEADER_SPACING;
+  line-height: @HEADER_SPACING;
   > li {
     float: left;
     padding: 0 20px;
@@ -120,27 +121,23 @@
     position: absolute;
     visibility: hidden;
     right: -5px;
-    top: @PRIMARYHEADER_SPACING / @HEADER_ALIGN_MIDDLE;
+    top: @HEADER_SPACING / @HEADER_ALIGN_MIDDLE;
   }
   &:hover .icon {
     visibility: visible;
   }
 }
 
-#tabzilla {
-  display: block;
-  position: absolute;
-  top: 0;
-  right: 0;
-  z-index: @HEADER_Z_INDEX + 100;
+// Temporary overriding classes.
+.webmaker-nav-container {
+  background: #FFFFFF;
+  margin-top: 10px;
 }
 
-#tabzilla-panel {
+.my-projects-container.open {
+  top: @HEADER_SPACING;
   position: absolute;
-  top: 0;
-  left: 0;
   width: 100%;
-  z-index: @MODAL_Z_INDEX;
 }
 
 /*********************************************************

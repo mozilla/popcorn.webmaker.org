@@ -415,8 +415,6 @@ define([ "dialog/dialog", "util/lang", "text!layouts/header.html", "text!layouts
         myProjectsButton.addEventListener( "click", close, false );
         myProjectsButton.removeEventListener( "click", open, false );
 
-        container.style.zIndex = 5;
-        container.style.position = "relative";
         iframe.style.height = "300px";
 
         iframe.src = "/dashboard";
