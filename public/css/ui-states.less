@@ -72,17 +72,17 @@
 /* Toggle hide/show button for editor and tray */
 
 .butter-toggle-button {
+  .font-awesome;
+  color: @midGrey;
   position: absolute;
-  height: 14px;
-  width: 14px;
-  background-image: url( "../resources/icons/glyphiconshalflings-grey.png" );
-  background-position: -313px -119px;
-  cursor: pointer;
   &:hover {
-    background-image: url( "../resources/icons/glyphiconshalflings-alt.png" );
+    color: @darkGrey;
   }
-  &.toggled {
-    background-position: -288px -120px;
+  &:after {
+    content: "\f078"; // chevron down
+  }
+  &.toggled:after {
+    content: "\f077"; //chevron up
   }
 }
 

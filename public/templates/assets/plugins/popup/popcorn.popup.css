@@ -134,13 +134,15 @@
   text-decoration: none;
 }
 .popup-inner-div a:after {
-  content: "";
-  display: inline-block;
-  opacity: 0.6;
-  background-position: -336px -96px;
-  background-image: url( "../../../../resources/icons/glyphiconshalflings-green.png" );
-  width: 14px;
-  height: 14px;
+  font-family: FontAwesome;
+  font-weight: normal;
+  font-style: normal;
+  text-decoration: none;
+  -webkit-font-smoothing: antialiased;
+  font-size: 0.6em;
+  margin-left: 0.2em;
+  vertical-align: middle;
+  content: "\f064"; /* icon-share-alt */
 }
 .popup-inner-div a:hover {
   text-decoration: underline;
