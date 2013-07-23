@@ -16,6 +16,7 @@ define([ "editor/editor", "editor/base-editor",
         _descriptionInput = _rootElement.querySelector( ".butter-project-description" ),
         _dropArea = _rootElement.querySelector( ".image-droparea" ),
         _thumbnailInput = _rootElement.querySelector( ".butter-project-thumbnail" ),
+        _backgroundInput = _rootElement.querySelector( ".butter-project-background-colour" ),
         _projectEmbedURL = _rootElement.querySelector( ".butter-project-embed-url" ),
         _embedSize = _rootElement.querySelector( ".butter-embed-size" ),
         _previewBtn = _rootElement.querySelector( ".butter-preview-link" ),
@@ -35,6 +36,15 @@ define([ "editor/editor", "editor/base-editor",
         _idx;
 
     _descriptionInput.value = butter.project.description ? butter.project.description : "";
+    _backgroundInput.value = butter.project.background ? butter.project.background : "#FFFFFF";
+
+    _backgroundInput.addEventListener( "change", function() {
+      var value = this.value;
+      _project.background = value;
+      _project.save(function() {
+        butter.editor.openEditor( "project-editor" );
+      });
+    }, false );
 
     ToolTip.create({
       name: "description-tooltip",
