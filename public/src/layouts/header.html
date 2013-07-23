@@ -1,26 +1,4 @@
 <div class="butter-header" data-butter-exclude>
-  <!-- webmaker user bar -->
-  <div id="webmaker-nav">
-    <nav class="webmaker-nav-container">
-      <a id="logo" href="https://webmaker.org"><img src="{{user_bar}}/img/webmaker-logo.png" alt="Mozilla Webmaker" /></a>
-      <ul class="webmaker-nav user-info">
-        <li class="user">
-            Hi <span id="identity" class="user-name-container"></span>
-        </li>
-        <li class="tutorial-btn hidden"><button>Tutorials</button></li>
-        <li class="makes"><button>My makes</button></li>
-        <li>
-          <iframe src="{{audience}}/sso/include.html" class="include-frame"></iframe>
-        </li>
-      </ul>
-    </nav>
-    <div class="my-projects-container">
-      <iframe class="my-projects-iframe"></iframe>
-    </div>
-    <div class="tutorial-list">
-      <div class="tutorial-arrow"></div>
-    </div>
-  </div>
   <script src="{{user_bar}}/js/sso-ux.js"></script>
   <header class="butter-header-primary">
     <div class="butter-logo"></div>
@@ -44,5 +22,26 @@
         </div>
       </li>
     </ul>
+    <!-- webmaker user bar -->
+    <div id="webmaker-nav">
+      <nav class="webmaker-nav-container">
+        <ul class="webmaker-nav user-info">
+          <li class="user">
+              Hi <span id="identity" class="user-name-container"></span>
+          </li>
+          <li class="tutorial-btn hidden"><button>Tutorials</button></li>
+          <li class="makes"><button>My makes</button></li>
+          <li>
+            <iframe src="{{audience}}/sso/include.html" class="include-frame"></iframe>
+          </li>
+        </ul>
+      </nav>
+      <div class="my-projects-container">
+        <iframe class="my-projects-iframe"></iframe>
+      </div>
+      <div class="tutorial-list">
+        <div class="tutorial-arrow"></div>
+      </div>
+    </div>
   </header>
 </div>
