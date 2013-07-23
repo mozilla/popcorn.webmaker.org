@@ -1,7 +1,7 @@
 /*********************************************************
 * HEADER
 */
-@_logoWidth: 220px;
+@_logoWidth: 245px;
 
 // Used to position absolute elements in the middle of our header bar area
 @HEADER_ALIGN_MIDDLE: 2.7;
@@ -51,11 +51,10 @@
 .butter-logo {
   position: absolute;
   top: 0;
-  left: 15px;
+  left: 30px;
   height: 62px;
   width: @_logoWidth;
-  background: url( "../resources/popcorn-logo.svg" ) center no-repeat;
-  background-size: contain;
+  background: url( "../resources/logo.png" ) no-repeat;
 }
 
 .butter-nav {
@@ -63,11 +62,11 @@
   top: 0;
   margin: 0;
   padding: 0;
-  margin-left: @_logoWidth + 30;
+  margin-left: @_logoWidth + 50;
   list-style: none;
   width: 60%;
-  height: @HEADER_SPACING;
-  line-height: @HEADER_SPACING;
+  height: @PRIMARYHEADER_SPACING;
+  line-height: @PRIMARYHEADER_SPACING;
   > li {
     float: left;
     padding: 0 20px;
@@ -121,16 +120,27 @@
     position: absolute;
     visibility: hidden;
     right: -5px;
-    top: @HEADER_SPACING / @HEADER_ALIGN_MIDDLE;
+    top: @PRIMARYHEADER_SPACING / @HEADER_ALIGN_MIDDLE;
   }
   &:hover .icon {
     visibility: visible;
   }
 }
 
-.webmaker-nav-container {
-  background: #FFFFFF;
-  margin-top: 10px;
+#tabzilla {
+  display: block;
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: @HEADER_Z_INDEX + 100;
+}
+
+#tabzilla-panel {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: @MODAL_Z_INDEX;
 }
 
 /*********************************************************
