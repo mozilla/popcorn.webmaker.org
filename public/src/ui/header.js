@@ -21,15 +21,12 @@ define([ "dialog/dialog", "util/lang", "text!layouts/header.html", "text!layouts
         _projectName = _projectTitle.querySelector( ".butter-project-name" ),
         _clearEvents = _rootElement.querySelector( ".butter-clear-events-btn" ),
         _previewBtn = _rootElement.querySelector( ".butter-preview-btn" ),
-        _projectBtn = _rootElement.querySelector( ".butter-project-btn" ),
-        _projectMenu = _rootElement.querySelector( ".butter-project-menu" ),
-        _projectMenuControl = _rootElement.querySelector( ".butter-project-menu-control" ),
-        _projectMenuList = _projectMenu.querySelector( ".butter-btn-menu" ),
+        _tutorialBtn = _rootElement.querySelector( ".butter-tutorial-btn" ),
         _noProjectNameToolTip,
         _projectTitlePlaceHolderText = _projectName.innerHTML,
-        _toolTip, _loginTooltip;
+        _toolTip, _loginTooltip, _clearEventsToolTip, _tutorialsToolTip;
 
-    // create a tooltip for the plrojectName element
+    // create a tooltip for the projectName element
     _toolTip = ToolTip.create({
       title: "header-title-tooltip",
       message: "Change the name of your project",
@@ -37,15 +34,29 @@ define([ "dialog/dialog", "util/lang", "text!layouts/header.html", "text!layouts
       top: "60px"
     });
 
-    // Default state
-    _toolTip.hidden = true;
-
     _loginTooltip = ToolTip.create({
       title: "header-title-tooltip",
       message: "Login to save your project!",
       element: _projectTitle,
       top: "60px"
     });
+
+    _clearEventsToolTip = ToolTip.create({
+      title: "header-clear-events-tooltip",
+      message: "Clear all events!",
+      element: _clearEvents,
+      top: "60px"
+    });
+
+    _tutorialsToolTip = ToolTip.create({
+      title: "header-tutorials-tooltip",
+      message: "See tutorials for this project!",
+      element: _tutorialBtn,
+      top: "60px"
+    });
+
+    // Default state
+    _clearEventsToolTip.hidden = _tutorialsToolTip.hidden = _toolTip.hidden = true;
 
     var make = new Make({
       apiURL: config.make_endpoint
@@ -104,16 +115,6 @@ define([ "dialog/dialog", "util/lang", "text!layouts/header.html", "text!layouts
       butter.editor.openEditor( "project-editor" );
     }
 
-    function toggleProjectButton( on ) {
-      if ( on ) {
-        _projectBtn.classList.remove( "butter-disabled" );
-        _projectBtn.addEventListener( "click", openProjectEditor, false );
-      } else {
-        _projectBtn.classList.add( "butter-disabled" );
-        _projectBtn.removeEventListener( "click", openProjectEditor, false );
-      }
-    }
-
     function toggleSaveButton( on ) {
       if ( on ) {
         _saveButton.classList.remove( "butter-disabled" );
@@ -143,9 +144,11 @@ define([ "dialog/dialog", "util/lang", "text!layouts/header.html", "text!layouts
     function toggleClearButton( on ) {
       if ( on ) {
         _clearEvents.classList.remove( "butter-disabled" );
+        _clearEventsToolTip.hidden = false;
         _clearEvents.addEventListener( "click", clearEventsClick, false );
       } else {
         _clearEvents.classList.add( "butter-disabled" );
+        _clearEventsToolTip.hidden = true;
         _clearEvents.removeEventListener( "click", clearEventsClick, false );
       }
     }
@@ -197,12 +200,10 @@ define([ "dialog/dialog", "util/lang", "text!layouts/header.html", "text!layouts
       dirty: function() {
         togglePreviewButton( false );
         toggleSaveButton( butter.cornfield.authenticated() );
-        toggleProjectButton( false );
       },
       clean: function() {
         togglePreviewButton( true );
         toggleSaveButton( false );
-        toggleProjectButton( true );
       },
       login: function() {
         var isSaved = butter.project.isSaved;
@@ -210,32 +211,23 @@ define([ "dialog/dialog", "util/lang", "text!layouts/header.html", "text!layouts
         toggleProjectNameListeners( butter.cornfield.authenticated() );
         togglePreviewButton( isSaved );
         toggleSaveButton( !isSaved && butter.cornfield.authenticated() );
-        toggleProjectButton( isSaved );
       },
       logout: function() {
         togglePreviewButton( false );
         toggleSaveButton( false );
-        toggleProjectButton( false );
         toggleProjectNameListeners( false );
       }
     };
 
-    // Set up the project menu
-    _projectMenuControl.addEventListener( "click", function() {
-      if ( butter.currentMedia.hasTrackEvents() ) {
-        toggleClearButton( true );
-      } else {
+    butter.listen( "trackeventadded", function() {
+      toggleClearButton( true );
+    });
+
+    butter.listen( "trackeventremoved", function() {
+      if ( !butter.currentMedia.hasTrackEvents() ) {
         toggleClearButton( false );
       }
-      _projectMenu.classList.toggle( "butter-btn-menu-expanded" );
-    }, false );
-
-    _projectMenuList.addEventListener( "click", function( e ) {
-      if ( e.target.classList.contains( "butter-disabled" ) ) {
-        return;
-      }
-      _projectMenu.classList.remove( "butter-btn-menu-expanded" );
-    }, true );
+    });
 
     function destroyToolTip() {
       if ( _noProjectNameToolTip && !_noProjectNameToolTip.destroyed ) {
@@ -336,14 +328,14 @@ define([ "dialog/dialog", "util/lang", "text!layouts/header.html", "text!layouts
             iframe = tutorialView.querySelector( ".tutorial-iframe" ),
             closeButton = tutorialView.querySelector( ".tutorial-close-button" ),
             viewTitle = tutorialView.querySelector( ".tutorial-view-title" ),
-            tutorialList = document.querySelector( ".tutorial-list" ),
-            tutorialBtn = document.querySelector( ".tutorial-btn" );
+            tutorialList = _rootElement.querySelector( ".tutorial-list" );
 
         if ( err || !results.length ) {
           return;
         }
 
-        tutorialBtn.classList.remove( "hidden" );
+        _tutorialBtn.classList.remove( "butter-disabled" );
+        _tutorialsToolTip.hidden = false;
 
         var onCoverMouseUp = function() {
           iframeCover.style.display = "none";
@@ -382,7 +374,7 @@ define([ "dialog/dialog", "util/lang", "text!layouts/header.html", "text!layouts
           tutorialView.style.width = 0;
         }, false );
 
-        tutorialBtn.addEventListener( "click", function() {
+        _tutorialBtn.addEventListener( "click", function() {
           tutorialList.classList.toggle( "open" );
         }, false );
 
@@ -432,7 +424,6 @@ define([ "dialog/dialog", "util/lang", "text!layouts/header.html", "text!layouts
         toggleProjectNameListeners( false );
         togglePreviewButton( false );
         toggleSaveButton( false );
-        toggleProjectButton( false );
       }
 
       if ( butter.project.publishUrl ||
