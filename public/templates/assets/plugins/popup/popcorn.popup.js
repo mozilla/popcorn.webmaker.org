@@ -140,7 +140,7 @@
                      "skull", "star", "thumbsdown", "thumbsup", "time",
                      "trophy", "tv", "user", "virus", "women", "none" ],
           label: "Pop Icon",
-          "default": "error",
+          "default": "info",
           optional: true
         },
         flip: {
@@ -201,7 +201,7 @@
           elem: "input",
           type: "number",
           label: "Font Size",
-          "default": 4,
+          "default": 7,
           units: "%",
           group: "advanced"
         },
@@ -209,7 +209,7 @@
           elem: "input",
           type: "color",
           label: "Font colour",
-          "default": "#668B8B",
+          "default": "#000000",
           group: "advanced"
         },
         fontDecorations: {
