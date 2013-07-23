@@ -195,25 +195,24 @@
     left: 5px;
     margin-top: -@_playButtonHeight / 2;
   }
-  .status-button[data-state="true"] > .icon {
-    background-position: -288px -72px;
+  .status-button[data-state="true"] > .icon:before {
+    content: "\f04c"; //pause
   }
 }
 
 .mute-button-container {
   position: absolute;
-  top: 13px;
+  top: 10px;
   left: @_traySideWidth - 23px;
 
   .status-button {
-    width: 20px;
-    height: 20px;
+    text-align: left;
     background: none;
     .icon {
-      background-image: url( "../resources/icons/glyphiconshalflings-alt.png" );
+      color: @baseText;
     }
-    &[data-state="true"] .icon {
-      background-position: -360px -24px;
+    &[data-state="true"] .icon:before {
+      content: "\f026"; // volume-off
     }
   }
 

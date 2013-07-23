@@ -171,6 +171,9 @@
     }
     &:hover {
       border-color: @green;
+      .icon-plus {
+        display: block;
+      }
     }
     &:hover:before {
       content: "";
@@ -182,16 +185,14 @@
       width: 100%;
       background: fade( @green, 60% );
     }
-    &:hover:after {
-      content: "";
-      height: 14px;
-      width: 14px;
+    .icon-plus {
       position: absolute;
+      font-size: 16px;
+      margin: -8px 0 0 -8px;
       top: 50%;
-      margin-top: -7px;
-      margin-left: -7px;
       left: 50%;
-      background: url( "../resources/icons/glyphiconshalflings-white.png" ) -408px -96px no-repeat;
+      color: white;
+      display: none;
     }
   }
   .mg-html5 .mg-thumbnail {
