@@ -25,7 +25,8 @@ module.exports = function( req, res ) {
         embedShellSrc: publishUrl,
         projectUrl: projectUrl,
         popcorn: utilities.generatePopcornString( projectData ),
-        thumbnail: res.locals.project.thumbnail
+        thumbnail: res.locals.project.thumbnail,
+        background: res.locals.project.background
       }, function( err, html ) {
         var sanitized = sanitizer.compressHTMLEntities( html );
 

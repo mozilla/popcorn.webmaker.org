@@ -10,6 +10,7 @@ define( [ "core/eventmanager", "core/media", "util/sanitizer" ],
   function Project( butter ) {
 
     var _this = this,
+        _video,
         _id, _name, _template, _description, _dataObject,
         _publishUrl, _iframeUrl, _remixedFrom, _remixedFromUrl, _makeid,
 
@@ -34,7 +35,8 @@ define( [ "core/eventmanager", "core/media", "util/sanitizer" ],
         // Interval for backups, starts first time user clicks Save.
         _backupInterval = -1,
 
-        _thumbnail = location.protocol + "//" + location.host + "/resources/icons/fb-logo.png";
+        _thumbnail = location.protocol + "//" + location.host + "/resources/icons/fb-logo.png",
+        _background = "#FFFFFF";
 
     function invalidate() {
       // Project is dirty, needs save, backup
@@ -109,6 +111,18 @@ define( [ "core/eventmanager", "core/media", "util/sanitizer" ],
         },
         get: function() {
           return _thumbnail;
+        },
+        enumerable: true
+       },
+
+      "background": {
+        set: function( val ) {
+          _background = val;
+          _video.style.background = _background;
+          invalidate();
+        },
+        get: function() {
+          return _background;
         },
         enumerable: true
        },
@@ -189,6 +203,9 @@ define( [ "core/eventmanager", "core/media", "util/sanitizer" ],
     butter.listen( "mediaready", function mediaReady() {
       butter.unlisten( "mediaready", mediaReady );
 
+      _video = document.getElementById( "video" );
+      _video.style.background = _background;
+
       // Listen for changes in the project data so we know when to save.
       [ "mediacontentchanged",
         "mediaclipadded",
@@ -257,6 +274,10 @@ define( [ "core/eventmanager", "core/media", "util/sanitizer" ],
 
       if ( json.thumbnail ) {
         _thumbnail = json.thumbnail;
+      }
+
+      if ( json.background ) {
+        _background = json.background;
       }
 
       if ( json.publishUrl ) {
@@ -341,6 +362,7 @@ define( [ "core/eventmanager", "core/media", "util/sanitizer" ],
       data.description = _description;
       data.tags = _tags.join( "," );
       data.thumbnail = _thumbnail;
+      data.background = _background;
       data.backupDate = Date.now();
       try {
         __butterStorage.setItem( "butter-backup-project", JSON.stringify( data ) );
@@ -380,6 +402,7 @@ define( [ "core/eventmanager", "core/media", "util/sanitizer" ],
         author: butter.cornfield.username(),
         description: _description,
         thumbnail: _thumbnail,
+        background: _background,
         data: _this.data,
         tags: _this.tags,
         remixedFrom: _remixedFrom,
