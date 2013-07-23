@@ -16,7 +16,7 @@ module.exports = function( Project ) {
     projectJSON.makeid = res.locals.project.makeid;
 
     makeClient.id( res.locals.project.makeid ).then(function( err, make ) {
-      if ( err ) {
+      if ( err || !make.length ) {
         return res.json( 500, { error: err } );
       }
       projectJSON.tags = make[ 0 ].rawTags;
