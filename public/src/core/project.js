@@ -10,8 +10,7 @@ define( [ "core/eventmanager", "core/media", "util/sanitizer" ],
   function Project( butter ) {
 
     var _this = this,
-        _video,
-        _id, _name, _template, _description, _dataObject,
+        _id, _name, _template, _description, _dataObject, _video,
         _publishUrl, _iframeUrl, _remixedFrom, _remixedFromUrl, _makeid,
 
         _tags = [],
@@ -125,7 +124,7 @@ define( [ "core/eventmanager", "core/media", "util/sanitizer" ],
           return _background;
         },
         enumerable: true
-       },
+      },
 
       "tags": {
         set: function( val ) {
