@@ -373,8 +373,8 @@ define( [ "core/eventmanager", "core/media", "util/sanitizer" ],
         return;
       }
 
-      butter.listen( "mediaready", function onMediaReady() {
-        butter.unlisten( "mediaready", onMediaReady );
+      function saveProject() {
+        butter.unlisten( "mediaready", saveProject );
         var projectData = {
           id: _id,
           name: _name,
@@ -433,13 +433,24 @@ define( [ "core/eventmanager", "core/media", "util/sanitizer" ],
             callback( e );
           }
         });
-      });
+      }
 
       var popcorn = butter.currentMedia.popcorn.popcorn,
-          byEnd = popcorn.data.trackEvents.byEnd;
+          byEnd = popcorn.data.trackEvents.byEnd,
+          lastEvent = byEnd[ byEnd.length - 2 ];
 
-      if ( byEnd.length > 2 ) {
-        butter.currentMedia.url = "#t=," + byEnd[ byEnd.length - 2 ].end;
+      // If it's not greater than two, this mean we only have Popcorns padding events.
+      if ( lastEvent && byEnd.length > 2 ) {
+        if ( lastEvent.end < butter.currentMedia.duration ) {
+          butter.listen( "mediaready", saveProject );
+          butter.currentMedia.url = "#t=," + lastEvent.end;
+        } else {
+          saveProject();
+        }
+      } else {
+        // Reset to default length of 30s. We don't seem to store that anywhere.
+        butter.listen( "mediaready", saveProject );
+        butter.currentMedia.url = "#t=,30";
       }
     };
   }
