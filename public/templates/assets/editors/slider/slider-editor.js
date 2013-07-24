@@ -15,6 +15,19 @@
         _popcornOptions,
         _MAX_CHARS = 180;
 
+    var _changeHandlerCb = function _changeHandlerCb( te, updateOptions ) {
+      // Parse the description using the descriptionHelper() object from
+      // popcorn.slider.js
+      var description = te.popcornTrackEvent.parseDescription( updateOptions.description );
+      description = description.markdownRemoved;
+
+      if ( description.length > _MAX_CHARS ) {
+        _this.setErrorState( "Limit of " + _MAX_CHARS + " characters of the description text was hit. Please use less." );
+      } else {
+        te.update( updateOptions );
+      }
+    };
+
     /**
      * Member: setup
      *
@@ -42,15 +55,19 @@
 
             option = pluginOptions[ key ];
 
-            if ( key === "textDescription" ) {
-              _this.attachInputChangeHandler( option.element, option.trackEvent, key, function( te, updateOptions ) {
+            if ( key === "description" ) {
+              var instructions = document.createElement( "p" ),
+                  parent = option.element.parentNode,
+                  style = instructions.style;
 
-                if ( updateOptions.textDescription.length > _MAX_CHARS ) {
-                  _this.setErrorState( "Limit of " + _MAX_CHARS + " characters of the description text was hit. Please use less." );
-                } else {
-                  te.update( updateOptions );
-                }
-              });
+              instructions.innerHTML = trackEvent.manifest.options.description.instructions;
+              style.margin = "7px 10px";
+              style.fontSize = "0.9em";
+              style.fontStyle = "italic";
+
+              parent.insertBefore( instructions, option.element );
+
+              _this.attachInputChangeHandler( option.element, option.trackEvent, key, _changeHandlerCb );
             } else if ( option.elementType === "input" || option.elementType === "textarea" ) {
               _this.attachInputChangeHandler( option.element, option.trackEvent, key, _this.updateTrackEventSafe );
             } else if ( option.elementType === "select" ) {
@@ -83,6 +100,14 @@
     // Extend this object to become a TrackEventEditor
     Butter.Editor.TrackEventEditor.extend( _this, butter, rootElement, {
       open: function( parentElement, trackEvent ) {
+        // Disable description link functionality during editing
+        var anchorContainer = trackEvent.popcornTrackEvent._container.querySelector( "a" );
+        if ( anchorContainer ) {
+          anchorContainer.onclick = function _falseClick() {
+            return false;
+          };
+        }
+
         _butter = butter;
 
         // Update properties when TrackEvent is updated
@@ -95,3 +120,4 @@
     });
   });
 }( window.Butter ));
+
