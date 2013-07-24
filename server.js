@@ -18,11 +18,7 @@ var express = require('express'),
     metrics = require('./lib/metrics.js'),
     middleware = require( './lib/middleware' ),
     APP_HOSTNAME = config.hostname,
-    WWW_ROOT =  __dirname + '/public',
-    makeapiConfig = {
-      apiURL: config.MAKE_ENDPOINT,
-      auth: config.MAKE_USERNAME + ":" + config.MAKE_PASSWORD
-    };
+    WWW_ROOT =  __dirname + '/public';
 
 nunjucksEnv.express( app );
 
