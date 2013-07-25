@@ -70,7 +70,6 @@
   line-height: @HEADER_SPACING;
   > li {
     float: left;
-    padding: 0 20px;
     &.butter-breadcrumbs {
       position: relative;
       padding: 0;
@@ -87,9 +86,10 @@
   text-align: left;
   font-weight: 600;
   font-size: 16px;
-  color: @green;
+  color: @baseText;
   cursor: pointer;
-  max-width: 55%;
+  //max-width: 55%;
+  padding-left: 20px;
   min-width: 10%;
   height: 100%;
   position: relative;
@@ -99,7 +99,6 @@
   }
 
   > input {
-    font-size: 14px;
     border: 1px solid @green;
     border-radius: 2px;
     padding: 5px;
@@ -109,22 +108,21 @@
     }
   }
 
+  .makes-url {
+    font-size: 14px;
+    margin-right: 5px;
+  }
+
   a.butter-project-name {
-    display: block;
+    display: inline-block;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
-    color: @green;
-  }
-  .icon {
-    opacity: 0.4;
-    position: absolute;
-    visibility: hidden;
-    right: -5px;
-    top: @HEADER_SPACING / @HEADER_ALIGN_MIDDLE;
-  }
-  &:hover .icon {
-    visibility: visible;
+    color: @baseText;
+    font-size: 17px;
+    &:hover {
+      color: @green;
+    }
   }
 }
 

@@ -11,12 +11,14 @@ define([ "dialog/dialog", "util/lang", "text!layouts/header.html", "text!layouts
                                      .replace( /\{\{audience\}\}/g, config.audience );
 
     var TOOLTIP_NAME = "name-error-header-tooltip";
+    var MAKES_DOMAIN = "makes.org";
 
     var _this = this,
         _rootElement = Lang.domFragment( HEADER_TEMPLATE, ".butter-header" ),
         _bodyWrapper = document.querySelector( ".body-wrapper" ),
         _tutorialButtonContainer = document.querySelector( ".butter-tutorial-container" ),
         _saveButton = _rootElement.querySelector( ".butter-save-btn" ),
+        _makeUrl = _rootElement.querySelector( ".makes-url" ),
         _projectTitle = _rootElement.querySelector( ".butter-project-title" ),
         _projectName = _projectTitle.querySelector( ".butter-project-name" ),
         _clearEvents = _rootElement.querySelector( ".butter-clear-events-btn" ),
@@ -25,9 +27,10 @@ define([ "dialog/dialog", "util/lang", "text!layouts/header.html", "text!layouts
         _projectMenu = _rootElement.querySelector( ".butter-project-menu" ),
         _projectMenuControl = _rootElement.querySelector( ".butter-project-menu-control" ),
         _projectMenuList = _projectMenu.querySelector( ".butter-btn-menu" ),
+        _usernameContainer = _rootElement.querySelector( ".user-name-container"),
         _noProjectNameToolTip,
         _projectTitlePlaceHolderText = _projectName.innerHTML,
-        _toolTip, _loginTooltip;
+        _toolTip, _loginTooltip, _username;
 
     // create a tooltip for the plrojectName element
     _toolTip = ToolTip.create({
@@ -152,6 +155,8 @@ define([ "dialog/dialog", "util/lang", "text!layouts/header.html", "text!layouts
 
     function toggleProjectNameListeners( state, tooltipIgnore ) {
       if ( state ) {
+        _username = _usernameContainer.querySelector( "a" ).innerHTML;
+        _makeUrl.innerHTML = _username + "." + MAKES_DOMAIN + "/";
         _projectTitle.addEventListener( "click", projectNameClick, false );
         _projectName.classList.remove( "butter-disabled" );
         _projectName.addEventListener( "click", projectNameClick, false );
