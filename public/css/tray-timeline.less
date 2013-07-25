@@ -147,18 +147,14 @@
     position: absolute;
     height: 18px;
     width: 18px;
+    text-align: center;
     top: 5px;
     opacity: 0;
     background: @_trackEventColor;
     .transition( all 0.1s ease );
     &:after {
-      content: "";
-      position: absolute;
-      display: inline-block;
-      background-image: url( "../resources/icons/glyphiconshalflings-green.png" );
-      width: 14px;
-      height: 14px;
-      top: 2px;
+      .font-awesome;
+      color: @green;
     }
   }
  .left-handle {
@@ -166,8 +162,7 @@
     cursor: w-resize;
     cursor: ew-resize;
     &:after {
-      background-position: -240px -96px;
-      left: 2px;
+      content: "\f060"; // Left arrow
     }
   }
   .right-handle {
@@ -175,8 +170,7 @@
     cursor: e-resize;
     cursor: ew-resize;
     &:after {
-      background-position: -264px -96px;
-      right: 2px;
+      content: "\f061"; // Right arrow
     }
   }
 
@@ -312,16 +306,16 @@
     .delete {
       position: absolute;
       right: 0;
-      top: 8px;
-      background-image: url( "../resources/icons/glyphiconshalflings-alt.png" );
-      background-position: -456px 0;
+      top: 0;
       cursor: pointer;
-      width: 14px;
-      height: 14px;
+      .font-awesome;
+      &:after {
+        content: "\f014";
+      }
     }
   }
   &:hover .menu {
-    width: 15px;
+    width: 16px;
   }
   &:hover .track-handle-icon {
     border-color: #000;
