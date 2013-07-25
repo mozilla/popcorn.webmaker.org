@@ -39,9 +39,7 @@ define([
         _usernameContainer = _rootElement.querySelector( ".user-name-container"),
         _noProjectNameToolTip,
         _projectTitlePlaceHolderText = _projectName.innerHTML,
-        _toolTip, _urlTooltip, _loginTooltip, _username;
-
-    var clip
+        _toolTip, _urlTooltip, _loginTooltip, _username, clip;
 
     // create a tooltip for the plrojectName element
     _toolTip = ToolTip.create({
@@ -56,6 +54,12 @@ define([
       message: "Copy link to clipboard",
       element: _previewBtn,
       top: "45px"
+    });
+
+   // Clipboard handler
+    clip = new ZeroClipboard( _previewBtn, {
+      moviePath: "/external/zeroClipboard/ZeroClipboard.swf",
+      hoverClass: "tooltip-show"
     });
 
     // Default state
@@ -123,18 +127,13 @@ define([
       butter.editor.openEditor( "project-editor" );
     }
 
-    var clip = new ZeroClipboard( _previewBtn, {
-      moviePath: "/external/zeroClipboard/ZeroClipboard.swf",
-      hoverClass: "tooltip-show"
-    });
-
-
     function onClipComplete(client, args) {
       alert("Copied " + args.text + " to clipboard.");
     }
 
 
     function togglePreviewButton( on ) {
+      console.log(on);
       if ( on ) {
         _previewBtn.classList.remove( "butter-disabled" );
         _previewBtn.href = butter.project.publishUrl;
