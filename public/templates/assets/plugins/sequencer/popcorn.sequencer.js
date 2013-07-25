@@ -253,7 +253,7 @@
 
       // While clip is loading, do not let the timeline play.
       options.playIfReady = function() {
-        if ( options.playWhenReady && !loadingHandler.loading.length ) {
+        if ( options.playWhenReady && !_waiting ) {
           options.playWhenReady = false;
           _this.play();
           return true;
