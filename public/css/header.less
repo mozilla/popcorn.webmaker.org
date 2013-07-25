@@ -82,23 +82,37 @@
   }
 }
 
-.butter-project-title {
+.butter-project-menu {
+  float: right;
+  margin-right: 20px;
+}
+
+.butter-project-title-container {
   text-align: left;
   font-weight: 600;
   font-size: 16px;
   color: @baseText;
   cursor: pointer;
-  //max-width: 55%;
   padding-left: 20px;
   min-width: 10%;
   height: 100%;
   position: relative;
+}
+
+.makes-url {
+  font-size: 14px;
+  margin-right: 5px;
+}
+
+.butter-project-title {
+  position: relative;
+  display: inline-block;
 
   &.no-click {
     cursor: wait;
   }
 
-  > input {
+   input {
     border: 1px solid @green;
     border-radius: 2px;
     padding: 5px;
@@ -106,11 +120,6 @@
     &:focus {
       outline: none;
     }
-  }
-
-  .makes-url {
-    font-size: 14px;
-    margin-right: 5px;
   }
 
   a.butter-project-name {
@@ -126,10 +135,16 @@
   }
 }
 
+.butter-project-link {
+  font-size: 15px;
+}
+
 // Temporary overriding classes.
+
 .webmaker-nav-container {
   background: #FFFFFF;
   margin-top: 10px;
+  overflow: visible;
 }
 
 .my-projects-container.open {

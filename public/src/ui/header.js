@@ -17,13 +17,11 @@ define([ "dialog/dialog", "util/lang", "text!layouts/header.html", "text!layouts
         _rootElement = Lang.domFragment( HEADER_TEMPLATE, ".butter-header" ),
         _bodyWrapper = document.querySelector( ".body-wrapper" ),
         _tutorialButtonContainer = document.querySelector( ".butter-tutorial-container" ),
-        _saveButton = _rootElement.querySelector( ".butter-save-btn" ),
         _makeUrl = _rootElement.querySelector( ".makes-url" ),
         _projectTitle = _rootElement.querySelector( ".butter-project-title" ),
         _projectName = _projectTitle.querySelector( ".butter-project-name" ),
         _clearEvents = _rootElement.querySelector( ".butter-clear-events-btn" ),
         _previewBtn = _rootElement.querySelector( ".butter-preview-btn" ),
-        _projectBtn = _rootElement.querySelector( ".butter-project-btn" ),
         _projectMenu = _rootElement.querySelector( ".butter-project-menu" ),
         _projectMenuControl = _rootElement.querySelector( ".butter-project-menu-control" ),
         _projectMenuList = _projectMenu.querySelector( ".butter-btn-menu" ),
@@ -83,14 +81,12 @@ define([ "dialog/dialog", "util/lang", "text!layouts/header.html", "text!layouts
         nameError();
       } else {
         if ( !butter.project.isSaved ) {
-          toggleSaveButton( false );
 
           butter.project.save(function( e ) {
             if ( e.error === "okay" ) {
               afterSave();
               return;
             } else {
-              toggleSaveButton( true );
               togglePreviewButton( false );
               toggleProjectNameListeners( true );
               showErrorDialog(  "There was a problem saving your project, so it was backed up to your browser's storage" +
@@ -105,26 +101,6 @@ define([ "dialog/dialog", "util/lang", "text!layouts/header.html", "text!layouts
 
     function openProjectEditor() {
       butter.editor.openEditor( "project-editor" );
-    }
-
-    function toggleProjectButton( on ) {
-      if ( on ) {
-        _projectBtn.classList.remove( "butter-disabled" );
-        _projectBtn.addEventListener( "click", openProjectEditor, false );
-      } else {
-        _projectBtn.classList.add( "butter-disabled" );
-        _projectBtn.removeEventListener( "click", openProjectEditor, false );
-      }
-    }
-
-    function toggleSaveButton( on ) {
-      if ( on ) {
-        _saveButton.classList.remove( "butter-disabled" );
-        _saveButton.addEventListener( "click", saveProject, false );
-      } else {
-        _saveButton.classList.add( "butter-disabled" );
-        _saveButton.removeEventListener( "click", saveProject, false );
-      }
     }
 
     function togglePreviewButton( on ) {
@@ -201,38 +177,29 @@ define([ "dialog/dialog", "util/lang", "text!layouts/header.html", "text!layouts
     this.views = {
       dirty: function() {
         togglePreviewButton( false );
-        toggleSaveButton( butter.cornfield.authenticated() );
-        toggleProjectButton( false );
       },
       clean: function() {
         togglePreviewButton( true );
-        toggleSaveButton( false );
-        toggleProjectButton( true );
       },
       login: function() {
         var isSaved = butter.project.isSaved;
 
         toggleProjectNameListeners( butter.cornfield.authenticated() );
         togglePreviewButton( isSaved );
-        toggleSaveButton( !isSaved && butter.cornfield.authenticated() );
-        toggleProjectButton( isSaved );
       },
       logout: function() {
         togglePreviewButton( false );
-        toggleSaveButton( false );
-        toggleProjectButton( false );
         toggleProjectNameListeners( false );
       }
     };
 
     // Set up the project menu
-    _projectMenuControl.addEventListener( "click", function() {
+    _projectMenuControl.addEventListener( "hover", function() {
       if ( butter.currentMedia.hasTrackEvents() ) {
         toggleClearButton( true );
       } else {
         toggleClearButton( false );
       }
-      _projectMenu.classList.toggle( "butter-btn-menu-expanded" );
     }, false );
 
     _projectMenuList.addEventListener( "click", function( e ) {
@@ -436,8 +403,6 @@ define([ "dialog/dialog", "util/lang", "text!layouts/header.html", "text!layouts
       if ( !butter.cornfield.authenticated() ) {
         toggleProjectNameListeners( false );
         togglePreviewButton( false );
-        toggleSaveButton( false );
-        toggleProjectButton( false );
       }
 
       if ( butter.project.publishUrl ||

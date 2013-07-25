@@ -17,10 +17,11 @@
   vertical-align: middle;
   border: 1px solid transparent;
   background: none;
-  color: @baseText;
+  color: lighten(@baseText, 10%);
   &:hover {
     cursor: pointer;
     text-decoration: none;
+    color: @baseText;
   }
 }
 
@@ -146,14 +147,25 @@
 
 .butter-btn-menu-control {
   border: 1px solid @baseLightOutline;
+  border-radius: 0;
   position: relative;
   z-index: 1;
-  .butter-btn-menu-expanded & {
+  > .icon-reorder {
+    display: inline-block;
+    vertical-align: middle;
+    font-size: 18px;
+    margin-top: -2px;
+    margin-right: 3px;
+    .transition(all 0.1s linear);
+  }
+  .butter-btn-menu-container:hover & {
     border-bottom-color: transparent;
-    border-radius: 2px 2px 0 0;
-    >.icon {
-      color: #555;
+    >.icon-reorder {
+      .transform(rotate(90deg));
     }
+  }
+  &:hover {
+    border-color: darken(@baseLightOutline, 10%);
   }
 }
 
@@ -167,11 +179,11 @@
   margin-top: -1px;
   border-radius: 0 2px 2px 2px;
   left: 0;
-  background: @baseLight;
+  background: white;
 
   //States
   visibility: hidden;
-  .butter-btn-menu-expanded & {
+  .butter-btn-menu-container:hover & {
     visibility: visible;
   }
 
@@ -189,7 +201,7 @@
   > li > a.butter-disabled:hover,
   > li > a.butter-disabled:active {
     color: @baseText;
-    padding: 0 15px;
+    padding: 0 10px;
     min-width: 80px;
     border: none;
     display: block;
@@ -197,6 +209,15 @@
   > li > a:hover {
     background: lighten( @baseLight, 2% );
     color: #000;
+  }
+
+  // Icons
+  > li > a > .icon {
+    vertical-align: middle;
+    margin-top: -3px;
+    font-size: 18px;
+    width: 21px;
+    display: inline-block;
   }
 }
 
