@@ -127,6 +127,7 @@
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+    max-width: 400px;
     color: @baseText;
     font-size: 17px;
     &:hover {
@@ -136,7 +137,11 @@
 }
 
 .butter-project-link {
-  font-size: 15px;
+  font-size: 18px;
+  position: relative;
+  &.tooltip-show {
+    color: #000;
+  }
 }
 
 // Temporary overriding classes.
@@ -145,6 +150,10 @@
   background: #FFFFFF;
   margin-top: 10px;
   overflow: visible;
+}
+
+#identity > a {
+  text-decoration: none;
 }
 
 .my-projects-container.open {

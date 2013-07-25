@@ -517,7 +517,8 @@
 */
 
 * {
-  &:hover > .butter-tooltip:not(.tooltip-no-hover) {
+  &:hover > .butter-tooltip:not(.tooltip-no-hover),
+  &.tooltip-show  > .butter-tooltip {
     opacity: 1;
     visibility: visible;
     .transition( opacity 0.3s ease 0.5s );

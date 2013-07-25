@@ -1,6 +1,17 @@
 /*global $*/
-define([ "dialog/dialog", "util/lang", "text!layouts/header.html", "text!layouts/tutorial-list.html","text!layouts/tutorial-view.html", "ui/widget/textbox", "ui/widget/tooltip", "make-api", "json!/api/butterconfig" ],
-  function( Dialog, Lang, HEADER_TEMPLATE, TUTORIAL_LIST_TEMPLATE, TUTORIAL_VIEW_TEMPLATE, TextBoxWrapper, ToolTip, Make, config ) {
+define([
+  "dialog/dialog",
+  "util/lang",
+  "text!layouts/header.html",
+  "text!layouts/tutorial-list.html",
+  "text!layouts/tutorial-view.html",
+  "ui/widget/textbox",
+  "ui/widget/tooltip",
+  "make-api",
+  "json!/api/butterconfig",
+  "../../external/zeroClipboard/ZeroClipboard"
+  ],
+  function( Dialog, Lang, HEADER_TEMPLATE, TUTORIAL_LIST_TEMPLATE, TUTORIAL_VIEW_TEMPLATE, TextBoxWrapper, ToolTip, Make, config, ZeroClipboard ) {
 
   return function( butter, options ){
 
@@ -28,7 +39,9 @@ define([ "dialog/dialog", "util/lang", "text!layouts/header.html", "text!layouts
         _usernameContainer = _rootElement.querySelector( ".user-name-container"),
         _noProjectNameToolTip,
         _projectTitlePlaceHolderText = _projectName.innerHTML,
-        _toolTip, _loginTooltip, _username;
+        _toolTip, _urlTooltip, _loginTooltip, _username;
+
+    var clip
 
     // create a tooltip for the plrojectName element
     _toolTip = ToolTip.create({
@@ -36,6 +49,13 @@ define([ "dialog/dialog", "util/lang", "text!layouts/header.html", "text!layouts
       message: "Change the name of your project",
       element: _projectTitle,
       top: "60px"
+    });
+
+   _urlTooltip = ToolTip.create({
+      title: "header-url-tooltip",
+      message: "Copy link to clipboard",
+      element: _previewBtn,
+      top: "45px"
     });
 
     // Default state
@@ -103,29 +123,29 @@ define([ "dialog/dialog", "util/lang", "text!layouts/header.html", "text!layouts
       butter.editor.openEditor( "project-editor" );
     }
 
+    var clip = new ZeroClipboard( _previewBtn, {
+      moviePath: "/external/zeroClipboard/ZeroClipboard.swf",
+      hoverClass: "tooltip-show"
+    });
+
+
+    function onClipComplete(client, args) {
+      alert("Copied " + args.text + " to clipboard.");
+    }
+
+
     function togglePreviewButton( on ) {
       if ( on ) {
         _previewBtn.classList.remove( "butter-disabled" );
         _previewBtn.href = butter.project.publishUrl;
-        _previewBtn.onclick = function() {
-          return true;
-        };
+        _previewBtn.setAttribute( "data-clipboard-text", butter.project.publishUrl );
+        clip.off( "complete", onClipComplete );
+        clip.on( "complete", onClipComplete );
       } else {
         _previewBtn.classList.add( "butter-disabled" );
+        _previewBtn.setAttribute( "data-clipboard-text", "" );
         _previewBtn.href = "";
-        _previewBtn.onclick = function() {
-          return false;
-        };
-      }
-    }
-
-    function toggleClearButton( on ) {
-      if ( on ) {
-        _clearEvents.classList.remove( "butter-disabled" );
-        _clearEvents.addEventListener( "click", clearEventsClick, false );
-      } else {
-        _clearEvents.classList.add( "butter-disabled" );
-        _clearEvents.removeEventListener( "click", clearEventsClick, false );
+        clip.off( "complete", onClipComplete );
       }
     }
 
@@ -174,9 +194,11 @@ define([ "dialog/dialog", "util/lang", "text!layouts/header.html", "text!layouts
       }
     }
 
+    _clearEvents.addEventListener( "click", clearEventsClick, false );
+
     this.views = {
       dirty: function() {
-        togglePreviewButton( false );
+        togglePreviewButton( true );
       },
       clean: function() {
         togglePreviewButton( true );
@@ -185,22 +207,13 @@ define([ "dialog/dialog", "util/lang", "text!layouts/header.html", "text!layouts
         var isSaved = butter.project.isSaved;
 
         toggleProjectNameListeners( butter.cornfield.authenticated() );
-        togglePreviewButton( isSaved );
+        togglePreviewButton( butter.project.publishUrl );
       },
       logout: function() {
         togglePreviewButton( false );
         toggleProjectNameListeners( false );
       }
     };
-
-    // Set up the project menu
-    _projectMenuControl.addEventListener( "hover", function() {
-      if ( butter.currentMedia.hasTrackEvents() ) {
-        toggleClearButton( true );
-      } else {
-        toggleClearButton( false );
-      }
-    }, false );
 
     _projectMenuList.addEventListener( "click", function( e ) {
       if ( e.target.classList.contains( "butter-disabled" ) ) {
@@ -396,6 +409,7 @@ define([ "dialog/dialog", "util/lang", "text!layouts/header.html", "text!layouts
     }
 
     butter.listen( "ready", function() {
+
       if ( butter.project.name ) {
         _projectName.textContent = butter.project.name;
       }
