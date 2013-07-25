@@ -23,6 +23,15 @@
   box-sizing: @property; // Opera, Safari 5.1+, Chrome 10+
 }
 
+// FONT AWESOME
+.font-awesome {
+  font-family: FontAwesome;
+  font-weight: normal;
+  font-style: normal;
+  text-decoration: inherit;
+  -webkit-font-smoothing: antialiased;
+  *margin-right: .3em;
+}
 
 @highlight: #3FB58E;
 @handleWidth: 4px;
@@ -230,14 +239,13 @@
     display: none;
   }
   &:after {
-    position: relative;
-    content: "";
-    display: block;
-    height: 14px;
-    width: 14px;
+    .font-awesome();
+    position: absolute;
     top: 1px;
     left: 1px;
-    background: url( "/resources/icons/glyphiconshalflings-white.png" ) -168px -72px;
+    font-size: 14px;
+    color: #FFF;
+    content: "\f047"; // Move
     z-index: @handleZIndex;
   }
 }
