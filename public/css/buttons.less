@@ -146,10 +146,12 @@
 }
 
 .butter-btn-menu-control {
-  border: 1px solid @baseLightOutline;
+  border: 1px solid transparent;
   border-radius: 0;
   position: relative;
   z-index: 1;
+  line-height: 38px;
+  padding: 0 15px;
   > .icon-reorder {
     display: inline-block;
     vertical-align: middle;
@@ -159,13 +161,10 @@
     .transition(all 0.1s linear);
   }
   .butter-btn-menu-container:hover & {
-    border-bottom-color: transparent;
+    border-color: @baseLightOutline;
     >.icon-reorder {
       .transform(rotate(90deg));
     }
-  }
-  &:hover {
-    border-color: darken(@baseLightOutline, 10%);
   }
 }
 
@@ -196,23 +195,23 @@
     }
   }
   // The link inside the menu item
-  > li > a,
-  > li > a.butter-disabled,
-  > li > a.butter-disabled:hover,
-  > li > a.butter-disabled:active {
+  > li > .butter-btn,
+  > li > .butter-btn.butter-disabled,
+  > li > .butter-btn.butter-disabled:hover,
+  > li > .butter-btn.butter-disabled:active {
     color: @baseText;
-    padding: 0 10px;
+    padding: 0 13px;
     min-width: 80px;
     border: none;
     display: block;
   }
-  > li > a:hover {
+  > li > .butter-btn:hover {
     background: lighten( @baseLight, 2% );
     color: #000;
   }
 
   // Icons
-  > li > a > .icon {
+  > li > .butter-btn > span {
     vertical-align: middle;
     margin-top: -3px;
     font-size: 18px;

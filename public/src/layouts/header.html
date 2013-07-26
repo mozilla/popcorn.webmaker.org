@@ -14,28 +14,52 @@
         <a target="_blank" class="butter-project-link butter-preview-btn butter-btn"><span class="icon-link"></span></a>
       </li>
     </ul>
+<!--
+    <nav class="right-menu">
+      <li><button id="tutorial"><span class="icon-book"></span> Tutorial</button></li>
+      <li><div id="options" class="butter-btn-menu">
+        <button class="butter-btn butter-btn-menu-control"><span class="icon-book"></span> Tutorial</div></button>
+        <ul class="butter-btn-menu">
+          <li><span class="icon-th-large"></span> My Makes</li>
+          <li><span class="icon-group"></span> Collaborate</li>
+          <li><span class="icon-signout"></span> Sign Out</li>
+          <li><span class="icon-heart"></span> Webmaker.org</li>
+        </ul>
+      </li>
+      <li><div id="user-info"><span class="icon-book"></span> Tutorial</div></li>
+    </nav>
+    -->
 
     <!-- webmaker user bar -->
     <div id="webmaker-nav">
       <nav class="webmaker-nav-container">
-
         <ul class="webmaker-nav user-info">
-          <li class="user">
-              Hi <span id="identity" class="user-name-container"></span>
-          </li>
-          <li class="tutorial-btn hidden"><button>Tutorials</button></li>
-          <li class="makes"><button>My makes</button></li>
           <li>
             <iframe src="{{audience}}/sso/include.html" class="include-frame"></iframe>
           </li>
         </ul>
       </nav>
 
+      <div class="tutorial-btn hidden"><button>Tutorials</button></div>
+
+      <div id="user-menu" class="butter-btn-menu-container butter-project-menu">
+        <a class="butter-btn btn-white butter-btn-menu-control user">
+             Hi <span id="identity" class="user-name-container"></span> <span class="icon-caret-down"></span>
+        </a>
+        <ul class="butter-btn-menu">
+          <li><a id="my-makes" class="butter-btn"><span class="icon icon-th-large"></span> My makes</a></li>
+          <li><a class="butter-btn"><span class="icon-group"></span> Collaborate</a></li>
+          <li><a class="butter-btn"><span class="icon-signout"></span> Sign Out</a></li>
+          <li><a class="butter-btn"><span class="icon-heart"></span> Webmaker.org</a></li>
+        </ul>
+      </div>
+
+
       <div class="butter-btn-menu-container butter-project-menu">
-        <a class="butter-btn btn-white butter-project-menu-control butter-btn-menu-control"><span class="icon-reorder"></span> Options</a>
+        <a class="butter-btn btn-white butter-btn-menu-control"><span class="icon-reorder"></span> Options</a>
         <ul class="butter-btn-menu">
           <li><a class="butter-btn" href="/" target="_blank">
-            <span class="icon icon-file-alt"></span> New</a>
+            <span class="icon icon-file-alt"></span> New Project</a>
           </li>
           <li><a class="butter-btn butter-clear-events-btn" target="_blank">
             <span class="icon icon-remove"></span> Clear Events</a>

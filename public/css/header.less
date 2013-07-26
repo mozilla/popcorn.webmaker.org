@@ -156,6 +156,19 @@
   text-decoration: none;
 }
 
+// avatar
+#user-menu .butter-btn-menu-control {
+  padding-left: 45px;
+  img {
+    position: absolute;
+    left: 10px;
+    top: 5px;
+    border-radius: 50%;
+    width: 26px;
+    height: 26px;
+  }
+}
+
 .my-projects-container.open {
   top: @HEADER_SPACING;
   position: absolute;
@@ -169,46 +182,5 @@
 .butter-header {
   .butter-btn {
     text-shadow: none;
-  }
-}
-
-.butter-login-project-info {
-  position: relative;
-}
-
-.butter-login-project-info > ul {
-  position: absolute;
-  top: 48px;
-  left: 28px;
-  width: 175px;
-  border-top: 0;
-  border-radius: 0 0 2px 2px;
-  box-shadow: 0 10px 15px -5px rgba( 0, 0, 0, 0.6 );
-  padding: 0;
-  background: #FFF;
-  z-index: @MODAL_Z_INDEX;
-  li {
-    border-top: 1px solid @baseLight;
-    list-style: none;
-    font-size: 10px;
-    line-height: 35px;
-    margin: 0;
-    &:first-child {
-      border-top: none;
-    }
-    &:last-child {
-      border-radius: 0 0 2px 2px;
-    }
-  }
-  a {
-    text-decoration: none;
-    color: @baseText;
-    display: block;
-    padding: 0 20px;
-    height: 100%;
-    cursor: pointer;
-    &:hover {
-      color: @green;
-    }
   }
 }

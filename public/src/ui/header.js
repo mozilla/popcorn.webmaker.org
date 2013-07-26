@@ -34,7 +34,6 @@ define([
         _clearEvents = _rootElement.querySelector( ".butter-clear-events-btn" ),
         _previewBtn = _rootElement.querySelector( ".butter-preview-btn" ),
         _projectMenu = _rootElement.querySelector( ".butter-project-menu" ),
-        _projectMenuControl = _rootElement.querySelector( ".butter-project-menu-control" ),
         _projectMenuList = _projectMenu.querySelector( ".butter-btn-menu" ),
         _usernameContainer = _rootElement.querySelector( ".user-name-container"),
         _noProjectNameToolTip,
@@ -382,7 +381,7 @@ define([
     }
 
     function loadDashboard() {
-      var myProjectsButton = document.querySelector( ".user-info > .makes" ),
+      var myProjectsButton = document.querySelector( "#my-makes" ),
           container = document.querySelector( ".my-projects-container" ),
           iframe = document.querySelector( ".my-projects-iframe" );
 
