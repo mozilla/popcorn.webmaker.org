@@ -67,6 +67,10 @@ define( [ "util/uri" ],
 
           document.body.appendChild( div );
 
+          if ( resp.error ) {
+            errorCallback( YOUTUBE_EMBED_UNPLAYABLE );
+          }
+
           if ( !respData ) {
             return;
           }
