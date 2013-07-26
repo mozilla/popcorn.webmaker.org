@@ -389,6 +389,7 @@ define([
         myProjectsButton.addEventListener( "click", open, false );
         myProjectsButton.removeEventListener( "click", close, false );
 
+        container.classList.remove("open");
         container.style.zIndex = "";
         container.style.position = "";
         iframe.style.height = "";
@@ -397,7 +398,7 @@ define([
       function open() {
         myProjectsButton.addEventListener( "click", close, false );
         myProjectsButton.removeEventListener( "click", open, false );
-
+        container.classList.add("open");
         iframe.style.height = "300px";
 
         iframe.src = "/dashboard";

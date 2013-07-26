@@ -1,6 +1,8 @@
 /*********************************************************
 * HEADER
 */
+@import "../external/persona-btn/persona-btn";
+
 @_logoWidth: 220px;
 
 // Used to position absolute elements in the middle of our header bar area
@@ -144,12 +146,22 @@
   }
 }
 
+.butter-btn-menu-container {
+  margin-top: 10px;
+}
+
 // Temporary overriding classes.
 
+#webmaker-nav {
+  float: right;
+}
 .webmaker-nav-container {
   background: #FFFFFF;
-  margin-top: 10px;
   overflow: visible;
+  padding: 0;
+}
+.user-info > li {
+  margin: 16px 25px 16px 0;
 }
 
 #identity > a {
@@ -173,6 +185,17 @@
   top: @HEADER_SPACING;
   position: absolute;
   width: 100%;
+}
+
+#persona-iframe {
+  border: 0;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 100;
+
 }
 
 /*********************************************************
