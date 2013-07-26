@@ -28,7 +28,6 @@ define([
         _rootElement = Lang.domFragment( HEADER_TEMPLATE, ".butter-header" ),
         _bodyWrapper = document.querySelector( ".body-wrapper" ),
         _tutorialButtonContainer = document.querySelector( ".butter-tutorial-container" ),
-        _makeUrl = _rootElement.querySelector( ".makes-url" ),
         _projectTitle = _rootElement.querySelector( ".butter-project-title" ),
         _projectName = _projectTitle.querySelector( ".butter-project-name" ),
         _clearEvents = _rootElement.querySelector( ".butter-clear-events-btn" ),
@@ -132,7 +131,7 @@ define([
 
 
     function togglePreviewButton( on ) {
-      console.log(on);
+      console.log( on );
       if ( on ) {
         _previewBtn.classList.remove( "butter-disabled" );
         _previewBtn.href = butter.project.publishUrl;
@@ -150,7 +149,6 @@ define([
     function toggleProjectNameListeners( state, tooltipIgnore ) {
       if ( state ) {
         _username = _usernameContainer.querySelector( "a" ).innerHTML;
-        _makeUrl.innerHTML = _username + "." + MAKES_DOMAIN + "/";
         _projectTitle.addEventListener( "click", projectNameClick, false );
         _projectName.classList.remove( "butter-disabled" );
         _projectName.addEventListener( "click", projectNameClick, false );
@@ -163,6 +161,20 @@ define([
       if ( !tooltipIgnore ) {
         _loginTooltip.hidden = state;
         _toolTip.hidden = !state;
+      }
+    }
+
+    function toggleSSO( isLoggedIn ) {
+      var personaIframe = document.getElementById( "persona-iframe" ),
+          loginBtn = document.getElementById( "login-btn" ),
+          logoutBtn = document.getElementById( "logout-btn" );
+
+      if ( isLoggedIn ) {
+        loginBtn.style.display = "none";
+        logoutBtn.appendChild(personaIframe);
+      } else {
+        loginBtn.parentNode.style.display = "";
+        loginBtn.appendChild(personaIframe);
       }
     }
 
@@ -192,11 +204,12 @@ define([
       }
     }
 
+
     _clearEvents.addEventListener( "click", clearEventsClick, false );
 
     this.views = {
       dirty: function() {
-        togglePreviewButton( true );
+        togglePreviewButton( butter.project.publishUrl );
       },
       clean: function() {
         togglePreviewButton( true );
@@ -206,10 +219,12 @@ define([
 
         toggleProjectNameListeners( butter.cornfield.authenticated() );
         togglePreviewButton( butter.project.publishUrl );
+        toggleSSO( true );
       },
       logout: function() {
         togglePreviewButton( false );
         toggleProjectNameListeners( false );
+        toggleSSO( false );
       }
     };
 

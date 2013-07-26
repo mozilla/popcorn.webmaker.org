@@ -5,13 +5,12 @@
     <ul class="butter-nav">
       <li class="butter-breadcrumbs"></li>
       <li class="butter-project-title-container">
-      <label class="makes-url"></label>
       <span class="butter-project-title">
         <a class="butter-project-name">My Cool Remix</a>
       </span>
       </li>
       <li>
-        <a target="_blank" class="butter-project-link butter-preview-btn butter-btn"><span class="icon-link"></span></a>
+        <a target="_blank" class="butter-project-link butter-preview-btn butter-btn butter-disabled"><span class="icon-link"></span></a>
       </li>
     </ul>
 
@@ -19,7 +18,7 @@
       <nav class="webmaker-nav-container">
         <ul class="webmaker-nav user-info">
           <li>
-            <span class="persona-button"><span class="text">Sign in</span><span class="tip"></span><iframe id="persona-iframe" src="{{audience}}/sso/include-transparent.html" allowTransparency="true"></iframe></span>
+            <span id="login-btn" class="persona-button"><span class="text">Sign in</span><span class="tip"></span><iframe id="persona-iframe" src="{{audience}}/sso/include-transparent.html" allowTransparency="true"></iframe></span>
           </li>
         </ul>
       </nav>
@@ -32,7 +31,7 @@
         </a>
         <ul class="butter-btn-menu">
           <li><a id="my-makes" class="butter-btn"><span class="icon icon-th-large"></span> My makes</a></li>
-          <li><a class="butter-btn"><span class="icon-group"></span> Collaborate</a></li>
+          <li><a id="logout-btn" class="butter-btn"><span class="icon-signout"></span> Logout</a></li>
           <li><a class="butter-btn"><span class="icon-heart"></span> Webmaker.org</a></li>
         </ul>
       </div>
