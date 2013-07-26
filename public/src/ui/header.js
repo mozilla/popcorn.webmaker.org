@@ -167,14 +167,14 @@ define([
     function toggleSSO( isLoggedIn ) {
       var personaIframe = document.getElementById( "persona-iframe" ),
           loginBtn = document.getElementById( "login-btn" ),
-          logoutBtn = document.getElementById( "logout-btn" );
+          loginText = loginBtn.querySelector( ".text" );
 
       if ( isLoggedIn ) {
-        loginBtn.style.display = "none";
-        logoutBtn.appendChild(personaIframe);
+        loginText.innerHTML = "Sign out";
+        //logoutBtn.appendChild(personaIframe);
       } else {
-        loginBtn.parentNode.style.display = "";
-        loginBtn.appendChild(personaIframe);
+        loginText.innerHTML = "Sign in";
+        //loginBtn.appendChild(personaIframe);
       }
     }
 

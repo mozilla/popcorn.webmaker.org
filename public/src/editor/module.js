@@ -9,12 +9,12 @@
  */
 define( [ "core/eventmanager", "core/trackevent", "./editor",
           "ui/toggler", "util/lang", "text!layouts/editor-area.html",
-          "./default", "core/logger", "./header",
+          "./default", "core/logger", "./header", 'dialog/dialog',
           // Included here to register themselves.
           "./media-gallery-editor", "./project-editor", "./sequencer-editor" ],
   function( EventManager, TrackEvent, Editor,
             Toggler, LangUtils, EDITOR_AREA_LAYOUT,
-            DefaultEditor, Logger, Header ){
+            DefaultEditor, Logger, Header, Dialog ){
 
   var DEFAULT_EDITOR_NAME = "plugin-list";
 
@@ -43,13 +43,42 @@ define( [ "core/eventmanager", "core/trackevent", "./editor",
 
     ButterNamespace.Editor = Editor;
 
-    _header = new Header( _editorAreaDOMRoot, _this );
+    function showErrorDialog( message ) {
+      var dialog = Dialog.spawn( "error-message", {
+        data: message,
+        events: {
+          cancel: function() {
+            dialog.close();
+          }
+        }
+      });
+      dialog.open();
+    }
+
+    function saveProject(cb) {
+     butter.project.save(function( e ) {
+        cb = cb || function() {};
+        if ( e.error === "okay" ) {
+          cb();
+        } else {
+          showErrorDialog(  "There was a problem saving your project, so it was backed up to your browser's storage" +
+                            " (i.e., you can close or reload this page and it will be recovered). Please try again." );
+        }
+      });
+    }
+
+    _header = new Header( _editorAreaDOMRoot, _this, saveProject );
+
 
     function setupHeader() {
-      if ( butter.project.isSaved ) {
-        _header.views.saved();
+      var isLoggedIn = butter.cornfield.authenticated(),
+          isSaved = butter.project.isSaved;
+      if ( isLoggedIn && isSaved ) {
+        _header.views.savedProject();
+      } else if ( isLoggedIn ) {
+        _header.views.unsavedProject();
       } else {
-        _header.views.unSaved();
+        _header.views.disableProjectEditor();
       }
     }
 
@@ -214,9 +243,9 @@ define( [ "core/eventmanager", "core/trackevent", "./editor",
         butter.listen( "autologinsucceeded", setupHeader );
         butter.listen( "authenticated", setupHeader );
 
-        butter.listen( "projectsaved", _header.views.saved );
-        butter.listen( "logout", _header.views.unSaved );
-        butter.listen( "projectchanged", _header.views.unSaved );
+        butter.listen( "projectsaved", _header.views.savedProject );
+        butter.listen( "logout", _header.views.disableProjectEditor );
+        butter.listen( "projectchanged", setupHeader );
 
         // Set up views for plugin list editor
         butter.listen( "mediacontentchanged", _header.views.disablePlugins );

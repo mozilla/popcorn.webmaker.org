@@ -46,6 +46,7 @@ app.configure( function() {
       once: config.OPTIMIZE_CSS,
       dest: tmpDir,
       src: WWW_ROOT,
+      relativeUrls: true,
       compress: config.OPTIMIZE_CSS,
       yuicompress: config.OPTIMIZE_CSS,
       optimization: config.OPTIMIZE_CSS ? 0 : 2
