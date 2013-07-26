@@ -14,6 +14,7 @@ module.exports = function( Project ) {
     projectJSON.publishUrl = utils.embedShellURL( req.session.username, res.locals.project.id );
     projectJSON.iframeUrl = utils.embedURL( req.session.username, res.locals.project.id );
     projectJSON.makeid = res.locals.project.makeid;
+    projectJSON.background = res.locals.project.background;
 
     makeClient.id( res.locals.project.makeid ).then(function( err, make ) {
       if ( err || !make.length ) {
