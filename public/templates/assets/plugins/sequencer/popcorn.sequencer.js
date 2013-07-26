@@ -113,6 +113,7 @@
           options.tearDown();
         }
         options.failed = false;
+        options._clip.off( "error", options.fail );
         options._clip.off( "loadedmetadata", options.readyEvent );
         options.ready = true;
         options._container.style.width = ( options.width || "100" ) + "%";
@@ -189,6 +190,13 @@
           options.fail();
         }
         options._clip = Popcorn.smart( options._container, options.source, { frameAnimation: true } );
+
+        options._clip.on( "error", options.fail );
+
+        if ( options._clip.error ) {
+          options.fail();
+        }
+
         options._clip.media.style.width = "100%";
         options._clip.media.style.height = "100%";
         options._container.style.width = "100%";
