@@ -60,6 +60,10 @@ define([
       hoverClass: "tooltip-show"
     });
 
+    clip.on("load", function(client) {
+      console.log("LOADED");
+    });
+
     // Default state
     _toolTip.hidden = true;
 
