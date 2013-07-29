@@ -11,20 +11,21 @@ module.exports = function( req, res ) {
       publishUrl = utilities.embedShellURL( req.session.username, res.locals.project.id ),
       projectUrl = "/editor/" + res.locals.project.id;
 
-  var mediaUrl = projectData.media[ 0 ].url,
-      attribURL = Array.isArray( mediaUrl ) ? mediaUrl[ 0 ] : mediaUrl;
-
   async.parallel([
     function( asyncCallback ) {
+      var attribution = req.body.attribution;
+
       res.render( "embed.html", {
         id: res.locals.project.id,
         author: res.locals.project.author,
         title: res.locals.project.name,
         description: description,
-        mediaSrc: attribURL,
         embedShellSrc: publishUrl,
         projectUrl: projectUrl,
         popcorn: utilities.generatePopcornString( projectData ),
+        clips: attribution.clips,
+        images: attribution.images,
+        maps: attribution.maps,
         thumbnail: res.locals.project.thumbnail,
         background: res.locals.project.background
       }, function( err, html ) {

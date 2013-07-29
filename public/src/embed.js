@@ -214,33 +214,15 @@ function init() {
     }
   }
 
-  function setupAttribution( popcorn ) {
-    var icon = $( ".media-icon" ),
-        src = $( ".attribution-media-src" ),
-        toggler = $( ".attribution-logo" ),
+  function setupAttribution() {
+    var toggler = $( ".attribution-logo" ),
         closeBtn = $( ".attribution-close" ),
         container = $( ".attribution-info" ),
-        extraAttribution = $( ".attribution-extra" ),
-        classes = {
-          html5: "html5-icon",
-          youtube: "youtube-icon",
-          vimeo: "vimeo-icon",
-          soundcloud: "soundcloud-icon",
-          baseplayer: "html5-icon"
-        },
-        youtubeRegex = /(?:http:\/\/www\.|http:\/\/|www\.|\.|^)youtu/,
-        type;
+        extraAttribution = $( ".attribution-extra > .data-container" );
 
-    type = popcorn.media._util ? popcorn.media._util.type.toLowerCase() : "html5";
-
-    extraAttribution.innerHTML = Popcorn.manifest.googlemap.about.attribution;
-
-    // YouTube currently won't have a popcorn.media._util this is a fallback check for YT
-    if ( type === "html5" ) {
-      type = youtubeRegex.test( src.href ) ? "youtube" : type;
+    if ( extraAttribution ) {
+      extraAttribution.innerHTML = Popcorn.manifest.googlemap.about.attribution;
     }
-
-    icon.classList.add( classes[ type ] );
 
     toggler.addEventListener( "click", function() {
       container.classList.toggle( "attribution-on" );

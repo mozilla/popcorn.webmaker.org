@@ -38,7 +38,7 @@
   left: 50%;
   margin-top: -33px;
   margin-left: -26px;
-  z-index: 9999;
+  z-index: 4;
   cursor: pointer;
 }
 
