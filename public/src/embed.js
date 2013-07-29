@@ -214,43 +214,6 @@ function init() {
     }
   }
 
-  function setupAttribution( popcorn ) {
-    var icon = $( ".media-icon" ),
-        src = $( ".attribution-media-src" ),
-        toggler = $( ".attribution-logo" ),
-        closeBtn = $( ".attribution-close" ),
-        container = $( ".attribution-info" ),
-        extraAttribution = $( ".attribution-extra" ),
-        classes = {
-          html5: "html5-icon",
-          youtube: "youtube-icon",
-          vimeo: "vimeo-icon",
-          soundcloud: "soundcloud-icon",
-          baseplayer: "html5-icon"
-        },
-        youtubeRegex = /(?:http:\/\/www\.|http:\/\/|www\.|\.|^)youtu/,
-        type;
-
-    type = popcorn.media._util ? popcorn.media._util.type.toLowerCase() : "html5";
-
-    extraAttribution.innerHTML = Popcorn.manifest.googlemap.about.attribution;
-
-    // YouTube currently won't have a popcorn.media._util this is a fallback check for YT
-    if ( type === "html5" ) {
-      type = youtubeRegex.test( src.href ) ? "youtube" : type;
-    }
-
-    icon.classList.add( classes[ type ] );
-
-    toggler.addEventListener( "click", function() {
-      container.classList.toggle( "attribution-on" );
-    }, false );
-
-    closeBtn.addEventListener( "click", function() {
-      container.classList.toggle( "attribution-on" );
-    }, false );
-  }
-
   var require = requirejs.config({
     baseUrl: "/src",
     paths: {
@@ -261,11 +224,15 @@ function init() {
   define("embed-main",
     [
       "util/uri",
+      "util/lang",
       "ui/widget/controls",
       "ui/widget/textbox",
+      "util/mediatypes",
+      "text!layouts/attribution.html",
       "popcorn"
     ],
-    function( URI, Controls, TextboxWrapper ) {
+    function( URI, LangUtil, Controls, TextboxWrapper, MediaUtil, DEFAULT_LAYOUT_SNIPPETS ) {
+      var __defaultLayouts = LangUtil.domFragment( DEFAULT_LAYOUT_SNIPPETS );
       /**
        * Expose Butter so we can get version info out of the iframe doc's embed.
        * This "butter" is never meant to live in a page with the full "butter".
@@ -366,7 +333,82 @@ function init() {
             $( "#share-url" ).value = getCanonicalURL();
           }
 
-          setupAttribution( popcorn );
+          var sequencerEvents = popcorn.data.trackEvents.where({ type: "sequencer" }),
+              imageEvents = popcorn.data.trackEvents.where({ type: "image" }),
+              mapEvents = popcorn.data.trackEvents.where({ type: "googlemap" }),
+              attributionContainer = document.querySelector( ".attribution-details" ),
+              attributionMedia = document.querySelector( ".attribution-media" ),
+              toggler = $( ".attribution-logo" ),
+              closeBtn = $( ".attribution-close" ),
+              container = $( ".attribution-info" );
+
+          // Backwards compat for old layout. Removes the null media that's shown there.
+          if ( attributionMedia ) {
+            attributionContainer.removeChild( attributionMedia );
+          }
+
+          toggler.addEventListener( "click", function() {
+            container.classList.toggle( "attribution-on" );
+          }, false );
+
+          closeBtn.addEventListener( "click", function() {
+            container.classList.toggle( "attribution-on" );
+          }, false );
+
+          if ( sequencerEvents.length ) {
+            var clipsContainer = __defaultLayouts.querySelector( ".attribution-media" ).cloneNode( true ),
+                clipCont,
+                clip;
+
+            for ( var i = 0; i < sequencerEvents.length; i++ ) {
+              clip = sequencerEvents[ i ];
+              clipCont = __defaultLayouts.querySelector( ".data-container.media" ).cloneNode( true );
+
+              clipCont.querySelector( "span" ).classList.add( MediaUtil.checkUrl( clip.source[ 0 ] ).toLowerCase() + "-icon" );
+              clipCont.querySelector( "a" ).href = clip.source[ 0 ];
+              clipCont.querySelector( "a" ).innerHTML = clip.title;
+
+              clipsContainer.appendChild( clipCont );
+            }
+
+            attributionContainer.appendChild( clipsContainer );
+          }
+
+          if ( imageEvents.length ) {
+            var imagesContainer = __defaultLayouts.querySelector( ".attribution-images" ).cloneNode( true ),
+                imgCont,
+                img,
+                foundFlickr = false;
+
+            for ( var k = 0; k < imageEvents.length; k++ ) {
+              img = imageEvents[ k ];
+              if ( img.tags || img.photosetId || MediaUtil.checkUrl( img.src ) === "Flickr" ) {
+                foundFlickr = true;
+                imgCont = __defaultLayouts.querySelector( ".data-container.image" ).cloneNode( true );
+
+                var href = img.photosetId || img.src || "http://www.flickr.com/search/?m=tags&q=" + img.tags,
+                    text = img.src || img.photosetId || img.tags;
+
+                imgCont.querySelector( "a" ).href = href;
+                imgCont.querySelector( "a" ).innerHTML = text;
+
+                imagesContainer.appendChild( imgCont );
+              }
+            }
+
+            // We only care about attributing Flickr Images
+            if ( foundFlickr ) {
+              attributionContainer.appendChild( imagesContainer );
+            }
+          }
+
+          // We only need to know if a maps event exists in some fashion.
+          if ( mapEvents.length ) {
+            var extraAttribution = __defaultLayouts.querySelector( ".attribution-extra" ).cloneNode( true );
+
+            extraAttribution.querySelector( ".data-container" ).innerHTML = Popcorn.manifest.googlemap.about.attribution;
+            attributionContainer.appendChild( extraAttribution );
+          }
         },
         preload: config.preload
       });

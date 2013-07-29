@@ -38,7 +38,10 @@
   left: 50%;
   margin-top: -33px;
   margin-left: -26px;
-  z-index: 9999;
+  /* This z-index style needs to be kept in sync with our attribution container
+     to ensure it's not appearing above it.
+   */
+  z-index: 4;
   cursor: pointer;
 }
 
