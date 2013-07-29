@@ -27,19 +27,41 @@
 
   var loadingHandler = {
     loading: [],
-    add: function( callback ) {
-      this.loading.push( callback );
+    compare: function( a, b ) {
+      return a.start - b.start;
+    },
+    add: function( options, beginLoad ) {
+      var _this = this;
+      this.loading.push({
+        start: options.start,
+        end: options.end,
+        beginLoad: beginLoad
+      });
+      this.loading.sort( this.compare );
       if ( this.loading.length === 1 ) {
         setTimeout( function() {
-          callback();
+          _this.next();
         }, 0 );
       }
     },
-    next: function() {
-      this.loading.shift();
-      if ( this.loading[ 0 ] ) {
-        this.loading[ 0 ]();
+    next: function( currentTime ) {
+      // If no clip is found because we're at the end of any loading
+      // clip's range, default to 0, the first clip in the sequence.
+      var nextClip = 0;
+      // Find the clip closest to the currentTime.
+      for ( var index = 0; index < this.loading.length; index++ ) {
+        if ( this.loading[ index ].start <= currentTime &&
+             this.loading[ index ].end >= currentTime ) {
+          nextClip = index;
+          break;
+        }
       }
+      // Load the clip, and remove it from the loading clips.
+      // Once the clip is loaded (or fails), it knows to call next.
+      if ( this.loading[ nextClip ] ) {
+        this.loading[ nextClip ].beginLoad();
+      }
+      this.loading.splice( nextClip, 1 );
     }
   };
 
@@ -127,7 +149,7 @@
       };
 
       options.clearLoading = function() {
-        loadingHandler.next();
+        loadingHandler.next( _this.currentTime() );
         options._clip.off( "loadedmetadata", options.clearLoading );
       };
 
@@ -276,7 +298,7 @@
         if ( options.fallback ) {
           options.source = options.source.concat( options.fallback );
         }
-        loadingHandler.add( options.addSource );
+        loadingHandler.add( options, options.addSource );
       }
 
       options._playedEvent = function() {
@@ -347,7 +369,7 @@
 
       // Two events for playing the clip timeline if the main is playing.
       options._playEvent = function() {
-        if ( options._clip.paused() && !loadingHandler.loading.length ) {
+        if ( options._clip.paused() && !_waiting ) {
           options._clip.off( "play", options._clipPlayEvent );
           options._clip.on( "play", options._clipPlayEventSwitch );
           options._clip.play();
@@ -462,7 +484,7 @@
               options._clip.pause();
             }
           }
-          loadingHandler.add( options.addSource );
+          loadingHandler.add( options, options.addSource );
         }
       }
       if ( updates.hasOwnProperty( "mute" ) ) {
