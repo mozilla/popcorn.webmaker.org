@@ -226,16 +226,29 @@
           if ( buffered.start( i ) <= options._clip.currentTime() &&
                buffered.end( i ) > options._clip.currentTime() ) {
             // We found a valid range so playing can resume.
-            options.playIfReady();
+            if ( options.waiting ) {
+              options.waiting = false;
+              options.hideLoading();
+              if ( options.playWhenReady ) {
+                options.playWhenReady = false;
+                if ( !_waiting ) {
+                  options._clip.play();
+                }
+              }
+            }
             return;
           }
         }
 
         // If we hit here, we failed to find a valid range,
         // so we should probably stop everything. We'll get out of sync.
-        if ( !_this.paused() ) {
-          options.playWhenReady = true;
-          _this.pause();
+        if ( !options.waiting ) {
+          options.waiting = true;
+          if ( !_this.paused() ) {
+            options.playWhenReady = true;
+            _this.pause();
+          }
+          options.displayLoading();
         }
       };
 
