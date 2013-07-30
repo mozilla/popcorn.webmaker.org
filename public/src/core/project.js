@@ -467,17 +467,11 @@ define( [ "core/eventmanager", "core/media", "util/sanitizer" ],
           lastEvent = byEnd[ byEnd.length - 2 ];
 
       // If it's not greater than two, this mean we only have Popcorns padding events.
-      if ( lastEvent && byEnd.length > 2 ) {
-        if ( lastEvent.end < butter.currentMedia.duration ) {
-          butter.listen( "mediaready", saveProject );
-          butter.currentMedia.url = "#t=," + lastEvent.end;
-        } else {
-          saveProject();
-        }
-      } else {
-        // Reset to default length of 30s. We don't seem to store that anywhere.
+      if ( byEnd.length > 2  && lastEvent.end < butter.currentMedia.duration ) {
         butter.listen( "mediaready", saveProject );
-        butter.currentMedia.url = "#t=,30";
+        butter.currentMedia.url = "#t=," + lastEvent.end;
+      } else {
+        saveProject();
       }
     };
   }
