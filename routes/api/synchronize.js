@@ -39,6 +39,7 @@ module.exports = function( Project ) {
 
         req.project = doc;
         req.remixedMakeId = projectData.makeid;
+        req.makeTags = projectData.tags;
         metrics.increment( 'project.create' );
         if ( doc.remixedFrom ) {
           metrics.increment( 'project.remix' );
