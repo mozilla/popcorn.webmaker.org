@@ -150,7 +150,7 @@ body {
   font-size: 14px;
 
   &.show {
-    z-index: @attributionZIndex; 
+    z-index: @attributionZIndex;
   }
 
   a,
@@ -265,37 +265,34 @@ body {
 
 
 .attribution-media,
+.attribution-images,
 .attribution-extra {
   margin-top: 0.5em;
-  font-size: 0.8em;
-  height: 1.4em;
-  &:before {
+  font-size: 0.7em;
+  width: 100%;
+  float: left;
+  clear: left;
+
+  >.container-label {
     display: block;
     float: left;
-    content: "Media";
     text-transform: uppercase;
     font-size: 0.8em;
     font-weight: 700;
     margin-right: 2em;
   }
-  .media-btn {
-    float: left;
+  .data-container {
+    width: 90%;
+    float: right;
   }
   .attribution-media-src {
     float: left;
     white-space: nowrap;
     text-decoration: none;
     color: #555;
-    max-width: 70%;
+    max-width: 85%;
     overflow: hidden;
     text-overflow: ellipsis;
-  }
-}
-.attribution-extra {
-  color: #555;
-  &:before {
-    color: #000;
-    content: "Maps"
   }
 }
 
@@ -325,6 +322,7 @@ body {
 // State: attribution-on
 // when the logo is clicked, show the credits
 .attribution-on {
+  z-index: @attributionZIndex;
   .attribution-logo {
     opacity: 1;
      .attribution-text {

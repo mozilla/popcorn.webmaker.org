@@ -13,7 +13,8 @@ define( [ "util/uri" ],
         SoundCloud: /(?:https?:\/\/www\.|https?:\/\/|www\.|\.|^)(soundcloud)/,
         // supports #t=<start>,<duration>
         // where start or duration can be: X, X.X or XX:XX
-        "null": /^\s*#t=(?:\d*(?:(?:\.|\:)?\d+)?),?(\d+(?:(?:\.|\:)\d+)?)\s*$/
+        "null": /^\s*#t=(?:\d*(?:(?:\.|\:)?\d+)?),?(\d+(?:(?:\.|\:)\d+)?)\s*$/,
+        Flickr: /https?:\/\/(www\.)flickr.com/
       },
       YOUTUBE_EMBED_DISABLED = "Embedding of this YouTube video is disabled",
       YOUTUBE_EMBED_UNPLAYABLE = "This YouTube video is unplayable",

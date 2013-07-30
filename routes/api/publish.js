@@ -21,7 +21,6 @@ module.exports = function( req, res ) {
         author: res.locals.project.author,
         title: res.locals.project.name,
         description: description,
-        mediaSrc: attribURL,
         embedShellSrc: publishUrl,
         projectUrl: projectUrl,
         popcorn: utilities.generatePopcornString( projectData ),
