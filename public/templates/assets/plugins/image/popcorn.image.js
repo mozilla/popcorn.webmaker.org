@@ -242,11 +242,15 @@
         }
 
         options.toString = function() {
-          if ( /^data:/.test( options.src ) ) {
+          var _splitSource = [];
+          if ( options.title ) {
+            return options.title;
+          } else if ( /^data:/.test( options.src ) ) {
             // might ba a data URI
             return options.src.substring( 0 , 30 ) + "...";
           } else if ( options.src ) {
-            return options.src;
+            _splitSource = options.src.split( "/" );
+            return _splitSource[ _splitSource.length - 1 ];
           } else if ( options.tags ) {
             return options.tags;
           } else if ( options.photosetId ) {
@@ -369,6 +373,12 @@
           "default": 10,
           "units": "%",
           hidden: true
+        },
+        title: {
+          elem: "input",
+          type: "text",
+          label: "Image title",
+          "default": ""
         },
         transition: {
           elem: "select",

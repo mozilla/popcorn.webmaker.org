@@ -15,6 +15,7 @@
         _tagInput = _rootElement.querySelector( "#image-tag-input" ),
         _galleryInput = _rootElement.querySelector( "#image-gallery-input" ),
         _urlInput = _rootElement.querySelector( "#image-url-input" ),
+        _titleInput = _rootElement.querySelector( "#image-title-input" ),
         _linkInput = _rootElement.querySelector( "#image-link-input" ),
         _countInput = _rootElement.querySelector( "#image-count-input" ),
         _singleImageTab = _rootElement.querySelector( ".image-single" ),
@@ -213,6 +214,12 @@
           });
         });
 
+        _this.attachInputChangeHandler( _titleInput, trackEvent, "title", function( te, prop ) {
+          updateTrackEvent( te, {
+            title: prop.title
+          });
+        });
+
         _this.createTooltip( _linkInput, {
           name: "image-link-tooltip" + Date.now(),
           element: _linkInput.parentElement,
@@ -282,6 +289,7 @@
 
         // Wrap specific input elements
         _this.wrapTextInputElement( _urlInput );
+        _this.wrapTextInputElement( _titleInput );
         _this.wrapTextInputElement( _linkInput );
         _this.wrapTextInputElement( _galleryInput );
 
