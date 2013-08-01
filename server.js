@@ -16,7 +16,7 @@ var express = require('express'),
     filter,
     sanitizer = require( './lib/sanitizer' ),
     metrics = require('./lib/metrics.js'),
-    middleware = require( './lib/middleware' ),
+    middleware,
     APP_HOSTNAME = config.hostname,
     WWW_ROOT =  __dirname + '/public';
 
@@ -125,6 +125,8 @@ require( './lib/loginapi' )( app, {
   loginURL: config.LOGIN_SERVER_URL_WITH_AUTH
 });
 
+middleware = require( './lib/middleware' );
+
 var routes = require('./routes');
 
 app.param( "myproject", middleware.loadOwnProject( Project ));
@@ -167,8 +169,8 @@ app.post( '/api/project/:id?',
 //app.post( '/api/delete/:myproject?', filter.isLoggedIn, filter.isStorageAvailable, routes.api.remove, middleware.removeMake, function( req, res ) {
   // res.json( { error: 'okay' }, 200 );
 //});
-app.get( '/api/remix/:anyproject', filter.isStorageAvailable, routes.api.remix );
-app.get( '/api/project/:myproject', filter.isLoggedIn, filter.isStorageAvailable, routes.api.find( Project ));
+app.get( '/api/remix/:anyproject', filter.isStorageAvailable, routes.api.remix, middleware.finalizeProjectResponse( Project ) );
+app.get( '/api/project/:myproject', filter.isLoggedIn, filter.isStorageAvailable, routes.api.find, middleware.finalizeProjectResponse( Project ) );
 
 // Firehose Endpoints
 //app.get( '/api/project/:id/remixes', filter.isStorageAvailable, filter.crossOriginAccessible, routes.firehose.remixes );
