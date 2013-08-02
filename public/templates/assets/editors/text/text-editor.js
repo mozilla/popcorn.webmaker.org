@@ -59,11 +59,9 @@
             if ( updateOptions[ prop ] ) {
               pickers[ prop ].classList.remove( "butter-disabled" );
               pickers[ prop ].onclick = _trueClick;
-              pickers[ prop ].removeAttribute("disabled");
             } else {
               pickers[ prop ].classList.add( "butter-disabled" );
               pickers[ prop ].onclick = _falseClick;
-              pickers[ prop ].setAttribute( "disabled", "true" );
             }
           }
           trackEvent.update( updateOptions );
@@ -99,7 +97,6 @@
                 if ( !_popcornOptions.background ) {
                   option.element.classList.add( "butter-disabled" );
                   option.element.onclick = _falseClick;
-                  option.element.setAttribute( "disabled", "true" );
                 }
                 _this.attachColorChangeHandler( option.element, option.trackEvent, key, colorCallback );
               } else if ( key === "shadowColor" ) {
@@ -108,7 +105,6 @@
                 if ( !_popcornOptions.shadow ) {
                   option.element.classList.add( "butter-disabled" );
                   option.element.onclick = _falseClick;
-                  option.element.setAttribute( "disabled", "true" );
                 }
                 _this.attachColorChangeHandler( option.element, option.trackEvent, key, colorCallback );
               }

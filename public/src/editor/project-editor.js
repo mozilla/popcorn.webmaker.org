@@ -97,14 +97,16 @@ define([ "editor/editor", "editor/base-editor",
       _this.scrollbar.update();
     }
 
+    function onProjectTabClick( e ) {
+      if ( !_project.isSaved || !butter.cornfield.authenticated() ) {
+        return;
+      }
+      activateProjectTab( e.target );
+    }
+
     for ( _idx = 0; _idx < _numProjectTabs; _idx++ ) {
       _projectTab = _projectTabs[ _idx ];
-      _projectTab.addEventListener( "click", function( e ) {
-        if ( !_project.isSaved || !butter.cornfield.authenticated() ) {
-          return;
-        }
-        activateProjectTab( e.target );
-      }, false );
+      _projectTab.addEventListener( "click", onProjectTabClick, false );
     }
 
     function updateEmbed( url ) {

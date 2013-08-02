@@ -87,6 +87,7 @@
   },
   "dependencies": {
     "async": "0.2.9",
+    "bower": "1.1.0",
     "csslint": "0.9.10",
     "express": "3.1.0",
     "helmet": "0.0.11",
@@ -117,7 +118,8 @@
     "tap": "0.4.0"
   },
   "scripts": {
-    "test": "node make check"
+    "test": "node make check",
+    "postinstall": "./node_modules/.bin/bower install"
   },
   "license": "MIT",
   "engines": {

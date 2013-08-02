@@ -2,6 +2,7 @@
  * If a copy of the MIT license was not distributed with this file, you can
  * obtain one at https://raw.github.com/mozilla/butter/master/LICENSE */
 
+/*global $*/
 define([ "util/lang", "util/keys", "util/time", "./base-editor", "ui/widget/tooltip",
           "text!layouts/trackevent-editor-defaults.html" ],
   function( LangUtils, KeysUtils, TimeUtils, BaseEditor, ToolTip,
@@ -236,9 +237,9 @@ define([ "util/lang", "util/keys", "util/time", "./base-editor", "ui/widget/tool
     };
 
     extendObject.attachColorChangeHandler = function( element, trackEvent, propertyName, callback ) {
-      element.addEventListener( "change", function() {
-        var value = element.value,
-            message,
+
+      function updateColor( value ) {
+        var message,
             updateOptions = {},
             i,
             flag = true;
@@ -277,6 +278,34 @@ define([ "util/lang", "util/keys", "util/time", "./base-editor", "ui/widget/tool
         } else {
           trackEvent.update( updateOptions );
         }
+      }
+
+      var colorPickerElement = element.querySelector( ".color-picker" ),
+          inputElement = element.querySelector( "input" ),
+          initialValue = inputElement.value,
+          colorToggle = element.querySelector( ".color-picker-toggle" ),
+          colorPicker = $.farbtastic( colorPickerElement, {
+            callback: function( value ) {
+              inputElement.value = value;
+              colorToggle.style.background = value;
+              updateColor( value );
+            },
+            height: 195,
+            width: 195
+          });
+
+      colorPicker.setColor( initialValue );
+
+      inputElement.addEventListener( "change", function() {
+        colorPicker.setColor( inputElement.value );
+      }, false );
+
+      inputElement.addEventListener( "focus", function() {
+        colorPickerElement.classList.remove( "hidden" );
+      }, false );
+
+      inputElement.addEventListener( "blur", function() {
+        colorPickerElement.classList.add( "hidden" );
       }, false );
     };
 
@@ -664,6 +693,9 @@ define([ "util/lang", "util/keys", "util/time", "./base-editor", "ui/widget/tool
       if ( manifestEntry.type === "range" ) {
         propertyArchetypeSelector += ".range";
       }
+      if ( manifestEntry.type === "color" ) {
+        propertyArchetypeSelector += ".color";
+      }
 
       propertyArchetype = __defaultLayouts.querySelector( propertyArchetypeSelector ).cloneNode( true );
 
@@ -722,8 +754,7 @@ define([ "util/lang", "util/keys", "util/time", "./base-editor", "ui/widget/tool
             editorElement.appendChild( font );
           }
         }
-      }
-      else if ( manifestEntry.elem === "textarea" ) {
+      } else if ( manifestEntry.elem === "textarea" ) {
         editorElement = propertyArchetype.querySelector( "textarea" );
 
         // data-manifest-key is used to update this property later on
@@ -775,6 +806,16 @@ define([ "util/lang", "util/keys", "util/time", "./base-editor", "ui/widget/tool
           tooltip.setAttribute( "data-manifest-key", name );
 
           editorElement = propertyArchetype.querySelector( ".butter-slider" );
+        } else if ( manifestEntry.type === "color" ) {
+          editorElement = propertyArchetype;
+          // Don't print "undefined" or the like
+          if ( data ) {
+            editorElement.querySelector( "input" ).value = data;
+            editorElement.querySelector( ".color-picker-toggle" ).style.background = data;
+          }
+
+          // data-manifest-key is used to update this property later on
+          editorElement.querySelector( "input" ).setAttribute( "data-manifest-key", name );
         } else {
           editorElement = propertyArchetype.querySelector( "input" );
           if ( data ) {
@@ -926,8 +967,7 @@ define([ "util/lang", "util/keys", "util/time", "./base-editor", "ui/widget/tool
         if ( ignoreManifestKeys && ignoreManifestKeys.indexOf( item ) > -1 ) {
           continue;
         }
-        element = extendObject.createManifestItem( item, manifestOptions[ item ], trackEvent.popcornOptions[ item ], trackEvent,
-                                                   options.callback );
+        element = extendObject.createManifestItem( item, manifestOptions[ item ], trackEvent.popcornOptions[ item ], trackEvent, options.callback );
 
         if ( element ) {
           container.appendChild( element );

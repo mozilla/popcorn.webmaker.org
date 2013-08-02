@@ -1,0 +1,6 @@
+{
+  "name": "popcorn.webmaker.org",
+  "dependencies": {
+    "farbtastic": "git://github.com/mattfarina/farbtastic.git#40a18515931d8150510d1b7b823369b18b2c8f30"
+  }
+}
