@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html>
+<html lang="{{lang}}" dir="{{lang_dir}}">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width">
     <meta name="author" content="{{author}}">
-    <meta name="description" content="Created with Popcorn Maker - part of the Mozilla Webmaker initiative">
+    <meta name="description" content="{{ gettext("Created with Popcorn Maker - part of the Mozilla Webmaker initiative") }}">
     <meta property="og:title" content="{{projectName}}">
     <meta property="og:type" content="video.other">
     <meta property="og:url" content="{{embedShellSrc}}">
@@ -16,7 +16,7 @@
     <meta property="og:description" content="{{description}}">
     <meta property="og:site_name" content="Mozilla Webmaker">
 
-    <title>{{projectName}} - Popcorn Maker</title>
+    <title>{{projectName}} - {{ gettext("Popcorn Maker") }}</title>
     <link rel="stylesheet" href="{{config.app_hostname}}/css/makedetails.css">
     <link rel="stylesheet" href="{{config.app_hostname}}/css/embed-shell.css">
     <script src="{{config.make_endpoint}}/js/make-api.js"></script>
@@ -28,8 +28,8 @@
         <iframe id="details-iframe" src="{{config.audience}}/details/{{makeID}}"></iframe>
       </div>
       <div class="make-bar">
-        <div class="wrapper"><span class="logospan"><a href="#"><img src="{{config.app_hostname}}/resources/img/logo_small.png" alt="Mozilla Webmaker"></a><span class="made-with">Made with<a href="//webmaker.org"> Webmaker</a></span></span><span class="expand-collapse">Details<img src="{{config.app_hostname}}/resources/icons/icon-arrow-down.png"></span>
-        <div class="button"><a href="{{config.app_hostname}}{{projectUrl}}/remix" target="_blank" class="button-remix"><span>Remix</span></a></div>
+        <div class="wrapper"><span class="logospan"><a href="#"><img src="{{config.app_hostname}}/resources/img/logo_small.png" alt="Mozilla Webmaker"></a><span class="made-with">{{ gettext("Made with") }}<a href="//webmaker.org"> Webmaker</a></span></span><span class="expand-collapse">{{ gettext("Details") }}<img src="{{config.app_hostname}}/resources/icons/icon-arrow-down.png"></span>
+        <div class="button"><a href="{{config.app_hostname}}/{{lang}}/{{projectUrl}}/remix" target="_blank" class="button-remix"><span>{{ gettext("Remix") }}</span></a></div>
         </div>
       </div>
       <div class="wrapper">

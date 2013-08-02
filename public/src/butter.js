@@ -42,13 +42,7 @@ window.Butter = {
     "Firefox OS",
     // For BB Playbook
     "RIM Tablet OS"
-  ],
-
-  UA_WARNING_TEXT = "Your web browser may lack some functionality expected" +
-    " by Popcorn Maker to function properly. Please upgrade your browser or" +
-    " <a href=\"https://webmademovies.lighthouseapp.com/projects/65733-popcorn-maker\">" +
-    "file a bug</a> to find out why your browser isn't fully supported. Click " +
-    "<a href=\"#\" class=\"close-button\">here</a> to remove this warning.";
+  ];
 
   var require = requirejs.config({
     baseUrl: "/src"
@@ -63,7 +57,7 @@ window.Butter = {
             "util/xhr", "util/lang", "util/tutorial",
             "util/warn", "text!default-config.json",
             "ui/widget/tooltip", "crashreporter", "core/project",
-            "../external/ua-parser/ua-parser"
+            "../external/ua-parser/ua-parser", "core/localized"
           ],
           function(
             EventManager, Logger, Config, Track,
@@ -73,7 +67,7 @@ window.Butter = {
             xhr, Lang, Tutorial,
             Warn, DEFAULT_CONFIG_JSON,
             ToolTip, CrashReporter, Project,
-            UAParser
+            UAParser, Localized
           ){
 
     var __guid = 0;
@@ -99,10 +93,6 @@ window.Butter = {
             }
           }
         }
-      }
-
-      if ( !acceptedUA ) {
-        Warn.showWarning( UA_WARNING_TEXT );
       }
 
       butterOptions = butterOptions || {};
@@ -864,7 +854,8 @@ window.Butter = {
 
         // the new way to load a project is with /editor/:id/edit
         if ( !savedDataUrl ) {
-          item = window.location.pathname.split( "/" );
+          var pathname = window.location.pathname.replace( "/" + Localized.getCurrentLang() + "/", "/" );
+          item = pathname.split( "/" );
           // item[ 2 ] is the id
           if ( item[ 2 ] ) {
             // item[ 3 ] is remix or edit
@@ -947,9 +938,16 @@ window.Butter = {
 
         _this.loader = loader;
 
-        _this.ui = new UI( _this  );
+        Butter.localized = Localized;
 
+        _this.ui = new UI( _this  );
         _this.ui.load(function(){
+
+          if ( !acceptedUA ) {
+            var UA_WARNING_TEXT = Localized.get( "UA_WARNING_TEXT" );
+            Warn.showWarning( UA_WARNING_TEXT );
+          }
+
           //prepare the page next
           preparePopcornScriptsAndCallbacks( function(){
             preparePage( function(){
@@ -996,8 +994,7 @@ window.Butter = {
             });
           });
         });
-
-      } //readConfig
+    } //readConfig
 
       if( butterOptions.config && typeof( butterOptions.config ) === "string" ){
         xhr.get( butterOptions.config, function( response ) {
@@ -1036,9 +1033,11 @@ window.Butter = {
   });
 
   // butter depends on popcorn, so don't change this unless you know what you're doing
-  require([ "util/shims" ], function() {
-    require([ "popcorn" ], function() {
-      require([ "butter-main" ]);
+  require([ "core/localized", "util/shims" ], function( Localized ) {
+    Localized.ready( function(){
+      require([ "popcorn" ], function() {
+        require([ "butter-main" ]);
+      });
     });
   });
 

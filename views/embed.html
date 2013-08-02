@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{lang}}" dir="{{lang_dir}}">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -51,12 +51,12 @@
             </div>
             <div class="post-roll-description">{{description}}
               <br>
-              <a href="/" target="_blank">Create a project like this!</a>
+              <a href="/{{lang}}/" target="_blank">{{ gettext("Create a project like this!") }}</a>
             </div>
             <ul class="embed-nav post-roll-options">
-              <li><a id="replay-post"><span>Replay</span></a></li>
-              <li><a href="{{projectUrl}}/remix" target="_blank" id="remix-post"><span>Remix</span></a></li>
-              <li><a id="share-post"><span>Share</span></a></li>
+              <li><a id="replay-post"><span>{{ gettext("Replay") }}</span></a></li>
+              <li><a href="{{projectUrl}}/{{lang}}/remix" target="_blank" id="remix-post"><span>{{ gettext("Remix") }}</span></a></li>
+              <li><a id="share-post"><span>{{ gettext("Share") }}</span></a></li>
             </ul>
           </div>
         </div>
@@ -82,12 +82,12 @@
               </ul>
             </fieldset>
             <fieldset>
-              <label>Embed</label>
+              <label>{{ gettext("Embed") }}</label>
               <textarea id="share-iframe">
                 <iframe></iframe>
               </textarea>
               <div class="share-size">
-                <div class="size-options"><a href="#" class="small option"><span class="icon"></span><span class="size">Small</span><span class="dimensions">560x358</span></a><a href="#" class="medium option current"><span class="icon"></span><span class="size">Medium</span><span class="dimensions">640x403</span></a><a href="#" class="large option"><span class="icon"></span><span class="size">Large</span><span class="dimensions">853x523</span></a><a href="#" class="xlarge option"><span class="icon"></span><span class="size">X-Large</span><span class="dimensions">1280x763</span></a></div>
+                <div class="size-options"><a href="#" class="small option"><span class="icon"></span><span class="size">{{ gettext("Small") }}</span><span class="dimensions">560x358</span></a><a href="#" class="medium option current"><span class="icon"></span><span class="size">{{ gettext("Medium") }}</span><span class="dimensions">640x403</span></a><a href="#" class="large option"><span class="icon"></span><span class="size">{{ gettext("Large") }}</span><span class="dimensions">853x523</span></a><a href="#" class="xlarge option"><span class="icon"></span><span class="size">{{ gettext("X-Large") }}</span><span class="dimensions">1280x763</span></a></div>
               </div>
             </fieldset>
           </div>
@@ -95,7 +95,7 @@
       </div>
     </div>
     <div id="attribution-info" class="attribution-info">
-      <div id="attribution-logo" class="attribution-logo"><span class="attribution-text">Credits</span></div>
+      <div id="attribution-logo" class="attribution-logo"><span class="attribution-text">{{ gettext("Credits") }}</span></div>
       <div id="attribution-details" class="attribution-details"><span class="attribution-close"></span>
         <div class="attribution-mopop">mozilla Popcorn</div>
         <div class="attribution-title">{{title}}</div>

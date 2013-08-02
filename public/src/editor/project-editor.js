@@ -2,11 +2,11 @@
  * If a copy of the MIT license was not distributed with this file, you can
  * obtain one at https://raw.github.com/mozilla/butter/master/LICENSE */
 
-define([ "editor/editor", "editor/base-editor",
-          "text!layouts/project-editor.html",
+define([ "core/localized", "editor/editor", "editor/base-editor",
+          "l10n!/layouts/project-editor.html",
           "util/social-media", "ui/widget/textbox",
           "ui/widget/tooltip" ],
-  function( Editor, BaseEditor, LAYOUT_SRC, SocialMedia, TextboxWrapper, ToolTip ) {
+  function( Localized, Editor, BaseEditor, LAYOUT_SRC, SocialMedia, TextboxWrapper, ToolTip ) {
 
   Editor.register( "project-editor", LAYOUT_SRC, function( rootElement, butter ) {
 
@@ -52,7 +52,7 @@ define([ "editor/editor", "editor/base-editor",
     ToolTip.create({
       name: "description-tooltip",
       element: _descriptionInput.parentNode,
-      message: "Your description will show up when shared on social media!",
+      message: Localized.get( "Your description will show up when shared on social media!" ),
       top: "100%",
       left: "50%",
       error: true,
@@ -155,7 +155,7 @@ define([ "editor/editor", "editor/base-editor",
     window.EditorHelper.droppable( null, _dropArea );
 
     butter.listen( "droppable-unsupported", function unSupported() {
-      _this.setErrorState( "Sorry, but your browser doesn't support this feature." );
+      _this.setErrorState( Localized.get( "Sorry, but your browser doesn't support this feature." ) );
     });
 
     butter.listen( "droppable-upload-failed", function failedUpload( e ) {

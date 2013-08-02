@@ -5,9 +5,9 @@
 /**
  * Module: Editor
  */
-define( [ "util/lang", "util/xhr",
+define( [ "core/localized", "util/lang", "util/xhr",
           "./base-editor", "./trackevent-editor" ],
-  function( LangUtils, xhr,
+  function( Localized, LangUtils, xhr,
             BaseEditor, TrackEventEditor ) {
 
   var __editors = {};
@@ -15,11 +15,10 @@ define( [ "util/lang", "util/xhr",
   function DeferredLayout( src ) {
 
     this.load = function( baseDir, readyCallback ) {
-      baseDir = baseDir || "";
+      baseDir = ( baseDir || "" ).replace( /\/?$/, "/" );
       if ( src.indexOf( "{{baseDir}}" ) > -1 ) {
-        src = src.replace( "{{baseDir}}", baseDir );
+        src = src.replace( "{{baseDir}}", baseDir + Localized.getCurrentLang() + "/" );
       }
-
       xhr.get( src, readyCallback );
     };
  }

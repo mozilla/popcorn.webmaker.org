@@ -5,19 +5,19 @@
     <ul class="butter-nav">
       <li class="butter-breadcrumbs"></li>
       <li class="butter-project-title">
-       <a class="butter-project-name">My Cool Remix</a><i class="icon icon-pencil"></i>
+       <a class="butter-project-name">{{ gettext("My new project") }}</a><i class="icon icon-pencil"></i>
       </li>
       <li>
-        <button class="butter-btn btn-green butter-save-btn">Save</button>
+        <button class="butter-btn btn-green butter-save-btn">{{ gettext("Save") }}</button>
         <div class="butter-btn-menu-container butter-project-menu">
           <a class="butter-btn btn-light butter-project-menu-control butter-btn-menu-control"><span class="icon icon-only icon-cog"></span></a>
           <ul class="butter-btn-menu">
-            <li><a class="butter-btn" href="/" target="_blank"> New</a></li>
-            <li><a class="butter-btn butter-clear-events-btn" target="_blank"> Clear Events</a></li>
+            <li><a class="butter-btn" href="/{{lang}}/" target="_blank"> {{ gettext("New") }}</a></li>
+            <li><a class="butter-btn butter-clear-events-btn" target="_blank"> {{ gettext("Clear Events") }}</a></li>
             <li><a class="butter-preview-btn butter-btn btn-light butter-disabled"
-                   target="_blank"><span class="icon icon-only icon-share-alt"></span> Preview</a></li>
+                   target="_blank"><span class="icon icon-only icon-share-alt"></span> {{ gettext("Preview") }}</a></li>
             <li><a class="butter-project-btn butter-btn btn-light butter-disabled"
-                   target="_blank"><span class="icon icon-only icon-edit"></span> Project</a></li>
+                   target="_blank"><span class="icon icon-only icon-edit"></span> {{ gettext("Project") }}</a></li>
           </ul>
         </div>
       </li>
@@ -29,8 +29,8 @@
           <li class="user">
               Hi <span id="identity" class="user-name-container"></span>
           </li>
-          <li class="tutorial-btn hidden"><button>Tutorials</button></li>
-          <li class="makes"><button>My makes</button></li>
+          <li class="tutorial-btn hidden"><button>{{ gettext("Tutorials") }}</button></li>
+          <li class="makes"><button>{{ gettext("My makes") }}</button></li>
           <li>
             <iframe src="{{audience}}/sso/include.html" class="include-frame"></iframe>
           </li>

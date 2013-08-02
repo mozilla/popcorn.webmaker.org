@@ -2,8 +2,8 @@
  *  * If a copy of the MIT license was not distributed with this file, you can
  *  * obtain one at http://www.mozillapopcorn.org/butter-license.txt */
 
-define( [ "text!dialog/dialogs/backup.html", "dialog/dialog", "util/time" ],
-  function( LAYOUT_SRC, Dialog, TimeUtil ) {
+define( [ "core/localized", "l10n!/dialog/dialogs/backup.html", "dialog/dialog", "util/time" ],
+  function( Localized, LAYOUT_SRC, Dialog, TimeUtil ) {
 
     function replaceProjectName( name, elements ) {
       for ( var i = 0, l = elements.length; i < l; i++ ) {
@@ -33,7 +33,7 @@ define( [ "text!dialog/dialogs/backup.html", "dialog/dialog", "util/time" ],
       backupDiscardBtn.addEventListener( "click", discardProject, false );
 
       // Show useful time info, for example: "5 minutes ago"
-      backupDateSpan.innerHTML = TimeUtil.toPrettyString( Date.now() - data.backupDate ) + " ago";
+      backupDateSpan.innerHTML = TimeUtil.toPrettyString( Date.now() - data.backupDate ) + " " + Localized.get( "ago" );
 
       // Give the user info about the project we have in backup via name
       replaceProjectName( projectName, projectNameSpans );
