@@ -99,7 +99,7 @@
       };
 
       var update = function() {
-        dragContainer.removeEventListener( "click", onSelect, false );
+        dragContainer.removeEventListener( "mousedown", onSelect, false );
         trackEvent.unlisten( "trackeventselected", highlight );
         trackEvent.unlisten( "trackeventdeselected", highlight );
         trackEvent.unlisten( "trackeventupdated", update );
@@ -107,7 +107,7 @@
 
       highlight();
 
-      dragContainer.addEventListener( "click", onSelect, false );
+      dragContainer.addEventListener( "mousedown", onSelect, false );
       trackEvent.listen( "trackeventselected", highlight );
       trackEvent.listen( "trackeventdeselected", highlight );
       trackEvent.listen( "trackeventupdated", update );
@@ -136,18 +136,72 @@
 
       options = options || {};
 
-      function createHelper( suffix ) {
-        var el = document.createElement( "div" );
-        el.classList.add( "ui-draggable-handle" );
-        el.classList.add( "ui-draggable-" + suffix );
-        return el;
+      var el = document.createElement( "div" ),
+          stopPropagation = false,
+          toolTip,
+          onBlur,
+          onStopPropagation,
+          onMouseDown,
+          onMouseUp,
+          onDblClick;
+
+      require( [ "ui/widget/tooltip" ], function( ToolTip ) {
+        toolTip = ToolTip.create({
+          element: dragContainer,
+          message: options.tooltip || "Double click to edit",
+          marginTop: "10px"
+        });
+        toolTip.hidden = false;
+      });
+
+      onBlur = function() {
+        if ( stopPropagation ) {
+          stopPropagation = false;
+          return;
+        }
+        if ( toolTip ) {
+          toolTip.hidden = false;
+        }
+        dragContainer.removeEventListener( "mousedown", onStopPropagation, false );
+        el.addEventListener( "dblclick", onDblClick, false );
+        document.removeEventListener( "mousedown", onBlur, false );
+        el.style.display = "";
+        dragContainer.classList.remove( "track-event-editing" );
+      };
+      onStopPropagation = function() {
+        stopPropagation = true;
+      };
+      onDblClick = function() {
+        if ( toolTip ) {
+          toolTip.hidden = true;
+        }
+        dragContainer.addEventListener( "mousedown", onStopPropagation, false );
+        el.removeEventListener( "dblclick", onDblClick, false );
+        document.addEventListener( "mousedown", onBlur, false );
+        el.style.display = "none";
+        dragContainer.classList.add( "track-event-editing" );
+      };
+      el.classList.add( "ui-draggable-handle" );
+      if ( options.editable !== false ) {
+        el.addEventListener( "dblclick", onDblClick, false );
       }
 
-      dragContainer.appendChild( createHelper( "top" ) );
-      dragContainer.appendChild( createHelper( "bottom" ) );
-      dragContainer.appendChild( createHelper( "left" ) );
-      dragContainer.appendChild( createHelper( "right" ) );
-      dragContainer.appendChild( createHelper( "grip" ) );
+      dragContainer.appendChild( el );
+
+      onMouseDown = function() {
+        document.addEventListener( "mouseup", onMouseUp, false );
+        el.removeEventListener( "mouseup", onMouseDown, false );
+        dragContainer.style.overflow = "hidden";
+      };
+
+      onMouseUp = function() {
+        document.removeEventListener( "mouseup", onMouseUp, false );
+        el.addEventListener( "mouseup", onMouseDown, false );
+        dragContainer.style.overflow = "";
+      };
+
+      // This ensures the height of the element is not increased
+      el.addEventListener( "mousedown", onMouseDown, false );
 
       $( dragContainer ).draggable({
         handle: ".ui-draggable-handle",
@@ -193,7 +247,28 @@
         return;
       }
 
-      var iframeCover = targetContainer.querySelector( ".butter-iframe-fix" );
+      var iframeCover = targetContainer.querySelector( ".butter-iframe-fix" ),
+          handlePositions = options.handlePositions;
+
+      function createHelper( suffix ) {
+        var el = document.createElement( "div" );
+        el.classList.add( "ui-resizable-handle" );
+        el.classList.add( "ui-resizable-" + suffix );
+        return el;
+      }
+
+      if ( handlePositions.search( /\bn\b/ ) > -1 ) {
+        resizeContainer.appendChild( createHelper( "top" ) );
+      }
+      if ( handlePositions.search( /\bs\b/ ) > -1 ) {
+        resizeContainer.appendChild( createHelper( "bottom" ) );
+      }
+      if ( handlePositions.search( /\bw\b/ ) > -1 ) {
+        resizeContainer.appendChild( createHelper( "left" ) );
+      }
+      if ( handlePositions.search( /\be\b/ ) > -1 ) {
+        resizeContainer.appendChild( createHelper( "right" ) );
+      }
 
       options = options || {};
 

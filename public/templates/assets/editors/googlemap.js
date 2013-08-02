@@ -14,10 +14,12 @@ EditorHelper.addPlugin( "googlemap", function( trackEvent, popcorn ) {
       return;
     }
 
-    EditorHelper.draggable( trackEvent, container, target );
+    EditorHelper.draggable( trackEvent, container, target, {
+      tooltip: "Double click to interact"
+    });
 
     EditorHelper.resizable( trackEvent, container, target, {
-      handlePositions: "e, se, s, sw, w, n, ne",
+      handlePositions: "e, se, s, sw, w, n, ne, nw",
       minHeight: 20,
       minWidth: 20
     });

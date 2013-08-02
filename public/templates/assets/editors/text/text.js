@@ -17,6 +17,6 @@ EditorHelper.addPlugin( "text", function( trackEvent ) {
     }
 
     EditorHelper.selectable( trackEvent, _container );
-    EditorHelper.contentEditable( trackEvent, _container.querySelectorAll( "span" ) );
+    EditorHelper.contentEditable( trackEvent, _container.querySelectorAll( ".popcorn-text div span" ) );
   }
 });
