@@ -149,6 +149,8 @@ require( './lib/loginapi' )( app, {
   loginURL: config.LOGIN_SERVER_URL_WITH_AUTH
 });
 
+require( 'webmaker-mediasync' )( app, { loginAPI: require( './lib/loginapi' ) } );
+
 middleware = require( './lib/middleware' );
 
 var routes = require( './routes' );
