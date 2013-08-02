@@ -121,7 +121,7 @@
         backgroundColor: {
           elem: "input",
           type: "color",
-          label: "Background colour",
+          label: "Background color",
           "default": DEFAULT_BACKGROUND_COLOR,
           group: "advanced"
         },

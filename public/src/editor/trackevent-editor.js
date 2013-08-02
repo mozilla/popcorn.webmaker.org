@@ -3,9 +3,9 @@
  * obtain one at https://raw.github.com/mozilla/butter/master/LICENSE */
 
 /*global $*/
-define([ "util/lang", "util/keys", "util/time", "./base-editor", "ui/widget/tooltip",
-          "text!layouts/trackevent-editor-defaults.html" ],
-  function( LangUtils, KeysUtils, TimeUtils, BaseEditor, ToolTip,
+define([ "localized", "util/lang", "util/keys", "util/time", "./base-editor", "ui/widget/tooltip",
+          "l10n!/layouts/trackevent-editor-defaults.html" ],
+  function( Localized, LangUtils, KeysUtils, TimeUtils, BaseEditor, ToolTip,
             DEFAULT_LAYOUT_SNIPPETS ) {
 
   var NULL_FUNCTION = function(){};
@@ -145,7 +145,7 @@ define([ "util/lang", "util/keys", "util/time", "./base-editor", "ui/widget/tool
 
       if ( trackEvent.type ) {
         editorTitle.innerHTML = "";
-        editorTitle.appendChild( document.createTextNode( pluginName ) );
+        editorTitle.appendChild( document.createTextNode( Localized.get( pluginName ) ) );
       }
 
       oldTitleEl.parentNode.replaceChild( breadcrumbsLayout, oldTitleEl );
@@ -524,7 +524,7 @@ define([ "util/lang", "util/keys", "util/time", "./base-editor", "ui/widget/tool
         extendObject.createTooltip( element, {
           name: tooltipName,
           element: element.parentElement,
-          message: "Press Shift+Enter for a new line.",
+          message: Localized.get( "Press Shift+Enter for a new line." ),
           top: "105%",
           left: "50%",
           hidden: true,
@@ -548,7 +548,7 @@ define([ "util/lang", "util/keys", "util/time", "./base-editor", "ui/widget/tool
       var editorElement = __defaultLayouts.querySelector( ".checkbox" ).cloneNode( true ),
           span = editorElement.querySelector( ".butter-form-checkbox span" ),
           checkbox = editorElement.querySelector( ".butter-form-checkbox input" );
-      span.innerHTML = "Use as default settings";
+      span.innerHTML = Localized.get( "Use as default settings" );
       if ( trackEvent.isDefault ) {
         checkbox.checked = true;
       }
@@ -578,9 +578,9 @@ define([ "util/lang", "util/keys", "util/time", "./base-editor", "ui/widget/tool
      */
     extendObject.createManifestItem = function( name, manifestEntry, data, trackEvent, itemCallback ) {
       var elem = manifestEntry.elem || "default",
-          itemLabel = manifestEntry.label || name,
+          itemLabel = Localized.get( manifestEntry.label ) || Localized.get( name ),
           isStartOrEnd = [ "start", "end" ].indexOf( name.toLowerCase() ) > -1,
-          units = manifestEntry.units || ( isStartOrEnd ? "seconds" : "" ),
+          units = Localized.get( manifestEntry.units ) || ( isStartOrEnd ? "seconds" : "" ),
           propertyArchetypeSelector,
           propertyArchetype,
           editorElement,
@@ -634,7 +634,7 @@ define([ "util/lang", "util/keys", "util/time", "./base-editor", "ui/widget/tool
         if ( manifestEntry.options ) {
           for ( i = 0, l = manifestEntry.options.length; i < l; ++i ){
             option = document.createElement( "option" );
-            manifestEntryOption = manifestEntry.options[ i ];
+            manifestEntryOption = Localized.get( manifestEntry.options[ i ] );
 
             // if the manifest has values for options, use the options as labels
             // and the values as values for the <option> elements
@@ -696,7 +696,7 @@ define([ "util/lang", "util/keys", "util/time", "./base-editor", "ui/widget/tool
 
             attachCheckboxGroupChangeHandler( checkbox, trackEvent, name );
 
-            label.innerHTML = manifestEntry.labels[ item ];
+            label.innerHTML = Localized.get( manifestEntry.labels[ item ] );
             checkbox.value = manifestEntry.default[ item ];
             checkbox.setAttribute( "data-manifest-key", item );
 

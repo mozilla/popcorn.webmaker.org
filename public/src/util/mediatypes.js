@@ -4,8 +4,8 @@
 
 "use strict";
 
-define( [ "util/uri" ],
-  function( URI ) {
+define( [ "localized", "util/uri" ],
+  function( Localized, URI ) {
 
   var REGEX_MAP = {
         YouTube: /(?:https?:\/\/www\.|https?:\/\/|www\.|\.|^)youtu/,
@@ -16,9 +16,9 @@ define( [ "util/uri" ],
         "null": /^\s*#t=(?:\d*(?:(?:\.|\:)?\d+)?),?(\d+(?:(?:\.|\:)\d+)?)\s*$/,
         Flickr: /https?:\/\/(www\.)flickr.com/
       },
-      YOUTUBE_EMBED_DISABLED = "Embedding of this YouTube video is disabled",
-      YOUTUBE_EMBED_UNPLAYABLE = "This YouTube video is unplayable",
-      SOUNDCLOUD_EMBED_DISABLED = "Embedding of this SoundCloud audio source is disabled";
+      YOUTUBE_EMBED_DISABLED = Localized.get ( "Embedding of this YouTube video is disabled" ),
+      YOUTUBE_EMBED_UNPLAYABLE = Localized.get( "This YouTube video is unplayable" ),
+      SOUNDCLOUD_EMBED_DISABLED = Localized.get( "Embedding of this SoundCloud audio source is disabled" );
 
   return {
     checkUrl: function( url ) {

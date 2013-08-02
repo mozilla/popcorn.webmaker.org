@@ -1,3 +1,4 @@
+/*global Butter*/
 (function( global, $ ) {
   var plugins = {};
 
@@ -148,7 +149,7 @@
       require( [ "ui/widget/tooltip" ], function( ToolTip ) {
         toolTip = ToolTip.create({
           element: dragContainer,
-          message: options.tooltip || "Double click to edit",
+          message: options.tooltip || Butter.localized.get( "Double click to edit" ),
           marginTop: "10px"
         });
         toolTip.hidden = false;

@@ -79,7 +79,7 @@
                 _this.createTooltip( option.element, {
                   name: "text-link-tooltip" + Date.now(),
                   element: option.element.parentElement,
-                  message: "Links will be clickable when shared.",
+                  message: Butter.localized.get( "Links will be clickable when shared." ),
                   top: "105%",
                   left: "50%",
                   hidden: true,

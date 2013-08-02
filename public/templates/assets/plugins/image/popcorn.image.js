@@ -377,7 +377,7 @@
         title: {
           elem: "input",
           type: "text",
-          label: "Image title",
+          label: "Image Title",
           "default": ""
         },
         transition: {

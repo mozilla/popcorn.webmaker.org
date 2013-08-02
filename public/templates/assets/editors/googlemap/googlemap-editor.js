@@ -193,7 +193,7 @@
 
           // zoom can only be an integer, except in streetview
           if ( _trackEvent.popcornOptions.type !== "STREETVIEW" && zoom !== zoom >> 0 ) {
-            _this.setErrorState( "Zoom cannot be a decimal number." );
+            _this.setErrorState( Butter.localized.get( "Zoom cannot be a decimal number." ) );
             return;
           }
 

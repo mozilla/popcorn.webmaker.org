@@ -4,7 +4,7 @@
 
 define( [ "util/lang",  "./logo-spinner",
           "text!layouts/tray.html",
-          "text!layouts/status-area.html", "text!layouts/timeline-area.html" ],
+          "l10n!/layouts/status-area.html", "text!layouts/timeline-area.html" ],
   function( LangUtils, LogoSpinner,
             TRAY_LAYOUT,
             STATUS_AREA_LAYOUT, TIMELINE_AREA_LAYOUT ) {
