@@ -12,7 +12,7 @@ EditorHelper.addPlugin( "sequencer", function( trackEvent ) {
   if ( window.jQuery ) {
     window.EditorHelper.draggable( trackEvent, _container, _target );
     window.EditorHelper.resizable( trackEvent, _container, _target, {
-      handlePositions: "e, se, s, sw, w, n, ne",
+      handlePositions: "n,ne,e,se,s,sw,w,nw",
       minWidth: 10,
       minHeight: 10
     });

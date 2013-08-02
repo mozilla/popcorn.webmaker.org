@@ -10,7 +10,7 @@
 
 define( [], function() {
   var __tooltipClass = "butter-tooltip",
-      __tooltipOnClass = "tooltip-on",
+      __tooltipOffClass = "tooltip-off",
       __toolTipNoHoverClass = "tooltip-no-hover",
       _registeredTooltips = {},
       ToolTipObj,
@@ -34,13 +34,16 @@ define( [], function() {
         name,
         message,
         top,
+        marginTop,
         left,
         error,
         destroyed = false,
         tooltipElement = document.createElement( "div" );
 
     tooltipElement.classList.add( __tooltipClass );
-    tooltipElement.classList.add( options.name );
+    if ( options.name ) {
+      tooltipElement.classList.add( options.name );
+    }
 
     Object.defineProperty( this, "message", {
       get: function() {
@@ -57,13 +60,13 @@ define( [], function() {
 
     Object.defineProperty( this, "hidden", {
       get: function() {
-        return !tooltipElement.classList.contains( __tooltipOnClass );
+        return !tooltipElement.classList.contains( __tooltipOffClass );
       },
       set: function( hidden ) {
         if ( hidden || hidden === undefined ) {
-          tooltipElement.classList.remove( __tooltipOnClass );
+          tooltipElement.classList.add( __tooltipOffClass );
         } else {
-          tooltipElement.classList.add( __tooltipOnClass );
+          tooltipElement.classList.remove( __tooltipOffClass );
         }
       },
       enumerable: true
@@ -91,6 +94,19 @@ define( [], function() {
         if ( parentElement && newTop && typeof newTop === "string" ) {
           top = newTop;
           tooltipElement.style.top = newTop;
+        }
+      },
+      enumerable: true
+    });
+
+    Object.defineProperty( this, "marginTop", {
+      get: function() {
+        return marginTop;
+      },
+      set: function( newMarginTop ) {
+        if ( parentElement && newMarginTop && typeof newMarginTop === "string" ) {
+          marginTop = newMarginTop;
+          tooltipElement.style.marginTop = newMarginTop;
         }
       },
       enumerable: true
@@ -175,7 +191,8 @@ define( [], function() {
     };
 
     this.parent = options.element;
-    this.top = options.top || parentElement.getBoundingClientRect().height + "px";
+    this.top = options.top;
+    this.marginTop = options.marginTop;
     this.left = options.left || "50%";
     this.message = options.message || parentElement.getAttribute( "data-tooltip" ) || parentElement.getAttribute( "title" ) || "";
     this.hidden = options.hidden;
@@ -202,6 +219,7 @@ define( [], function() {
      *  element: myParentElement,
      *  message: "This is my message",
      *  top: 14px,
+     *  marginTop: -7px,
      *  left: 30px,
      *  hidden: true,
      *  hover: true,
@@ -209,9 +227,7 @@ define( [], function() {
      * });
      */
     create: function( options ) {
-      var newToolTip = new ToolTipObj( options );
-
-      return newToolTip.tooltipElement;
+      return new ToolTipObj( options );
     },
     /**
      * Member: apply
