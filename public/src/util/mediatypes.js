@@ -56,17 +56,7 @@ define( [ "util/uri" ],
         xhrURL = "https://gdata.youtube.com/feeds/api/videos/" + id + "?v=2&alt=jsonc&callback=?";
         Popcorn.getJSONP( xhrURL, function( resp ) {
           var respData = resp.data,
-              from = parsedUri.queryKey.t,
-              popcorn,
-              div = document.createElement( "div" ),
-              source;
-
-          div.style.height = "400px";
-          div.style.width = "400px";
-          div.style.left = "-400px";
-          div.style.position = "absolute";
-
-          document.body.appendChild( div );
+              from = parsedUri.queryKey.t;
 
           if ( resp.error ) {
             errorCallback( YOUTUBE_EMBED_UNPLAYABLE );
@@ -81,30 +71,6 @@ define( [ "util/uri" ],
             return;
           }
 
-          function errorEvent() {
-            popcorn.off( "loadedmetadata", readyEvent );
-            popcorn.off( "error", errorEvent );
-            errorCallback( YOUTUBE_EMBED_UNPLAYABLE );
-            popcorn.destroy();
-          }
-
-          function readyEvent() {
-            popcorn.off( "loadedmetadata", readyEvent );
-            popcorn.off( "error", errorEvent );
-            document.body.removeChild( div );
-            popcorn.destroy();
-
-            successCallback({
-              source: source,
-              title: respData.title,
-              type: type,
-              thumbnail: respData.thumbnail.hqDefault,
-              author: respData.uploader,
-              duration: popcorn.duration(),
-              from: from
-            });
-          }
-
           if ( from ) {
             from = from.replace( /(?:(\d+)h)?(?:(\d+)m)?(?:(\d+)s)?/, function( all, hours, minutes, seconds ) {
               // Make sure we have real zeros
@@ -115,14 +81,15 @@ define( [ "util/uri" ],
             });
           }
 
-          source = "http://www.youtube.com/watch?v=" + id;
-          popcorn = Popcorn.smart( div, source );
-          popcorn.on( "error", errorEvent );
-          if ( popcorn.media.readyState >= 1 ) {
-            readyEvent();
-          } else {
-            popcorn.on( "loadedmetadata", readyEvent );
-          }
+          successCallback({
+            source: baseUrl,
+            title: respData.title,
+            type: type,
+            thumbnail: respData.thumbnail.hqDefault,
+            author: respData.uploader,
+            duration: respData.duration,
+            from: from
+          });
         });
       } else if ( type === "SoundCloud" ) {
         parsedUri = URI.parse( baseUrl );
