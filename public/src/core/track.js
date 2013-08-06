@@ -6,7 +6,6 @@ define( [ "./eventmanager", "./trackevent", "./views/track-view", "util/sanitize
         function( EventManager, TrackEvent, TrackView, Sanitizer ){
 
   var __guid = 0,
-      NAME_PREFIX = "Layer ",
       Track;
 
   Track = function( options ) {
