@@ -45,14 +45,6 @@ define( [ "core/eventmanager", "core/trackevent", "./editor",
 
     _header = new Header( _editorAreaDOMRoot, _this );
 
-    function setupHeader() {
-      if ( butter.project.isSaved ) {
-        _header.views.saved();
-      } else {
-        _header.views.unSaved();
-      }
-    }
-
     /**
      * Member: openEditor
      *
@@ -208,15 +200,6 @@ define( [ "core/eventmanager", "core/trackevent", "./editor",
           editorsLoaded = 0;
 
       if ( butter.config.value( "ui" ).enabled !== false ) {
-
-        // Set up views for project editor
-        butter.listen( "ready", setupHeader );
-        butter.listen( "autologinsucceeded", setupHeader );
-        butter.listen( "authenticated", setupHeader );
-
-        butter.listen( "projectsaved", _header.views.saved );
-        butter.listen( "logout", _header.views.unSaved );
-        butter.listen( "projectchanged", _header.views.unSaved );
 
         // Set up views for plugin list editor
         butter.listen( "mediacontentchanged", _header.views.disablePlugins );
