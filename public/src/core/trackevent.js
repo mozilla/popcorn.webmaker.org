@@ -30,6 +30,8 @@ define( [ "./logger", "./eventmanager", "./observer",
     };
   };
 
+  var GLOBAL_DEFAULTS = {};
+
   /**
    * Class: TrackEvent
    *
@@ -94,6 +96,10 @@ define( [ "./logger", "./eventmanager", "./observer",
       _popcornWrapper = popcornWrapper;
     };
 
+    this.setDefaults = function() {
+      GLOBAL_DEFAULTS[ _type ] = _popcornOptions;
+    };
+
     /**
      * Member: applyDefaults
      *
@@ -107,17 +113,22 @@ define( [ "./logger", "./eventmanager", "./observer",
       if ( !this.manifest ) {
         return;
       }
-      manifestOptions = this.manifest.options;
-      for ( var prop in manifestOptions ) {
-        if ( manifestOptions.hasOwnProperty( prop ) ) {
-          if ( !popcornOptions.hasOwnProperty( prop ) ) {
-            foundMissingOptions = true;
-            newOptions[ prop ] = defaultValue( manifestOptions[ prop ] );
+
+      if ( GLOBAL_DEFAULTS[ _type ] ) {
+        newOptions = GLOBAL_DEFAULTS[ _type ];
+      } else {
+        manifestOptions = this.manifest.options;
+        for ( var prop in manifestOptions ) {
+          if ( manifestOptions.hasOwnProperty( prop ) ) {
+            if ( !popcornOptions.hasOwnProperty( prop ) ) {
+              foundMissingOptions = true;
+              newOptions[ prop ] = defaultValue( manifestOptions[ prop ] );
+            }
           }
         }
-      }
 
-      newOptions = foundMissingOptions ? newOptions : null;
+        newOptions = foundMissingOptions ? newOptions : null;
+      }
       this.update( newOptions );
     };
 

@@ -250,6 +250,8 @@
       _this.updatePropertiesFromManifest( trackEvent );
       _this.scrollbar.update();
 
+      optionsContainer.appendChild( _this.createDefaultSettings( trackEvent ) );
+
       _this.setTrackEventUpdateErrorCallback( _this.setErrorState );
 
     }

@@ -144,6 +144,7 @@
         }
 
         basicContainer.insertBefore( _this.createStartEndInputs( trackEvent, _this.updateTrackEventSafe ), basicContainer.firstChild );
+        basicContainer.appendChild( _this.createDefaultSettings( trackEvent ) );
       }
 
       if ( _popcornOptions.fontSize ) {

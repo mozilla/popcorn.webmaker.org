@@ -75,6 +75,8 @@ define( [ "text!./default.html", "editor/editor", "util/lang" ],
         optionsContainer.appendChild( targetList );
       }
 
+      optionsContainer.appendChild( _this.createDefaultSettings( trackEvent ) );
+
       _this.updatePropertiesFromManifest( trackEvent, null, true );
 
       // Catch the end of a transition for when the error message box opens/closes

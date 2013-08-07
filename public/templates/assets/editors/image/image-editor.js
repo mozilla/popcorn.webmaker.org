@@ -310,6 +310,8 @@
       _this.updatePropertiesFromManifest( trackEvent );
       _this.setTrackEventUpdateErrorCallback( _this.setErrorState );
 
+      container.appendChild( _this.createDefaultSettings( trackEvent ) );
+
       if ( trackEvent.popcornOptions.src ) {
         _singleActive = true;
         singleImageHandler();
