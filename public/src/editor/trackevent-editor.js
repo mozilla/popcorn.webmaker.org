@@ -595,6 +595,17 @@ define([ "util/lang", "util/keys", "util/time", "./base-editor", "ui/widget/tool
       }
     };
 
+    extendObject.createDefaultSettings = function( trackEvent ) {
+      var editorElement = __defaultLayouts.querySelector( ".butter-default-settings" ).cloneNode( true ),
+          button = editorElement.querySelector( "a" );
+
+      button.addEventListener( "click", function applyDefaults() {
+        trackEvent.setDefaults();
+      }, false );
+
+      return editorElement;
+    };
+
     extendObject.createStartEndInputs = function( trackEvent, callback ) {
       var editorElement = __defaultLayouts.querySelector( ".start-end" ).cloneNode( true ),
           start = editorElement.querySelector( "input[data-manifest-key='start']" ),
