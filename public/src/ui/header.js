@@ -1,6 +1,17 @@
 /*global $*/
-define([ "dialog/dialog", "util/lang", "text!layouts/header.html", "text!layouts/tutorial-list.html","text!layouts/tutorial-view.html", "ui/widget/textbox", "ui/widget/tooltip", "make-api", "json!/api/butterconfig" ],
-  function( Dialog, Lang, HEADER_TEMPLATE, TUTORIAL_LIST_TEMPLATE, TUTORIAL_VIEW_TEMPLATE, TextBoxWrapper, ToolTip, Make, config ) {
+define([
+  "dialog/dialog",
+  "util/lang",
+  "text!layouts/header.html",
+  "text!layouts/tutorial-list.html",
+  "text!layouts/tutorial-view.html",
+  "ui/widget/textbox",
+  "ui/widget/tooltip",
+  "make-api",
+  "json!/api/butterconfig",
+  "../../external/zeroClipboard/ZeroClipboard"
+  ],
+  function( Dialog, Lang, HEADER_TEMPLATE, TUTORIAL_LIST_TEMPLATE, TUTORIAL_VIEW_TEMPLATE, TextBoxWrapper, ToolTip, Make, config, ZeroClipboard ) {
 
   return function( butter, options ){
 
@@ -11,23 +22,22 @@ define([ "dialog/dialog", "util/lang", "text!layouts/header.html", "text!layouts
                                      .replace( /\{\{audience\}\}/g, config.audience );
 
     var TOOLTIP_NAME = "name-error-header-tooltip";
+    var MAKES_DOMAIN = "makes.org";
 
     var _this = this,
         _rootElement = Lang.domFragment( HEADER_TEMPLATE, ".butter-header" ),
         _bodyWrapper = document.querySelector( ".body-wrapper" ),
         _tutorialButtonContainer = document.querySelector( ".butter-tutorial-container" ),
-        _saveButton = _rootElement.querySelector( ".butter-save-btn" ),
         _projectTitle = _rootElement.querySelector( ".butter-project-title" ),
         _projectName = _projectTitle.querySelector( ".butter-project-name" ),
         _clearEvents = _rootElement.querySelector( ".butter-clear-events-btn" ),
         _previewBtn = _rootElement.querySelector( ".butter-preview-btn" ),
-        _projectBtn = _rootElement.querySelector( ".butter-project-btn" ),
         _projectMenu = _rootElement.querySelector( ".butter-project-menu" ),
-        _projectMenuControl = _rootElement.querySelector( ".butter-project-menu-control" ),
         _projectMenuList = _projectMenu.querySelector( ".butter-btn-menu" ),
+        _usernameContainer = _rootElement.querySelector( ".user-name-container"),
         _noProjectNameToolTip,
         _projectTitlePlaceHolderText = _projectName.innerHTML,
-        _toolTip, _loginTooltip;
+        _toolTip, _urlTooltip, _loginTooltip, _username, clip;
 
     // create a tooltip for the plrojectName element
     _toolTip = ToolTip.create({
@@ -35,6 +45,23 @@ define([ "dialog/dialog", "util/lang", "text!layouts/header.html", "text!layouts
       message: "Change the name of your project",
       element: _projectTitle,
       top: "60px"
+    });
+
+   _urlTooltip = ToolTip.create({
+      title: "header-url-tooltip",
+      message: "Copy link to clipboard",
+      element: _previewBtn,
+      top: "45px"
+    });
+
+   // Clipboard handler
+    clip = new ZeroClipboard( _previewBtn, {
+      moviePath: "/external/zeroClipboard/ZeroClipboard.swf",
+      hoverClass: "tooltip-show"
+    });
+
+    clip.on("load", function(client) {
+      console.log("LOADED");
     });
 
     // Default state
@@ -80,14 +107,12 @@ define([ "dialog/dialog", "util/lang", "text!layouts/header.html", "text!layouts
         nameError();
       } else {
         if ( !butter.project.isSaved ) {
-          toggleSaveButton( false );
 
           butter.project.save(function( e ) {
             if ( e.error === "okay" ) {
               afterSave();
               return;
             } else {
-              toggleSaveButton( true );
               togglePreviewButton( false );
               toggleProjectNameListeners( true );
               showErrorDialog(  "There was a problem saving your project, so it was backed up to your browser's storage" +
@@ -104,54 +129,30 @@ define([ "dialog/dialog", "util/lang", "text!layouts/header.html", "text!layouts
       butter.editor.openEditor( "project-editor" );
     }
 
-    function toggleProjectButton( on ) {
-      if ( on ) {
-        _projectBtn.classList.remove( "butter-disabled" );
-        _projectBtn.addEventListener( "click", openProjectEditor, false );
-      } else {
-        _projectBtn.classList.add( "butter-disabled" );
-        _projectBtn.removeEventListener( "click", openProjectEditor, false );
-      }
+    function onClipComplete(client, args) {
+      alert("Copied " + args.text + " to clipboard.");
     }
 
-    function toggleSaveButton( on ) {
-      if ( on ) {
-        _saveButton.classList.remove( "butter-disabled" );
-        _saveButton.addEventListener( "click", saveProject, false );
-      } else {
-        _saveButton.classList.add( "butter-disabled" );
-        _saveButton.removeEventListener( "click", saveProject, false );
-      }
-    }
 
     function togglePreviewButton( on ) {
+      console.log( on );
       if ( on ) {
         _previewBtn.classList.remove( "butter-disabled" );
         _previewBtn.href = butter.project.publishUrl;
-        _previewBtn.onclick = function() {
-          return true;
-        };
+        _previewBtn.setAttribute( "data-clipboard-text", butter.project.publishUrl );
+        clip.off( "complete", onClipComplete );
+        clip.on( "complete", onClipComplete );
       } else {
         _previewBtn.classList.add( "butter-disabled" );
+        _previewBtn.setAttribute( "data-clipboard-text", "" );
         _previewBtn.href = "";
-        _previewBtn.onclick = function() {
-          return false;
-        };
-      }
-    }
-
-    function toggleClearButton( on ) {
-      if ( on ) {
-        _clearEvents.classList.remove( "butter-disabled" );
-        _clearEvents.addEventListener( "click", clearEventsClick, false );
-      } else {
-        _clearEvents.classList.add( "butter-disabled" );
-        _clearEvents.removeEventListener( "click", clearEventsClick, false );
+        clip.off( "complete", onClipComplete );
       }
     }
 
     function toggleProjectNameListeners( state, tooltipIgnore ) {
       if ( state ) {
+        _username = _usernameContainer.querySelector( "a" ).innerHTML;
         _projectTitle.addEventListener( "click", projectNameClick, false );
         _projectName.classList.remove( "butter-disabled" );
         _projectName.addEventListener( "click", projectNameClick, false );
@@ -164,6 +165,20 @@ define([ "dialog/dialog", "util/lang", "text!layouts/header.html", "text!layouts
       if ( !tooltipIgnore ) {
         _loginTooltip.hidden = state;
         _toolTip.hidden = !state;
+      }
+    }
+
+    function toggleSSO( isLoggedIn ) {
+      var personaIframe = document.getElementById( "persona-iframe" ),
+          loginBtn = document.getElementById( "login-btn" ),
+          loginText = loginBtn.querySelector( ".text" );
+
+      if ( isLoggedIn ) {
+        loginText.innerHTML = "Sign out";
+        //logoutBtn.appendChild(personaIframe);
+      } else {
+        loginText.innerHTML = "Sign in";
+        //loginBtn.appendChild(personaIframe);
       }
     }
 
@@ -193,42 +208,29 @@ define([ "dialog/dialog", "util/lang", "text!layouts/header.html", "text!layouts
       }
     }
 
+
+    _clearEvents.addEventListener( "click", clearEventsClick, false );
+
     this.views = {
       dirty: function() {
-        togglePreviewButton( false );
-        toggleSaveButton( butter.cornfield.authenticated() );
-        toggleProjectButton( false );
+        togglePreviewButton( butter.project.publishUrl );
       },
       clean: function() {
         togglePreviewButton( true );
-        toggleSaveButton( false );
-        toggleProjectButton( true );
       },
       login: function() {
         var isSaved = butter.project.isSaved;
 
         toggleProjectNameListeners( butter.cornfield.authenticated() );
-        togglePreviewButton( isSaved );
-        toggleSaveButton( !isSaved && butter.cornfield.authenticated() );
-        toggleProjectButton( isSaved );
+        togglePreviewButton( butter.project.publishUrl );
+        toggleSSO( true );
       },
       logout: function() {
         togglePreviewButton( false );
-        toggleSaveButton( false );
-        toggleProjectButton( false );
         toggleProjectNameListeners( false );
+        toggleSSO( false );
       }
     };
-
-    // Set up the project menu
-    _projectMenuControl.addEventListener( "click", function() {
-      if ( butter.currentMedia.hasTrackEvents() ) {
-        toggleClearButton( true );
-      } else {
-        toggleClearButton( false );
-      }
-      _projectMenu.classList.toggle( "butter-btn-menu-expanded" );
-    }, false );
 
     _projectMenuList.addEventListener( "click", function( e ) {
       if ( e.target.classList.contains( "butter-disabled" ) ) {
@@ -398,7 +400,7 @@ define([ "dialog/dialog", "util/lang", "text!layouts/header.html", "text!layouts
     }
 
     function loadDashboard() {
-      var myProjectsButton = document.querySelector( ".user-info > .makes" ),
+      var myProjectsButton = document.querySelector( "#my-makes" ),
           container = document.querySelector( ".my-projects-container" ),
           iframe = document.querySelector( ".my-projects-iframe" );
 
@@ -406,6 +408,7 @@ define([ "dialog/dialog", "util/lang", "text!layouts/header.html", "text!layouts
         myProjectsButton.addEventListener( "click", open, false );
         myProjectsButton.removeEventListener( "click", close, false );
 
+        container.classList.remove("open");
         container.style.zIndex = "";
         container.style.position = "";
         iframe.style.height = "";
@@ -414,7 +417,7 @@ define([ "dialog/dialog", "util/lang", "text!layouts/header.html", "text!layouts
       function open() {
         myProjectsButton.addEventListener( "click", close, false );
         myProjectsButton.removeEventListener( "click", open, false );
-
+        container.classList.add("open");
         iframe.style.height = "300px";
 
         iframe.src = "/dashboard";
@@ -424,6 +427,7 @@ define([ "dialog/dialog", "util/lang", "text!layouts/header.html", "text!layouts
     }
 
     butter.listen( "ready", function() {
+
       if ( butter.project.name ) {
         _projectName.textContent = butter.project.name;
       }
@@ -431,8 +435,6 @@ define([ "dialog/dialog", "util/lang", "text!layouts/header.html", "text!layouts
       if ( !butter.cornfield.authenticated() ) {
         toggleProjectNameListeners( false );
         togglePreviewButton( false );
-        toggleSaveButton( false );
-        toggleProjectButton( false );
       }
 
       if ( butter.project.publishUrl ||

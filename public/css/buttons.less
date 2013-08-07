@@ -15,12 +15,13 @@
   border-radius: 2px;
   margin-bottom: 0;
   vertical-align: middle;
-  border: 1px solid @baseLight;
-  background: @baseLight;
-  color: @baseText;
+  border: 1px solid transparent;
+  background: none;
+  color: lighten(@baseText, 10%);
   &:hover {
     cursor: pointer;
     text-decoration: none;
+    color: @baseText;
   }
 }
 
@@ -145,14 +146,24 @@
 }
 
 .butter-btn-menu-control {
-  border: 1px solid @baseLightOutline;
+  border: 1px solid transparent;
+  border-radius: 0;
   position: relative;
   z-index: 1;
-  .butter-btn-menu-expanded & {
-    border-bottom-color: transparent;
-    border-radius: 2px 2px 0 0;
-    >.icon {
-      color: #555;
+  line-height: 38px;
+  padding: 0 15px;
+  > .icon-reorder {
+    display: inline-block;
+    vertical-align: middle;
+    font-size: 18px;
+    margin-top: -2px;
+    margin-right: 3px;
+    .transition(all 0.1s linear);
+  }
+  .butter-btn-menu-container:hover & {
+    border-color: @baseLightOutline;
+    >.icon-reorder {
+      .transform(rotate(90deg));
     }
   }
 }
@@ -167,11 +178,11 @@
   margin-top: -1px;
   border-radius: 0 2px 2px 2px;
   left: 0;
-  background: @baseLight;
+  background: white;
 
   //States
   visibility: hidden;
-  .butter-btn-menu-expanded & {
+  .butter-btn-menu-container:hover & {
     visibility: visible;
   }
 
@@ -184,19 +195,28 @@
     }
   }
   // The link inside the menu item
-  > li > a,
-  > li > a.butter-disabled,
-  > li > a.butter-disabled:hover,
-  > li > a.butter-disabled:active {
+  > li > .butter-btn,
+  > li > .butter-btn.butter-disabled,
+  > li > .butter-btn.butter-disabled:hover,
+  > li > .butter-btn.butter-disabled:active {
     color: @baseText;
-    padding: 0 15px;
+    padding: 0 13px;
     min-width: 80px;
     border: none;
     display: block;
   }
-  > li > a:hover {
+  > li > .butter-btn:hover {
     background: lighten( @baseLight, 2% );
     color: #000;
+  }
+
+  // Icons
+  > li > .butter-btn > span {
+    vertical-align: middle;
+    margin-top: -3px;
+    font-size: 18px;
+    width: 26px;
+    display: inline-block;
   }
 }
 
@@ -246,3 +266,11 @@ a .icon {
   vertical-align: top;
 }
 
+
+.butter-btn-menu > li > .butter-btn > span.icon-webmaker {
+  background: url("../resources/webmaker/webmaker-main_01.png") no-repeat;
+  background-size: contain;
+  height: 30px;
+  width: 30px;
+  margin-left: -4px;
+}

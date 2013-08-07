@@ -4,38 +4,54 @@
     <div class="butter-logo"></div>
     <ul class="butter-nav">
       <li class="butter-breadcrumbs"></li>
-      <li class="butter-project-title">
-       <a class="butter-project-name">My Cool Remix</a><i class="icon icon-pencil"></i>
+      <li class="butter-project-title-container">
+      <span class="butter-project-title">
+        <a class="butter-project-name">My Cool Remix</a>
+      </span>
       </li>
       <li>
-        <button class="butter-btn btn-green butter-save-btn">Save</button>
-        <div class="butter-btn-menu-container butter-project-menu">
-          <a class="butter-btn btn-light butter-project-menu-control butter-btn-menu-control"><span class="icon icon-only icon-cog"></span></a>
-          <ul class="butter-btn-menu">
-            <li><a class="butter-btn" href="/" target="_blank"> New</a></li>
-            <li><a class="butter-btn butter-clear-events-btn" target="_blank"> Clear Events</a></li>
-            <li><a class="butter-preview-btn butter-btn btn-light butter-disabled"
-                   target="_blank"><span class="icon icon-only icon-share-alt"></span> Preview</a></li>
-            <li><a class="butter-project-btn butter-btn btn-light butter-disabled"
-                   target="_blank"><span class="icon icon-only icon-edit"></span> Project</a></li>
-          </ul>
-        </div>
+        <a target="_blank" class="butter-project-link butter-preview-btn butter-btn butter-disabled"><span class="icon-link"></span></a>
       </li>
     </ul>
-    <!-- webmaker user bar -->
+
     <div id="webmaker-nav">
       <nav class="webmaker-nav-container">
         <ul class="webmaker-nav user-info">
-          <li class="user">
-              Hi <span id="identity" class="user-name-container"></span>
-          </li>
-          <li class="tutorial-btn hidden"><button>Tutorials</button></li>
-          <li class="makes"><button>My makes</button></li>
           <li>
-            <iframe src="{{audience}}/sso/include.html" class="include-frame"></iframe>
+            <span id="login-btn" class="persona-button"><span class="text">Sign in</span><span class="tip"></span><iframe id="persona-iframe" src="{{audience}}/sso/include-transparent.html"></iframe></span>
           </li>
         </ul>
       </nav>
+
+      <div class="tutorial-btn hidden"><button>Tutorials</button></div>
+
+      <div id="user-menu" class="butter-btn-menu-container butter-project-menu">
+        <a class="butter-btn btn-white butter-btn-menu-control user">
+             Hi <span id="identity" class="user-name-container"></span> <span class="icon-caret-down"></span>
+        </a>
+        <ul class="butter-btn-menu">
+          <li><a id="my-makes" class="butter-btn"><span class="icon icon-th-large"></span> My makes</a></li>
+          <!--li><a id="logout-btn" class="butter-btn"><span class="icon-signout"></span> Logout</a></li>-->
+          <li><a class="butter-btn" href="{{audience}}"><span class="icon-webmaker"></span> Webmaker.org</a></li>
+        </ul>
+      </div>
+
+
+      <div class="butter-btn-menu-container butter-project-menu">
+        <a class="butter-btn btn-white butter-btn-menu-control"><span class="icon-reorder"></span> Options</a>
+        <ul class="butter-btn-menu">
+          <li><a class="butter-btn" href="/" target="_blank">
+            <span class="icon icon-file-alt"></span> New Project</a>
+          </li>
+          <li><a class="butter-btn butter-clear-events-btn" target="_blank">
+            <span class="icon icon-remove"></span> Clear Events</a>
+          </li>
+          <!-- <li><a class="butter-btn" target="_blank">
+            <span class="icon icon-trash"></span> Delete Project</a>
+          </li> -->
+        </ul>
+      </div>
+
       <div class="my-projects-container">
         <iframe class="my-projects-iframe"></iframe>
       </div>

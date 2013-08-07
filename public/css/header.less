@@ -1,6 +1,8 @@
 /*********************************************************
 * HEADER
 */
+@import "../external/persona-btn/persona-btn";
+
 @_logoWidth: 220px;
 
 // Used to position absolute elements in the middle of our header bar area
@@ -70,7 +72,6 @@
   line-height: @HEADER_SPACING;
   > li {
     float: left;
-    padding: 0 20px;
     &.butter-breadcrumbs {
       position: relative;
       padding: 0;
@@ -83,23 +84,37 @@
   }
 }
 
-.butter-project-title {
+.butter-project-menu {
+  float: right;
+  margin-right: 20px;
+}
+
+.butter-project-title-container {
   text-align: left;
   font-weight: 600;
   font-size: 16px;
-  color: @green;
+  color: @baseText;
   cursor: pointer;
-  max-width: 55%;
+  padding-left: 20px;
   min-width: 10%;
   height: 100%;
   position: relative;
+}
+
+.makes-url {
+  font-size: 14px;
+  margin-right: 5px;
+}
+
+.butter-project-title {
+  position: relative;
+  display: inline-block;
 
   &.no-click {
     cursor: wait;
   }
 
-  > input {
-    font-size: 14px;
+   input {
     border: 1px solid @green;
     border-radius: 2px;
     padding: 5px;
@@ -110,34 +125,84 @@
   }
 
   a.butter-project-name {
-    display: block;
+    display: inline-block;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
-    color: @green;
-  }
-  .icon {
-    opacity: 0.4;
-    position: absolute;
-    visibility: hidden;
-    right: -5px;
-    top: @HEADER_SPACING / @HEADER_ALIGN_MIDDLE;
-  }
-  &:hover .icon {
-    visibility: visible;
+    max-width: 400px;
+    color: @baseText;
+    font-size: 17px;
+    &:hover {
+      color: @green;
+    }
   }
 }
 
+.butter-project-link {
+  font-size: 18px;
+  position: relative;
+  &.tooltip-show {
+    color: #000;
+  }
+  &.butter-disabled {
+    display: none;
+  }
+}
+
+.butter-btn-menu-container {
+  margin-top: 10px;
+}
+
+#logout-btn {
+  position: relative;
+}
+
 // Temporary overriding classes.
+
+#webmaker-nav {
+  float: right;
+}
 .webmaker-nav-container {
   background: #FFFFFF;
-  margin-top: 10px;
+  overflow: visible;
+  padding: 0;
+}
+.user-info > li {
+  margin: 16px 25px 16px 0;
+}
+
+#identity > a {
+  text-decoration: none;
+}
+
+// avatar
+#user-menu .butter-btn-menu-control {
+  padding-left: 45px;
+  img {
+    position: absolute;
+    left: 10px;
+    top: 5px;
+    border-radius: 50%;
+    width: 26px;
+    height: 26px;
+  }
 }
 
 .my-projects-container.open {
   top: @HEADER_SPACING;
   position: absolute;
   width: 100%;
+}
+
+#persona-iframe {
+  border: 0;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 100;
+
 }
 
 /*********************************************************
@@ -147,46 +212,5 @@
 .butter-header {
   .butter-btn {
     text-shadow: none;
-  }
-}
-
-.butter-login-project-info {
-  position: relative;
-}
-
-.butter-login-project-info > ul {
-  position: absolute;
-  top: 48px;
-  left: 28px;
-  width: 175px;
-  border-top: 0;
-  border-radius: 0 0 2px 2px;
-  box-shadow: 0 10px 15px -5px rgba( 0, 0, 0, 0.6 );
-  padding: 0;
-  background: #FFF;
-  z-index: @MODAL_Z_INDEX;
-  li {
-    border-top: 1px solid @baseLight;
-    list-style: none;
-    font-size: 10px;
-    line-height: 35px;
-    margin: 0;
-    &:first-child {
-      border-top: none;
-    }
-    &:last-child {
-      border-radius: 0 0 2px 2px;
-    }
-  }
-  a {
-    text-decoration: none;
-    color: @baseText;
-    display: block;
-    padding: 0 20px;
-    height: 100%;
-    cursor: pointer;
-    &:hover {
-      color: @green;
-    }
   }
 }

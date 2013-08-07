@@ -69,6 +69,9 @@
   top: @HEADER_SPACING;
   right: 0;
   z-index: @HEADER_Z_INDEX + 1;
+  .butter-btn {
+    padding: 0;
+  }
   &.toggled .icon:before {
     color: @baseText;
     content: "\f053"; //icon-chevron-left
@@ -517,7 +520,8 @@
 */
 
 * {
-  &:hover > .butter-tooltip:not(.tooltip-no-hover) {
+  &:hover > .butter-tooltip:not(.tooltip-no-hover),
+  &.tooltip-show  > .butter-tooltip {
     opacity: 1;
     visibility: visible;
     .transition( opacity 0.3s ease 0.5s );
