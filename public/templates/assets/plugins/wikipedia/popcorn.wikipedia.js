@@ -341,7 +341,7 @@
         elem: "input",
         type: "text",
         label: "Article Link/Title",
-        "default": "Popcorn.js"
+        "default": "Popcorn"
       },
       width: {
         elem: "input",
