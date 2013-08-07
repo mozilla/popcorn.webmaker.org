@@ -313,7 +313,7 @@
           elem: "input",
           type: "url",
           label: "Source URL",
-          "default": "http://www.mozilla.org/media/img/home/firefox.png"
+          "default": "https://popcorn.webmaker.org/resources/popcorn-logo.svg"
         },
         linkSrc: {
           elem: "input",
