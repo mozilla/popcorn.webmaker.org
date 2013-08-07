@@ -46,7 +46,7 @@ define(function() {
       twitter: {
         id: "twitter-wjs",
         src: "//platform.twitter.com/widgets.js",
-        html: "<a href='https://twitter.com/share'class='twitter-share-button' data-text='Check out the #PopcornMaker page I just made: ' data-url='"+urlPlaceHolder+"' data-via='popcornjs' data-count='none'>Tweet</a>"
+        html: "<a href='https://twitter.com/share'class='twitter-share-button' data-text='Check out the #Webmaker page I just made:' data-url='"+urlPlaceHolder+"' data-via='Webmaker' data-count='none'>Tweet</a>"
       },
 
       /**
