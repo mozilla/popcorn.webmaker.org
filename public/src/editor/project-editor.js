@@ -100,7 +100,7 @@ define([ "editor/editor", "editor/base-editor",
       _projectTab = _projectTabs[ _idx ];
       _projectTab.addEventListener( "click", function( e ) {
 
-        if ( !_project.isSaved ) {
+        if ( !_project.isSaved || !butter.cornfield.authenticated() ) {
           return;
         }
         onProjectTabClick( e.target );
@@ -165,7 +165,7 @@ define([ "editor/editor", "editor/base-editor",
       _thumbnailInput.value = _project.thumbnail;
     });
 
-    butter.listen( "projectsaved", function onProjectSaved() {
+    function onProjectSaved() {
       _previewBtn.href = _projectURL.value = _project.publishUrl;
       _viewSourceBtn.href = "view-source:" + _project.iframeUrl;
       updateEmbed( _project.iframeUrl );
@@ -174,16 +174,26 @@ define([ "editor/editor", "editor/base-editor",
       _embedTabBtn.classList.remove( "butter-project-btn-disabled" );
       _projectLinkContainer.classList.remove( "butter-project-btn-disabled" );
       _loginToSaveDialog.classList.add( "hidden" );
-    });
-
-    butter.listen( "projectchanged", function onProjectSaved() {
+    }
+    function onLogin() {
+      if ( butter.project.isSaved ) {
+        onProjectSaved();
+      }
+    }
+    function onProjectChanged() {
       _shareTabBtn.classList.add( "butter-project-btn-disabled" );
       _viewSourceBtn.classList.add( "butter-project-btn-disabled" );
       _embedTabBtn.classList.add( "butter-project-btn-disabled" );
       _projectLinkContainer.classList.add( "butter-project-btn-disabled" );
       onProjectTabClick( _settingsTabBtn );
       _loginToSaveDialog.classList.remove( "hidden" );
-    });
+    }
+
+    butter.listen( "projectsaved", onProjectSaved );
+    butter.listen( "autologinsucceeded", onLogin );
+    butter.listen( "authenticated", onLogin ); 
+    butter.listen( "projectchanged", onProjectChanged );
+    butter.listen( "logout", onProjectChanged );
 
     Editor.BaseEditor.extend( this, butter, rootElement, {
       open: function() {
@@ -203,10 +213,10 @@ define([ "editor/editor", "editor/base-editor",
         updateEmbed( _project.iframeUrl );
 
         _previewBtn.onclick = function() {
-          return _project.isSaved;
+          return _project.isSaved && butter.cornfield.authenticated();
         };
         _viewSourceBtn.onclick = function() {
-          return _project.isSaved;
+          return _project.isSaved && butter.cornfield.authenticated();
         };
 
         // Ensure Share buttons have loaded
