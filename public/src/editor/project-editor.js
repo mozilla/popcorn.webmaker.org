@@ -21,7 +21,8 @@ define([ "editor/editor", "editor/base-editor",
         _projectEmbedURL = _rootElement.querySelector( ".butter-project-embed-url" ),
         _embedSize = _rootElement.querySelector( ".butter-embed-size" ),
         _previewBtn = _rootElement.querySelector( ".butter-preview-link" ),
-        _projectLinkContainer = _rootElement.querySelector( ".project-link-container" ),
+        _projectLinkUrl = _rootElement.querySelector( ".butter-project-url" ),
+        _projectLinkButton = _rootElement.querySelector( ".butter-preview-link" ),
         _viewSourceBtn = _rootElement.querySelector( ".butter-view-source-btn" ),
         _settingsTabBtn = _rootElement.querySelector( ".settings-tab-btn" ),
         _embedTabBtn = _rootElement.querySelector( ".embed-tab-btn" ),
@@ -169,10 +170,11 @@ define([ "editor/editor", "editor/base-editor",
       _previewBtn.href = _projectURL.value = _project.publishUrl;
       _viewSourceBtn.href = "view-source:" + _project.iframeUrl;
       updateEmbed( _project.iframeUrl );
-      _shareTabBtn.classList.remove( "butter-project-btn-disabled" );
-      _viewSourceBtn.classList.remove( "butter-project-btn-disabled" );
-      _embedTabBtn.classList.remove( "butter-project-btn-disabled" );
-      _projectLinkContainer.classList.remove( "butter-project-btn-disabled" );
+      _shareTabBtn.classList.remove( "butter-disabled" );
+      _viewSourceBtn.classList.remove( "butter-disabled" );
+      _embedTabBtn.classList.remove( "butter-disabled" );
+      _projectLinkButton.classList.remove( "butter-disabled" );
+      _projectLinkUrl.classList.remove( "butter-disabled" );
       _loginToSaveDialog.classList.add( "hidden" );
     }
     function onLogin() {
@@ -181,10 +183,11 @@ define([ "editor/editor", "editor/base-editor",
       }
     }
     function onProjectChanged() {
-      _shareTabBtn.classList.add( "butter-project-btn-disabled" );
-      _viewSourceBtn.classList.add( "butter-project-btn-disabled" );
-      _embedTabBtn.classList.add( "butter-project-btn-disabled" );
-      _projectLinkContainer.classList.add( "butter-project-btn-disabled" );
+      _shareTabBtn.classList.add( "butter-disabled" );
+      _viewSourceBtn.classList.add( "butter-disabled" );
+      _embedTabBtn.classList.add( "butter-disabled" );
+      _projectLinkButton.classList.add( "butter-disabled" );
+      _projectLinkUrl.classList.add( "butter-disabled" );
       onProjectTabClick( _settingsTabBtn );
       _loginToSaveDialog.classList.remove( "hidden" );
     }
@@ -201,10 +204,11 @@ define([ "editor/editor", "editor/base-editor",
 
         _previewBtn.href = _projectURL.value = _project.publishUrl || "";
         if ( !_project.isSaved ) {
-          _shareTabBtn.classList.add( "butter-project-btn-disabled" );
-          _viewSourceBtn.classList.add( "butter-project-btn-disabled" );
-          _embedTabBtn.classList.add( "butter-project-btn-disabled" );
-          _projectLinkContainer.classList.add( "butter-project-btn-disabled" );
+          _shareTabBtn.classList.add( "butter-disabled" );
+          _viewSourceBtn.classList.add( "butter-disabled" );
+          _embedTabBtn.classList.add( "butter-disabled" );
+          _projectLinkButton.classList.add( "butter-disabled" );
+          _projectLinkUrl.classList.add( "butter-disabled" );
           _loginToSaveDialog.classList.remove( "hidden" );
         }
         _viewSourceBtn.href = "view-source:" + _project.iframeUrl;
