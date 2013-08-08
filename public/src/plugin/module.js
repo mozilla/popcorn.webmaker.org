@@ -62,6 +62,10 @@ define( [ "core/logger", "./plugin-list", "./plugin" ],
 
       for ( i = 0, l = plugins.length; i < l; i++ ) {
         plugin = new Plugin( plugins[ i ] );
+
+        butter.pluginDefaults[ plugin.type ] = {
+          current: null
+        };
         newPlugins.push( plugin );
 
         if ( butter.ui.enabled ) {

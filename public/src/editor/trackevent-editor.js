@@ -606,6 +606,27 @@ define([ "util/lang", "util/keys", "util/time", "./base-editor", "ui/widget/tool
       return editorElement;
     };
 
+    extendObject.createSetAsDefaultsButton = function( trackEvent ) {
+      var editorElement = __defaultLayouts.querySelector( ".checkbox" ).cloneNode( true ),
+          span = editorElement.querySelector( ".butter-form-checkbox span" ),
+          checkbox = editorElement.querySelector( ".butter-form-checkbox input" );
+      span.innerHTML = "Use as default settings";
+      if ( trackEvent.isDefault ) {
+        checkbox.checked = true;
+      }
+      checkbox.addEventListener( "change", function() {
+        if ( !trackEvent.isDefault ) {
+          if ( trackEvent.defaults.current ) {
+            trackEvent.defaults.current.isDefault = false;
+          }
+          trackEvent.isDefault = true;
+        } else {
+          trackEvent.isDefault = false;
+        }
+      }, false );
+      return editorElement;
+    };
+
     /**
      * Member: createManifestItem
      *
