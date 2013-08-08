@@ -97,15 +97,17 @@ define([ "editor/editor", "editor/base-editor",
       _this.scrollbar.update();
     }
 
+    function onProjectTabClick( e ) {
+
+      if ( !_project.isSaved || !butter.cornfield.authenticated() ) {
+        return;
+      }
+      onProjectTabClick( e.target );
+    }
+
     for ( _idx = 0; _idx < _numProjectTabs; _idx++ ) {
       _projectTab = _projectTabs[ _idx ];
-      _projectTab.addEventListener( "click", function( e ) {
-
-        if ( !_project.isSaved || !butter.cornfield.authenticated() ) {
-          return;
-        }
-        onProjectTabClick( e.target );
-      }, false );
+      _projectTab.addEventListener( "click", onProjectTabClick, false );
     }
 
     function updateEmbed( url ) {
@@ -194,7 +196,7 @@ define([ "editor/editor", "editor/base-editor",
 
     butter.listen( "projectsaved", onProjectSaved );
     butter.listen( "autologinsucceeded", onLogin );
-    butter.listen( "authenticated", onLogin ); 
+    butter.listen( "authenticated", onLogin );
     butter.listen( "projectchanged", onProjectChanged );
     butter.listen( "logout", onProjectChanged );
 
