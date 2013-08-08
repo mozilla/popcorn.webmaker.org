@@ -16,7 +16,7 @@ var express = require('express'),
     filter,
     sanitizer = require( './lib/sanitizer' ),
     metrics = require('./lib/metrics.js'),
-    middleware,
+    middleware = require( './lib/middleware' ),
     APP_HOSTNAME = config.hostname,
     WWW_ROOT =  __dirname + '/public';
 
@@ -83,6 +83,7 @@ app.configure( function() {
         }
       }
     }))
+    .use( middleware.setCORSForLayouts )
     .use( express.static( tmpDir, JSON.parse( JSON.stringify( config.staticMiddleware ) ) ) )
     .use( express.static( WWW_ROOT, JSON.parse( JSON.stringify( config.staticMiddleware ) ) ) );
 
@@ -124,8 +125,6 @@ require( './lib/loginapi' )( app, {
   audience: config.AUDIENCE,
   loginURL: config.LOGIN_SERVER_URL_WITH_AUTH
 });
-
-middleware = require( './lib/middleware' );
 
 var routes = require('./routes');
 
