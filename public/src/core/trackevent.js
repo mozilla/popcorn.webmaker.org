@@ -53,7 +53,11 @@ define( [ "./logger", "./eventmanager", "./observer",
         },
         _view = new TrackEventView( this, _type, _popcornOptions ),
         _popcornWrapper = null,
+        _defaults = options.defaults,
+        _isDefault = false,
         _selected = false;
+
+    _this.defaults = _defaults;
 
     EventManager.extend( _this );
     Observer.extend( _this );
@@ -61,8 +65,14 @@ define( [ "./logger", "./eventmanager", "./observer",
     _this.popcornOptions = _popcornOptions;
     _this.popcornTrackEvent = null;
 
-    function defaultValue( item ) {
-      if ( item.hasOwnProperty( "default" ) ) {
+    function defaultValue( prop, manifest ) {
+
+      var item = manifest[ prop ];
+
+      if ( _defaults.current &&
+           _defaults.current.popcornOptions[ prop ] ) {
+        return _defaults.current.popcornOptions[ prop ];
+      } else if ( item.hasOwnProperty( "default" ) ) {
         return item.default;
       }
       return item.type === "number" ? 0 : "";
@@ -112,7 +122,7 @@ define( [ "./logger", "./eventmanager", "./observer",
         if ( manifestOptions.hasOwnProperty( prop ) ) {
           if ( !popcornOptions.hasOwnProperty( prop ) ) {
             foundMissingOptions = true;
-            newOptions[ prop ] = defaultValue( manifestOptions[ prop ] );
+            newOptions[ prop ] = defaultValue( prop, manifestOptions );
           }
         }
       }
@@ -374,6 +384,21 @@ define( [ "./logger", "./eventmanager", "./observer",
         enumerable: true,
         get: function(){
           return _id;
+        }
+      },
+
+      isDefault: {
+        enumerable: true,
+        get: function(){
+          return _isDefault;
+        },
+        set: function( val ) {
+          if ( val ) {
+            _defaults.current = _this;
+          } else {
+            _defaults.current = null;
+          }
+          _isDefault = val;
         }
       },
 

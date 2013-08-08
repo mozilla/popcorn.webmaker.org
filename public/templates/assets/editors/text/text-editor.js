@@ -140,6 +140,7 @@
       });
 
       attachHandlers();
+      basicContainer.appendChild( _this.createSetAsDefaultsButton( trackEvent ) );
       _this.updatePropertiesFromManifest( trackEvent );
       _this.setTrackEventUpdateErrorCallback( _this.setErrorState );
     }

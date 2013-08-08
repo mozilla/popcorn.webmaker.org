@@ -118,10 +118,13 @@ window.Butter = {
           _this = Object.create( Butter ),
           _selectedEvents = [],
           _copiedEvents = [],
+          _pluginDefaults = {},
           _sortedSelectedEvents = [],
           _defaultPopcornScripts = {},
           _defaultPopcornCallbacks = {},
           _defaultTrackeventDuration;
+
+      _this.pluginDefaults = _pluginDefaults;
 
       // We use the default configuration in src/default-config.json as
       // a base, and override whatever the user provides in the
@@ -225,7 +228,8 @@ window.Butter = {
 
         trackEvent = track.addTrackEvent({
           popcornOptions: popcornOptions,
-          type: type
+          type: type,
+          defaults: _this.pluginDefaults[ type ]
         });
 
         trackEvent.selected = true;
