@@ -246,7 +246,7 @@
       });
 
       attachHandlers();
-
+      optionsContainer.appendChild( _this.createSetAsDefaultsButton( trackEvent ) );
       _this.updatePropertiesFromManifest( trackEvent );
       _this.scrollbar.update();
 

@@ -74,6 +74,7 @@ define( [ "text!./default.html", "editor/editor", "util/lang" ],
         _this.attachSelectChangeHandler( selectElement, trackEvent, "target" );
         optionsContainer.appendChild( targetList );
       }
+      optionsContainer.appendChild( _this.createSetAsDefaultsButton( trackEvent ) );
 
       _this.updatePropertiesFromManifest( trackEvent, null, true );
 
