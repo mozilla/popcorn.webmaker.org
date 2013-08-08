@@ -54,7 +54,7 @@ define( [ "./logger", "./eventmanager", "./observer",
         _view = new TrackEventView( this, _type, _popcornOptions ),
         _popcornWrapper = null,
         _defaults = options.defaults,
-        _asDefault = false,
+        _isDefault = false,
         _selected = false;
 
     _this.defaults = _defaults;
@@ -387,10 +387,10 @@ define( [ "./logger", "./eventmanager", "./observer",
         }
       },
 
-      asDefault: {
+      isDefault: {
         enumerable: true,
         get: function(){
-          return _asDefault;
+          return _isDefault;
         },
         set: function( val ) {
           if ( val ) {
@@ -398,7 +398,7 @@ define( [ "./logger", "./eventmanager", "./observer",
           } else {
             _defaults.current = null;
           }
-          _asDefault = val;
+          _isDefault = val;
         }
       },
 

@@ -610,18 +610,18 @@ define([ "util/lang", "util/keys", "util/time", "./base-editor", "ui/widget/tool
       var editorElement = __defaultLayouts.querySelector( ".checkbox" ).cloneNode( true ),
           span = editorElement.querySelector( ".butter-form-checkbox span" ),
           checkbox = editorElement.querySelector( ".butter-form-checkbox input" );
-      span.innerHTML = "Use as default settings"
-      if ( trackEvent.asDefault ) {
+      span.innerHTML = "Use as default settings";
+      if ( trackEvent.isDefault ) {
         checkbox.checked = true;
       }
       checkbox.addEventListener( "change", function() {
-        if ( !trackEvent.asDefault ) {
+        if ( !trackEvent.isDefault ) {
           if ( trackEvent.defaults.current ) {
-            trackEvent.defaults.current.asDefault = false;
+            trackEvent.defaults.current.isDefault = false;
           }
-          trackEvent.asDefault = true;
+          trackEvent.isDefault = true;
         } else {
-          trackEvent.asDefault = false;
+          trackEvent.isDefault = false;
         }
       }, false );
       return editorElement;
