@@ -118,7 +118,8 @@
     "tap": "0.4.0"
   },
   "scripts": {
-    "test": "node make check"
+    "test": "node make check",
+    "postinstall": "./node_modules/.bin/bower install"
   },
   "license": "MIT",
   "engines": {
