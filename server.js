@@ -56,6 +56,7 @@ app.configure( function() {
     .use( requirejsMiddleware({
       src: WWW_ROOT,
       dest: tmpDir,
+      debug: config.DEBUG,
       once: config.OPTIMIZE_JS,
       modules: {
         "/src/butter.js": {
