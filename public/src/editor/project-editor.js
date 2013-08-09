@@ -77,7 +77,7 @@ define([ "editor/editor", "editor/base-editor",
       }, 5000 );
     }
 
-    function onProjectTabClick( target ) {
+    function activateProjectTab( target ) {
       var currentDataName = target.getAttribute( "data-tab-name" ),
           dataName;
 
@@ -97,17 +97,14 @@ define([ "editor/editor", "editor/base-editor",
       _this.scrollbar.update();
     }
 
-    function onProjectTabClick( e ) {
-
-      if ( !_project.isSaved || !butter.cornfield.authenticated() ) {
-        return;
-      }
-      onProjectTabClick( e.target );
-    }
-
     for ( _idx = 0; _idx < _numProjectTabs; _idx++ ) {
       _projectTab = _projectTabs[ _idx ];
-      _projectTab.addEventListener( "click", onProjectTabClick, false );
+      _projectTab.addEventListener( "click", function( e ) {
+        if ( !_project.isSaved || !butter.cornfield.authenticated() ) {
+          return;
+        }
+        activateProjectTab( e.target );
+      }, false );
     }
 
     function updateEmbed( url ) {
@@ -190,7 +187,7 @@ define([ "editor/editor", "editor/base-editor",
       _embedTabBtn.classList.add( "butter-disabled" );
       _projectLinkButton.classList.add( "butter-disabled" );
       _projectLinkUrl.classList.add( "butter-disabled" );
-      onProjectTabClick( _settingsTabBtn );
+      activateProjectTab( _settingsTabBtn );
       _loginToSaveDialog.classList.remove( "hidden" );
     }
 
