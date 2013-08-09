@@ -37,7 +37,7 @@ app.configure( function() {
   var tmpDir = path.normalize( require( "os" ).tmpDir() + "/mozilla.butter/" );
 
   app.use( express.logger( config.logger ) );
-  app.use("/static/bower", express.static(path.join(__dirname, "/bower_components"), {
+  app.use( "/static/bower", express.static( path.join( __dirname, "/bower_components" ), {
     maxAge: "31556952000" // one year
   }));
   if ( !!config.FORCE_SSL ) {
