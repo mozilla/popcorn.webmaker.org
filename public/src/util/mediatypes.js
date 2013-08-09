@@ -4,8 +4,8 @@
 
 "use strict";
 
-define( [ "core/localized", "util/uri" ],
-  function( Localized, URI ) {
+define( [ "util/uri" ],
+  function( URI ) {
 
   var REGEX_MAP = {
         YouTube: /(?:https?:\/\/www\.|https?:\/\/|www\.|\.|^)youtu/,
@@ -15,7 +15,10 @@ define( [ "core/localized", "util/uri" ],
         // where start or duration can be: X, X.X or XX:XX
         "null": /^\s*#t=(?:\d*(?:(?:\.|\:)?\d+)?),?(\d+(?:(?:\.|\:)\d+)?)\s*$/,
         Flickr: /https?:\/\/(www\.)flickr.com/
-      };
+      },
+      YOUTUBE_EMBED_DISABLED = "Embedding of this YouTube video is disabled",
+      YOUTUBE_EMBED_UNPLAYABLE = "This YouTube video is unplayable",
+      SOUNDCLOUD_EMBED_DISABLED = "Embedding of this SoundCloud audio source is disabled";
 
   return {
     checkUrl: function( url ) {
@@ -66,7 +69,7 @@ define( [ "core/localized", "util/uri" ],
           document.body.appendChild( div );
 
           if ( resp.error ) {
-            errorCallback( Localized.get( "This YouTube video is unplayable" ) );
+            errorCallback( YOUTUBE_EMBED_UNPLAYABLE );
           }
 
           if ( !respData ) {
@@ -74,14 +77,14 @@ define( [ "core/localized", "util/uri" ],
           }
 
           if ( respData.accessControl.embed === "denied" ) {
-            errorCallback( Localized.get ( "Embedding of this YouTube video is disabled" ) );
+            errorCallback( YOUTUBE_EMBED_DISABLED );
             return;
           }
 
           function errorEvent() {
             popcorn.off( "loadedmetadata", readyEvent );
             popcorn.off( "error", errorEvent );
-            errorCallback( Localized.get( "This YouTube video is unplayable" ) );
+            errorCallback( YOUTUBE_EMBED_UNPLAYABLE );
             popcorn.destroy();
           }
 
@@ -132,7 +135,7 @@ define( [ "core/localized", "util/uri" ],
           }
 
           if ( respData.sharing === "private" || respData.embeddable_by === "none" ) {
-            errorCallback( Localized.get( "Embedding of this SoundCloud audio source is disabled" ) );
+            errorCallback( SOUNDCLOUD_EMBED_DISABLED );
             return;
           }
           successCallback({

@@ -3,9 +3,9 @@
  * obtain one at https://raw.github.com/mozilla/butter/master/LICENSE */
 
 /*global $*/
-define([ "core/localized", "util/lang", "util/keys", "util/time", "./base-editor", "ui/widget/tooltip",
-          "l10n!/layouts/trackevent-editor-defaults.html" ],
-  function( Localized, LangUtils, KeysUtils, TimeUtils, BaseEditor, ToolTip,
+define([ "util/lang", "util/keys", "util/time", "./base-editor", "ui/widget/tooltip",
+          "text!layouts/trackevent-editor-defaults.html" ],
+  function( LangUtils, KeysUtils, TimeUtils, BaseEditor, ToolTip,
             DEFAULT_LAYOUT_SNIPPETS ) {
 
   var NULL_FUNCTION = function(){};
@@ -257,7 +257,7 @@ define([ "core/localized", "util/lang", "util/keys", "util/time", "./base-editor
 
           if ( flag ) {
 
-            message = Localized.get( "Invalid Color update" );
+            message = "Invalid Color update. Must start with a hex (#) or be one of the following: ";
             for ( i in __colorHexCodes ) {
               if ( __colorHexCodes.hasOwnProperty( i ) ) {
                 message += i + ", ";
@@ -268,7 +268,7 @@ define([ "core/localized", "util/lang", "util/keys", "util/time", "./base-editor
           }
         } else {
           if ( !value.match( /^#(?:[0-9a-fA-F]{3}){1,2}$/ ) ) {
-            message = Localized.get( "Invalid Hex Color format" );
+            message = "Invalid Hex Color format. Must be a hash (#) followed by 3 or 6 digits/letters.";
           }
         }
 
@@ -615,7 +615,7 @@ define([ "core/localized", "util/lang", "util/keys", "util/time", "./base-editor
         extendObject.createTooltip( element, {
           name: tooltipName,
           element: element.parentElement,
-          message: Localized.get( "Press Shift+Enter for a new line." ),
+          message: "Press Shift+Enter for a new line.",
           top: "105%",
           left: "50%",
           hidden: true,

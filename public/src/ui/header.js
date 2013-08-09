@@ -1,10 +1,14 @@
 /*global $*/
-define([ "core/localized", "dialog/dialog", "util/lang", "l10n!/layouts/header.html", "l10n!/layouts/tutorial-list.html","text!layouts/tutorial-view.html", "ui/widget/textbox", "ui/widget/tooltip", "make-api", "json!/api/butterconfig" ],
-  function( Localized, Dialog, Lang, HEADER_TEMPLATE, TUTORIAL_LIST_TEMPLATE, TUTORIAL_VIEW_TEMPLATE, TextBoxWrapper, ToolTip, Make, config ) {
+define([ "dialog/dialog", "util/lang", "text!layouts/header.html", "text!layouts/tutorial-list.html","text!layouts/tutorial-view.html", "ui/widget/textbox", "ui/widget/tooltip", "make-api", "json!/api/butterconfig" ],
+  function( Dialog, Lang, HEADER_TEMPLATE, TUTORIAL_LIST_TEMPLATE, TUTORIAL_VIEW_TEMPLATE, TextBoxWrapper, ToolTip, Make, config ) {
 
   return function( butter, options ){
 
     options = options || {};
+
+    // this is terrible templating and needs to be replaced ASAP
+    HEADER_TEMPLATE = HEADER_TEMPLATE.replace( /\{\{user_bar\}\}/g, config.user_bar )
+                                     .replace( /\{\{audience\}\}/g, config.audience );
 
     var TOOLTIP_NAME = "name-error-header-tooltip";
 
@@ -28,7 +32,7 @@ define([ "core/localized", "dialog/dialog", "util/lang", "l10n!/layouts/header.h
     // create a tooltip for the plrojectName element
     _toolTip = ToolTip.create({
       title: "header-title-tooltip",
-      message: Localized.get( "Change the name of your project" ),
+      message: "Change the name of your project",
       element: _projectTitle,
       top: "60px"
     });
@@ -38,7 +42,7 @@ define([ "core/localized", "dialog/dialog", "util/lang", "l10n!/layouts/header.h
 
     _loginTooltip = ToolTip.create({
       title: "header-title-tooltip",
-      message: Localized.get( "Login to save your project!" ),
+      message: "Login to save your project!",
       element: _projectTitle,
       top: "60px"
     });
@@ -86,7 +90,8 @@ define([ "core/localized", "dialog/dialog", "util/lang", "l10n!/layouts/header.h
               toggleSaveButton( true );
               togglePreviewButton( false );
               toggleProjectNameListeners( true );
-              showErrorDialog( Localized.get( "There was a problem saving your project" ) );
+              showErrorDialog(  "There was a problem saving your project, so it was backed up to your browser's storage" +
+                                " (i.e., you can close or reload this page and it will be recovered). Please try again." );
             }
           });
         } else {
@@ -268,7 +273,7 @@ define([ "core/localized", "dialog/dialog", "util/lang", "l10n!/layouts/header.h
 
       ToolTip.create({
         name: TOOLTIP_NAME,
-        message: Localized.get( "Please give your project a name before saving" ),
+        message: "Please give your project a name before saving",
         hidden: false,
         element: _projectTitle,
         top: "50px",
@@ -419,7 +424,7 @@ define([ "core/localized", "dialog/dialog", "util/lang", "l10n!/layouts/header.h
     }
 
     butter.listen( "ready", function() {
-      if ( butter.project.name && ( butter.project.id || butter.project.isRemix ) ) {
+      if ( butter.project.name ) {
         _projectName.textContent = butter.project.name;
       }
 

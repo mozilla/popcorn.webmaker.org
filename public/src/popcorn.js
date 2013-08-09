@@ -34,7 +34,6 @@ requirejs.config({
     // RequireJS
     "text": "../external/require/text",
     "json": "../external/require/json",
-    "l10n": "../external/require/l10n",
 
     // Our other APIs
     "make-api": "../external/make-api",

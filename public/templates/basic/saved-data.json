@@ -17,5 +17,6 @@
             "trackEvents": []
             }]
     }],
+    "name": "My new project",
     "template": "basic"
 }

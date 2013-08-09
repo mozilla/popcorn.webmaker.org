@@ -2,9 +2,9 @@
  * If a copy of the MIT license was not distributed with this file, you can
  * obtain one at https://raw.github.com/mozilla/butter/master/LICENSE */
 
-define( [ "core/localized", "util/lang", "util/uri", "util/keys", "util/mediatypes", "editor/editor",
- "util/time", "util/dragndrop", "l10n!/layouts/media-editor.html" ],
-  function( Localized, LangUtils, URI, KeysUtils, MediaUtils, Editor, Time, DragNDrop, EDITOR_LAYOUT ) {
+define( [ "util/lang", "util/uri", "util/keys", "util/mediatypes", "editor/editor",
+ "util/time", "util/dragndrop", "text!layouts/media-editor.html" ],
+  function( LangUtils, URI, KeysUtils, MediaUtils, Editor, Time, DragNDrop, EDITOR_LAYOUT ) {
 
   var _parentElement =  LangUtils.domFragment( EDITOR_LAYOUT,".media-editor" ),
       _addMediaTitle = _parentElement.querySelector( ".add-new-media" ),
@@ -27,6 +27,7 @@ define( [ "core/localized", "util/lang", "util/uri", "util/keys", "util/mediatyp
       _mediaLoadTimeout,
       _cancelSpinner,
       MEDIA_LOAD_TIMEOUT = 10000,
+      TIMEOUT_ERROR = "Your media source is taking too long to load",
       _this,
       TRANSITION_TIME = 2000;
 
@@ -145,7 +146,7 @@ define( [ "core/localized", "util/lang", "util/uri", "util/keys", "util/mediatyp
     el.classList.add( "mg-" + data.type.toLowerCase() );
 
     if ( data.denied ) {
-      el.querySelector( ".mg-error" ).innerHTML = Localized.get( "Embedding disabled by request" );
+      el.querySelector( ".mg-error" ).innerHTML = "Embedding disabled by request";
     }
 
     function addEvent() {
@@ -212,7 +213,7 @@ define( [ "core/localized", "util/lang", "util/uri", "util/keys", "util/mediatyp
 
       addElements( data, el );
     } else {
-      onDenied( Localized.get( "Your gallery already has that media added to it" ) );
+      onDenied( "Your gallery already has that media added to it" );
     }
   }
 
@@ -232,7 +233,7 @@ define( [ "core/localized", "util/lang", "util/uri", "util/keys", "util/mediatyp
     data.source = url;
     data.type = "sequencer";
     _mediaLoadTimeout = setTimeout( function() {
-      _errorMessage.innerHTML = Localized.get( "Your media source is taking too long to load" );
+      _errorMessage.innerHTML = TIMEOUT_ERROR;
       _errorMessage.classList.remove( "hidden" );
       _addMediaPanel.classList.add( "invalid-field" );
     }, MEDIA_LOAD_TIMEOUT );
