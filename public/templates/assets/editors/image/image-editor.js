@@ -47,7 +47,7 @@
       window.EditorHelper.droppable( _trackEvent, _dropArea );
 
       butter.listen( "droppable-unsupported", function unSupported() {
-        _this.setErrorState( "Sorry, but your browser doesn't support this feature." );
+        _this.setErrorState( Butter.localized.get( "Sorry, but your browser doesn't support this feature." ) );
       });
 
       butter.listen( "droppable-upload-failed", function failedUpload( e ) {
@@ -219,7 +219,7 @@
         _this.createTooltip( _linkInput, {
           name: "image-link-tooltip" + Date.now(),
           element: _linkInput.parentElement,
-          message: "Links will be clickable when shared.",
+          message: Butter.localized.get( "Links will be clickable when shared." ),
           top: "105%",
           left: "50%",
           hidden: true,
@@ -268,7 +268,7 @@
           var count = prop.count > 0 ? prop.count : 1;
 
           if ( count > _maxImageCount ) {
-            _this.setErrorState( "Error: Image count must not be greater than " + _maxImageCount + "." );
+            _this.setErrorState( Butter.localized.get( "Error: Image count must not be greater than" ) + _maxImageCount + "." );
             return;
           }
 
@@ -416,7 +416,7 @@
 
         // The current popcorn instance
         _popcornInstance.on( "invalid-flickr-image", function() {
-          _this.setErrorState( "Invalid Flicker Gallery URL. E.G: http://www.flickr.com/photos/etherworks/sets/72157630563520740/" );
+          _this.setErrorState( Butter.localized.get( "Invalid Flicker Gallery URL" ) );
         });
 
         _trackEvent.listen( "trackeventupdated", onTrackEventUpdated );

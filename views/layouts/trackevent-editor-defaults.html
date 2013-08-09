@@ -3,7 +3,7 @@
       obtain one at https://raw.github.com/mozilla/butter/master/LICENSE -->
 
 <div class="trackevent-warning">
-  <strong>Warning:</strong> <span class="trackevent-warning-message"></span>
+  <strong>{{ gettext("Warning:") }}</strong> <span class="trackevent-warning-message"></span>
 </div>
 
 <fieldset class="trackevent-property default input">
@@ -58,7 +58,7 @@
 <fieldset class="trackevent-property targets">
   <label class="property-name">Target</label>
   <select data-manifest-key="target">
-    <option class="default-target-option" value="Media Element">Media Element</option>
+    <option class="default-target-option" value="Media Element">{{ gettext("Media Element") }}</option>
   </select>
 </fieldset>
 
@@ -76,18 +76,18 @@
 
 <fieldset class="butter-form-inline form-half start-end">
   <div class="butter-form-append">
-    <label class="property-name">Start</label>
+    <label class="property-name">{{ gettext("Start") }}</label>
     <input type="text" class="value" data-manifest-key="start">
   </div>
   <div class="butter-form-append">
-    <label class="property-name">End</label>
+    <label class="property-name">{{ gettext("End") }}</label>
     <input type="text" class="value" data-manifest-key="end">
   </div>
 </fieldset>
 
 <!-- For createBreadcrumbs -->
 <div class="butter-breadcrumbs">
-  <a class="butter-breadcrumbs-back">Events</a>
-  <span class="butter-editor-title">Event</span>
+  <a class="butter-breadcrumbs-back">{{ ("Events") }}</a>
+  <span class="butter-editor-title">{{ gettext("Event") }}</span>
   <a class="close-btn"><span class="icon icon-only icon-x"></span></a>
 </div>

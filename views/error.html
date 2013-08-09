@@ -1,15 +1,14 @@
 <!DOCTYPE html>
-<html>
+<html lang="{{lang}}" dir="{{lang_dir}}">
   <head>
-    <title>Oops, you've found an error</title>
+    <meta charset="utf-8">
+    <title>{{("found an error")}}</title>
     <link rel="stylesheet" href="/css/error.css">
     {% include "googleanalytics.html" %}
   </head>
   <body>
     <h1>{{status}}</h1>
     <h2>{{message}}</h2>
-    <p>Go back to
-      <a href="/">the homepage</a>
-    </p>
+    <p>{{ gettext("Go back to the homepage") | instantiate }}</p>
   </body>
 </html>

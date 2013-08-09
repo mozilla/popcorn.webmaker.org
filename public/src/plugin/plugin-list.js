@@ -2,7 +2,7 @@
  * If a copy of the MIT license was not distributed with this file, you can
  * obtain one at https://raw.github.com/mozilla/butter/master/LICENSE */
 
-define( [ "util/dragndrop", "util/lang", "editor/editor", "text!layouts/plugin-list-editor.html" ],
+define( [ "util/dragndrop", "util/lang", "editor/editor", "l10n!/layouts/plugin-list-editor.html" ],
   function( DragNDrop, LangUtils, Editor, EDITOR_LAYOUT ) {
 
   return function( butter ) {

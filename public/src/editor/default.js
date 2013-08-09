@@ -2,7 +2,7 @@
  * If a copy of the MIT license was not distributed with this file, you can
  * obtain one at https://raw.github.com/mozilla/butter/master/LICENSE */
 
-define( [ "text!./default.html", "editor/editor", "util/lang" ],
+define( [ "l10n!/editors/default.html", "editor/editor", "util/lang" ],
   function( LAYOUT_SRC, Editor, LangUtils ) {
 
   /**

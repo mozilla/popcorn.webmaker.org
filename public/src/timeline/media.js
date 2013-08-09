@@ -5,7 +5,7 @@
 define( [ "core/trackevent", "core/track", "core/eventmanager",
           "./track-container", "util/scrollbars", "./timebar",
           "./status", "./trackhandles", "./super-scrollbar",
-          "util/lang", "text!layouts/media-instance.html" ],
+          "util/lang", "l10n!/layouts/media-instance.html" ],
   function( TrackEvent, Track, EventManager,
             TrackContainer, Scrollbars, TimeBar,
             Status, TrackHandles, SuperScrollbar,

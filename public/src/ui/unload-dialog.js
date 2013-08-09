@@ -1,4 +1,4 @@
-define([], function() {
+define([ "core/localized" ], function( Localized ) {
 
   return function( butter ) {
 
@@ -9,7 +9,7 @@ define([], function() {
     var _projectWasSavedOnce = false;
 
     function areYouSure() {
-      return "You have unsaved project data.";
+      return Localized.get( "You have unsaved project data." );
     }
 
     butter.listen( "projectchanged", function() {

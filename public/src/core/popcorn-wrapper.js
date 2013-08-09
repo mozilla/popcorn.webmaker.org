@@ -4,11 +4,11 @@
 /*jshint evil:true*/
 
 define( [
-          "core/logger", "core/eventmanager", "util/uri",
+          "core/localized", "core/logger", "core/eventmanager", "util/uri",
           "util/warn", "../../external/PluginDetect/PluginDetect_Flash"
         ],
         function(
-          Logger, EventManager, URI,
+          Localized, Logger, EventManager, URI,
           Warn, PluginDetect
         ){
 
@@ -24,12 +24,7 @@ define( [
 
   // Hard coded value for now. We need to chat with whoever is in charge of Mozilla's
   // PFS2 instance to see if we can use the service / what limitations there might be
-  var MIN_FLASH_VERSION = 11,
-
-      FLASH_WARNING_TEXT = "Your web browser has an outdated Flash plugin." +
-        " Flash media may not function as expected. Check your plugin version" +
-        " using <a href=\"https://www.mozilla.org/plugincheck\">Mozilla's plugin" +
-        " checking service</a>. Click <a href=\"#\" class=\"close-button\">here</a> to remove this warning.";
+  var MIN_FLASH_VERSION = 11;
 
   /* The Popcorn-Wrapper wraps various functionality and setup associated with
    * creating, updating, and removing associated data with Popcorn.js.
@@ -250,7 +245,7 @@ define( [
           _checkedFlashVersion = true;
           flashVersion = PluginDetect.getVersion( "Flash" );
           if ( flashVersion && +flashVersion.split( "," )[ 0 ] < MIN_FLASH_VERSION ) {
-            Warn.showWarning( FLASH_WARNING_TEXT );
+            Warn.showWarning( Localized.get( "flashWarning" ) );
           }
         }
       }

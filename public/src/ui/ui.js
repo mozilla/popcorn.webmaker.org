@@ -6,12 +6,12 @@ define( [ "core/eventmanager", "./toggler",
           "./header", "./unload-dialog", "crashreporter",
           "first-run", "./tray", "editor/ui-kit",
           "core/trackevent", "dialog/dialog",
-          "util/dragndrop" ],
+          "util/dragndrop", "core/localized" ],
   function( EventManager, Toggler, Header,
             UnloadDialog, CrashReporter,
             FirstRun, Tray, UIKitDummy,
             TrackEvent, Dialog,
-            DragNDrop ){
+            DragNDrop, Localized ){
 
   var TRANSITION_DURATION = 500,
       BUTTER_CSS_FILE = "{css}/butter.ui.css";
@@ -56,7 +56,7 @@ define( [ "core/eventmanager", "./toggler",
         function () {
           butter.ui.visible = !butter.ui.visible;
           _toggler.state = !_toggler.state;
-        }, "Show/Hide Timeline" );
+        }, Localized.get( "Show/Hide Timeline" ) );
 
     if ( _uiOptions.enabled ) {
       if ( _uiOptions.onLeaveDialog ) {

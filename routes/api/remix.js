@@ -8,6 +8,7 @@ module.exports = function( req, res, next ) {
   projectJSON.makeid = res.locals.project.makeid;
   req.isRemix = true;
   req.projectJSON = projectJSON;
+  projectJSON.isRemix = true;
 
   next();
 };

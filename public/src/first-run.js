@@ -7,7 +7,7 @@
  *
  * Determines whether or not a user should be shown a first-run dialog
  */
-define( [ "dialog/dialog", "ui/widget/tooltip" ], function( Dialog, ToolTip ) {
+define( [ "core/localized", "dialog/dialog", "ui/widget/tooltip" ], function( Localized, Dialog, ToolTip ) {
 
   var __butterStorage = window.localStorage;
 
@@ -26,7 +26,7 @@ define( [ "dialog/dialog", "ui/widget/tooltip" ], function( Dialog, ToolTip ) {
           name: "tooltip-media",
           element: eventsEditorButton,
           top: "60px",
-          message: "<h3>Events Editor</h3>Augment your media with track events here!",
+          message: Localized.get( "Event editor tooltip" ),
           hidden: false
         });
 

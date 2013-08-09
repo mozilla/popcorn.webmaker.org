@@ -3,7 +3,7 @@
  * obtain one at https://raw.github.com/mozilla/butter/master/LICENSE */
 
 define( [ "util/mediatypes", "editor/editor", "util/time",
-          "util/uri", "ui/widget/textbox", "text!layouts/sequencer-editor.html"  ],
+          "util/uri", "ui/widget/textbox", "l10n!/layouts/sequencer-editor.html"  ],
   function( MediaUtils, Editor, Time, URI, Textbox, LAYOUT_SRC ) {
 
   Editor.register( "sequencer", LAYOUT_SRC,

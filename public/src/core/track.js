@@ -2,11 +2,11 @@
  * If a copy of the MIT license was not distributed with this file, you can
  * obtain one at https://raw.github.com/mozilla/butter/master/LICENSE */
 
-define( [ "./eventmanager", "./trackevent", "./views/track-view", "util/sanitizer" ],
-        function( EventManager, TrackEvent, TrackView, Sanitizer ){
+define( [ "core/localized", "./eventmanager", "./trackevent", "./views/track-view", "util/sanitizer" ],
+        function( Localized, EventManager, TrackEvent, TrackView, Sanitizer ){
 
   var __guid = 0,
-      NAME_PREFIX = "Layer ",
+      NAME_PREFIX = Localized.get( "Layer" ) + " ",
       Track;
 
   Track = function( options ) {

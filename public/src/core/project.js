@@ -2,8 +2,8 @@
  * If a copy of the MIT license was not distributed with this file, you can
  * obtain one at https://raw.github.com/mozilla/butter/master/LICENSE */
 
-define( [ "core/eventmanager", "core/media", "util/sanitizer" ],
-        function( EventManager, Media, Sanitizer ) {
+define( [ "core/localized", "core/eventmanager", "core/media", "util/sanitizer" ],
+        function( Localized, EventManager, Media, Sanitizer ) {
 
   var __butterStorage = window.localStorage;
 
@@ -11,7 +11,7 @@ define( [ "core/eventmanager", "core/media", "util/sanitizer" ],
 
     var _this = this,
         _id, _name, _template, _description, _dataObject, _video,
-        _publishUrl, _iframeUrl, _remixedFrom, _remixedFromUrl, _makeid,
+        _publishUrl, _iframeUrl, _remixedFrom, _remixedFromUrl, _makeid, _isRemix,
 
         _tags = [],
 
@@ -191,6 +191,13 @@ define( [ "core/eventmanager", "core/media", "util/sanitizer" ],
           return _isPublished && !_isDirty;
         },
         enumerable: true
+      },
+
+      "isRemix": {
+        get: function () {
+          return _isRemix;
+        },
+        enumerable: true
       }
 
     });
@@ -261,6 +268,10 @@ define( [ "core/eventmanager", "core/media", "util/sanitizer" ],
 
       if ( json.makeid ) {
         _makeid = json.makeid;
+      }
+
+      if ( json.isRemix ) {
+        _isRemix = json.isRemix;
       }
 
       if ( json.description ) {
@@ -451,7 +462,7 @@ define( [ "core/eventmanager", "core/media", "util/sanitizer" ],
               _this.dispatch( "projectsaved" );
 
               if ( window.history.replaceState ) {
-                window.history.replaceState({}, "", "/editor/" + _id + "/edit" );
+                window.history.replaceState({}, "", "/" + Localized.getCurrentLang() + "/editor/" + _id + "/edit" );
               }
 
               callback( e );
