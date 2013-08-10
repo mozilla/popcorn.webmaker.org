@@ -11,11 +11,13 @@ EditorHelper.addPlugin( "wikipedia", function( trackEvent ) {
 
   if ( window.jQuery ) {
     window.EditorHelper.selectable( trackEvent, _container );
-    window.EditorHelper.draggable( trackEvent, _container, target );
+    window.EditorHelper.draggable( trackEvent, _container, target, {
+      tooltip: "Double click to interact"
+    });
     window.EditorHelper.resizable( trackEvent, _container, target, {
       minWidth: 40,
       minHeight: 40,
-      handlePositions: "n,ne,e,se,s,sw,w"
+      handlePositions: "n,ne,e,se,s,sw,w,nw"
     });
   }
 

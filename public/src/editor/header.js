@@ -62,12 +62,12 @@ define([ "ui/widget/tooltip" ], function( Tooltip ) {
 
     this.views = {
       enablePlugins: function() {
-        _waitForMediaTooltip.classList.add( "tooltip-off" );
+        _waitForMediaTooltip.hidden = true;
         _popcornButton.classList.remove( "butter-editor-btn-disabled" );
         _popcornButton.addEventListener( "click", openPluginList, false );
       },
       disablePlugins: function() {
-        _waitForMediaTooltip.classList.remove( "tooltip-off" );
+        _waitForMediaTooltip.hidden = false;
         _popcornButton.classList.add( "butter-editor-btn-disabled" );
         _popcornButton.removeEventListener( "click", openPluginList, false );
       }
