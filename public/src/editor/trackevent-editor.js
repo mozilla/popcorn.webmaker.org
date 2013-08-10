@@ -285,16 +285,19 @@ define([ "util/lang", "util/keys", "util/time", "./base-editor", "ui/widget/tool
           initialValue = inputElement.value,
           colorToggle = element.querySelector( ".color-picker-toggle" ),
           colorPicker = $.farbtastic( colorPickerElement, {
-            callback: function( value ) {
-              inputElement.value = value;
-              colorToggle.style.background = value;
-              updateColor( value );
-            },
+            callback: function() {},
             height: 195,
             width: 195
           });
 
+      // Set default, but don't fire any callbacks yet.
       colorPicker.setColor( initialValue );
+      // Now we can setup the callback.
+      colorPicker.linkTo(function( value ) {
+        inputElement.value = value;
+        colorToggle.style.background = value;
+        updateColor( value );
+      });
 
       inputElement.addEventListener( "change", function() {
         colorPicker.setColor( inputElement.value );
