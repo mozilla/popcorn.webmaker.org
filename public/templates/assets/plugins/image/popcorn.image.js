@@ -199,7 +199,7 @@
               if ( i < _count ) {
                 _link = createImageDiv( _url, _url, _this );
                 _link.classList.add( "image-plugin-hidden" );
-                _container.appendChild( _link );
+                _container.insertBefore( _link, _container.children[ i ] );
                 _tagRefs.push( _link );
               }
             });
