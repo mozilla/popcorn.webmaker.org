@@ -225,6 +225,10 @@
           calculateFinalPositions( event, ui, trackEvent, targetContainer, dragContainer, options );
         }
       });
+
+      return {
+        edit: onDblClick
+      };
     };
 
     /**
