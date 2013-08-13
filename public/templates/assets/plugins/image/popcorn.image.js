@@ -85,11 +85,11 @@
   }
 
   function createImageDiv( imageUrl, linkUrl, instance ) {
-    var div = document.createElement( "div" ),
+    var imageDiv = document.createElement( "div" ),
         link = document.createElement( "a" );
 
-    div.style.backgroundImage = "url( \"" + imageUrl + "\" )";
-    div.classList.add( "image-plugin-img" );
+    imageDiv.style.backgroundImage = "url( \"" + imageUrl + "\" )";
+    imageDiv.classList.add( "image-plugin-img" );
 
     if ( linkUrl ) {
       link.setAttribute( "href", linkUrl );
@@ -101,7 +101,7 @@
     link.setAttribute( "target", "_blank" );
     link.classList.add( "image-plugin-link" );
 
-    link.appendChild( div );
+    link.appendChild( imageDiv );
     return link;
   }
 
@@ -112,6 +112,8 @@
       var _target,
           _container,
           _flickrCallback,
+          _link,
+          _image,
           _this = this;
 
       options._target = _target = Popcorn.dom.find( options.target );
@@ -160,15 +162,27 @@
 
                 // Unfortunately not all requests contain an "Original" size option
                 // so I'm always taking the second last one. This has it's upsides and downsides
-                _container.appendChild( createImageDiv( data.sizes.size[ data.sizes.size.length - 2 ].source, options.linkSrc, _this ) );
+                _link = createImageDiv( data.sizes.size[ data.sizes.size.length - 2 ].source, options.linkSrc, _this );
+                _container.appendChild( _link );
               }
             };
 
             Popcorn.getJSONP( uri, _flickrStaticImage );
           } else {
-            _container.appendChild( createImageDiv( options.src, options.linkSrc, _this ) );
+            _link = createImageDiv( options.src, options.linkSrc, _this );
+            _container.appendChild( _link );
           }
-
+          _image = _link.querySelector( ".image-plugin-img" );
+          _image.style.left = validateDimension( options.innerLeft, "0" ) + "%";
+          _image.style.top = validateDimension( options.innerTop, "0" ) + "%";
+          if ( options.innerHeight ) {
+            _image.style.height = validateDimension( options.innerHeight, "0" ) + "%";
+          }
+          if ( options.innerWidth ) {
+            _image.style.width = validateDimension( options.innerWidth, "0" ) + "%";
+          }
+          options.link = _link;
+          options.image = _image;
         } else {
 
           _flickrCallback = function( data ) {
@@ -178,7 +192,6 @@
                 _inOuts,
                 _lastVisible,
                 _url,
-                _link,
                 _tagRefs = [],
                 _count = options.count || _photos.length;
 
@@ -346,7 +359,7 @@
           elem: "input",
           type: "number",
           label: "Width",
-          "default": 80,
+          "default": 100,
           "units": "%",
           hidden: true
         },
@@ -354,7 +367,7 @@
           elem: "input",
           type: "number",
           label: "Height",
-          "default": 80,
+          "default": 100,
           "units": "%",
           hidden: true
         },
@@ -362,7 +375,7 @@
           elem: "input",
           type: "number",
           label: "Top",
-          "default": 10,
+          "default": 0,
           "units": "%",
           hidden: true
         },
@@ -370,7 +383,35 @@
           elem: "input",
           type: "number",
           label: "Left",
-          "default": 10,
+          "default": 0,
+          "units": "%",
+          hidden: true
+        },
+        innerTop: {
+          elem: "input",
+          type: "number",
+          "default": 0,
+          "units": "%",
+          hidden: true
+        },
+        innerLeft: {
+          elem: "input",
+          type: "number",
+          "default": 0,
+          "units": "%",
+          hidden: true
+        },
+        innerWidth: {
+          elem: "input",
+          type: "number",
+          "default": 0,
+          "units": "%",
+          hidden: true
+        },
+        innerHeight: {
+          elem: "input",
+          type: "number",
+          "default": 0,
           "units": "%",
           hidden: true
         },
