@@ -372,7 +372,9 @@ define( [ "util/mediatypes", "editor/editor", "util/time",
           clipTrimmerEl = _rootElement.querySelector( ".clip-duration" ),
           sliderEl = _rootElement.querySelector( ".butter-slider" ),
           sliderContainer = _rootElement.querySelector( ".slider-container" ),
-          videoToggleContainer = _rootElement.querySelector( ".video-toggler" );
+          videoToggleContainer = _rootElement.querySelector( ".video-toggler" ),
+          audioIn = _rootElement.querySelector( "[data-manifest-key='audioIn']"),
+          audioOut = _rootElement.querySelector( "[data-manifest-key='audioOut']");
 
       // Custom callbacks and UI updating functions
       var sourceCallback = function( trackEvent, updateOptions ) {
@@ -450,6 +452,8 @@ define( [ "util/mediatypes", "editor/editor", "util/time",
       _fields.mute = new Toggler( muteEl, "mute", "reverse", muteUpdateUI );
       _fields.hidden = new Toggler( hiddenEl, "hidden", "reverse" );
       _fields.from = new Trimmer( clipTrimmerEl );
+      _fields.audioIn = new Input( audioIn, "audioIn", _this.updateTrackEventSafe );
+      _fields.audioOut = new Input( audioOut, "audioOut", _this.updateTrackEventSafe );
 
       _this.attachSliderChangeHandler( sliderEl, _trackEvent, "volume" );
 
