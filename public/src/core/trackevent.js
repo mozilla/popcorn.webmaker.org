@@ -53,7 +53,7 @@ define( [ "./logger", "./eventmanager", "./observer",
         },
         _view = new TrackEventView( this, _type, _popcornOptions ),
         _popcornWrapper = null,
-        _defaults = options.defaults,
+        _defaults = options.defaults || {},
         _isDefault = false,
         _selected = false;
 
