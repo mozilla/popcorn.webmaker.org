@@ -6,12 +6,12 @@ define( [ "core/eventmanager", "./toggler",
           "./header", "./unload-dialog", "crashreporter",
           "first-run", "./tray", "editor/ui-kit",
           "core/trackevent", "dialog/dialog",
-          "util/dragndrop", "localized" ],
+          "util/dragndrop", "localized", "make-api", "json!/api/butterconfig" ],
   function( EventManager, Toggler, Header,
             UnloadDialog, CrashReporter,
             FirstRun, Tray, UIKitDummy,
             TrackEvent, Dialog,
-            DragNDrop, Localized ){
+            DragNDrop, Localized, Make, config ){
 
   var TRANSITION_DURATION = 500,
       BUTTER_CSS_FILE = "{css}/butter.ui.css";
@@ -91,6 +91,30 @@ define( [ "core/eventmanager", "./toggler",
       });
     };
 
+    var make = new Make({
+      apiURL: config.make_endpoint
+    });
+
+    function loadTutorials() {
+      var tutorialUrl;
+
+      if ( butter.project.publishUrl ) {
+        tutorialUrl = butter.project.publishUrl;
+      } else if ( butter.project.remixedFromUrl ) {
+        tutorialUrl = butter.project.remixedFromUrl;
+      }
+
+      make.tags( "tutorial-" + escape( tutorialUrl ) ).then( function( err, results ) {
+        if ( err || !results.length ) {
+          return;
+        }
+
+        butter.editor.openEditor( "tutorial-editor", {
+          openData: results
+        });
+      });
+    }
+
     this.setEditor = function( editorAreaDOMRoot ) {
       _this.editor = editorAreaDOMRoot;
       document.body.appendChild( editorAreaDOMRoot );
@@ -116,6 +140,10 @@ define( [ "core/eventmanager", "./toggler",
 
             // Open the media-editor editor right after butter is finished starting up
             butter.editor.openEditor( "media-editor" );
+            if ( butter.project.publishUrl ||
+                 butter.project.remixedFromUrl ) {
+              loadTutorials();
+            }
             FirstRun.init();
           }
 
