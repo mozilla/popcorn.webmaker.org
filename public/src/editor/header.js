@@ -8,12 +8,14 @@ define([ "localized", "ui/widget/tooltip" ], function( Localized, Tooltip ) {
     var _mediaButton = editorAreaDOMRoot.querySelector( ".butter-editor-header-media" ),
         _popcornButton = editorAreaDOMRoot.querySelector( ".butter-editor-header-popcorn" ),
         _projectButton = editorAreaDOMRoot.querySelector( ".butter-editor-header-share" ),
+        _tutorialButton = editorAreaDOMRoot.querySelector( ".butter-editor-tutorial" ),
         _waitForMediaTooltip;
 
     var _focusMap = {
       "media-editor": _mediaButton,
       "plugin-list": _popcornButton,
-      "project-editor": _projectButton
+      "project-editor": _projectButton,
+      "tutorial-editor": _tutorialButton
     };
 
     var _currentFocus;
@@ -39,6 +41,9 @@ define([ "localized", "ui/widget/tooltip" ], function( Localized, Tooltip ) {
     }
 
     _projectButton.addEventListener( "click", openProjectEditor, false );
+    _tutorialButton.addEventListener( "click", function() {
+      editorModule.openEditor( "tutorial-editor" );
+    }, false );
 
     this.setFocus = function( editorName ) {
       var focusCandidate = _focusMap[ editorName ];
@@ -72,7 +77,5 @@ define([ "localized", "ui/widget/tooltip" ], function( Localized, Tooltip ) {
         _popcornButton.removeEventListener( "click", openPluginList, false );
       }
     };
-
   };
-
 });

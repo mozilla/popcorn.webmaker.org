@@ -11,7 +11,7 @@ define( [ "localized", "core/eventmanager", "core/trackevent", "./editor",
           "ui/toggler", "util/lang", "l10n!/layouts/editor-area.html",
           "./default", "core/logger", "./header",
           // Included here to register themselves.
-          "./media-gallery-editor", "./project-editor", "./sequencer-editor" ],
+          "./media-gallery-editor", "./project-editor", "./sequencer-editor", "./tutorial-editor" ],
   function( Localized, EventManager, TrackEvent, Editor,
             Toggler, LangUtils, EDITOR_AREA_LAYOUT,
             DefaultEditor, Logger, Header ){
