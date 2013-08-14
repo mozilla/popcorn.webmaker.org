@@ -61,7 +61,7 @@ function( ToolTip ) {
 
   function editorControllerPlugin( butter ) {
     return function() {
-      var editorTypes = [ "media-editor", "plugin-list", "project-editor" ];
+      var editorTypes = [ "media-editor", "plugin-list", "project-editor", "tutorial-editor" ];
 
       function openEditor( type ) {
         if ( editorTypes.indexOf( type ) !== -1 ) {

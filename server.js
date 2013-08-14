@@ -220,7 +220,6 @@ app.get( '/layouts/header.html', function( req, res ) {
   });
 });
 
-app.get( '/layouts/tutorial-list.html', routes.path( '/layouts/tutorial-list.html' ) );
 app.get( '/layouts/status-area.html', routes.path( '/layouts/status-area.html' ) );
 app.get( '/layouts/media-editor.html', routes.path( '/layouts/media-editor.html' ) );
 app.get( '/layouts/controls.html', routes.path( '/layouts/controls.html' ) );

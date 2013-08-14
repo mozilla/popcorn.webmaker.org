@@ -6,12 +6,12 @@ define( [ "core/eventmanager", "./toggler",
           "./header", "./unload-dialog", "crashreporter",
           "first-run", "./tray", "editor/ui-kit",
           "core/trackevent", "dialog/dialog",
-          "util/dragndrop", "localized" ],
+          "util/dragndrop", "localized", "make-api", "json!/api/butterconfig" ],
   function( EventManager, Toggler, Header,
             UnloadDialog, CrashReporter,
             FirstRun, Tray, UIKitDummy,
             TrackEvent, Dialog,
-            DragNDrop, Localized ){
+            DragNDrop, Localized, Make, config ){
 
   var TRANSITION_DURATION = 500,
       BUTTER_CSS_FILE = "{css}/butter.ui.css";
@@ -91,6 +91,56 @@ define( [ "core/eventmanager", "./toggler",
       });
     };
 
+    var make = new Make({
+      apiURL: config.make_endpoint
+    });
+
+    function loadTutorials() {
+      var tutorialUrl;
+
+      if ( butter.project.publishUrl ) {
+        tutorialUrl = butter.project.publishUrl;
+      } else if ( butter.project.remixedFromUrl ) {
+        tutorialUrl = butter.project.remixedFromUrl;
+      }
+
+      make.tags( "tutorial-" + escape( tutorialUrl ) ).then( function( err, results ) {
+        var iframe,
+            select,
+            tutorialEditor;
+
+        if ( err || !results.length ) {
+          return;
+        }
+
+        tutorialEditor = butter.editor.openEditor( "tutorial-editor" );
+        select = tutorialEditor.rootElement.querySelector( ".tutorial-list" );
+        iframe = tutorialEditor.rootElement.querySelector( ".tutorial-iframe" );
+        document.querySelector( ".butter-editor-tutorial" ).classList.remove( "hidden" );
+
+        var selectTutorialItem = function( index ) {
+          select.selectedIndex = 0;
+          iframe.src = results[ index ].url + "?details=hidden";
+        };
+
+        var createTutorialItem = function( item ) {
+          var option = document.createElement( "option" );
+          option.innerHTML = item.title;
+          option.value = item.url + "?details=hidden";
+          select.appendChild( option );
+        };
+
+        for ( var i = 0; i < results.length; i++ ) {
+          createTutorialItem( results[ i ] );
+        }
+
+        select.addEventListener( "change", function( e ) {
+          iframe.src = e.target.value;
+        }, false );
+        selectTutorialItem( 0 );
+      });
+    }
+
     this.setEditor = function( editorAreaDOMRoot ) {
       _this.editor = editorAreaDOMRoot;
       document.body.appendChild( editorAreaDOMRoot );
@@ -116,6 +166,10 @@ define( [ "core/eventmanager", "./toggler",
 
             // Open the media-editor editor right after butter is finished starting up
             butter.editor.openEditor( "media-editor" );
+            if ( butter.project.publishUrl ||
+                 butter.project.remixedFromUrl ) {
+              loadTutorials();
+            }
             FirstRun.init();
           }
 
