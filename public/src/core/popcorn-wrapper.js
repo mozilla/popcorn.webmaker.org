@@ -48,7 +48,8 @@ define( [
         _interruptLoad = false,
         _this = this,
         _makeVideoURLsUnique = options.makeVideoURLsUnique,
-        _checkedFlashVersion = false;
+        _checkedFlashVersion = false,
+        _checkedClip = false;
 
     /* Destroy popcorn bindings specfically without touching other discovered
      * settings
@@ -252,6 +253,12 @@ define( [
           if ( flashVersion && +flashVersion.split( "," )[ 0 ] < MIN_FLASH_VERSION ) {
             Warn.showWarning( FLASH_WARNING_TEXT );
           }
+        }
+
+        if ( !_checkedClip ) {
+          _checkedClip = true;
+          Warn.showWarning( "Adding multiple clips is a great way to make an awesome experience on the web, but " +
+                            "can lead to worse performance. You've been warned. Click <a href=\"#\" class=\"close-button\">here</a> to remove this warning." );
         }
       }
       return mediaType;
