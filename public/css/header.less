@@ -61,6 +61,8 @@
 .butter-nav {
   position: absolute;
   top: 0;
+  left: 0;
+  right: 0;
   margin: 0;
   padding: 0;
   margin-left: @_logoWidth + 30;
@@ -68,7 +70,6 @@
   height: @HEADER_SPACING;
   line-height: @HEADER_SPACING;
   > li {
-    float: left;
     padding: 0 20px;
     &.butter-breadcrumbs {
       position: relative;
@@ -82,15 +83,22 @@
   }
 }
 
+.butter-save-btn-container {
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
 .butter-project-title {
-  text-align: left;
+  position: absolute;
+  top: 0;
+  left: 133px;
+  right: 361px;
   font-weight: 600;
   font-size: 16px;
   color: @green;
   cursor: pointer;
-  max-width: 500px;
   height: 100%;
-  position: relative;
 
   &.no-click {
     cursor: wait;
@@ -118,7 +126,7 @@
     opacity: 0.4;
     position: absolute;
     visibility: hidden;
-    right: -5px;
+    left: -5px;
     top: @HEADER_SPACING / @HEADER_ALIGN_MIDDLE;
   }
   &:hover .icon {

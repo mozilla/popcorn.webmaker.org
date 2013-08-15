@@ -4,10 +4,7 @@
     <div class="butter-logo"></div>
     <ul class="butter-nav">
       <li class="butter-breadcrumbs"></li>
-      <li class="butter-project-title">
-       <a class="butter-project-name">{{ gettext("My new project") }}</a><i class="icon icon-pencil"></i>
-      </li>
-      <li>
+      <li class="butter-save-btn-container">
         <button class="butter-btn btn-green butter-save-btn">{{ gettext("Save") }}</button>
         <div class="butter-btn-menu-container butter-project-menu">
           <a class="butter-btn btn-light butter-project-menu-control butter-btn-menu-control"><span class="icon icon-only icon-cog"></span></a>
@@ -20,6 +17,12 @@
                    target="_blank"><span class="icon icon-only icon-edit"></span> {{ gettext("Project") }}</a></li>
           </ul>
         </div>
+      </li>
+      <li class="butter-project-title">
+        <i class="icon icon-pencil"></i>
+        <span class="butter-project-name-container">
+          <a class="butter-project-name">{{ gettext("My new project") }}</a>
+        </span>
       </li>
     </ul>
     <!-- webmaker user bar -->
