@@ -257,8 +257,9 @@ define( [
 
         if ( !_checkedClip ) {
           _checkedClip = true;
-          Warn.showWarning( "Adding multiple clips is a great way to make an awesome experience on the web, but " +
-                            "can lead to worse performance. You've been warned. Click <a href=\"#\" class=\"close-button\">here</a> to remove this warning." );
+          Warn.showWarning( "If you add a large number of clips to your timeline, this could reduce playback " +
+                            "quality for people with slower internet connections. " +
+                            "Click <a href=\"#\" class=\"close-button\">here</a> to remove this warning." );
         }
       }
       return mediaType;
