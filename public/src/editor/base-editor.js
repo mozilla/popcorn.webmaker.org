@@ -25,7 +25,25 @@ define( [ "core/eventmanager", "util/scrollbars", "ui/widget/tooltip", "ui/widge
 
     // Used when applyExtraHeadTags is called -- see below
     var _extraStyleTags = [],
-        _extraLinkTags = [];
+        _extraLinkTags = [],
+        _colorHexCodes = {
+          "black": "#000000",
+          "silver": "#c0c0c0",
+          "gray": "#808080",
+          "white": "#ffffff",
+          "maroon": "#800000",
+          "red": "#ff00000",
+          "purple": "#800080",
+          "fuchsia": "#ff00ff",
+          "green": "#008000",
+          "lime": "#00ff00",
+          "olive": "#808000",
+          "yellow": "#ffff00",
+          "navy": "#000080",
+          "blue": "#0000ff",
+          "teal": "#008080",
+          "aqua": "#00ffff"
+        };
 
     var _errorMessageContainer;
 
@@ -105,6 +123,85 @@ define( [ "core/eventmanager", "util/scrollbars", "ui/widget/tooltip", "ui/widge
         _extraStyleTags[ x ] = styleNodes[ x ];
         document.head.appendChild( _extraStyleTags[ x ] );
       }
+    };
+
+    extendObject.attachColorChangeHandler = function( element, trackEvent, propertyName, callback ) {
+
+      function updateColor( value ) {
+        var message,
+            updateOptions = {},
+            i,
+            flag = true;
+
+        if ( value.indexOf( "#" ) === -1 ) {
+
+          for ( i in _colorHexCodes ) {
+            if ( _colorHexCodes.hasOwnProperty( i ) ) {
+              if ( i === value.toLowerCase() ) {
+                flag = false;
+                break;
+              }
+            }
+          }
+
+          if ( flag ) {
+
+            message = "Invalid Color update. Must start with a hex (#) or be one of the following: ";
+            for ( i in _colorHexCodes ) {
+              if ( _colorHexCodes.hasOwnProperty( i ) ) {
+                message += i + ", ";
+              }
+            }
+
+            message = message.substring( 0, message.lastIndexOf( "," ) ) + ".";
+          }
+        } else {
+          if ( !value.match( /^#(?:[0-9a-fA-F]{3}){1,2}$/ ) ) {
+            message = "Invalid Hex Color format. Must be a hash (#) followed by 3 or 6 digits/letters.";
+          }
+        }
+
+        updateOptions[ propertyName ] = value;
+        if ( callback ) {
+          callback( trackEvent, updateOptions, message, propertyName );
+        } else {
+          trackEvent.update( updateOptions );
+        }
+      }
+
+      var colorPickerElement = element.querySelector( ".color-picker" ),
+          inputElement = element.querySelector( "input" ),
+          initialValue = inputElement.value,
+          colorToggle = element.querySelector( ".color-picker-toggle" ),
+          colorPicker = $.farbtastic( colorPickerElement, {
+            callback: function() {},
+            height: 195,
+            width: 195
+          });
+
+      // Set default, but don't fire any callbacks yet.
+      colorPicker.setColor( initialValue );
+      colorToggle.style.background = initialValue;
+      // Now we can setup the callback.
+      colorPicker.linkTo(function( value ) {
+        if ( inputElement.value !== value ) {
+          inputElement.value = value;
+          colorToggle.style.background = value;
+          updateColor( value );
+        }
+      });
+
+      inputElement.addEventListener( "change", function() {
+        colorPicker.setColor( inputElement.value );
+      }, false );
+
+      inputElement.addEventListener( "focus", function() {
+        colorPickerElement.classList.remove( "hidden" );
+      }, false );
+
+      inputElement.addEventListener( "blur", function() {
+        colorPickerElement.classList.add( "hidden" );
+      }, false );
     };
 
     /**
