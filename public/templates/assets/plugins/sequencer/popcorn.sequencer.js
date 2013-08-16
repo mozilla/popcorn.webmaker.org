@@ -69,6 +69,12 @@
     _setup: function( options ) {
       var _this = this;
 
+      options.audioIn = +options.audioIn;
+      options.audioOut = +options.audioOut;
+
+      options.audioIn = options.audioIn ? options.audioIn : 0;
+      options.audioOut = options.audioOut ? options.audioOut : 0;
+
       options.setupContainer = function() {
         var container = document.createElement( "div" ),
             target = Popcorn.dom.find( options.target );
@@ -114,13 +120,89 @@
         options.from = 0;
       }
 
+      options.audioInTransition = function() {
+        options._clip.volume( 0 );
+        _this.off( "play", options.audioInTransition );
+
+        var transitionEnd = ( +options.start ) + options.audioIn,
+            volumeTransitionPercentage;
+
+        function timeUpdateStart() {
+          volumeTransitionPercentage = options.volume * ( ( _this.currentTime() - options.start ) / options.audioIn );
+
+          if ( _this.currentTime() > transitionEnd || volumeTransitionPercentage > 100 || _this.currentTime() > options.end ) {
+            _this.off( "timeupdate", timeUpdateStart );
+            options._clip.volume( ( options.volume / 100 ) * _this.volume() );
+            return;
+          } else if ( _this.currentTime() < options.start ) {
+            var id = Popcorn.guid( "sequencer" );
+
+            _this.off( "timeupdate", timeUpdateStart );
+            _this.cue( id, options.start );
+            _this.cue( id, function() {
+              _this.removeTrackEvent( id );
+              options.audioInTransition();
+            });
+            return;
+          }
+
+          options._clip.volume( ( volumeTransitionPercentage / 100 ) * _this.volume() );
+        }
+
+        _this.on( "timeupdate", timeUpdateStart );
+        timeUpdateStart();
+      };
+
+      options.setAudioOutTransition = function() {
+        _this.off( "play", options.setAudioOutTransition );
+
+        function callback() {
+
+          var volumeTransitionPercentage;
+
+          function timeUpdateEnd() {
+            volumeTransitionPercentage = options.volume * ( ( options.end - _this.currentTime() ) / options.audioOut );
+
+            if ( _this.currentTime() >= options.end || !volumeTransitionPercentage ||
+                 _this.ended() || options._clip.ended() ) {
+              _this.off( "timeupdate", timeUpdateEnd );
+              options._clip.mute();
+              return;
+            }
+
+            options._clip.volume( ( volumeTransitionPercentage / 100 ) * _this.volume() );
+          }
+
+          _this.on( "timeupdate", timeUpdateEnd );
+          timeUpdateEnd();
+        }
+
+        _this.removeTrackEvent( options._cueId );
+        options._cueId = Popcorn.guid( "sequencer" );
+        _this.cue( options._cueId, options.end - options.audioOut );
+        _this.cue( options._cueId, callback );
+      };
+
       options._volumeEvent = function() {
         if ( _this.muted() ) {
           options._clip.mute();
         } else {
           if ( !options.mute ) {
             options._clip.unmute();
-            options._clip.volume( ( options.volume / 100 ) * _this.volume() );
+
+            if ( options.audioIn && !_this.paused() ) {
+              options.audioInTransition();
+            } else if ( options.audioIn ) {
+              _this.on( "play", options.audioInTransition );
+            } else {
+              options._clip.volume( ( options.volume / 100 ) * _this.volume() );
+            }
+
+            if ( options.audioOut && !_this.paused() ) {
+              options.setAudioOutTransition();
+            } else if ( options.audioOut ) {
+              _this.on( "play", options.setAudioOutTransition );
+            }
           } else {
             options._clip.mute();
           }
@@ -454,6 +536,14 @@
       if ( updates.hasOwnProperty( "duration" ) ) {
         options.duration = updates.duration;
       }
+      if ( updates.hasOwnProperty( "audioIn" ) ) {
+        options.audioIn = +updates.audioIn;
+        options._volumeEvent();
+      }
+      if ( updates.hasOwnProperty( "audioOut" ) ) {
+        options.audioOut = +updates.audioOut;
+        options._volumeEvent();
+      }
       if ( updates.hasOwnProperty( "from" ) && updates.from < options.duration ) {
         options.from = updates.from;
       }
@@ -698,6 +788,22 @@
         duration: {
           hidden: true,
           "default": 0
+        },
+        audioIn: {
+          elem: "input",
+          type: "number",
+          label: "Audio In",
+          "default": 0,
+          "units": "seconds",
+          hidden: true
+        },
+        audioOut: {
+          elem: "input",
+          type: "number",
+          label: "Audio Out",
+          "default": 0,
+          "units": "seconds",
+          hidden: true
         }
       }
     }
