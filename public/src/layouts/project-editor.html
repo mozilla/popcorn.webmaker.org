@@ -25,8 +25,14 @@
         <div class="description-wrapper">
           <textarea class="butter-project-description" maxlength="200" placeholder="A project about..."></textarea>
         </div>
-        <label>Background color</label>
-        <input class="butter-project-background-colour" placeholder="#FFFFFF" type="color">
+        <div class="color-container">
+          <label class="property-name">Background Colour</label>
+          <div class="butter-form-append">
+            <input class="value butter-project-background-colour" type="text"/>
+            <span class="color-picker-toggle butter-unit"></span>
+          </div>
+          <div class="color-picker hidden"></div>
+        </div>
         <label>Thumbnail URL</label>
         <input class="butter-project-thumbnail" type="text">
         <div class="droparea">

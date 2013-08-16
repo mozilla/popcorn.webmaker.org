@@ -18,6 +18,7 @@ define([ "editor/editor", "editor/base-editor",
         _dropArea = _rootElement.querySelector( ".image-droparea" ),
         _thumbnailInput = _rootElement.querySelector( ".butter-project-thumbnail" ),
         _backgroundInput = _rootElement.querySelector( ".butter-project-background-colour" ),
+        _colorContainer = _rootElement.querySelector( ".color-container" ),
         _projectEmbedURL = _rootElement.querySelector( ".butter-project-embed-url" ),
         _embedSize = _rootElement.querySelector( ".butter-embed-size" ),
         _previewBtn = _rootElement.querySelector( ".butter-preview-link" ),
@@ -44,10 +45,6 @@ define([ "editor/editor", "editor/base-editor",
 
     _descriptionInput.value = butter.project.description ? butter.project.description : "";
     _backgroundInput.value = butter.project.background ? butter.project.background : "#FFFFFF";
-
-    _backgroundInput.addEventListener( "change", function() {
-      _project.background = this.value;
-    }, false );
 
     ToolTip.create({
       name: "description-tooltip",
@@ -202,6 +199,15 @@ define([ "editor/editor", "editor/base-editor",
     Editor.BaseEditor.extend( this, butter, rootElement, {
       open: function() {
         _project = butter.project;
+
+        this.attachColorChangeHandler( _colorContainer, null, "background", function( te, options, message, prop ) {
+          if ( message ) {
+            _this.setErrorState( message );
+            return;
+          } else {
+            _project.background = options.background;
+          }
+        });
 
         _previewBtn.href = _projectURL.value = _project.publishUrl || "";
         if ( !_project.isSaved ) {

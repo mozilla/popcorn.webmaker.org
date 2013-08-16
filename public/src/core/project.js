@@ -116,9 +116,11 @@ define( [ "core/eventmanager", "core/media", "util/sanitizer" ],
 
       "background": {
         set: function( val ) {
-          _background = val;
-          _video.style.background = _background;
-          invalidate();
+          if ( val !== _background ) {
+            _background = val;
+            _video.style.background = _background;
+            invalidate();
+          }
         },
         get: function() {
           return _background;
