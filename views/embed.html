@@ -46,10 +46,10 @@
           <div class="embed-project">
             <div>
               <div class="mozpopcorn">Popcorn Maker</div>
-              <div class="embed-title">{{title}}</div>
+              <div class="embed-title">{{title | safe }}</div>
               <div class="embed-author">{{author}}</div>
             </div>
-            <div class="post-roll-description">{{description}}
+            <div class="post-roll-description">{{description | safe }}
               <br>
               <a href="/" target="_blank">Create a project like this!</a>
             </div>
@@ -68,7 +68,7 @@
           <div class="embed-project">
             <div>
               <div class="mozpopcorn">Popcorn Maker</div>
-              <div class="embed-title">{{title}}</div>
+              <div class="embed-title">{{title | safe}}</div>
               <div class="embed-author">{{author}}</div>
             </div>
           </div>
@@ -97,8 +97,8 @@
     <div id="attribution-info" class="attribution-info">
       <div id="attribution-logo" class="attribution-logo"><span class="attribution-text">Credits</span></div>
       <div id="attribution-details" class="attribution-details"><span class="attribution-close"></span>
-        <div class="attribution-mopop">mozilla Popcorn</div>
-        <div class="attribution-title">{{title}}</div>
+        <div class="attribution-mopop">Mozilla Popcorn</div>
+        <div class="attribution-title">{{title | safe}}</div>
         {% if author %}
           <div class="attribution-author">{{author}}</div>
         {% endif %}
