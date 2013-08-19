@@ -6,7 +6,6 @@
 
   @titleBarHeight: 60px;
   @addClipHeight: 165px;
-  @durationInputHeight: 48px;
 
   .butter-editor-body {
     top: @titleBarHeight;
@@ -71,7 +70,7 @@
 
   .media-gallery {
     position: absolute;
-    bottom: @durationInputHeight;
+    bottom: 0;
     top: @addClipHeight + 15px;
     width: 100%;
     margin-top: -1px;
@@ -89,32 +88,6 @@
       top: 0;
       left: 0;
       right: 0;
-    }
-  }
-
-  .media-gallery-base-media.butter-form-inline.form-single {
-    left: 0;
-    right: 0;
-    margin: 0;
-    padding: 5px 20px;
-    background: @baseLight;
-    border-top: 1px solid @baseLightOutline;
-    > label {
-      font-size: 11px;
-      font-weight: 700;
-      text-transform: uppercase;
-      line-height: 22px;
-    }
-    > input {
-      float: right;
-      width: 200px;
-    }
-    &.bottom {
-      bottom: 0;
-      position: absolute;
-    }
-    &.top {
-      top: 0;
     }
   }
 

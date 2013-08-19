@@ -20,8 +20,6 @@ define( [ "localized", "util/lang", "util/uri", "util/keys", "util/mediatypes", 
       _galleryList = _galleryPanel.querySelector( ".media-gallery-list" ),
       _GALLERYITEM = LangUtils.domFragment( EDITOR_LAYOUT, ".media-gallery-item" ),
 
-      _durationInput = _parentElement.querySelector( ".media-base-duration" ),
-
       _butter,
       _media,
       _mediaLoadTimeout,
@@ -45,30 +43,6 @@ define( [ "localized", "util/lang", "util/uri", "util/keys", "util/mediatypes", 
     _loadingSpinner.classList.add( "hidden" );
 
     _addBtn.classList.add( "hidden" );
-  }
-
-  function setBaseDuration( duration ) {
-    var durationTimeCode = Time.toTimecode( duration ),
-        durationSeconds = Time.toSeconds( duration );
-
-    // Don't accept empty inputs or negative/zero values for duration.
-    if ( duration === "" || durationSeconds <= 0 ) {
-      _durationInput.value = Time.toTimecode( _media.duration );
-      return;
-    }
-
-    // If the entered value wasn't in time code format.
-    if ( _durationInput.value !== durationTimeCode ) {
-      _durationInput.value = durationTimeCode;
-    }
-
-    // If the seconds version of the duration is already our current duration
-    // bail early.
-    if ( durationSeconds === _media.duration ) {
-      return;
-    }
-
-    _media.url = "#t=," + durationSeconds;
   }
 
   function onDenied( error ) {
@@ -180,7 +154,7 @@ define( [ "localized", "util/lang", "util/uri", "util/keys", "util/mediatypes", 
         });
 
         playWhenReady = !_media.paused;
-        setBaseDuration( end );
+        _media.url = "#t=," + end;
       } else {
         addTrackEvent();
       }
@@ -263,11 +237,6 @@ define( [ "localized", "util/lang", "util/uri", "util/keys", "util/mediatypes", 
     }
   }
 
-  function onBlur( e ) {
-    e.preventDefault();
-    setBaseDuration( _durationInput.value );
-  }
-
   function onAddMediaClick() {
     // transitionend event is not reliable and not cross browser supported.
     _cancelSpinner = setTimeout( function() {
@@ -285,16 +254,6 @@ define( [ "localized", "util/lang", "util/uri", "util/keys", "util/mediatypes", 
     _urlInput.addEventListener( "keydown", onEnter, false );
 
     _addBtn.addEventListener( "click", onAddMediaClick, false );
-
-    _durationInput.addEventListener( "keydown", onDurationChange, false );
-    _durationInput.addEventListener( "blur", onBlur, false );
-  }
-
-  function onDurationChange( e ) {
-    if ( e.keyCode === KeysUtils.ENTER ) {
-      e.preventDefault();
-      setBaseDuration( _durationInput.value );
-    }
   }
 
   Editor.register( "media-editor", null, function( rootElement, butter ) {
@@ -326,9 +285,7 @@ define( [ "localized", "util/lang", "util/uri", "util/keys", "util/mediatypes", 
     setup();
 
     Editor.BaseEditor.extend( _this, butter, rootElement, {
-      open: function() {
-        setBaseDuration( _media.duration );
-      },
+      open: function() {},
       close: function() {}
     });
 

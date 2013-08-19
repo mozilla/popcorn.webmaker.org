@@ -12,16 +12,11 @@ define( [ "dialog/dialog", "util/dragndrop", "util/lang", "text!layouts/track-ha
     var _media = media,
         _container = mediaInstanceRootElement.querySelector( ".track-handle-container" ),
         _listElement = _container.querySelector( ".handle-list" ),
-        _addTrackButton = _container.querySelector( "button.add-track" ),
         _tracks = {},
         _menus = [],
         _this = this,
         _draggingHandleIndex,
         _draggingHandleId;
-
-    _addTrackButton.addEventListener( "click", function() {
-      butter.currentMedia.addTrack();
-    }, false );
 
     function sortHandles(){
       if ( butter.currentMedia ) {
@@ -202,8 +197,6 @@ define( [ "dialog/dialog", "util/dragndrop", "util/lang", "text!layouts/track-ha
         menu: menuDiv
       };
 
-      _addTrackButton.style.top = _listElement.offsetHeight - ADD_TRACK_BUTTON_Y_ADJUSTMENT + "px";
-
       sortHandles();
     }
 
@@ -222,7 +215,6 @@ define( [ "dialog/dialog", "util/dragndrop", "util/lang", "text!layouts/track-ha
       _sortable.removeItem( _tracks[ trackId ].element );
       _menus.splice( _menus.indexOf( _tracks[ trackId ].menu ), 1 );
       delete _tracks[ trackId ];
-      _addTrackButton.style.top = _listElement.offsetHeight - ADD_TRACK_BUTTON_Y_ADJUSTMENT + "px";
     });
 
     tracksContainer.element.addEventListener( "scroll", function(){
@@ -246,7 +238,6 @@ define( [ "dialog/dialog", "util/dragndrop", "util/lang", "text!layouts/track-ha
 
     this.update = function(){
       _container.scrollTop = tracksContainer.element.scrollTop;
-      _addTrackButton.style.top = _listElement.offsetHeight - ADD_TRACK_BUTTON_Y_ADJUSTMENT + "px";
     };
 
     _this.update();

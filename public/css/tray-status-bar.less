@@ -1,13 +1,15 @@
 /*********************************************************
 * TRAY STATUS
 */
-@_butterStatusHeight: 45px;
+@_butterStatusHeight: 50px;
+@_statusContainerHeight: @_butterStatusHeight - 25px;
 @_mediaStatusContainerHeight: @_butterStatusHeight;
-@_playButtonHeight: 27px;
+@_playButtonHeight: 20px;
 @_scrubberBarHeight: 8px;
 @_scrubberHandleHeight: 10px;
 @_traySideWidth: 129px;
 @_timebarRight: 27px;
+@_buttonColour: #949494;
 
 /*********************************************************
 * Butter Status Area - The top bar in the tray
@@ -27,6 +29,20 @@
   height: @_mediaStatusContainerHeight;
   background: #FFF;
   border-top: 1px solid @baseLightOutline;
+
+  .add-track {
+    position: absolute;
+    top: 0;
+    left: 14px;
+    padding: 0;
+    font-size: 11px;
+    position: absolute;
+    top: 17px;
+    width: 80px;
+    margin-left: 10px;
+    line-height: 20px;
+    outline: none;
+  }
 }
 
 
@@ -120,11 +136,12 @@
   line-height: @_tooltipHeight / 3;
   top: -( @_tooltipHeight + 4px );
   height: @_tooltipHeight;
+
   &:after, &:before{
     top: 100%;
     border-bottom: none;
     border-left: 5px solid transparent;
-    border-right: 5px solid transparent;  
+    border-right: 5px solid transparent;
     border-top: 5px solid #FFF;
   }
   &:before {
@@ -135,32 +152,88 @@
 }
 
 /*********************************************************
-* Status container - Play button, time code at the top left of the tray.
+* Status container - Play button, mute button and time code at the top of the tray.
 */
+
+@statusSidePosition: -7px;
+@statusSideRotation: 25deg;
 
 .status-container {
   position: absolute;
-  width: @_traySideWidth;
-  height: @_butterStatusHeight;
-  line-height: @_butterStatusHeight;
-  top: 0;
-  left: 0;
+  width: @_traySideWidth + 70px;
+  height: @_statusContainerHeight;
+  line-height: @_statusContainerHeight;
+  bottom: @_statusContainerHeight + 25px;
+  left: 25px;
+  background-color: #FFFFFF;
+  border-top-right-radius: 5px;
+  border-top-left-radius: 5px;
+  border-top: 1px solid @baseLightOutline;
+
+  .status-inner-container {
+    height: 100%;
+    width: 100%;
+    position: relative;
+    z-index: 3;
+  }
+
+  > .status-side {
+    position: absolute;
+    width: 40px;
+    height: 100%;
+    top: 9px;
+    background-color: #FFFFFF;
+    z-index: 2;
+
+    &.left {
+      left: @statusSidePosition;
+      .transform( rotate( @statusSideRotation ) );
+      border-left: 1px solid @baseLightOutline;
+    }
+
+    &.right {
+      right: @statusSidePosition;
+      .transform( rotate( -@statusSideRotation ) );
+      border-right: 1px solid @baseLightOutline;
+    }
+  }
 }
 
-.time-container {
+.time-wrapper {
+  position: relative;
+  margin-top: 5px;
   float: left;
-  margin-left: 10px;
-  input {
-    background: transparent;
+
+  .time-container {
+    display: inline;
+    position: relative;
     color: @baseText;
-    border: none;
-    width: 50px;
-    text-align: center;
     font-size: 10px;
     font-family: menlo, monospace;
-    &:focus {
+
+    .current-time {
+      margin-right: -3px;
+    }
+
+    .duration-input {
+      display: inline;
+      padding: 3px;
+      border: 1px solid @baseLightOutline;
+      position: relative;
+      margin-top: 2px;
+      max-width: 55px;
+      background: transparent;
+      color: @baseText;
+      font-size: 10px;
+      font-family: menlo, monospace;
+      margin-left: -3px;
+      outline: none;
       .selectable( text );
-    } 
+
+      &.input-active {
+        border: 1px solid @green;
+      }
+    }
   }
 }
 
@@ -169,44 +242,50 @@
   height: @_playButtonHeight;
   line-height: @_playButtonHeight;
   text-align: center;
-  border-radius: 4px;
-  background: @green;
   padding: 0;
   margin: 0;
-  &:active {
-    background-color: lighten( @green, 10% );
-  }
 }
 
 .play-button-container {
   position: relative;
-  height: 100%;
   float: left;
-  width: @_playButtonHeight + 13px;
-  background: lighten( @baseLight, 5% );
-  border-right: 1px solid @baseLightOutline;
-  .triangle( "right", 4px, #FFF, 1px, @baseLightOutline );
+  height: 100%;
+  width: @_playButtonHeight + 10px;
+  margin-left: 10px;
+  margin-top: 5px;
+
   .status-button {
-    position: absolute;
-    top: 50%;
-    left: 5px;
-    margin-top: -@_playButtonHeight / 2;
+    width: 21px;
+    height: 21px;
+    line-height: 21px;
+    border-radius: 25px;
+
+    .icon {
+      margin-left: 2px;
+    }
   }
-  .status-button[data-state="true"] > .icon:before {
-    content: "\f04c"; //pause
+
+  .status-button[data-state="true"] {
+    .icon {
+      margin-left: 0;
+      &:before {
+        content: "\f04c"; //pause
+      }
+    }
   }
 }
 
 .mute-button-container {
-  position: absolute;
-  top: 10px;
-  left: @_traySideWidth - 23px;
+  position: relative;
+  float: left;
+  margin-top: 10px;
 
   .status-button {
     text-align: left;
     background: none;
+
     .icon {
-      color: @baseText;
+      color: @_buttonColour;
     }
     &[data-state="true"] .icon:before {
       content: "\f026"; // volume-off

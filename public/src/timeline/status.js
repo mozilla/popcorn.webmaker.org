@@ -2,7 +2,7 @@
  * If a copy of the MIT license was not distributed with this file, you can
  * obtain one at https://raw.github.com/mozilla/butter/master/LICENSE */
 
-define( [ "util/time" ], function( util ){
+define( [ "util/time", "util/keys" ], function( util, Keys ){
 
   function Button( parentNode, className, onClick ) {
     var _container = parentNode.querySelector( className ),
@@ -36,7 +36,8 @@ define( [ "util/time" ], function( util ){
 
   function Time( parentNode, media ){
     var _container = parentNode.querySelector( ".time-container" ),
-        _timeBox = _container.querySelector( "input" ),
+        _timeBox = _container.querySelector( ".current-time" ),
+        _durationInput = _container.querySelector( ".duration-input" ),
         _media = media,
         _oldValue = 0;
 
@@ -52,10 +53,10 @@ define( [ "util/time" ], function( util ){
           } //try
         } //if
 
-        _timeBox.value = util.toTimecode( time, 0 );
+        _timeBox.innerHTML = util.toTimecode( time, 0 );
       }
       else {
-        _timeBox.value = _oldValue;
+        _timeBox.innerHTML = _oldValue;
       } //if
     } //setTime
 
@@ -63,25 +64,48 @@ define( [ "util/time" ], function( util ){
       setTime( _media.currentTime, false );
     });
 
-    _timeBox.addEventListener( "focus", function(){
-      _oldValue = _timeBox.value;
-    }, false );
+    _media.listen( "mediadurationchanged", function() {
+      _durationInput.value = util.toTimecode( _media.duration, 0 );
+    });
 
-    _timeBox.addEventListener( "blur", function(){
-      if( _timeBox.value !== _oldValue ){
-        setTime( _timeBox.value, true );
-      } //if
-    }, false );
+    function updateDuration( val ) {
+      var seconds = util.toSeconds( val );
 
-    _timeBox.addEventListener( "keydown", function( e ){
-      if( e.which === 13 ){
-        _timeBox.blur();
+      if ( seconds <= 0 ) {
+        seconds = _media.duration;
       }
-      else if( e.which === 27 ){
-        _timeBox.value = _oldValue;
-        _timeBox.blur();
-      } //if
-    }, false );
+
+      _durationInput.classList.remove( "input-active" );
+      _media.url = "#t=," + seconds;
+      _durationInput.value = util.toTimecode( seconds, 0 );
+      _durationInput.addEventListener( "click", onDurationClick, false );
+      _durationInput.removeEventListener( "blur", onBlur, false );
+      _durationInput.removeEventListener( "keydown", onKeyDown, false );
+      _durationInput.blur();
+    }
+
+    function onBlur( e ) {
+      e.preventDefault();
+
+      updateDuration( _durationInput.value );
+    }
+
+    function onKeyDown( e ) {
+      if ( e.keyCode === Keys.ENTER ) {
+        updateDuration( _durationInput.value );
+      }
+    }
+
+    function onDurationClick( e ) {
+      _durationInput.removeEventListener( "click", onDurationClick, false );
+      _durationInput.classList.add( "input-active" );
+
+      _durationInput.addEventListener( "blur", onBlur, false );
+
+      _durationInput.addEventListener( "keydown", onKeyDown, false );
+    }
+
+    _durationInput.addEventListener( "click", onDurationClick, false );
 
     setTime( 0, false );
 

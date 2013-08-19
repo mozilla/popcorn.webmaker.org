@@ -9,15 +9,14 @@ define( [ "util/lang",  "./logo-spinner",
             TRAY_LAYOUT,
             STATUS_AREA_LAYOUT, TIMELINE_AREA_LAYOUT ) {
 
-  return function(){
+  return function( butter ){
 
-    var statusAreaFragment = LangUtils.domFragment( STATUS_AREA_LAYOUT, ".media-status-container" );
-    var timelineAreaFragment = LangUtils.domFragment( TIMELINE_AREA_LAYOUT, ".butter-timeline" );
-    var trayRoot = LangUtils.domFragment( TRAY_LAYOUT, ".butter-tray" );
-
-    var _loadingContainer = trayRoot.querySelector( ".butter-loading-container" );
-
-    var _logoSpinner = new LogoSpinner( _loadingContainer );
+    var statusAreaFragment = LangUtils.domFragment( STATUS_AREA_LAYOUT, ".media-status-container" ),
+        timelineAreaFragment = LangUtils.domFragment( TIMELINE_AREA_LAYOUT, ".butter-timeline" ),
+        trayRoot = LangUtils.domFragment( TRAY_LAYOUT, ".butter-tray" ),
+        addTrackButton = statusAreaFragment.querySelector( "button.add-track" ),
+        loadingContainer = trayRoot.querySelector( ".butter-loading-container" ),
+        logoSpinner = new LogoSpinner( loadingContainer );
 
     this.statusArea = trayRoot.querySelector( ".butter-status-area" );
     this.timelineArea = trayRoot.querySelector( ".butter-timeline-area" );
@@ -26,6 +25,10 @@ define( [ "util/lang",  "./logo-spinner",
 
     this.statusArea.appendChild( statusAreaFragment );
     this.timelineArea.appendChild( timelineAreaFragment );
+
+    addTrackButton.addEventListener( "click", function() {
+      butter.currentMedia.addTrack( null, true );
+    }, false );
 
     this.attachToDOM = function() {
       document.body.appendChild( trayRoot );
@@ -45,12 +48,12 @@ define( [ "util/lang",  "./logo-spinner",
 
     this.toggleLoadingSpinner = function( state ) {
       if ( state ) {
-        _logoSpinner.start();
-        _loadingContainer.style.display = "block";
+        logoSpinner.start();
+        loadingContainer.style.display = "block";
       }
       else {
-        _logoSpinner.stop( function() {
-          _loadingContainer.style.display = "none";
+        logoSpinner.stop( function() {
+          loadingContainer.style.display = "none";
         });
       }
     };

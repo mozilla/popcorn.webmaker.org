@@ -144,7 +144,12 @@
         }
       }
 
-      this.addTrack = function ( track ) {
+      this.addTrack = function ( track, forceFirst ) {
+
+        if ( forceFirst && _orderedTracks[ 0 ] ) {
+          return _this.insertTrackBefore( _orderedTracks[ 0 ] );
+        }
+
         track = ensureNewTrackIsTrack( track );
 
         if ( track._media ) {
