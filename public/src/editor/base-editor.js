@@ -2,8 +2,8 @@
  * If a copy of the MIT license was not distributed with this file, you can
  * obtain one at https://raw.github.com/mozilla/butter/master/LICENSE */
 
-define( [ "core/eventmanager", "util/scrollbars", "ui/widget/tooltip", "ui/widget/textbox" ],
-  function( EventManager, Scrollbars, ToolTip, TextboxWrapper ) {
+define( [ "localized", "core/eventmanager", "util/scrollbars", "ui/widget/tooltip", "ui/widget/textbox" ],
+  function( Localized, EventManager, Scrollbars, ToolTip, TextboxWrapper ) {
 
   /**
    * Class: BaseEditor
@@ -146,7 +146,7 @@ define( [ "core/eventmanager", "util/scrollbars", "ui/widget/tooltip", "ui/widge
 
           if ( flag ) {
 
-            message = "Invalid Color update. Must start with a hex (#) or be one of the following: ";
+            message = Localized.get( "Invalid Color update" ) + " ";
             for ( i in _colorHexCodes ) {
               if ( _colorHexCodes.hasOwnProperty( i ) ) {
                 message += i + ", ";
@@ -157,7 +157,7 @@ define( [ "core/eventmanager", "util/scrollbars", "ui/widget/tooltip", "ui/widge
           }
         } else {
           if ( !value.match( /^#(?:[0-9a-fA-F]{3}){1,2}$/ ) ) {
-            message = "Invalid Hex Color format. Must be a hash (#) followed by 3 or 6 digits/letters.";
+            message = Localized.get( "Invalid Hex Color format" );
           }
         }
 

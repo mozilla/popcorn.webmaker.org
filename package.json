@@ -100,10 +100,11 @@
     "nconf": "0.6.7",
     "newrelic": "0.9.20",
     "node-uuid": "1.4.0",
-    "nunjucks": "0.1.9",
+    "nunjucks": "git://github.com/jlongster/nunjucks.git#0fc9622f3471d67058e431f765bc45d928d23a61",
     "requirejs-middleware": "0.1.1",
     "sequelize": "1.6.0",
     "shelljs": "0.1.2",
+    "webmaker-i18n": "https://github.com/mozilla/node-webmaker-i18n/archive/v0.0.8.tar.gz",
     "webmaker-loginapi": "https://github.com/mozilla/node-webmaker-loginapi/tarball/v0.1.9",
     "webmaker-sso": "https://github.com/jbuck/node-webmaker-sso/tarball/v0.0.4"
   },

@@ -18,7 +18,13 @@ var express = require('express'),
     metrics = require('./lib/metrics.js'),
     middleware,
     APP_HOSTNAME = config.hostname,
-    WWW_ROOT =  __dirname + '/public';
+    WWW_ROOT =  __dirname + '/public',
+    i18n = require( 'webmaker-i18n' );
+
+nunjucksEnv.addFilter( "instantiate", function( input ) {
+    var tmpl = new nunjucks.Template( input );
+    return tmpl.render( this.getVariables() );
+});
 
 nunjucksEnv.express( app );
 
@@ -77,10 +83,14 @@ app.configure( function() {
         }
       },
       defaults: {
+        name: "../external/require/require",
         baseUrl: WWW_ROOT + "/src/",
         findNestedDependencies: true,
         optimize: "none",
         preserveLicenseComments: false,
+        paths: {
+          "localized": path.resolve( __dirname, "bower_components/webmaker-i18n/localized" )
+        },
         wrap: {
           startFile: __dirname + "/tools/wrap.start",
           endFile: __dirname + "/tools/wrap.end"
@@ -89,6 +99,15 @@ app.configure( function() {
     }))
     .use( express.static( tmpDir, JSON.parse( JSON.stringify( config.staticMiddleware ) ) ) )
     .use( express.static( WWW_ROOT, JSON.parse( JSON.stringify( config.staticMiddleware ) ) ) );
+
+  // Setup locales with i18n
+  app.use( i18n.middleware({
+    supported_languages: [
+      "en-US"
+    ],
+    default_lang: "en-US",
+    translation_directory: path.join( __dirname, "locale" )
+  }));
 
   app.use( express.bodyParser() )
     .use( express.cookieParser() )
@@ -113,7 +132,7 @@ app.configure( function() {
     })
     .use( function( req, res, next ) {
       var err = {
-        message: "This page doesn't exist",
+        message: req.gettext( "This page doesn't exist" ),
         status: 404
       };
 
@@ -131,7 +150,7 @@ require( './lib/loginapi' )( app, {
 
 middleware = require( './lib/middleware' );
 
-var routes = require('./routes');
+var routes = require( './routes' );
 
 app.param( "myproject", middleware.loadOwnProject( Project ));
 app.param( "anyproject", middleware.loadAnyProject( Project ));
@@ -194,6 +213,41 @@ app.get( '/api/butterconfig', function( req, res ) {
     "user_bar": app.locals.config.user_bar
   });
 });
+
+// routes to be used in text!
+app.get( '/layouts/header.html', function( req, res ) {
+  res.render( '/layouts/header.html', {
+    user_bar: app.locals.config.user_bar,
+    audience: app.locals.config.audience
+  });
+});
+
+app.get( '/layouts/tutorial-list.html', routes.path( '/layouts/tutorial-list.html' ) );
+app.get( '/layouts/status-area.html', routes.path( '/layouts/status-area.html' ) );
+app.get( '/layouts/media-editor.html', routes.path( '/layouts/media-editor.html' ) );
+app.get( '/layouts/controls.html', routes.path( '/layouts/controls.html' ) );
+app.get( '/layouts/media-instance.html', routes.path( '/layouts/media-instance.html' ) );
+app.get( '/layouts/project-editor.html', routes.path( '/layouts/project-editor.html' ) );
+app.get( '/layouts/editor-area.html', routes.path( '/layouts/editor-area.html' ) );
+app.get( '/layouts/plugin-list-editor.html', routes.path( '/layouts/plugin-list-editor.html' ) );
+app.get( '/layouts/sequencer-editor.html', routes.path( '/layouts/sequencer-editor.html' ) );
+app.get( '/layouts/trackevent-editor-defaults.html', routes.path( '/layouts/trackevent-editor-defaults.html' ) );
+app.get( '/dialog/dialogs/backup.html', routes.path( '/dialog/dialogs/backup.html' ) );
+app.get( '/dialog/dialogs/crash.html', routes.path( '/dialog/dialogs/crash.html' ) );
+app.get( '/dialog/dialogs/delete-track-events.html', routes.path( '/dialog/dialogs/delete-track-events.html' ) );
+app.get( '/dialog/dialogs/delete-track.html', routes.path( '/dialog/dialogs/delete-track.html' ) );
+app.get( '/dialog/dialogs/error-message.html', routes.path( '/dialog/dialogs/error-message.html' ) );
+app.get( '/dialog/dialogs/feedback.html', routes.path( '/dialog/dialogs/feedback.html' ) );
+app.get( '/dialog/dialogs/first-run.html', routes.path( '/dialog/dialogs/first-run.html' ) );
+app.get( '/dialog/dialogs/track-data.html', routes.path( '/dialog/dialogs/track-data.html' ) );
+app.get( '/editors/default.html', routes.path( '/editor/default.html' ) );
+app.get( '/templates/assets/editors/googlemap/googlemap-editor.html', routes.path( '/plugins/googlemap-editor.html' ) );
+app.get( '/templates/assets/editors/popup/popup-editor.html', routes.path( '/plugins/popup-editor.html' ) );
+app.get( '/templates/assets/editors/image/image-editor.html', routes.path( '/plugins/image-editor.html' ) );
+app.get( '/templates/assets/editors/text/text-editor.html', routes.path( '/plugins/text-editor.html' ) );
+
+// Localized Strings
+app.get( "/strings/:lang?", middleware.crossOrigin, i18n.stringsRoute( 'en-US' ) );
 
 app.put( "/api/image", filter.isImage, routes.api.image );
 

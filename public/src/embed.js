@@ -217,7 +217,8 @@ function init() {
   var require = requirejs.config({
     baseUrl: "/src",
     paths: {
-      "text": "../external/require/text"
+      "text": "../external/require/text",
+      "localized": "/static/bower/webmaker-i18n/localized"
     }
   });
 
@@ -470,8 +471,10 @@ function init() {
     }
   );
 
-  require(["util/shims"], function() {
-    require([ "embed-main" ]);
+  require(["localized", "util/shims"], function( Localized ) {
+    Localized.ready(function() {
+      require([ "embed-main" ]);
+    });
   });
 }
 

@@ -9,6 +9,7 @@ module.exports = function( req, res, next ) {
   projectJSON.background = res.locals.project.background;
   req.isRemix = true;
   req.projectJSON = projectJSON;
+  projectJSON.isRemix = true;
 
   next();
 };

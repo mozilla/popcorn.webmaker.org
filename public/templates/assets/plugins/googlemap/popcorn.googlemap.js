@@ -694,7 +694,7 @@ var googleCallback;
       fullscreen: {
         elem: "input",
         type: "checkbox",
-        label: "Full-Screen",
+        label: "Fullscreen",
         "default": false,
         optional: true
       },

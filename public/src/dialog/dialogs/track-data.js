@@ -2,7 +2,7 @@
  * If a copy of the MIT license was not distributed with this file, you can
  * obtain one at https://raw.github.com/mozilla/butter/master/LICENSE */
 
-define([ "text!dialog/dialogs/track-data.html", "dialog/dialog" ],
+define([ "l10n!/dialog/dialogs/track-data.html", "dialog/dialog" ],
   function( LAYOUT_SRC, Dialog ){
 
   Dialog.register( "track-data", LAYOUT_SRC, function ( dialog, track ) {
