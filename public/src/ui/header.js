@@ -1,6 +1,6 @@
 /*global $*/
-define([ "dialog/dialog", "util/lang", "text!layouts/header.html", "text!layouts/tutorial-list.html","text!layouts/tutorial-view.html", "ui/widget/textbox", "ui/widget/tooltip", "make-api", "json!/api/butterconfig" ],
-  function( Dialog, Lang, HEADER_TEMPLATE, TUTORIAL_LIST_TEMPLATE, TUTORIAL_VIEW_TEMPLATE, TextBoxWrapper, ToolTip, Make, config ) {
+define([ "dialog/dialog", "util/lang", "text!layouts/header.html",  "ui/widget/textbox", "ui/widget/tooltip", "make-api", "json!/api/butterconfig" ],
+  function( Dialog, Lang, HEADER_TEMPLATE, TextBoxWrapper, ToolTip, Make, config ) {
 
   return function( butter, options ){
 
@@ -15,7 +15,6 @@ define([ "dialog/dialog", "util/lang", "text!layouts/header.html", "text!layouts
     var _this = this,
         _rootElement = Lang.domFragment( HEADER_TEMPLATE, ".butter-header" ),
         _bodyWrapper = document.querySelector( ".body-wrapper" ),
-        _tutorialButtonContainer = document.querySelector( ".butter-tutorial-container" ),
         _saveButton = _rootElement.querySelector( ".butter-save-btn" ),
         _projectTitle = _rootElement.querySelector( ".butter-project-title" ),
         _projectName = _projectTitle.querySelector( ".butter-project-name" ),
@@ -320,83 +319,6 @@ define([ "dialog/dialog", "util/lang", "text!layouts/header.html", "text!layouts
       _this.views.dirty();
     });
 
-    function loadTutorials() {
-      var tutorialUrl;
-
-      if ( butter.project.publishUrl ) {
-        tutorialUrl = butter.project.publishUrl;
-      } else if ( butter.project.remixedFromUrl ) {
-        tutorialUrl = butter.project.remixedFromUrl;
-      }
-
-      make.tags( "tutorial-" + escape( tutorialUrl ) ).then( function( err, results ) {
-        var tutorialView = Lang.domFragment( TUTORIAL_VIEW_TEMPLATE, ".tutorial-view" ),
-            tutorialTemplate = Lang.domFragment( TUTORIAL_LIST_TEMPLATE, ".tutorial-template" ),
-            iframeCover = tutorialView.querySelector( ".tutorial-iframe-cover" ),
-            iframe = tutorialView.querySelector( ".tutorial-iframe" ),
-            closeButton = tutorialView.querySelector( ".tutorial-close-button" ),
-            viewTitle = tutorialView.querySelector( ".tutorial-view-title" ),
-            tutorialList = document.querySelector( ".tutorial-list" ),
-            tutorialBtn = document.querySelector( ".tutorial-btn" );
-
-        if ( err || !results.length ) {
-          return;
-        }
-
-        tutorialBtn.classList.remove( "hidden" );
-
-        var onCoverMouseUp = function() {
-          iframeCover.style.display = "none";
-          tutorialView.addEventListener( "mousedown", onCoverMouseDown, false );
-          document.removeEventListener( "mouseup", onCoverMouseUp, false );
-        };
-
-        var onCoverMouseDown = function() {
-          iframeCover.style.display = "block";
-          tutorialView.removeEventListener( "mousedown", onCoverMouseDown, false );
-          document.addEventListener( "mouseup", onCoverMouseUp, false );
-        };
-
-        var createTutorialItem = function( item ) {
-          var tutorialElement = document.createElement( "div" );
-          tutorialElement.classList.add( "tutorial-list-item" );
-          tutorialElement.addEventListener( "click", function() {
-            iframe.src = item.url + "?details=hidden";
-            viewTitle.innerHTML = "Tutorial: " + item.title;
-            tutorialView.classList.remove( "closed" );
-            tutorialView.style.height = "";
-            tutorialView.style.width = "";
-          }, false );
-          tutorialElement.innerHTML = item.title;
-          tutorialList.appendChild( tutorialElement );
-        };
-
-        tutorialView.addEventListener( "mousedown", onCoverMouseDown, false );
-
-        closeButton.userSelect = "none";
-        document.body.appendChild( tutorialView );
-
-        closeButton.addEventListener( "click", function() {
-          tutorialView.classList.add( "closed" );
-          tutorialView.style.height = 0;
-          tutorialView.style.width = 0;
-        }, false );
-
-        tutorialBtn.addEventListener( "click", function() {
-          tutorialList.classList.toggle( "open" );
-        }, false );
-
-        $( tutorialView ).draggable({
-          cancel: "iframe"
-        });
-        $( tutorialView ).resizable();
-
-        for ( var i = 0; i < results.length; i++ ) {
-          createTutorialItem( results[ i ] );
-        }
-      });
-    }
-
     function loadDashboard() {
       var myProjectsButton = document.querySelector( ".user-info > .makes" ),
           container = document.querySelector( ".my-projects-container" ),
@@ -433,11 +355,6 @@ define([ "dialog/dialog", "util/lang", "text!layouts/header.html", "text!layouts
         togglePreviewButton( false );
         toggleSaveButton( false );
         toggleProjectButton( false );
-      }
-
-      if ( butter.project.publishUrl ||
-           butter.project.remixedFromUrl ) {
-        loadTutorials();
       }
     });
   };

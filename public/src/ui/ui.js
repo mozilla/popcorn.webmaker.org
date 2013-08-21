@@ -6,12 +6,12 @@ define( [ "core/eventmanager", "./toggler",
           "./header", "./unload-dialog", "crashreporter",
           "first-run", "./tray", "editor/ui-kit",
           "core/trackevent", "dialog/dialog",
-          "util/dragndrop" ],
+          "util/dragndrop", "make-api", "json!/api/butterconfig" ],
   function( EventManager, Toggler, Header,
             UnloadDialog, CrashReporter,
             FirstRun, Tray, UIKitDummy,
             TrackEvent, Dialog,
-            DragNDrop ){
+            DragNDrop, Make, config ){
 
   var TRANSITION_DURATION = 500,
       BUTTER_CSS_FILE = "{css}/butter.ui.css";
@@ -30,6 +30,10 @@ define( [ "core/eventmanager", "./toggler",
 
   var NUDGE_INCREMENT_SMALL = 0.25,
       NUDGE_INCREMENT_LARGE = 1;
+
+  var make = new Make({
+    apiURL: config.make_endpoint
+  });
 
   function UI( butter ){
 
@@ -113,11 +117,29 @@ define( [ "core/eventmanager", "./toggler",
           CrashReporter.init( butter, _uiConfig );
 
           function firstRunInit() {
-            butter.unlisten( "mediaready", firstRunInit );
+            var tutorialUrl;
 
-            // Open the media-editor editor right after butter is finished starting up
-            butter.editor.openEditor( "media-editor" );
-            FirstRun.init();
+            if ( butter.project.publishUrl ) {
+              tutorialUrl = butter.project.publishUrl;
+            } else if ( butter.project.remixedFromUrl ) {
+              tutorialUrl = butter.project.remixedFromUrl;
+            }
+
+            make.tags( "tutorial-" + escape( tutorialUrl ) ).then( function( err, results ) {
+
+              if ( err || !results.length ) {
+                // Open the media-editor editor right after butter is finished starting up
+                butter.editor.openEditor( "media-editor" );
+                FirstRun.init();
+                return;
+              }
+
+              butter.editor.openEditor( "tutorial-editor", {
+                openData: {
+                  tutorialData: results
+                }
+              });
+            });
           }
 
           butter.listen( "mediaready", firstRunInit );
