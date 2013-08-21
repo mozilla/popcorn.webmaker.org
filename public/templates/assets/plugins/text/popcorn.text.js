@@ -167,7 +167,7 @@
           container = options._container = document.createElement( "div" ),
           innerContainer = document.createElement( "div" ),
           innerSpan = document.createElement( "span" ),
-          innerDiv = document.createElement( "div" ),
+          innerDiv = options._innerDiv = document.createElement( "div" ),
           fontSheet,
           fontDecorations = options.fontDecorations || options._natives.manifest.options.fontDecorations[ "default" ],
           position = options.position || options._natives.manifest.options.position[ "default" ],
@@ -241,11 +241,13 @@
           if ( options.width ) {
             container.style.width = options.width + "%";
           }
+          container.style.zIndex = +options.zindex;
         }
         else {
           container.classList.add( "text-fixed" );
           innerContainer.classList.add( position );
           innerContainer.classList.add( alignment );
+          innerDiv.style.zIndex = +options.zindex;
         }
 
         if ( linkUrl ) {
@@ -271,7 +273,6 @@
         }
       };
       fontSheet.href = "//fonts.googleapis.com/css?family=" + options.fontFamily.replace( /\s/g, "+" ) + ":400,700";
-      container.style.zIndex = +options.zindex;
 
       options.toString = function() {
         // use the default option if it doesn't exist
