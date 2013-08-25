@@ -266,7 +266,7 @@ define([ "localized", "dialog/dialog", "util/lang", "l10n!/layouts/header.html",
 
       _projectTitle.addEventListener( "mouseover", destroyToolTip, false );
 
-      ToolTip.create({
+      _noProjectNameToolTip = ToolTip.create({
         name: TOOLTIP_NAME,
         message: Localized.get( "Please give your project a name before saving" ),
         hidden: false,
@@ -275,8 +275,6 @@ define([ "localized", "dialog/dialog", "util/lang", "l10n!/layouts/header.html",
         top: "60px",
         error: true
       });
-
-      _noProjectNameToolTip = ToolTip.get( TOOLTIP_NAME );
     }
 
     function onBlur() {

@@ -12,6 +12,7 @@ define( [], function() {
   var __tooltipClass = "butter-tooltip",
       __tooltipOffClass = "tooltip-off",
       __toolTipNoHoverClass = "tooltip-no-hover",
+      __toolTipOnNoHoverClass = "tooltip-no-transition-on",
       _registeredTooltips = {},
       ToolTipObj,
       ToolTip;
@@ -81,6 +82,7 @@ define( [], function() {
           tooltipElement.classList.remove( __toolTipNoHoverClass  );
         } else {
           tooltipElement.classList.add( __toolTipNoHoverClass );
+          tooltipElement.classList.add( __toolTipOnNoHoverClass );
         }
       },
       enumerable: true
