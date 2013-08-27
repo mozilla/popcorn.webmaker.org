@@ -33,6 +33,7 @@ define( [ "localized", "util/uri" ],
     },
     getMetaData: function( baseUrl, successCallback, errorCallback ) {
       var id,
+          userId,
           parsedUri,
           splitUriDirectory,
           xhrURL,
@@ -128,7 +129,8 @@ define( [ "localized", "util/uri" ],
         parsedUri = URI.parse( baseUrl );
         splitUriDirectory = parsedUri.directory.split( "/" );
         id = splitUriDirectory[ splitUriDirectory.length - 1 ];
-        xhrURL = "https://api.soundcloud.com/tracks/" + id + ".json?callback=?&client_id=PRaNFlda6Bhf5utPjUsptg";
+        userId = splitUriDirectory[ splitUriDirectory.length - 2 ];
+        xhrURL = "https://api.soundcloud.com/tracks/" + id + ".json?callback=?&client_id=PRaNFlda6Bhf5utPjUsptg&user_id=" + userId;
         Popcorn.getJSONP( xhrURL, function( respData ) {
           if ( !respData ) {
             return;
