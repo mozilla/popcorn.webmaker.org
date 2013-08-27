@@ -37,7 +37,7 @@ define([ "localized", "dialog/dialog", "util/lang", "l10n!/layouts/header.html",
     });
     _loginToRenameTooltip = ToolTip.create({
       title: "header-title-tooltip",
-      message: "Login to rename your project",
+      message: Localized.get( "Login to rename your project" ),
       element: _projectTitle,
       left: "0",
       marginTop: "0"
@@ -296,7 +296,8 @@ define([ "localized", "dialog/dialog", "util/lang", "l10n!/layouts/header.html",
         hidden: false,
         hover: false,
         element: _saveButtonContainer,
-        top: "60px",
+        left: "48px",
+        marginTop: "0",
         error: true
       });
     }
