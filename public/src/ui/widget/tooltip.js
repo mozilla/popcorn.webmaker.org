@@ -140,10 +140,6 @@ define( [], function() {
       },
       set: function( newParent ) {
         if ( newParent ) {
-          // Parent must be relative or absolute for tooltip to be positioned properly
-          if ( [ "absolute", "relative", "fixed" ].indexOf( getComputedStyle( newParent ).getPropertyValue( "position" ) ) === -1 ) {
-            newParent.style.position = "relative";
-          }
 
           parentElement = newParent;
           parentElement.appendChild( tooltipElement );

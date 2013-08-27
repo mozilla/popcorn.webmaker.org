@@ -12,9 +12,11 @@ define([ "localized", "dialog/dialog", "util/lang", "l10n!/layouts/header.html",
         _rootElement = Lang.domFragment( HEADER_TEMPLATE, ".butter-header" ),
         _bodyWrapper = document.querySelector( ".body-wrapper" ),
         _tutorialButtonContainer = document.querySelector( ".butter-tutorial-container" ),
-        _saveButton = _rootElement.querySelector( ".butter-save-btn" ),
+        _saveButtonContainer = _rootElement.querySelector( ".butter-save-btn-container" ),
+        _saveButton = _saveButtonContainer.querySelector( ".butter-save-btn" ),
         _projectTitle = _rootElement.querySelector( ".butter-project-title" ),
-        _projectName = _projectTitle.querySelector( ".butter-project-name" ),
+        _projectNameContainer = _projectTitle.querySelector( ".butter-project-name-container" ),
+        _projectName = _projectNameContainer.querySelector( ".butter-project-name" ),
         _clearEvents = _rootElement.querySelector( ".butter-clear-events-btn" ),
         _previewBtn = _rootElement.querySelector( ".butter-preview-btn" ),
         _projectBtn = _rootElement.querySelector( ".butter-project-btn" ),
@@ -30,7 +32,15 @@ define([ "localized", "dialog/dialog", "util/lang", "l10n!/layouts/header.html",
       title: "header-title-tooltip",
       message: Localized.get( "Change the name of your project" ),
       element: _projectTitle,
-      top: "60px"
+      left: "0",
+      marginTop: "0"
+    });
+    _loginToRenameTooltip = ToolTip.create({
+      title: "header-title-tooltip",
+      message: Localized.get( "Login to rename your project" ),
+      element: _projectTitle,
+      left: "0",
+      marginTop: "0"
     });
 
     // Default state
@@ -39,8 +49,17 @@ define([ "localized", "dialog/dialog", "util/lang", "l10n!/layouts/header.html",
     _loginTooltip = ToolTip.create({
       title: "header-title-tooltip",
       message: Localized.get( "Login to save your project!" ),
-      element: _projectTitle,
-      top: "60px"
+      element: _saveButtonContainer,
+      left: "48px",
+      marginTop: "0"
+    });
+
+    _savedTooltip = ToolTip.create({
+      title: "header-title-tooltip",
+      message: Localized.get( "Your project is saved" ),
+      element: _saveButtonContainer,
+      left: "48px",
+      marginTop: "0"
     });
 
     var make = new Make({
@@ -158,6 +177,7 @@ define([ "localized", "dialog/dialog", "util/lang", "l10n!/layouts/header.html",
 
       if ( !tooltipIgnore ) {
         _loginTooltip.hidden = state;
+        _loginToRenameTooltip.hidden = state;
         _toolTip.hidden = !state;
       }
     }
@@ -171,7 +191,7 @@ define([ "localized", "dialog/dialog", "util/lang", "l10n!/layouts/header.html",
       input.classList.add( "butter-project-name" );
       input.value = _projectName.textContent !== _projectTitlePlaceHolderText ? _projectName.textContent : "";
       TextBoxWrapper.applyTo( input );
-      _projectTitle.replaceChild( input, _projectName );
+      _projectNameContainer.replaceChild( input, _projectName );
       toggleProjectNameListeners( false, true );
       input.focus();
       input.addEventListener( "blur", onBlur, false );
@@ -193,11 +213,13 @@ define([ "localized", "dialog/dialog", "util/lang", "l10n!/layouts/header.html",
         togglePreviewButton( false );
         toggleSaveButton( butter.cornfield.authenticated() );
         toggleProjectButton( false );
+        _savedTooltip.hidden = true;
       },
       clean: function() {
         togglePreviewButton( true );
         toggleSaveButton( false );
         toggleProjectButton( true );
+        _savedTooltip.hidden = false;
       },
       login: function() {
         var isSaved = butter.project.isSaved;
@@ -206,12 +228,14 @@ define([ "localized", "dialog/dialog", "util/lang", "l10n!/layouts/header.html",
         togglePreviewButton( isSaved );
         toggleSaveButton( !isSaved && butter.cornfield.authenticated() );
         toggleProjectButton( isSaved );
+        _savedTooltip.hidden = !isSaved;
       },
       logout: function() {
         togglePreviewButton( false );
         toggleSaveButton( false );
         toggleProjectButton( false );
         toggleProjectNameListeners( false );
+        _savedTooltip.hidden = true;
       }
     };
 
@@ -234,13 +258,13 @@ define([ "localized", "dialog/dialog", "util/lang", "l10n!/layouts/header.html",
 
     function destroyToolTip() {
       if ( _noProjectNameToolTip && !_noProjectNameToolTip.destroyed ) {
-        _projectTitle.removeEventListener( "mouseover", destroyToolTip, false );
+        _projectNameContainer.removeEventListener( "mouseover", destroyToolTip, false );
         _noProjectNameToolTip.destroy();
       }
     }
 
     function onKeyPress( e ) {
-      var node = _projectTitle.querySelector( ".butter-project-name" );
+      var node = _projectNameContainer.querySelector( ".butter-project-name" );
 
       // if this wasn't the 'enter' key, return early
       if ( e.keyCode !== 13 ) {
@@ -271,14 +295,15 @@ define([ "localized", "dialog/dialog", "util/lang", "l10n!/layouts/header.html",
         message: Localized.get( "Please give your project a name before saving" ),
         hidden: false,
         hover: false,
-        element: _projectTitle,
-        top: "60px",
+        element: _saveButtonContainer,
+        left: "48px",
+        marginTop: "0",
         error: true
       });
     }
 
     function onBlur() {
-      var node = _projectTitle.querySelector( ".butter-project-name" );
+      var node = _projectNameContainer.querySelector( ".butter-project-name" );
       node.removeEventListener( "blur", onBlur, false );
 
       _projectName.textContent = node.value || _projectTitlePlaceHolderText;
@@ -290,7 +315,7 @@ define([ "localized", "dialog/dialog", "util/lang", "l10n!/layouts/header.html",
         toggleProjectNameListeners( true );
       }
 
-      _projectTitle.replaceChild( _projectName, node );
+      _projectNameContainer.replaceChild( _projectName, node );
     }
 
     this.attachToDOM = function() {
