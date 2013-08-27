@@ -102,7 +102,7 @@
     "newrelic": "0.9.20",
     "node-uuid": "1.4.0",
     "nunjucks": "0.1.10",
-    "requirejs-middleware": "0.1.1",
+    "requirejs-middleware": "0.1.2",
     "sequelize": "1.6.0",
     "shelljs": "0.1.2",
     "webmaker-i18n": "https://github.com/mozilla/node-webmaker-i18n/archive/v0.0.8.tar.gz",

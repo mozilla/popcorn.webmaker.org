@@ -26,6 +26,7 @@ requirejs.config({
     "popcorn.pausePlugin": "../templates/assets/plugins/pausePlugin/popcorn.pausePlugin",
     "popcorn.popup": "../templates/assets/plugins/popup/popcorn.popup",
     "popcorn.sequencer": "../templates/assets/plugins/sequencer/popcorn.sequencer",
+    "popcorn.sketchfab": "../templates/assets/plugins/sketchfab/popcorn.sketchfab",
     "popcorn.skip": "../templates/assets/plugins/skip/popcorn.skip",
     "popcorn.text": "../templates/assets/plugins/text/popcorn.text",
     "popcorn.wikipedia": "../templates/assets/plugins/wikipedia/popcorn.wikipedia",
@@ -38,6 +39,7 @@ requirejs.config({
 
     // Our other APIs
     "make-api": "../external/make-api",
+    "sketchfab-iframe": "../external/sketchfab/sketchfab-iframe",
     "sso-include": "../external/sso-include"
   },
   // shim config defines dependencies between non-AMD modules, which is all of the Popcorn code
@@ -69,6 +71,7 @@ requirejs.config({
     "popcorn.skip": [ "popcorn.core" ],
     "popcorn.text": [ "popcorn.core" ],
     "popcorn.wikipedia": [ "popcorn.core" ],
+    "popcorn.sketchfab": [ "popcorn.core", "sketchfab-iframe" ],
     "popcorn.deprecated": [ "popcorn.core" ]
   }
 });
@@ -85,6 +88,7 @@ define([
   "popcorn.pausePlugin",
   "popcorn.popup",
   "popcorn.sequencer",
+  "popcorn.sketchfab",
   "popcorn.skip",
   "popcorn.text",
   "popcorn.wikipedia",

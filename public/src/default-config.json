@@ -22,6 +22,10 @@
   "plugin": {
     "plugins": [
       {
+        "type": "sketchfab",
+        "icon": "{{baseDir}}templates/assets/plugins/sketchfab/sketchfab-icon.png"
+      },
+      {
         "type": "text",
         "icon": "{{baseDir}}templates/assets/plugins/text/text-icon.png"
       },
