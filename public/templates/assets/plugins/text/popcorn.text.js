@@ -167,7 +167,7 @@
           container = options._container = document.createElement( "div" ),
           innerContainer = document.createElement( "div" ),
           innerSpan = document.createElement( "span" ),
-          innerDiv = options._innerDiv = document.createElement( "div" ),
+          innerDiv = document.createElement( "div" ),
           fontSheet,
           fontDecorations = options.fontDecorations || options._natives.manifest.options.fontDecorations[ "default" ],
           position = options.position || options._natives.manifest.options.position[ "default" ],
@@ -202,7 +202,7 @@
 
       // Add transition class
       // There is a special case where popup has to be added to the innerDiv, not the outer container.
-      options._transitionContainer = ( position !== "custom" && ( transition === "popcorn-pop" || "popcorn-fade" ) ) ? innerDiv : container;
+      options._transitionContainer = container;
 
       options._transitionContainer.classList.add( transition );
       options._transitionContainer.classList.add( "off" );
@@ -231,24 +231,32 @@
       document.head.appendChild( fontSheet );
 
       fontSheet.onload = function () {
+        var padding = "3",
+            width = 100 - ( padding * 2 );
         innerContainer.style.fontFamily = options.fontFamily;
         innerContainer.style.fontSize = options.fontSize + "%";
-        if ( position === "custom" ) {
-          container.classList.add( "text-custom" );
-          innerContainer.classList.add( alignment );
+        container.classList.add( "text-custom" );
+        innerContainer.classList.add( alignment );
+        if ( position === "top" ) {
+          container.style.left = padding + "%";
+          container.style.width = width + "%";
+          container.style.top = padding + "%";
+        } else if ( position === "bottom" ) {
+          container.style.left = padding + "%";
+          container.style.width = width + "%";
+          container.style.top = 100 - padding - options.fontSize + "%";
+        } else if ( position === "middle" ) {
+          container.style.left = padding + "%";
+          container.style.width = width + "%";
+          container.style.top = 50 - ( options.fontSize / 2 ) + "%";
+        } else if ( position === "custom" ) {
           container.style.left = options.left + "%";
           container.style.top = options.top + "%";
           if ( options.width ) {
             container.style.width = options.width + "%";
           }
-          container.style.zIndex = +options.zindex;
         }
-        else {
-          container.classList.add( "text-fixed" );
-          innerContainer.classList.add( position );
-          innerContainer.classList.add( alignment );
-          innerDiv.style.zIndex = +options.zindex;
-        }
+        container.style.zIndex = +options.zindex;
 
         if ( linkUrl ) {
 

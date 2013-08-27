@@ -60,9 +60,7 @@
 
   EditorHelper.init = function( butter ) {
 
-    global.EditorHelper.selectable = function( trackEvent, dragContainer, highlightContainer ) {
-
-      highlightContainer = highlightContainer || dragContainer;
+    global.EditorHelper.selectable = function( trackEvent, dragContainer ) {
 
       var highlight = function() {
 
@@ -85,11 +83,11 @@
         if ( "zindex" in manifestOptions ) {
           var newZIndex = media.maxPluginZIndex - track.order;
           if ( trackEvent.selected ) {
-            highlightContainer.classList.add( "track-event-selected" );
+            dragContainer.classList.add( "track-event-selected" );
             dragContainer.style.zIndex = newZIndex + media.maxPluginZIndex;
           } else {
             dragContainer.style.zIndex = newZIndex;
-            highlightContainer.classList.remove( "track-event-selected" );
+            dragContainer.classList.remove( "track-event-selected" );
           }
         }
       };
