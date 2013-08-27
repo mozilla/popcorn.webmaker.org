@@ -2,6 +2,7 @@
 
 EditorHelper.addPlugin( "text", function( trackEvent ) {
   var _container,
+      _selectableContainer = trackEvent.popcornTrackEvent._innerDiv,
       target;
 
   _container = trackEvent.popcornTrackEvent._container;
@@ -14,9 +15,11 @@ EditorHelper.addPlugin( "text", function( trackEvent ) {
         minWidth: 10,
         handlePositions: "e,w"
       });
+
+      _selectableContainer = _container;
     }
 
-    EditorHelper.selectable( trackEvent, _container );
+    EditorHelper.selectable( trackEvent, _selectableContainer, _container );
     EditorHelper.contentEditable( trackEvent, _container.querySelectorAll( ".popcorn-text div span" ) );
   }
 });
