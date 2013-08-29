@@ -238,15 +238,15 @@
         innerContainer.classList.add( alignment );
         if ( position === "top" ) {
           container.style.left = padding + "%";
-          container.style.right = padding + "%";
+          container.style.width = 100 - ( padding * 2 ) + "%";
           container.style.top = padding + "%";
         } else if ( position === "bottom" ) {
           container.style.left = padding + "%";
-          container.style.right = padding + "%";
+          container.style.width = 100 - ( padding * 2 ) + "%";
           container.style.top = 100 - padding - options.fontSize + "%";
         } else if ( position === "middle" ) {
           container.style.left = padding + "%";
-          container.style.right = padding + "%";
+          container.style.width = 100 - ( padding * 2 ) + "%";
           container.style.top = 50 - ( options.fontSize / 2 ) + "%";
         } else if ( position === "custom" ) {
           container.style.left = options.left + "%";
