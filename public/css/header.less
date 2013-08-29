@@ -196,7 +196,6 @@
       display: none;
       text-align: left;
       line-height: 40px;
-      padding: 0 10px;
       a,
       button {
         color: inherit;
@@ -252,6 +251,7 @@
       display: block;
       border: 1px solid #CCC;
       border-top: 0;
+      padding: 0 10px;
       .icon {
         display: block;
         float: left;
@@ -267,6 +267,10 @@
   .user-info:hover .menu-container {
     display: block;
   }
+}
+
+.include-frame.loggedin {
+  left: -9px; // Hacky, but the iframe has really weird spacing.
 }
 /*********************************************************
 * Buttons
