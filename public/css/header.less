@@ -154,6 +154,8 @@
   padding: 0;
   position: relative;
   .user {
+    min-width: 80px;
+    text-align: left;
     padding: 5px 20px 5px 50px;
     margin-top: 0;
     height: 30px;
@@ -169,10 +171,6 @@
         text-decoration: underline;
       }
     }
-    .icon-sort-down {
-      position: relative;
-      top: -2px;
-    }
   }
   .menu-container {
     list-style: none;
@@ -182,6 +180,7 @@
     min-width: 100%;
     .box-sizing(border-box);
     > li {
+      white-space: nowrap;
       display: none;
       text-align: left;
       line-height: 40px;
