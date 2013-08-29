@@ -392,7 +392,7 @@ define([ "localized", "dialog/dialog", "util/lang", "l10n!/layouts/header.html",
     }
 
     function loadDashboard() {
-      var myProjectsButton = document.querySelector( ".user-info > .makes" ),
+      var myProjectsButton = document.querySelector( ".my-makes" ),
           container = document.querySelector( ".my-projects-container" ),
           iframe = document.querySelector( ".my-projects-iframe" );
 
@@ -400,8 +400,7 @@ define([ "localized", "dialog/dialog", "util/lang", "l10n!/layouts/header.html",
         myProjectsButton.addEventListener( "click", open, false );
         myProjectsButton.removeEventListener( "click", close, false );
 
-        container.style.zIndex = "";
-        container.style.position = "";
+        container.classList.remove( "open" );
         iframe.style.height = "";
       }
 
@@ -409,8 +408,8 @@ define([ "localized", "dialog/dialog", "util/lang", "l10n!/layouts/header.html",
         myProjectsButton.addEventListener( "click", close, false );
         myProjectsButton.removeEventListener( "click", open, false );
 
+        container.classList.add( "open" );
         iframe.style.height = "300px";
-
         iframe.src = "/dashboard";
       }
 
