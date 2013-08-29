@@ -69,6 +69,9 @@
   top: @HEADER_SPACING;
   right: 0;
   z-index: @HEADER_Z_INDEX + 1;
+  .butter-btn {
+    padding: 0;
+  }
   &.toggled .icon:before {
     color: @baseText;
     content: "\f053"; //icon-chevron-left
@@ -353,26 +356,6 @@
     }
   }
 
-  .farbtastic {
-    margin: auto;
-  }
-
-  .color .value {
-    height: 32px;
-    float: left;
-  }
-
-  .color-picker {
-    height: 195px;
-    width: 200px;
-    transition: height .3s linear;
-    overflow: hidden;
-  }
-
-  .color-picker.hidden {
-    height: 0;
-  }
-
   // Textareas
   textarea {
     height: 100px;
@@ -537,7 +520,8 @@
 */
 
 * {
-  &:hover > .butter-tooltip:not(.tooltip-no-hover) {
+  &:hover > .butter-tooltip:not(.tooltip-no-hover),
+  &.tooltip-show  > .butter-tooltip {
     opacity: 1;
     visibility: visible;
     .transition( opacity 0.3s ease 0.5s );
@@ -546,6 +530,11 @@
 
 .butter-tooltip {
   @_tooltipWidth: 110px;
+  &.tooltip-on {
+    opacity: 1;
+    visibility: visible;
+    .transition( opacity 0.3s ease 0.5s );
+  }
   &.tooltip-off {
     display: none;
   }

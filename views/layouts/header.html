@@ -22,26 +22,35 @@
         </div>
       </li>
     </ul>
-    <!-- webmaker user bar -->
+
     <div id="webmaker-nav">
-      <nav class="webmaker-nav-container">
+
+      <div class="tutorial-btn hidden"><button>{{ gettext("Tutorials") }}</button></div>
+
+      <div id="user-menu" class="butter-btn-menu-container butter-project-menu">
+        <a class="butter-btn btn-white butter-btn-menu-control user">
+            {{ gettext("Hi") }} <span id="identity" class="user-name-container"></span> <span class="icon-caret-down"></span>
+        </a>
+        <ul class="butter-btn-menu">
+          <li><a id="my-projects-button" class="butter-btn"><span class="icon icon-th-large"></span> {{ gettext("My makes") }}</a></li>
+          <li><a class="butter-btn" href="{{audience}}"><span class="icon-webmaker"></span> Webmaker.org</a></li>
+        </ul>
+      </div>
+      <div class="webmaker-nav-container">
         <ul class="webmaker-nav user-info">
-          <li class="user">
-              {{ gettext("Hi") }} <span id="identity" class="user-name-container"></span>
-          </li>
-          <li class="tutorial-btn hidden"><button>{{ gettext("Tutorials") }}</button></li>
-          <li class="makes"><button>{{ gettext("My makes") }}</button></li>
           <li>
             <iframe src="{{audience}}/sso/include.html" class="include-frame"></iframe>
           </li>
         </ul>
-      </nav>
-      <div class="my-projects-container">
-        <iframe class="my-projects-iframe"></iframe>
-      </div>
-      <div class="tutorial-list">
-        <div class="tutorial-arrow"></div>
       </div>
     </div>
+
+    <div class="my-projects-container">
+      <iframe class="my-projects-iframe"></iframe>
+    </div>
+    <div class="tutorial-list">
+      <div class="tutorial-arrow"></div>
+    </div>
+
   </header>
 </div>
