@@ -130,12 +130,11 @@
 
 // Temporary overriding classes.
 #webmaker-nav {
-  position: relative;
-  z-index: 10;
   text-align: right;
 }
 .webmaker-nav-container {
   text-align: left;
+  z-index: 10;
   display: inline-block;
   background: #FFFFFF;
   margin-top: 10px;
@@ -239,12 +238,23 @@
 
 }
 
+#webmaker-nav iframe.include-frame {
+  top: 0;
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 10px;
+  margin-left: 10px;
+}
+
 .loggedin {
+  #webmaker-nav iframe.include-frame {
+    margin-left: 0;
+  }
   .back-to-webmaker {
     margin-left: 10px;
   }
   .user-info .menu-container {
-    display: none;
+   display: none;
     position: absolute;
     top: 100%;
     > li {
@@ -269,9 +279,6 @@
   }
 }
 
-.include-frame.loggedin {
-  left: -9px; // Hacky, but the iframe has really weird spacing.
-}
 /*********************************************************
 * Buttons
 */
