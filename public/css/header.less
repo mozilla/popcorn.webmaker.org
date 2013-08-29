@@ -129,10 +129,21 @@
 }
 
 // Temporary overriding classes.
+#webmaker-nav {
+  position: relative;
+  z-index: 10;
+  text-align: right;
+}
 .webmaker-nav-container {
+  text-align: left;
+  display: inline-block;
   background: #FFFFFF;
   margin-top: 10px;
   overflow: visible;
+  width: auto;
+  > div {
+    float: left;
+  }
 }
 
 #webmaker-nav .my-projects-container{
@@ -150,6 +161,7 @@
 }
 
 .user-info {
+  float: right;
   z-index: 10;
   padding: 0;
   position: relative;
@@ -217,11 +229,17 @@
 
 .back-to-webmaker {
   display: inline-block;
+  line-height: 40px;
+  a {
+    color: #555;
+    text-decoration: none;
+  }
+
 }
 
 .loggedin {
   .back-to-webmaker {
-    display: none;
+    margin-left: 10px;
   }
   .user-info .menu-container {
     display: none;
