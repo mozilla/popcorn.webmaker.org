@@ -65,6 +65,18 @@
 
 
 // Colors
+
+.btn-white,
+.btn-white.butter-disabled:hover {
+  background: #FFF;
+  color: @baseText;
+  border-radius: 0;
+  border: 1px solid darken( @baseLight, 20% );
+}
+.btn-white:hover {
+  color: #000;
+}
+
 .btn-light,
 .btn-light.butter-disabled:hover,
 .btn-light.butter-disabled:active {
@@ -138,6 +150,7 @@
 
 // Menu group
 .butter-btn-menu-container {
+  z-index: 10;
   display: inline-block;
   position: relative;
   line-height: @_btnTotalHeight - 2; //borders
@@ -146,9 +159,18 @@
 
 .butter-btn-menu-control {
   border: 1px solid @baseLightOutline;
+  background: #FFF;
+  border-radius: 0;
+  line-height: 40px;
+  padding: 0;
+  height: 40px;
+  width: 40px;
+  text-align: center;
   position: relative;
   z-index: 1;
-  .butter-btn-menu-expanded & {
+  font-size: 16px;
+  margin-right: 10px;
+  .butter-btn-menu-container:hover & {
     border-bottom-color: transparent;
     border-radius: 2px 2px 0 0;
     >.icon {
@@ -167,11 +189,11 @@
   margin-top: -1px;
   border-radius: 0 2px 2px 2px;
   left: 0;
-  background: @baseLight;
+  background: #FFF;
 
   //States
   visibility: hidden;
-  .butter-btn-menu-expanded & {
+  .butter-btn-menu-container:hover & {
     visibility: visible;
   }
 
@@ -183,6 +205,11 @@
       border-bottom: none;
     }
   }
+  .icon {
+    font-size: 16px;
+    display: inline-block;
+    width: 20px;
+  }
   // The link inside the menu item
   > li > a,
   > li > a.butter-disabled,
@@ -193,6 +220,8 @@
     min-width: 80px;
     border: none;
     display: block;
+    text-decoration: none;
+    line-height: 40px;
   }
   > li > a:hover {
     background: lighten( @baseLight, 2% );

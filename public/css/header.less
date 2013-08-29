@@ -129,10 +129,20 @@
 }
 
 // Temporary overriding classes.
+#webmaker-nav {
+  text-align: right;
+}
 .webmaker-nav-container {
+  text-align: left;
+  z-index: 10;
+  display: inline-block;
   background: #FFFFFF;
   margin-top: 10px;
   overflow: visible;
+  width: auto;
+  > div {
+    float: left;
+  }
 }
 
 #webmaker-nav .my-projects-container{
@@ -150,13 +160,14 @@
 }
 
 .user-info {
+  float: right;
   z-index: 10;
   padding: 0;
   position: relative;
   .user {
     min-width: 80px;
     text-align: left;
-    padding: 5px 20px 5px 50px;
+    padding: 5px 15px 5px 50px;
     margin-top: 0;
     height: 30px;
     line-height: 30px;
@@ -184,7 +195,6 @@
       display: none;
       text-align: left;
       line-height: 40px;
-      padding: 0 10px;
       a,
       button {
         color: inherit;
@@ -217,20 +227,41 @@
 
 .back-to-webmaker {
   display: inline-block;
+  line-height: 40px;
+  a {
+    color: #555;
+    text-decoration: none;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+}
+
+#webmaker-nav iframe.include-frame {
+  top: 0;
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 10px;
+  margin-left: 10px;
 }
 
 .loggedin {
+  #webmaker-nav iframe.include-frame {
+    margin-left: 0;
+  }
   .back-to-webmaker {
-    display: none;
+    margin-left: 10px;
   }
   .user-info .menu-container {
-    display: none;
+   display: none;
     position: absolute;
     top: 100%;
     > li {
       display: block;
       border: 1px solid #CCC;
       border-top: 0;
+      padding: 0 10px;
       .icon {
         display: block;
         float: left;
@@ -247,6 +278,7 @@
     display: block;
   }
 }
+
 /*********************************************************
 * Buttons
 */
