@@ -17,7 +17,6 @@ define([ "localized", "dialog/dialog", "util/lang", "l10n!/layouts/header.html",
         _projectName = _projectTitle.querySelector( ".butter-project-name" ),
         _clearEvents = _rootElement.querySelector( ".butter-clear-events-btn" ),
         _previewBtn = _rootElement.querySelector( ".butter-preview-btn" ),
-        _projectBtn = _rootElement.querySelector( ".butter-project-btn" ),
         _projectMenu = _rootElement.querySelector( ".butter-project-menu" ),
         _projectMenuControl = _rootElement.querySelector( ".butter-project-menu-control" ),
         _projectMenuList = _projectMenu.querySelector( ".butter-btn-menu" ),
@@ -99,16 +98,6 @@ define([ "localized", "dialog/dialog", "util/lang", "l10n!/layouts/header.html",
       butter.editor.openEditor( "project-editor" );
     }
 
-    function toggleProjectButton( on ) {
-      if ( on ) {
-        _projectBtn.classList.remove( "butter-disabled" );
-        _projectBtn.addEventListener( "click", openProjectEditor, false );
-      } else {
-        _projectBtn.classList.add( "butter-disabled" );
-        _projectBtn.removeEventListener( "click", openProjectEditor, false );
-      }
-    }
-
     function toggleSaveButton( on ) {
       if ( on ) {
         _saveButton.classList.remove( "butter-disabled" );
@@ -132,16 +121,6 @@ define([ "localized", "dialog/dialog", "util/lang", "l10n!/layouts/header.html",
         _previewBtn.onclick = function() {
           return false;
         };
-      }
-    }
-
-    function toggleClearButton( on ) {
-      if ( on ) {
-        _clearEvents.classList.remove( "butter-disabled" );
-        _clearEvents.addEventListener( "click", clearEventsClick, false );
-      } else {
-        _clearEvents.classList.add( "butter-disabled" );
-        _clearEvents.removeEventListener( "click", clearEventsClick, false );
       }
     }
 
@@ -192,12 +171,10 @@ define([ "localized", "dialog/dialog", "util/lang", "l10n!/layouts/header.html",
       dirty: function() {
         togglePreviewButton( false );
         toggleSaveButton( butter.cornfield.authenticated() );
-        toggleProjectButton( false );
       },
       clean: function() {
         togglePreviewButton( true );
         toggleSaveButton( false );
-        toggleProjectButton( true );
       },
       login: function() {
         var isSaved = butter.project.isSaved;
@@ -205,32 +182,13 @@ define([ "localized", "dialog/dialog", "util/lang", "l10n!/layouts/header.html",
         toggleProjectNameListeners( butter.cornfield.authenticated() );
         togglePreviewButton( isSaved );
         toggleSaveButton( !isSaved && butter.cornfield.authenticated() );
-        toggleProjectButton( isSaved );
       },
       logout: function() {
         togglePreviewButton( false );
         toggleSaveButton( false );
-        toggleProjectButton( false );
         toggleProjectNameListeners( false );
       }
     };
-
-    // Set up the project menu
-    _projectMenuControl.addEventListener( "click", function() {
-      if ( butter.currentMedia.hasTrackEvents() ) {
-        toggleClearButton( true );
-      } else {
-        toggleClearButton( false );
-      }
-      _projectMenu.classList.toggle( "butter-btn-menu-expanded" );
-    }, false );
-
-    _projectMenuList.addEventListener( "click", function( e ) {
-      if ( e.target.classList.contains( "butter-disabled" ) ) {
-        return;
-      }
-      _projectMenu.classList.remove( "butter-btn-menu-expanded" );
-    }, true );
 
     function destroyToolTip() {
       if ( _noProjectNameToolTip && !_noProjectNameToolTip.destroyed ) {
@@ -425,13 +383,13 @@ define([ "localized", "dialog/dialog", "util/lang", "l10n!/layouts/header.html",
         toggleProjectNameListeners( false );
         togglePreviewButton( false );
         toggleSaveButton( false );
-        toggleProjectButton( false );
       }
 
       if ( butter.project.publishUrl ||
            butter.project.remixedFromUrl ) {
         loadTutorials();
       }
+      _clearEvents.addEventListener( "click", clearEventsClick, false );
     });
   };
 });
