@@ -231,22 +231,23 @@
       document.head.appendChild( fontSheet );
 
       fontSheet.onload = function () {
-        var padding = "3";
+        var padding = "3",
+            width = 100 - ( padding * 2 );
         innerContainer.style.fontFamily = options.fontFamily;
         innerContainer.style.fontSize = options.fontSize + "%";
         container.classList.add( "text-custom" );
         innerContainer.classList.add( alignment );
         if ( position === "top" ) {
           container.style.left = padding + "%";
-          container.style.width = 100 - ( padding * 2 ) + "%";
+          container.style.width = width + "%";
           container.style.top = padding + "%";
         } else if ( position === "bottom" ) {
           container.style.left = padding + "%";
-          container.style.width = 100 - ( padding * 2 ) + "%";
+          container.style.width = width + "%";
           container.style.top = 100 - padding - options.fontSize + "%";
         } else if ( position === "middle" ) {
           container.style.left = padding + "%";
-          container.style.width = 100 - ( padding * 2 ) + "%";
+          container.style.width = width + "%";
           container.style.top = 50 - ( options.fontSize / 2 ) + "%";
         } else if ( position === "custom" ) {
           container.style.left = options.left + "%";
