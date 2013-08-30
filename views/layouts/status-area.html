@@ -12,18 +12,27 @@
     </div>
   </div>
   <div class="status-container">
-    <div class="play-button-container">
-      <div class="butter-btn btn-green status-button" title="{{ gettext("Play/Pause media") }}">
-        <span class="icon icon-white icon-only icon-play"></span>
+    <div class="status-side left"></div>
+    <div class="status-inner-container">
+      <div class="play-button-container">
+        <div class="butter-btn btn-green status-button" title="{{ gettext("Play/Pause media") }}">
+          <span class="icon icon-white icon-only icon-play"></span>
+        </div>
+      </div>
+      <div class="mute-button-container">
+        <div class="status-button" title="Toggle volume on/off">
+          <span class="icon icon-white icon-only icon-volume-down"></span>
+        </div>
+      </div>
+      <div class="time-wrapper">
+        <div class="time-container">
+          <span class="current-time">0:00</span>
+          /
+          <input class="duration-input" type="text" value="0:00">
+        </div>
       </div>
     </div>
-    <div class="time-container">
-      <input type="text">
-    </div>
+    <div class="status-side right"></div>
   </div>
-  <div class="mute-button-container">
-    <div class="status-button" title="{{ gettext("Toggle volume on/off") }}">
-      <span class="icon icon-white icon-only icon-volume-down"></span>
-    </div>
-  </div>
+  <button class="butter-btn btn-light add-track" title="{{ gettext("Add a layer") }}">{{ gettext("Add a layer") }}</button>
 </div>

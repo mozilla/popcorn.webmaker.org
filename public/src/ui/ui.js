@@ -46,7 +46,7 @@ define( [ "core/eventmanager", "./toggler",
 
     this.contentStateLocked = false;
 
-    this.tray = new Tray();
+    this.tray = new Tray( butter );
     this.header = new Header( butter, _uiConfig );
 
     // Filled in by the editor module
