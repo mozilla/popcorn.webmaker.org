@@ -146,14 +146,16 @@
           onMouseUp,
           onDblClick;
 
-      require( [ "ui/widget/tooltip" ], function( ToolTip ) {
-        toolTip = ToolTip.create({
-          element: dragContainer,
-          message: options.tooltip || Butter.localized.get( "Double click to edit" ),
-          marginTop: "10px"
+      if ( !options.disableTooltip ) {
+        require( [ "ui/widget/tooltip" ], function( ToolTip ) {
+          toolTip = ToolTip.create({
+            element: dragContainer,
+            message: options.tooltip || Butter.localized.get( "Double click to edit" ),
+            marginTop: "10px"
+          });
+          toolTip.hidden = false;
         });
-        toolTip.hidden = false;
-      });
+      }
 
       onBlur = function() {
         if ( stopPropagation ) {
