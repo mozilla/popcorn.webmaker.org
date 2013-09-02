@@ -1,6 +1,8 @@
 module.exports = function( req, res, next ) {
   var utils = require( "../../lib/utilities" ),
-      metrics = require( "../../lib/metrics" );
+      metrics = require( "../../lib/metrics" ),
+      s3 = require( "../../lib/s3" ),
+      async = require( "async" );
 
   var project = res.locals.project;
 
@@ -11,19 +13,40 @@ module.exports = function( req, res, next ) {
   project.destroy()
   .success(function() {
     // Delete published projects, too
-    var embedShell = utils.generateIdString( project.id ),
-        embedDoc = embedShell + "_";
+    var iframeUrl = utils.embedPath( project.author, project.id ),
+        iframeUrlEdit = iframeUrl + "/edit",
+        iframeUrlRemix = iframeUrl + "/remix",
+        publishUrl = utils.embedShellPath( project.author, project.id ),
+        publishUrlEdit = publishUrl + "/edit",
+        publishUrlRemix = publishUrl + "/remix";
 
-    /*
-      If we can't delete the file, it's already gone, ignore errors.
-      Fire-and-forget.
-      TODO: WE NEED TO ACTUALLY RE IMPLEMENT THIS WHEN WE DO CASCADING DELETES
-      stores.publish.remove( embedShell );
-      stores.publish.remove( embedDoc );
-     */
+    function removeUrl( path, asyncCallback ) {
+      s3.del( path )
+      .on( "error", asyncCallback )
+      .on( "response", function( s3res ) {
+        if ( s3res.statusCode === 204 ) {
+          return asyncCallback();
+        }
 
-    metrics.increment( 'project.delete' );
-    next();
+        asyncCallback( "S3.removeEmbed returned HTTP " + s3res.statusCode );
+      }).end();
+    }
+
+    async.map([
+      iframeUrl,
+      iframeUrlEdit,
+      iframeUrlRemix,
+      publishUrl,
+      publishUrlEdit,
+      publishUrlRemix
+    ], removeUrl, function( err, results ) {
+      if ( err ) {
+        return next( utils.error( 500, err.toString() ) );
+      }
+
+      metrics.increment( "project.delete" );
+      res.json( { error: "okay" }, 200 );
+    });
   })
   .error(function( err ) {
     next( utils.error( 500, err.toString() ) );

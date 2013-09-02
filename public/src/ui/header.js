@@ -16,6 +16,7 @@ define([ "localized", "dialog/dialog", "util/lang", "l10n!/layouts/header.html",
         _projectTitle = _rootElement.querySelector( ".butter-project-title" ),
         _projectName = _projectTitle.querySelector( ".butter-project-name" ),
         _clearEvents = _rootElement.querySelector( ".butter-clear-events-btn" ),
+        _removeProject = _rootElement.querySelector( ".butter-remove-project-btn" ),
         _previewBtn = _rootElement.querySelector( ".butter-preview-btn" ),
         _projectMenu = _rootElement.querySelector( ".butter-project-menu" ),
         _projectMenuControl = _rootElement.querySelector( ".butter-project-menu-control" ),
@@ -67,6 +68,7 @@ define([ "localized", "dialog/dialog", "util/lang", "l10n!/layouts/header.html",
         butter.editor.openEditor( "project-editor" );
         togglePreviewButton( true );
         toggleProjectNameListeners( true );
+        toggleDeleteProject( true );
       }
 
       if ( butter.project.isSaved ) {
@@ -141,6 +143,29 @@ define([ "localized", "dialog/dialog", "util/lang", "l10n!/layouts/header.html",
       }
     }
 
+    function removeProject() {
+      butter.project.remove(function( e ) {
+
+        if ( e.error === "okay" ) {
+          butter.ui.unloadDialog.toggle( false );
+          window.history.replaceState( {}, "", "/" + Localized.getCurrentLang() + "/editor/" );
+          window.location.reload();
+        } else {
+          showErrorDialog( Localized.get( "There was a problem saving your project" ) );
+        }
+      });
+    }
+
+    function toggleDeleteProject( state ) {
+      if ( state ) {
+        _removeProject.addEventListener( "click", removeProject, false );
+        _removeProject.classList.remove( "butter-disabled" );
+      } else {
+        _removeProject.removeEventListener( "click", removeProject, false );
+        _removeProject.classList.add( "butter-disabled" );
+      }
+    }
+
     function projectNameClick() {
       var input = document.createElement( "input" );
 
@@ -182,6 +207,7 @@ define([ "localized", "dialog/dialog", "util/lang", "l10n!/layouts/header.html",
         toggleProjectNameListeners( butter.cornfield.authenticated() );
         togglePreviewButton( isSaved );
         toggleSaveButton( !isSaved && butter.cornfield.authenticated() );
+        toggleDeleteProject( isSaved && butter.cornfield.authenticated() );
       },
       logout: function() {
         togglePreviewButton( false );
@@ -264,6 +290,7 @@ define([ "localized", "dialog/dialog", "util/lang", "l10n!/layouts/header.html",
     butter.listen( "projectsaved", function() {
       // Disable "Save" button
       _this.views.clean();
+      toggleDeleteProject( true );
       _projectName.textContent = butter.project.name;
     });
 
@@ -383,6 +410,7 @@ define([ "localized", "dialog/dialog", "util/lang", "l10n!/layouts/header.html",
         toggleProjectNameListeners( false );
         togglePreviewButton( false );
         toggleSaveButton( false );
+        toggleDeleteProject( false );
       }
 
       if ( butter.project.publishUrl ||
