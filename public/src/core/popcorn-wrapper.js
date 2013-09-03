@@ -505,10 +505,21 @@ define( [
       }
     }
 
+    function onSequencesReady() {
+      _popcorn.off( "sequencesReady", onSequencesReady );
+      _popcorn.play();
+    }
+
     // Passthrough to the Popcorn instances play method
     this.play = function(){
+      var waiting = document.querySelector( ".embed" ).getAttribute( "data-state-waiting" );
       if ( _mediaReady && _popcorn.paused() ) {
-        _popcorn.play();
+        if ( !waiting ) {
+          _popcorn.play();
+        } else {
+          document.querySelector( ".play-button-container" ).querySelector( ".status-button" ).setAttribute( "data-state", true );
+          _popcorn.on( "sequencesReady", onSequencesReady );
+        }
       }
     };
 

@@ -295,11 +295,11 @@
       };
 
       this.pause = function(){
-        _popcornWrapper.pause();
+        _popcornWrapper.paused = true;
       }; //pause
 
       this.play = function(){
-        _popcornWrapper.play();
+        _popcornWrapper.paused = false;
       };
 
       this.generatePopcornString = function( callbacks, scripts ){

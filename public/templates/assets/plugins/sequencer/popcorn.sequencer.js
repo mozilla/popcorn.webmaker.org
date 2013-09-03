@@ -91,15 +91,22 @@
         target.appendChild( container );
       };
       options.displayLoading = function() {
-        _waiting++;
-        _this.on( "play", options._surpressPlayEvent );
-        document.querySelector( ".embed" ).classList.add( "show-loading" );
+        if ( !options.waiting ) {
+          options.waiting = true;
+          _waiting++;
+          document.querySelector( ".embed" ).setAttribute( "data-state-waiting", true );
+          document.querySelector( ".embed" ).classList.add( "show-loading" );
+        }
       };
       options.hideLoading = function() {
-        _this.off( "play", options._surpressPlayEvent );
-
-        if ( _waiting === 0 || --_waiting === 0 ) {
-          document.querySelector( ".embed" ).classList.remove( "show-loading" );
+        if ( options.waiting ) {
+          options.waiting = false;
+          --_waiting;
+          if ( _waiting === 0 ) {
+            _this.emit( "sequencesReady" );
+            document.querySelector( ".embed" ).removeAttribute( "data-state-waiting" );
+            document.querySelector( ".embed" ).classList.remove( "show-loading" );
+          }
         }
       };
       options.setZIndex = function() {
@@ -165,7 +172,6 @@
       // and everything else playable.
       options.fail = function() {
         options.clearLoading();
-        _this.off( "play", options._playWhenReadyEvent );
         options.failed = true;
         options.setZIndex();
         options.hideLoading();
@@ -199,7 +205,6 @@
       };
 
       options.clearEvents = function() {
-        _this.off( "play", options._playWhenReadyEvent );
         _this.off( "play", options._playEvent );
         _this.off( "pause", options._pauseEvent );
         _this.off( "seeked", options._onSeeked );
@@ -249,6 +254,7 @@
                buffered.end( i ) > options._clip.currentTime() ) {
             // We found a valid range so playing can resume.
             options.playIfReady();
+            options.hideLoading();
             return;
           }
         }
@@ -258,6 +264,7 @@
         if ( !_this.paused() ) {
           options.playWhenReady = true;
           _this.pause();
+          options.displayLoading();
         }
       };
 
@@ -273,12 +280,6 @@
           // Seek was successful.
           return true;
         }
-      };
-
-      // While clip is loading, do not let the timeline play.
-      options._surpressPlayEvent = function() {
-        options.playWhenReady = true;
-        _this.pause();
       };
 
       // While clip is loading, do not let the timeline play.
@@ -304,13 +305,10 @@
       options._playedEvent = function() {
         options._clip.off( "play", options._playedEvent );
         options._clip.off( "ended", options._playedEvent );
-        _this.off( "play", options._playWhenReadyEvent );
         _this.on( "seeked", options._onSeeked );
         // Setup on progress after initial load.
         // This way if an initial load never happens, we never pause.
         options._clip.on( "progress", options._onProgress );
-        options.hideLoading();
-        options.setZIndex();
         if ( !options.playIfReady() ) {
           options._clip.pause();
           options._clip.on( "play", options._clipPlayEvent );
@@ -319,6 +317,8 @@
           options._clip.on( "pause", options._clipPauseEvent );
           _this.on( "pause", options._pauseEvent );
         }
+        options.hideLoading();
+        options.setZIndex();
         if ( options.active ) {
           options._volumeEvent();
         }
@@ -364,10 +364,6 @@
         if ( options.end <= clipTime ) {
           options._endEvent();
         }
-      };
-
-      options._playWhenReadyEvent = function() {
-        options.playWhenReady = true;
       };
 
       // Two events for playing the main timeline if the clip is playing.
@@ -497,7 +493,6 @@
           // TODO: ensure any pending loads are torn down.
           options.tearDown();
           options.setupContainer();
-          this.on( "play", options._playWhenReadyEvent );
           if ( !this.paused() ) {
             options.playWhenReady = true;
             this.pause();
@@ -554,7 +549,6 @@
           options._container.style.zIndex = +options.zindex;
           return;
         }
-        this.on( "play", options._playWhenReadyEvent );
         if ( !this.paused() ) {
           options.playWhenReady = true;
         }
