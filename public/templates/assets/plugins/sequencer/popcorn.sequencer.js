@@ -135,7 +135,6 @@
       };
 
       options.readyEvent = function() {
-console.log("now loaded");
         // If teardown was hit before ready, ensure we teardown.
         if ( options._cancelLoad ) {
           options.playIfReady();

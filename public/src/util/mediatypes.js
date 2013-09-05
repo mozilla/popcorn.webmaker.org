@@ -20,6 +20,7 @@ define( [ "localized", "util/uri" ],
       YOUTUBE_EMBED_DISABLED = Localized.get ( "Embedding of this YouTube video is disabled" ),
       YOUTUBE_EMBED_UNPLAYABLE = Localized.get( "This YouTube video is unplayable" ),
       ARCHIVE_EMBED_DISABLED = Localized.get( "Embedding of this Archive item is not available yet" ),
+      JWPLAYER_EMBED_UNPLAYABLE = Localized.get( "This JWPlayer video is unplayable" ),
       SOUNDCLOUD_EMBED_DISABLED = Localized.get( "Embedding of this SoundCloud audio source is disabled" );
   return {
     checkUrl: function( url ) {
@@ -204,7 +205,18 @@ define( [ "localized", "util/uri" ],
           duration: +REGEX_MAP[ "null" ].exec( baseUrl )[ 1 ]
         });
       } else if ( type === "HTML5" ) {
-(function() {
+        videoElem = document.createElement( "video" );
+        videoElem.addEventListener( "loadedmetadata", function() {
+          successCallback ({
+            source: baseUrl,
+            type: type,
+            title: baseUrl.substring( baseUrl.lastIndexOf( "/" ) + 1 ),
+            thumbnail: URI.makeUnique( baseUrl ).toString(),
+            duration: videoElem.duration
+          });
+        }, false );
+        videoElem.addEventListener( "error", function() {
+          // We hit an error trying to load HTML5, try the jwplayer instead
           var popcorn,
               div = document.createElement( "div" ),
               source;
@@ -216,11 +228,10 @@ define( [ "localized", "util/uri" ],
 
           document.body.appendChild( div );
 
-
           function errorEvent() {
             popcorn.off( "loadedmetadata", readyEvent );
             popcorn.off( "error", errorEvent );
-            errorCallback( YOUTUBE_EMBED_UNPLAYABLE );
+            errorCallback( JWPLAYER_EMBED_UNPLAYABLE );
             popcorn.destroy();
           }
 
@@ -233,7 +244,7 @@ define( [ "localized", "util/uri" ],
             successCallback({
               source: baseUrl,
               title: baseUrl,
-              type: type,
+              type: "JWPlayer",
               thumbnail: "",
               duration: popcorn.duration()
             });
@@ -246,19 +257,8 @@ define( [ "localized", "util/uri" ],
           } else {
             popcorn.on( "loadedmetadata", readyEvent );
           }
-}());
-/*
-        videoElem = document.createElement( "video" );
-        videoElem.addEventListener( "loadedmetadata", function() {
-          successCallback ({
-            source: baseUrl,
-            type: type,
-            title: baseUrl.substring( baseUrl.lastIndexOf( "/" ) + 1 ),
-            thumbnail: "", //URI.makeUnique( baseUrl ).toString(),
-            duration: videoElem.duration
-          });
         }, false );
-        videoElem.src = URI.makeUnique( baseUrl ).toString();*/
+        videoElem.src = URI.makeUnique( baseUrl ).toString();
       }
     }
   };
