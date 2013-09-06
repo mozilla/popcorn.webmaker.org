@@ -119,7 +119,9 @@ define([ "localized", "editor/editor", "editor/base-editor",
     }, false );
 
     function checkTags( tags ) {
-      return tags.split(/,|\#|\s/).filter(function(item){return item}).join(', ');
+      return tags.split( /,|\#|\s/ ).filter( function( item ) {
+        return item;
+      }).join( ", " );
     }
 
     function applyInputListeners( element, key ) {
