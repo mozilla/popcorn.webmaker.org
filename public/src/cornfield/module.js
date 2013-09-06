@@ -86,6 +86,31 @@ define( [ "util/xhr", "sso-include" ], function( xhr ) {
       });
     }
 
+    function removePlaceholder( id, callback ) {
+      console.warn( "Warning: Popcorn Maker remove is already in progress. Ignoring request." );
+      callback( { error: "Remove is already in progress. Ignoring request." } );
+    }
+
+    function removeFunction( id, callback ) {
+      self.remove = removePlaceholder;
+
+      var url = "/api/delete/";
+
+      if ( !id ) {
+        return callback({ message: "No id passed to identify project being removed." });
+      }
+
+      url += id;
+
+      xhr.post( url, function( response ) {
+        // Reset remove function to its original incarnation.
+        self.remove = removeFunction;
+
+        callback( response );
+      });
+    }
+
+    this.remove = removeFunction;
     this.save = saveFunction;
     this.publish = publishFunction;
 

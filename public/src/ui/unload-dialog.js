@@ -12,16 +12,27 @@ define([ "localized" ], function( Localized ) {
       return Localized.get( "You have unsaved project data." );
     }
 
-    butter.listen( "projectchanged", function() {
+    function projectChanged() {
       if ( !_projectWasSavedOnce ) {
         window.onbeforeunload = areYouSure;
       }
-    });
+    }
 
-    butter.listen( "projectsaved", function() {
+    function projectSaved() {
       _projectWasSavedOnce = true;
       window.onbeforeunload = null;
-    });
+    }
+
+    this.toggle = function( state ) {
+      if ( state ) {
+        butter.listen( "projectsaved", projectSaved );
+        butter.listen( "projectchanged", projectChanged );
+      } else {
+        butter.unlisten( "projectsaved", projectSaved );
+        butter.unlisten( "projectchanged", projectChanged );
+        window.onbeforeunload = null;
+      }
+    };
   };
 
 });

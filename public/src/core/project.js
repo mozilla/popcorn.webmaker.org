@@ -393,6 +393,20 @@ define( [ "localized", "core/eventmanager", "core/media", "util/sanitizer" ],
       }
     };
 
+    _this.remove = function( callback ) {
+      if ( !callback ) {
+        callback = function() {};
+      }
+
+      // Don't delete if there is no project.
+      if ( !_this.isSaved ) {
+        callback({ error: "okay" });
+        return;
+      }
+
+      butter.cornfield.remove( _id, callback );
+    };
+
     // Save and Publish a project.  Saving only happens if project data needs
     // to be saved (i.e., it has been changed since last save, or was never
     // saved before).

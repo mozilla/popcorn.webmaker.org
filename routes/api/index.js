@@ -4,6 +4,7 @@ module.exports = {
   healthcheck: require( "./healthcheck" ),
   image: require( "./image" ),
   publish: require( "./publish" ),
+  projectResponse: require( "./projectResponse" ),
   synchronize: require( "./synchronize" ),
   remove: require( "./remove" ),
   remix: require( "./remix" ),
