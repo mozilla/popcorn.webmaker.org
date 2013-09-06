@@ -118,12 +118,19 @@ define([ "localized", "editor/editor", "editor/base-editor",
       updateEmbed( butter.project.iframeUrl );
     }, false );
 
+    function checkTags( tags ) {
+      return tags.split(/,|\#|\s/).filter(function(item){return item}).join(', ');
+    }
+
     function applyInputListeners( element, key ) {
       var ignoreBlur = false,
           target;
 
       function checkValue( e ) {
         target = e.target;
+        if ( key === "tags" ) {
+          target.value = checkTags(target.value);
+        }
         if ( target.value !== _project[ key ] ) {
           _project[ key ] = target.value;
         }
