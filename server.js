@@ -109,7 +109,8 @@ app.configure( function() {
     translation_directory: path.join( __dirname, "locale" )
   }));
 
-  app.use( express.bodyParser() )
+  app.use( express.json() )
+    .use( express.urlencoded() )
     .use( express.cookieParser() )
     .use( express.cookieSession( config.session ) )
     .use( express.csrf() )
@@ -246,7 +247,7 @@ app.get( '/templates/assets/editors/text/text-editor.html', routes.path( '/plugi
 // Localized Strings
 app.get( "/strings/:lang?", middleware.crossOrigin, i18n.stringsRoute( 'en-US' ) );
 
-app.put( "/api/image", filter.isImage, routes.api.image );
+app.put( "/api/image", middleware.processForm, filter.isImage, routes.api.image );
 
 app.listen( config.PORT, function() {
   console.log( 'HTTP Server started on ' + APP_HOSTNAME );
