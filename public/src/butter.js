@@ -25,25 +25,6 @@ window.Butter = {
     return;
   }
 
-  var ACCEPTED_UA_LIST = {
-    "Chrome": 17,
-    "Firefox": 10,
-    "IE": 9,
-    "Safari": 6,
-    "Opera": 12
-  },
-
-  MOBILE_OS_BLACKLIST = [
-    "Android",
-    "iOS",
-    "BlackBerry",
-    "MeeGo",
-    "Windows Phone OS",
-    "Firefox OS",
-    // For BB Playbook
-    "RIM Tablet OS"
-  ];
-
   var require = requirejs.config({
     baseUrl: "/src",
     paths: {
@@ -58,9 +39,9 @@ window.Butter = {
             "./modules", "./dependencies", "./dialogs",
             "dialog/dialog", "editor/editor", "ui/ui",
             "util/xhr", "util/lang", "util/tutorial",
-            "util/warn", "text!default-config.json",
+            "text!default-config.json",
             "ui/widget/tooltip", "crashreporter", "core/project",
-            "../external/ua-parser/ua-parser", "localized"
+            "localized", "util/accepted-ua"
           ],
           function(
             EventManager, Logger, Config, Track,
@@ -68,9 +49,9 @@ window.Butter = {
             Modules, Dependencies, Dialogs,
             Dialog, Editor, UI,
             xhr, Lang, Tutorial,
-            Warn, DEFAULT_CONFIG_JSON,
+            DEFAULT_CONFIG_JSON,
             ToolTip, CrashReporter, Project,
-            UAParser, Localized
+            Localized
           ){
 
     var __guid = 0;
@@ -82,23 +63,6 @@ window.Butter = {
     Butter.ToolTip = ToolTip;
 
     Butter.init = function( butterOptions ) {
-
-      // ua-parser uses the current browsers UA by default
-      var ua = new UAParser().getResult(),
-          name = ua.browser.name,
-          major = ua.browser.major,
-          os = ua.os.name,
-          acceptedUA = false;
-
-      for ( var uaName in ACCEPTED_UA_LIST ) {
-        if ( ACCEPTED_UA_LIST.hasOwnProperty( uaName ) && MOBILE_OS_BLACKLIST.indexOf( os ) === -1 ) {
-          if ( name === uaName ) {
-            if ( +major >= ACCEPTED_UA_LIST[ uaName ] ) {
-              acceptedUA = true;
-            }
-          }
-        }
-      }
 
       butterOptions = butterOptions || {};
 
@@ -945,10 +909,6 @@ window.Butter = {
 
         _this.ui = new UI( _this  );
         _this.ui.load(function(){
-
-          if ( !acceptedUA ) {
-            Warn.showWarning( Localized.get( "UA_WARNING_TEXT" ) );
-          }
 
           //prepare the page next
           preparePopcornScriptsAndCallbacks( function(){
