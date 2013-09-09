@@ -230,6 +230,7 @@ function init() {
       "ui/widget/textbox",
       "util/mediatypes",
       "text!layouts/attribution.html",
+      "util/accepted-ua",
       "popcorn"
     ],
     function( URI, LangUtil, Controls, TextboxWrapper, MediaUtil, DEFAULT_LAYOUT_SNIPPETS ) {
