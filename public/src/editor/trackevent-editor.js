@@ -634,7 +634,8 @@ define([ "localized", "util/lang", "util/keys", "util/time", "./base-editor", "u
         if ( manifestEntry.options ) {
           for ( i = 0, l = manifestEntry.options.length; i < l; ++i ){
             option = document.createElement( "option" );
-            manifestEntryOption = Localized.get( manifestEntry.options[ i ] );
+            // This is a safe fallback for select element where we don't want to translate options.
+            manifestEntryOption = Localized.get( manifestEntry.options[ i ] ) || manifestEntry.options[ i ];
 
             // if the manifest has values for options, use the options as labels
             // and the values as values for the <option> elements
