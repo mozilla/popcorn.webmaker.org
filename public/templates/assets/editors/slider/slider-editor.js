@@ -101,9 +101,12 @@
     Butter.Editor.TrackEventEditor.extend( _this, butter, rootElement, {
       open: function( parentElement, trackEvent ) {
         // Disable description link functionality during editing
-        var anchorContainer = trackEvent.popcornTrackEvent._container.querySelector( "a" );
-        if ( anchorContainer ) {
-          anchorContainer.onclick = function _falseClick() {
+        var anchors = trackEvent.popcornTrackEvent._container.querySelectorAll( "a" ),
+            anchorContainer,
+            counter = anchors.length;
+
+        for ( ; counter; --counter ) {
+          anchors[ counter - 1 ].onclick = function _falseClick() {
             return false;
           };
         }
