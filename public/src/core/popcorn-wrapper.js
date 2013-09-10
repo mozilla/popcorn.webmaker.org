@@ -517,7 +517,7 @@ define( [
         if ( !waiting ) {
           _popcorn.play();
         } else {
-          document.querySelector( ".play-button-container" ).querySelector( ".status-button" ).setAttribute( "data-state", true );
+          document.querySelector( ".play-button-container .status-button" ).setAttribute( "data-state", true );
           _popcorn.on( "sequencesReady", onSequencesReady );
         }
       }
