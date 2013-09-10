@@ -11,6 +11,7 @@ define( [ "localized", "util/uri" ],
         YouTube: /(?:https?:\/\/www\.|https?:\/\/|www\.|\.|^)youtu/,
         Vimeo: /https?:\/\/(www\.)?vimeo.com\/(\d+)($|\/)/,
         SoundCloud: /(?:https?:\/\/www\.|https?:\/\/|www\.|\.|^)(soundcloud)/,
+        Archive: /(?:https?:\/\/www\.|https?:\/\/|www\.|\.|^)archive\.org\/(details|download)\/((.*)start(\/|=)[\d\.]+(.*)end(\/|=)[\d\.]+)?/,
         // supports #t=<start>,<duration>
         // where start or duration can be: X, X.X or XX:XX
         "null": /^\s*#t=(?:\d*(?:(?:\.|\:)?\d+)?),?(\d+(?:(?:\.|\:)\d+)?)\s*$/,
@@ -18,8 +19,8 @@ define( [ "localized", "util/uri" ],
       },
       YOUTUBE_EMBED_DISABLED = Localized.get ( "Embedding of this YouTube video is disabled" ),
       YOUTUBE_EMBED_UNPLAYABLE = Localized.get( "This YouTube video is unplayable" ),
+      ARCHIVE_EMBED_DISABLED = Localized.get( "Embedding of this Archive item is not available yet" ),
       SOUNDCLOUD_EMBED_DISABLED = Localized.get( "Embedding of this SoundCloud audio source is disabled" );
-
   return {
     checkUrl: function( url ) {
       for ( var type in REGEX_MAP ) {
@@ -166,6 +167,34 @@ define( [ "localized", "util/uri" ],
             duration: respData.duration,
             title: respData.title
           });
+        });
+      } else if ( type === "Archive" ) {
+        // We don't accept direct MP4/OGV links to videos since Archive.org doesn't want to directly
+        // expose the main video's. Until noted, keep it this way and don't change this.
+        if ( baseUrl.indexOf( "details" ) === -1 ) {
+          return errorCallback( ARCHIVE_EMBED_DISABLED );
+        }
+
+        xhrURL = "https://archive.org/services/maker.php?callback=caller&url=" + encodeURIComponent( baseUrl );
+
+        Popcorn.getJSONP( xhrURL, function( respData ) {
+
+          if ( !respData || respData.error || !respData.title || !respData.duration ) {
+            return errorCallback( ARCHIVE_EMBED_DISABLED );
+          }
+
+          videoElem = document.createElement( "video" );
+          videoElem.addEventListener( "loadedmetadata", function() {
+            successCallback({
+              source: respData.media,
+              type: type,
+              title: respData.title,
+              thumbnail: respData.thumb,
+              linkback: respData.linkback,
+              duration: videoElem.duration
+            });
+          }, false );
+          videoElem.src = URI.makeUnique( respData.media ).toString();
         });
       } else if ( type === "null" ) {
         successCallback({

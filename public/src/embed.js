@@ -360,14 +360,22 @@ function init() {
           if ( sequencerEvents.length ) {
             var clipsContainer = __defaultLayouts.querySelector( ".attribution-media" ).cloneNode( true ),
                 clipCont,
-                clip;
+                clip,
+                source,
+                type;
 
             for ( var i = 0; i < sequencerEvents.length; i++ ) {
               clip = sequencerEvents[ i ];
               clipCont = __defaultLayouts.querySelector( ".data-container.media" ).cloneNode( true );
+              source = clip.source[ 0 ];
+              type = MediaUtil.checkUrl( source );
 
-              clipCont.querySelector( "span" ).classList.add( MediaUtil.checkUrl( clip.source[ 0 ] ).toLowerCase() + "-icon" );
-              clipCont.querySelector( "a" ).href = clip.source[ 0 ];
+              if ( type === "Archive" ) {
+                source = clip.linkback;
+              }
+
+              clipCont.querySelector( "span" ).classList.add( type.toLowerCase() + "-icon" );
+              clipCont.querySelector( "a" ).href = source;
               clipCont.querySelector( "a" ).innerHTML = clip.title;
 
               clipsContainer.appendChild( clipCont );
