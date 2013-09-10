@@ -74,7 +74,7 @@
       return null;
     }
 
-    function parseDescription( rawText ) { console.log( "\n\nrunning parseDescription" );
+    function parseDescription( rawText ) {
       var rawBits = parseText( rawText );
 
       // Reset containers
@@ -104,7 +104,7 @@
       return {
         finalCode: finalCode,
         markdownRemoved: markdownRemoved
-      }
+      };
     }
 
     return {
@@ -115,7 +115,7 @@
       markdownRemoved: function getMarkdownRemoved() {
         return markdownRemoved;
       }
-    }
+    };
   })();
 
   Popcorn.plugin( "slider", {
@@ -250,7 +250,7 @@
       description.classList.add( "slider-description" );
 
       // Check that description has been parsed
-      if ( !Array.isArray( finalCode ) ) {
+      if ( !( finalCode && typeof( finalCode.push ) === "function" ) ) {
         descriptionHelper.parseDescription( options.description );
         finalCode = descriptionHelper.finalCode();
       }
