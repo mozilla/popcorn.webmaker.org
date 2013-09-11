@@ -370,6 +370,9 @@
 
       // event to seek the clip if the main timeline seeked.
       options._onSeeked = function() {
+        if ( _this.currentTime() < options.start || _this.currentTime() >= options.end ) {
+          options.endFromSeek = true;
+        }
         options._setClipCurrentTime();
       };
 
