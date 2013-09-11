@@ -9,10 +9,30 @@ module.exports = function( req, res ) {
       iframeUrl = utilities.embedURL( req.session.username, res.locals.project.id ),
       projectData = JSON.parse( res.locals.project.data, sanitizer.escapeHTMLinJSON ),
       publishUrl = utilities.embedShellURL( req.session.username, res.locals.project.id ),
-      projectUrl = "/editor/" + res.locals.project.id;
+      projectUrl = "/editor/" + res.locals.project.id,
+      tracks = projectData.media[ 0 ].tracks;
 
-  var mediaUrl = projectData.media[ 0 ].url,
-      attribURL = Array.isArray( mediaUrl ) ? mediaUrl[ 0 ] : mediaUrl;
+  // We need a form of "whitelisting" specific trackevent options.
+  // For now, we only need this with sequencer urls.
+  if ( tracks ) {
+    var trackEvents,
+        trackEvent;
+
+    for ( var i = 0; i < tracks.length; i++ ) {
+      trackEvents = tracks[ i ].trackEvents;
+
+      if ( trackEvents ) {
+
+        for ( var k = 0; k < trackEvents.length; k++ ) {
+          trackEvent = trackEvents[ k ];
+
+          if ( trackEvent.type === "sequencer" ) {
+            trackEvent.popcornOptions.source[ 0 ] = sanitizer.reconstituteHTML( trackEvent.popcornOptions.source[ 0 ] );
+          }
+        }
+      }
+    }
+  }
 
   async.parallel([
     function( asyncCallback ) {
