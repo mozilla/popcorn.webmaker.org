@@ -135,6 +135,11 @@
       };
 
       options.readyEvent = function() {
+
+        options._clip.media.style.width = "100%";
+        options._clip.media.style.height = "100%";
+        options._container.style.width = "100%";
+        options._container.style.height = "100%";
         // If teardown was hit before ready, ensure we teardown.
         if ( options._cancelLoad ) {
           options.playIfReady();
@@ -164,6 +169,9 @@
       // or string is normalized to an array as often as possible.
       options.sourceToArray = function( object, type ) {
         // If our src is not an array, create an array of one.
+        if ( !object[ type ] ) {
+          return;
+        }
         object[ type ] = typeof object[ type ] === "string" ? [ object[ type ] ] : object[ type ];
       };
 
@@ -177,6 +185,21 @@
         options.hideLoading();
         options.playIfReady();
       };
+
+      options.attemptJWPlayer = function() {
+        var jwDiv = document.createElement( "div" );
+        // Remove the dead html5 video element.
+        options._container.removeChild( document.getElementById( options._clip.media.id ) );
+        options._container.appendChild( jwDiv );
+        jwDiv.id = Popcorn.guid( "popcorn-jwplayer-" );
+        var jwplayer = Popcorn.HTMLJWPlayerVideoElement( jwDiv );
+        // Now we can fail.
+        options._clip = Popcorn( jwplayer, { frameAnimation: true } );
+        options._clip.on( "error", options.fail );
+        options._clip.on( "loadedmetadata", options.readyEvent );
+        options._clip.on( "loadedmetadata", options.clearLoading );
+        jwplayer.src = options.source[ 0 ];
+      }
 
       options.tearDown = function() {
         _this.off( "volumechange", options._volumeEvent );
@@ -224,16 +247,13 @@
 
         options._clip = Popcorn.smart( options._container, options.source, { frameAnimation: true } );
 
-        options._clip.on( "error", options.fail );
+        options._clip.on( "error", options.attemptJWPlayer );
 
         if ( options._clip.error ) {
-          options.fail();
+          options.attemptJWPlayer();
+          return;
         }
 
-        options._clip.media.style.width = "100%";
-        options._clip.media.style.height = "100%";
-        options._container.style.width = "100%";
-        options._container.style.height = "100%";
         if ( options._clip.media.readyState >= 1 ) {
           options.readyEvent();
           options.clearLoading();
