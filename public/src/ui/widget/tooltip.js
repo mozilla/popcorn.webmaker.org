@@ -46,6 +46,10 @@ define( [], function() {
       tooltipElement.classList.add( options.name );
     }
 
+    if ( !options.hideArrow ) {
+      tooltipElement.classList.add( "arrow" );
+    }
+
     Object.defineProperty( this, "message", {
       get: function() {
         return message;

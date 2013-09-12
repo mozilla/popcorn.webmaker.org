@@ -556,6 +556,10 @@
   &.tooltip-error {
     color: red;
   }
+
+  &.butter-tooltip-middle {
+    top: 50%;
+  }
   visibility: hidden;
   opacity: 0;
 
@@ -580,18 +584,20 @@
   pointer-events: none;
   .transition( opacity 0.3s ease 0 );
 
-  &:after,
-  &:before {
-    content: "";
-    position: absolute;
-    top: -5px;
-    left: 50%;
-    margin-left: -5px;
-    width: 0;
-    height: 0;
-    border-left: 5px solid transparent;
-    border-right: 5px solid transparent;
-    border-bottom: 5px solid #FFF;
+  &.arrow {
+    &:after,
+    &:before {
+      content: "";
+      position: absolute;
+      top: -5px;
+      left: 50%;
+      margin-left: -5px;
+      width: 0;
+      height: 0;
+      border-left: 5px solid transparent;
+      border-right: 5px solid transparent;
+      border-bottom: 5px solid #FFF;
+    }
   }
   &:after {
     z-index: @MODAL_Z_INDEX + 1;
