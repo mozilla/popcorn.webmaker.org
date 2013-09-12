@@ -144,17 +144,16 @@
           onStopPropagation,
           onMouseDown,
           onMouseUp,
-          onDblClick;
+          onDblClick,
+          tooltipElement;
 
       if ( !options.disableTooltip ) {
-        require( [ "ui/widget/tooltip" ], function( ToolTip ) {
-          toolTip = ToolTip.create({
-            element: dragContainer,
-            message: options.tooltip || Butter.localized.get( "Double click to edit" ),
-            marginTop: "10px"
-          });
-          toolTip.hidden = false;
-        });
+        tooltipElement = document.createElement( "div" );
+        tooltipElement.innerHTML = options.tooltip || Butter.localized.get( "Double click to edit" );
+        tooltipElement.classList.add( "butter-tooltip" );
+        tooltipElement.classList.add( "butter-tooltip-middle" );
+        dragContainer.appendChild( tooltipElement );
+        tooltipElement.style.marginTop = "-" + ( tooltipElement.offsetHeight / 2 ) + "px";
       }
 
       onBlur = function() {
@@ -162,8 +161,8 @@
           stopPropagation = false;
           return;
         }
-        if ( toolTip ) {
-          toolTip.hidden = false;
+        if ( tooltipElement ) {
+          tooltipElement.classList.remove( "tooltip-off" );
         }
         dragContainer.removeEventListener( "mousedown", onStopPropagation, false );
         el.addEventListener( "dblclick", onDblClick, false );
@@ -175,8 +174,8 @@
         stopPropagation = true;
       };
       onDblClick = function() {
-        if ( toolTip ) {
-          toolTip.hidden = true;
+        if ( tooltipElement ) {
+          tooltipElement.classList.add( "tooltip-off" );
         }
         dragContainer.addEventListener( "mousedown", onStopPropagation, false );
         el.removeEventListener( "dblclick", onDblClick, false );
