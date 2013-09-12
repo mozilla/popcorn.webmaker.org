@@ -1,4 +1,4 @@
-/*global EditorHelper*/
+/*global EditorHelper,$*/
 
 EditorHelper.addPlugin( "image", function( trackEvent ) {
 
@@ -8,6 +8,13 @@ EditorHelper.addPlugin( "image", function( trackEvent ) {
       _draggable,
       _cloneContainer,
       _target = _popcornOptions._target;
+
+  function createHelper( suffix ) {
+    var el = document.createElement( "div" );
+    el.classList.add( "ui-resizable-handle" );
+    el.classList.add( "ui-resizable-" + suffix );
+    return el;
+  }
 
   if ( window.jQuery ) {
 
@@ -25,13 +32,6 @@ EditorHelper.addPlugin( "image", function( trackEvent ) {
         disableTooltip: true,
         editable: false
       });
-    }
-
-    function createHelper( suffix ) {
-      var el = document.createElement( "div" );
-      el.classList.add( "ui-resizable-handle" );
-      el.classList.add( "ui-resizable-" + suffix );
-      return el;
     }
 
     _container.appendChild( createHelper( "top" ) );
@@ -125,6 +125,9 @@ EditorHelper.addPlugin( "image", function( trackEvent ) {
       });
     }
 
+    // The image plugin doesn't use an update function.
+    // If it did, we wouldn't be able to set this up again and again.
+    // We would need to make sure nothing gets duplicated on an update.
     if ( trackEvent.popcornTrackEvent.image && trackEvent.popcornOptions.src ) {
       _cloneContainer = document.createElement( "div" );
       _cloneContainer.classList.add( "clone-container" );
