@@ -18,7 +18,7 @@ define( [ "localized", "util/uri" ],
       },
       YOUTUBE_EMBED_DISABLED = Localized.get ( "Embedding of this YouTube video is disabled" ),
       YOUTUBE_EMBED_UNPLAYABLE = Localized.get( "This YouTube video is unplayable" ),
-      JWPLAYER_EMBED_UNPLAYABLE = Localized.get( "This JWPlayer video is unplayable" ),
+      EMBED_UNPLAYABLE = Localized.get( "This media source is unplayable" ),
       SOUNDCLOUD_EMBED_DISABLED = Localized.get( "Embedding of this SoundCloud audio source is disabled" );
 
   return {
@@ -188,46 +188,46 @@ define( [ "localized", "util/uri" ],
         }, false );
         videoElem.addEventListener( "error", function() {
           // We hit an error trying to load HTML5, try the jwplayer instead
-          var popcorn,
+          var media,
               div = document.createElement( "div" ),
+              container = document.createElement( "div" ),
               source;
 
           div.style.height = "400px";
           div.style.width = "400px";
           div.style.left = "-400px";
           div.style.position = "absolute";
+          container.style.height = "100%";
+          container.style.width = "100%";
 
           document.body.appendChild( div );
+          div.appendChild( container );
 
           function errorEvent() {
-            popcorn.off( "loadedmetadata", readyEvent );
-            popcorn.off( "error", errorEvent );
-            errorCallback( JWPLAYER_EMBED_UNPLAYABLE );
-            popcorn.destroy();
+            media.removeEventListener( "loadedmetadata", readyEvent, false );
+            media.removeEventListener( "error", errorEvent, false );
+            errorCallback( EMBED_UNPLAYABLE );
+            document.body.removeChild( div );
           }
 
           function readyEvent() {
-            popcorn.off( "loadedmetadata", readyEvent );
-            popcorn.off( "error", errorEvent );
+            media.removeEventListener( "loadedmetadata", readyEvent, false );
+            media.removeEventListener( "error", errorEvent, false );
             document.body.removeChild( div );
-            popcorn.destroy();
-
             successCallback({
               source: baseUrl,
               title: baseUrl,
-              type: "JWPlayer",
+              type: type,
               thumbnail: "",
-              duration: popcorn.duration()
+              duration: media.duration
             });
           }
           source = baseUrl;
-          popcorn = Popcorn.smart( div, source );
-          popcorn.on( "error", errorEvent );
-          if ( popcorn.media.readyState >= 1 ) {
-            readyEvent();
-          } else {
-            popcorn.on( "loadedmetadata", readyEvent );
-          }
+          container.id = Popcorn.guid( "popcorn-jwplayer-" );
+          var media = Popcorn.HTMLJWPlayerVideoElement( container );
+          media.addEventListener( "error", errorEvent, false );
+          media.addEventListener( "loadedmetadata", readyEvent, false );
+          media.src = source;
         }, false );
         videoElem.src = URI.makeUnique( baseUrl ).toString();
       }
