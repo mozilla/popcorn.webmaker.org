@@ -1,5 +1,6 @@
-define([ "WebmakerUI", "localized", "dialog/dialog", "util/lang", "l10n!/layouts/header.html", "ui/widget/textbox", "ui/widget/tooltip", "make-api", "json!/api/butterconfig" ],
-  function( WebmakerUI, Localized, Dialog, Lang, HEADER_TEMPLATE, TextBoxWrapper, ToolTip, Make, config ) {
+/*global $*/
+define([ "WebmakerUI", "localized", "dialog/dialog", "util/lang", "l10n!/layouts/header.html", "ui/widget/textbox", "ui/widget/tooltip" ],
+  function( WebmakerUI, Localized, Dialog, Lang, HEADER_TEMPLATE, TextBoxWrapper, ToolTip ) {
 
   return function( butter, options ){
 
@@ -43,10 +44,6 @@ define([ "WebmakerUI", "localized", "dialog/dialog", "util/lang", "l10n!/layouts
       message: Localized.get( "Login to save your project!" ),
       element: _projectTitle,
       top: "60px"
-    });
-
-    var make = new Make({
-      apiURL: config.make_endpoint
     });
 
     _this.element = _rootElement;
