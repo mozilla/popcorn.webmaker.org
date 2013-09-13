@@ -104,6 +104,7 @@ function checkCSS( callback ) {
     "public/css/makedetails.less",
     "public/templates/assets/css/jquery-ui/jquery.ui.butter.less",
     "public/templates/assets/plugins/wikipedia/popcorn.wikipedia.less",
+    "public/templates/assets/plugins/sketchfab/popcorn.sketchfab.less",
     "public/templates/basic/style.less"
   ];
 
