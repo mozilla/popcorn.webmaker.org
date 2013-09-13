@@ -23,6 +23,7 @@
     "plugins": [
       {
         "type": "sketchfab",
+        "hidden": true,
         "icon": "{{baseDir}}templates/assets/plugins/sketchfab/sketchfab-icon.png"
       },
       {
