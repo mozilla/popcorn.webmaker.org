@@ -22,11 +22,6 @@
   "plugin": {
     "plugins": [
       {
-        "type": "sketchfab",
-        "hidden": true,
-        "icon": "{{baseDir}}templates/assets/plugins/sketchfab/sketchfab-icon.png"
-      },
-      {
         "type": "text",
         "icon": "{{baseDir}}templates/assets/plugins/text/text-icon.png"
       },
@@ -59,6 +54,11 @@
       {
         "type": "wikipedia",
         "icon": "{{baseDir}}templates/assets/plugins/wikipedia/wikipedia-icon.png"
+      },
+      {
+        "type": "sketchfab",
+        "displayName": "3D Model",
+        "icon": "{{baseDir}}templates/assets/plugins/sketchfab/sketchfab-icon.png"
       },
       {
         "type": "sequencer",
