@@ -1,4 +1,5 @@
 {
+	"3D Model": "3D Model",
 	"A project about...": "A project about...",
 	"Add a layer": "Add a layer",
 	"Add Event > Track Event Editor": "Add Event > Track Event Editor",
@@ -166,7 +167,9 @@
 	"Show/Hide Editor": "Show/Hide Editor",
 	"Show/Hide Timeline": "Show/Hide Timeline",
 	"Single Image": "Single Image",
-	"sketchfab": "sketchfab",
+	"Sketchfab Editor": "Sketchfab Editor",
+	"Sketchfab.com URL": "Sketchfab.com URL",
+	"Sketchfab Description": "<a target=\"_blank\" href=\"//sketchfab.com/\">Sketchfab</a> will let you publish, share and embed interactive 3D models online. <a target=\"_blank\" href=\"//sketchfab.com/browse/faved\">Head there now</a> to find a model you like, then copy &amp; paste the url above to embed it.",
 	"skip": "skip",
 	"Skull": "Skull",
 	"Slide Down": "Slide Down",

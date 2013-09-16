@@ -28,10 +28,9 @@
     }
 
     if ( options.src ) {
-      src = options.src.match( /((show|skfb\.ly)\/)?([A-Za-z0-9]{9,27})/ );
-
+      src = options.src.match( /sketchfab\.com\/show\/([A-Za-z0-9]{9,27})|^([A-Za-z0-9]{9,27})$/ );
       if ( src ) {
-        src = src[ src.length - 1 ];
+        src = src[ src.length - 1 ] || src[ src.length - 2 ];
 
         options._iframe = iframe = document.createElement( "iframe" );
         iframe.classList.add( "sketchfab-iframe" );
@@ -66,6 +65,9 @@
 
         options._container.appendChild( iframe );
         options._target.appendChild( options._container );
+      }
+      else {
+        throw "Invalid Sketchfab URL. See below for instructions on finding a model to show.";
       }
     }
   }
@@ -187,24 +189,25 @@
       author: "@secretrobotron",
       website: "http://secretrobotron.tumblr.com/"
     },
+    displayName: "3D Model",
     options:{
       start: {
         elem: "input",
-        type: "number",
+        type: "text",
         label: "Start",
         "units": "seconds"
       },
       end: {
         elem: "input",
-        type: "number",
+        type: "text",
         label: "End",
         "units": "seconds"
       },
       src: {
         elem: "input",
         type: "text",
-        label: "Sketchfab ID or URL",
-        "default": "7IwpVxaeVk2DFnt512j6XROoyRG"
+        label: "Sketchfab.com URL",
+        "default": "http://sketchfab.com/show/7IwpVxaeVk2DFnt512j6XROoyRG"
       },
       background: {
         elem: "input",
