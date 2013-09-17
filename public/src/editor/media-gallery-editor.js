@@ -237,13 +237,17 @@ define( [ "localized", "util/lang", "util/uri", "util/keys", "util/mediatypes", 
     }
   }
 
+  function formatSource( value ) {
+    return !value ? "" : value.trim().split( " " ).join( "" );
+  }
+
   function onAddMediaClick() {
     // transitionend event is not reliable and not cross browser supported.
     _cancelSpinner = setTimeout( function() {
       _loadingSpinner.classList.remove( "hidden" );
     }, 300 );
     _addBtn.classList.add( "hidden" );
-    _urlInput.value = _urlInput.value.trim();
+    _urlInput.value = formatSource( _urlInput.value );
     addMediaToGallery( _urlInput.value, onDenied );
   }
 
@@ -272,11 +276,13 @@ define( [ "localized", "util/lang", "util/uri", "util/keys", "util/mediatypes", 
       if ( clips.hasOwnProperty( key ) ) {
         clip = clips[ key ];
         if ( typeof clip === "object" ) {
+          clip.source = formatSource( clip.source );
           addElements( clip );
         } else if ( typeof clip === "string" ) {
           // Load projects saved with just the url the old way.
           // Remove it too, so future saves don't come through here.
           delete clips[ key ];
+          clip = formatSource( clip );
           // Fire an onSuccess so a new, updated clip is added to clipData.
           MediaUtils.getMetaData( clip, onSuccess );
         }
