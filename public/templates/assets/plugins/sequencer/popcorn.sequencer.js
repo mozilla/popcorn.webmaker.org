@@ -128,6 +128,11 @@
       };
 
       options.readyEvent = function() {
+
+        options._clip.media.style.width = "100%";
+        options._clip.media.style.height = "100%";
+        options._container.style.width = "100%";
+        options._container.style.height = "100%";
         // If teardown was hit before ready, ensure we teardown.
         if ( options._cancelLoad ) {
           options.playIfReady();
@@ -157,6 +162,9 @@
       // or string is normalized to an array as often as possible.
       options.sourceToArray = function( object, type ) {
         // If our src is not an array, create an array of one.
+        if ( !object[ type ] ) {
+          return;
+        }
         object[ type ] = typeof object[ type ] === "string" ? [ object[ type ] ] : object[ type ];
       };
 
@@ -171,6 +179,21 @@
         options.hideLoading();
         options.playIfReady();
       };
+
+      options.attemptJWPlayer = function() {
+        var jwDiv = document.createElement( "div" );
+        // Remove the dead html5 video element.
+        options._container.removeChild( document.getElementById( options._clip.media.id ) );
+        options._container.appendChild( jwDiv );
+        jwDiv.id = Popcorn.guid( "popcorn-jwplayer-" );
+        var jwplayer = Popcorn.HTMLJWPlayerVideoElement( jwDiv );
+        // Now we can fail.
+        options._clip = Popcorn( jwplayer, { frameAnimation: true } );
+        options._clip.on( "error", options.fail );
+        options._clip.on( "loadedmetadata", options.readyEvent );
+        options._clip.on( "loadedmetadata", options.clearLoading );
+        jwplayer.src = options.source[ 0 ];
+      }
 
       options.tearDown = function() {
         _this.off( "volumechange", options._volumeEvent );
@@ -213,16 +236,13 @@
         }
         options._clip = Popcorn.smart( options._container, options.source, { frameAnimation: true } );
 
-        options._clip.on( "error", options.fail );
+        options._clip.on( "error", options.attemptJWPlayer );
 
         if ( options._clip.error ) {
-          options.fail();
+          options.attemptJWPlayer();
+          return;
         }
 
-        options._clip.media.style.width = "100%";
-        options._clip.media.style.height = "100%";
-        options._container.style.width = "100%";
-        options._container.style.height = "100%";
         if ( options._clip.media.readyState >= 1 ) {
           options.readyEvent();
           options.clearLoading();
@@ -301,44 +321,30 @@
         loadingHandler.add( options, options.addSource );
       }
 
-      options._playedEvent = function() {
-        options._clip.off( "play", options._playedEvent );
-        options._clip.off( "ended", options._playedEvent );
-        _this.off( "play", options._playWhenReadyEvent );
-        _this.on( "seeked", options._onSeeked );
-        // Setup on progress after initial load.
-        // This way if an initial load never happens, we never pause.
-        options._clip.on( "progress", options._onProgress );
-        options.hideLoading();
-        options.setZIndex();
-        if ( !options.playIfReady() ) {
-          options._clip.pause();
-          options._clip.on( "play", options._clipPlayEvent );
-          _this.on( "play", options._playEvent );
-        } else {
-          options._clip.on( "pause", options._clipPauseEvent );
-          _this.on( "pause", options._pauseEvent );
-        }
-        if ( options.active ) {
-          options._volumeEvent();
-        }
-      };
-
       options._startEvent = function() {
-        // wait for this seek to finish before displaying it
-        // we then wait for a play as well, because youtube has no seek event,
-        // but it does have a play, and won't play until after the seek.
-        // so we know if the play has finished, the seek is also finished.
+        // wait for this seek to finish before displaying it.
         var seekedEvent = function () {
           options._clip.off( "seeked", seekedEvent );
-          options._clip.on( "play", options._playedEvent );
-          // if a user seeks into ended time, a play event is never hit.
-          // an end event is, though, so one or the other
-          // of these events are going to be triggered.
-          options._clip.on( "ended", options._playedEvent );
-          options._clip.play();
+          _this.off( "play", options._playWhenReadyEvent );
+          _this.on( "seeked", options._onSeeked );
+          // Setup on progress after initial load.
+          // This way if an initial load never happens, we never pause.
+          options._clip.on( "progress", options._onProgress );
+          options.hideLoading();
+          options.setZIndex();
+          if ( !options.playIfReady() ) {
+            options._clip.pause();
+            options._clip.on( "play", options._clipPlayEvent );
+            _this.on( "play", options._playEvent );
+          } else {
+            options._clip.play();
+            options._clip.on( "pause", options._clipPauseEvent );
+            _this.on( "pause", options._pauseEvent );
+          }
+          if ( options.active ) {
+            options._volumeEvent();
+          }
         };
-        options._clip.mute();
         options._clip.on( "seeked", seekedEvent);
         // If the seek failed, we're already at the desired time.
         // fire the seekedEvent right away.
@@ -438,6 +444,9 @@
 
       // event to seek the clip if the main timeline seeked.
       options._onSeeked = function() {
+        if ( _this.currentTime() < options.start || _this.currentTime() >= options.end ) {
+          options.endFromSeek = true;
+        }
         options._setClipCurrentTime();
       };
 
@@ -580,7 +589,10 @@
         options._clip.off( "play", options._clipPlayEventSwitch );
         options._clip.off( "pause", options._clipPauseEventSwitch );
         options._clip.off( "progress", options._onProgress );
-        if ( this.paused() || options._clip.ended() ) {
+        if ( this.paused() || options._clip.ended() || options.endFromSeek ) {
+          // If we seek into ended state, we can end right away,
+          // no need to wait for the clip to actually end.
+          options.endFromSeek = false;
           options._endEvent();
         } else {
           // this pause event ensures we fire an event if the user
