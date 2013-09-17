@@ -438,6 +438,9 @@
 
       // event to seek the clip if the main timeline seeked.
       options._onSeeked = function() {
+        if ( _this.currentTime() < options.start || _this.currentTime() >= options.end ) {
+          options.endFromSeek = true;
+        }
         options._setClipCurrentTime();
       };
 
@@ -580,7 +583,10 @@
         options._clip.off( "play", options._clipPlayEventSwitch );
         options._clip.off( "pause", options._clipPauseEventSwitch );
         options._clip.off( "progress", options._onProgress );
-        if ( this.paused() || options._clip.ended() ) {
+        if ( this.paused() || options._clip.ended() || options.endFromSeek ) {
+          // If we seek into ended state, we can end right away,
+          // no need to wait for the clip to actually end.
+          options.endFromSeek = false;
           options._endEvent();
         } else {
           // this pause event ensures we fire an event if the user
