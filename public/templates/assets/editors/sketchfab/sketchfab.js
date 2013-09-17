@@ -12,7 +12,8 @@ EditorHelper.addPlugin( "sketchfab", function( trackEvent ) {
   EditorHelper.resizable( trackEvent, container, target, {
     minWidth: 40,
     minHeight: 40,
-    handlePositions: "n,ne,e,se,s,sw,w"
+    handlePositions: "n,ne,e,se,s,sw,w,nw"
   });
 
+  EditorHelper.selectable( trackEvent, container );
 });
