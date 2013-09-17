@@ -243,6 +243,7 @@ define( [ "localized", "util/lang", "util/uri", "util/keys", "util/mediatypes", 
       _loadingSpinner.classList.remove( "hidden" );
     }, 300 );
     _addBtn.classList.add( "hidden" );
+    _urlInput.value = _urlInput.value.trim();
     addMediaToGallery( _urlInput.value, onDenied );
   }
 
