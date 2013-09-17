@@ -221,7 +221,7 @@
 	"UA_WARNING_TEXT": "Your web browser may lack some functionality expected by Popcorn Maker to function properly. Please upgrade your browser or <a target=\"_blank\" href=\"http://bugzilla.mozilla.org/enter_bug.cgi?product=Webmaker&component=Popcorn%20Maker\"> file a bug</a> to find out why your browser isn't fully supported. Click <a href=\"#\" class=\"close-button\">here</a> to remove this warning.",
 	"Underline": "Underline",
 	"URL": "URL",
-	"Use as default settings": "Use as default settings",
+	"Set as default": "Set as default",
 	"User": "User",
 	"Video": "Video",
 	"View Source": "View Source",
