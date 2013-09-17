@@ -548,7 +548,7 @@ define([ "localized", "util/lang", "util/keys", "util/time", "./base-editor", "u
       var editorElement = __defaultLayouts.querySelector( ".checkbox" ).cloneNode( true ),
           span = editorElement.querySelector( ".butter-form-checkbox span" ),
           checkbox = editorElement.querySelector( ".butter-form-checkbox input" );
-      span.innerHTML = Localized.get( "Use as default settings" );
+      span.innerHTML = Localized.get( "Set as default" );
       if ( trackEvent.isDefault ) {
         checkbox.checked = true;
       }
