@@ -211,6 +211,11 @@
         if ( options.denied ) {
           options.fail();
         }
+
+        for ( var i = 0; i < options.source.length; i++ ) {
+          options.source[ i ] = options.source[ i ].trim().split( " " ).join( "" );
+        }
+
         options._clip = Popcorn.smart( options._container, options.source, { frameAnimation: true } );
 
         options._clip.on( "error", options.fail );
