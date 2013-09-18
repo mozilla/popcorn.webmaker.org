@@ -384,6 +384,8 @@ define( [ "util/mediatypes", "editor/editor", "util/time",
         }
         updateOptions.source[ 0 ] = updateOptions.source[ 0 ] || _popcornOptions.source[ 0 ];
 
+        updateOptions.source[ 0 ] = updateOptions.source[ 0 ].trim().split( " " ).join( "" );
+
         // Bail early to prevent the same video being reloaded due to butteruid.
         if ( URI.stripUnique( updateOptions.source[ 0 ] ).toString() ===
              URI.stripUnique( _popcornOptions.source[ 0 ] ).toString() ) {
