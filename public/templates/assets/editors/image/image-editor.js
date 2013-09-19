@@ -23,6 +23,7 @@
         _dropArea = _rootElement.querySelector( ".image-droparea" ),
         _imageToggler = _rootElement.querySelector( "#image-toggler" ),
         _maxImageCount,
+        _urlRegex,
         _this = this,
         _trackEvent,
         _galleryActive = false,
@@ -184,6 +185,7 @@
 
       _inSetup = true;
       _maxImageCount = manifestOpts.count.MAX_COUNT ? manifestOpts.count.MAX_COUNT : 20;
+      _urlRegex = manifestOpts.linkSrc.validation;
 
       function callback( elementType, element, trackEvent, name ) {
         if ( elementType === "select" ) {
@@ -227,11 +229,19 @@
         });
 
         _this.attachInputChangeHandler( _linkInput, trackEvent, "linkSrc", function( te, prop ) {
-          _cachedValues.linkSrc.data = prop.linkSrc;
+          if ( prop.linkSrc.match( _urlRegex ) ) {
+            _cachedValues.linkSrc.data = prop.linkSrc;
 
-          updateTrackEvent( te, {
-            linkSrc: prop.linkSrc
-          });
+            updateTrackEvent( te, {
+              linkSrc: prop.linkSrc
+            });
+          } else if ( prop.linkSrc !== "" ) {
+            _this.setErrorState( Butter.localized.get( "Not a valid URL" ) );
+          } else {
+            updateTrackEvent( te, {
+              linkSrc: ""
+            });
+          }
         });
 
         _this.attachInputChangeHandler( _galleryInput, trackEvent, "photosetId", function( te, prop ) {

@@ -10,7 +10,8 @@
       getPhotosetCmd = flickrUrl + "rest/?method=flickr.photosets.getPhotos&extras=url_m&media=photos",
       getPhotoSizesCmd = flickrUrl + "rest/?method=flickr.photos.getSizes",
       jsonBits = "&format=json&jsoncallback=flickr",
-      FLICKR_SINGLE_CHECK = "flickr.com/photos/";
+      FLICKR_SINGLE_CHECK = "flickr.com/photos/",
+      urlRegex = /[\w-]+(\.[\w-]+)+([\w.,@?^=%&amp;:\/~+#-]*[\w@?^=%&amp;\/~+#-])?/;
 
   function searchImagesFlickr( tags, count, userId, ready ) {
     var uri = searchPhotosCmd + APIKEY + "&per_page=" + count + "&";
@@ -91,7 +92,7 @@
     imageDiv.style.backgroundImage = "url( \"" + imageUrl + "\" )";
     imageDiv.classList.add( "image-plugin-img" );
 
-    if ( linkUrl ) {
+    if ( linkUrl && linkUrl.match( urlRegex ) ) {
       link.setAttribute( "href", linkUrl );
 
       link.onclick = function() {
@@ -331,7 +332,8 @@
         linkSrc: {
           elem: "input",
           type: "url",
-          label: "Link URL"
+          label: "Link URL",
+          validation: urlRegex
         },
         tags: {
           elem: "input",
