@@ -256,7 +256,8 @@
 }
 
 #controls-remix {
-  background-position: -61px -2px;
+  background-position: 8px 6px;
+  background-image: url( "../resources/icons/icon-Remix.png" );
 }
 
 #controls-fullscreen {
