@@ -170,7 +170,7 @@
 	"Show/Hide Timeline": "Show/Hide Timeline",
 	"Single Image": "Single Image",
 	"Sketchfab Editor": "Sketchfab Editor",
-	"Sketchfab.com URL": "Sketchfab.com URL",
+	"Sketchfab.com URL": "<a target=\"_blank\" href=\"//sketchfab.com/\">Sketchfab.com</a> URL",
 	"Sketchfab Description": "<a target=\"_blank\" href=\"//sketchfab.com/\">Sketchfab</a> will let you publish, share and embed interactive 3D models online. <a target=\"_blank\" href=\"//sketchfab.com/browse/faved\">Head there now</a> to find a model you like, then copy &amp; paste the url above to embed it.",
 	"skip": "skip",
 	"Skull": "Skull",
