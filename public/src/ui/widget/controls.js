@@ -19,8 +19,8 @@ define( [ "util/lang", "util/time", "text!layouts/controls.html" ],
         volume, volumeProgressBar, volumeScrubber, position, controlsContainer,
         controlsShare, controlsRemix, controlsFullscreen, controlsLogo, attributionContainer,
         // functions
-        bigPlayClicked, activate, deactivate, volumechange,
-        togglePlay, timeMouseMove, timeMouseUp,
+        bigPlayClicked, activate, deactivate, volumechange, onSequencesReady,
+        togglePlay, timeMouseMove, timeMouseUp, onPause, onPlay,
         timeMouseDown, volumeMouseMove, volumeMouseUp,
         volumeMouseDown, durationchange, mutechange;
 
@@ -145,19 +145,39 @@ define( [ "util/lang", "util/time", "text!layouts/controls.html" ],
       _controls.addEventListener( "mouseout", deactivate, false );
 
       togglePlay = function( e ) {
-
+        var waiting = document.querySelector( ".embed" ).getAttribute( "data-state-waiting" );
         // Only continue if event was triggered by the left mouse button or the spacebar
         if ( e.button !== LEFT_MOUSE_BUTTON && e.which !== SPACE_BAR ) {
           return;
         }
 
         if ( p.paused() ) {
-
-          p.play();
+          if ( !waiting ) {
+            p.play();
+          } else {
+            onPlay();
+            p.on( "sequencesReady", onSequencesReady );
+          }
         } else {
 
           p.pause();
         }
+      };
+
+      onSequencesReady = function() {
+        p.off( "sequencesReady", onSequencesReady );
+        p.play();
+      };
+
+      onPause = function() {
+        playButton.classList.remove( "controls-playing" );
+        playButton.classList.add( "controls-paused" );
+      };
+
+      onPlay = function() {
+        p.off( "sequencesReady", p.play );
+        playButton.classList.remove( "controls-paused" );
+        playButton.classList.add( "controls-playing" );
       };
 
       p.media.addEventListener( "click", togglePlay, false );
@@ -167,16 +187,8 @@ define( [ "util/lang", "util/time", "text!layouts/controls.html" ],
 
         playButton.addEventListener( "click", togglePlay, false );
 
-        p.on( "play", function() {
-
-          playButton.classList.remove( "controls-paused" );
-          playButton.classList.add( "controls-playing" );
-        });
-        p.on( "pause", function() {
-
-          playButton.classList.remove( "controls-playing" );
-          playButton.classList.add( "controls-paused" );
-        });
+        p.on( "play", onPlay );
+        p.on( "pause", onPause );
       }
 
       if ( muteButton ) {
