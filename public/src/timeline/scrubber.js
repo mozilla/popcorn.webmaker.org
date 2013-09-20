@@ -200,6 +200,8 @@ define( [ "util/time" ],
 
     var onMouseDown = this.onMouseDown = function( e ) {
       var pos = e.pageX - _container.getBoundingClientRect().left;
+      // Stop text selection in chrome.
+      e.preventDefault();
 
       _isScrubbing = true;
       _isSeeking = true;
