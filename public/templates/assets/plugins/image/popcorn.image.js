@@ -172,18 +172,18 @@
           } else {
             _link = createImageDiv( options.src, options.linkSrc, _this );
             _container.appendChild( _link );
+            _image = _link.querySelector( ".image-plugin-img" );
+            _image.style.left = validateDimension( options.innerLeft, "0" ) + "%";
+            _image.style.top = validateDimension( options.innerTop, "0" ) + "%";
+            if ( options.innerHeight ) {
+              _image.style.height = validateDimension( options.innerHeight, "0" ) + "%";
+            }
+            if ( options.innerWidth ) {
+              _image.style.width = validateDimension( options.innerWidth, "0" ) + "%";
+            }
+            options.link = _link;
+            options.image = _image;
           }
-          _image = _link.querySelector( ".image-plugin-img" );
-          _image.style.left = validateDimension( options.innerLeft, "0" ) + "%";
-          _image.style.top = validateDimension( options.innerTop, "0" ) + "%";
-          if ( options.innerHeight ) {
-            _image.style.height = validateDimension( options.innerHeight, "0" ) + "%";
-          }
-          if ( options.innerWidth ) {
-            _image.style.width = validateDimension( options.innerWidth, "0" ) + "%";
-          }
-          options.link = _link;
-          options.image = _image;
         } else {
 
           _flickrCallback = function( data ) {
