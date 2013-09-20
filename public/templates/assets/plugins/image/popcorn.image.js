@@ -117,6 +117,21 @@
           _image,
           _this = this;
 
+      function setupImageDiv() {
+        _container.appendChild( _link );
+        _image = _link.querySelector( ".image-plugin-img" );
+        _image.style.left = validateDimension( options.innerLeft, "0" ) + "%";
+        _image.style.top = validateDimension( options.innerTop, "0" ) + "%";
+        if ( options.innerHeight ) {
+          _image.style.height = validateDimension( options.innerHeight, "0" ) + "%";
+        }
+        if ( options.innerWidth ) {
+          _image.style.width = validateDimension( options.innerWidth, "0" ) + "%";
+        }
+        options.link = _link;
+        options.image = _image;
+      }
+
       options._target = _target = Popcorn.dom.find( options.target );
       options._container = _container = document.createElement( "div" );
 
@@ -164,26 +179,15 @@
                 // Unfortunately not all requests contain an "Original" size option
                 // so I'm always taking the second last one. This has it's upsides and downsides
                 _link = createImageDiv( data.sizes.size[ data.sizes.size.length - 2 ].source, options.linkSrc, _this );
-                _container.appendChild( _link );
+                setupImageDiv();
               }
             };
 
             Popcorn.getJSONP( uri, _flickrStaticImage );
           } else {
             _link = createImageDiv( options.src, options.linkSrc, _this );
-            _container.appendChild( _link );
+            setupImageDiv();
           }
-          _image = _link.querySelector( ".image-plugin-img" );
-          _image.style.left = validateDimension( options.innerLeft, "0" ) + "%";
-          _image.style.top = validateDimension( options.innerTop, "0" ) + "%";
-          if ( options.innerHeight ) {
-            _image.style.height = validateDimension( options.innerHeight, "0" ) + "%";
-          }
-          if ( options.innerWidth ) {
-            _image.style.width = validateDimension( options.innerWidth, "0" ) + "%";
-          }
-          options.link = _link;
-          options.image = _image;
         } else {
 
           _flickrCallback = function( data ) {
