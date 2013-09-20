@@ -5,10 +5,11 @@
 function init() {
 
   var stateClasses = [
-    "embed-playing",
-    "embed-paused",
-    "embed-dialog-open"
-  ];
+        "embed-playing",
+        "embed-paused",
+        "embed-dialog-open"
+      ],
+      fullScreenedElem;
 
   // Sometimes we want to show the info div when we pause, sometimes
   // we don't (e.g., when we open the share dialog).
@@ -38,14 +39,58 @@ function init() {
     elem.style.display = "block";
   }
 
+  function fullScreenEnabled() {
+    var container = document.querySelector( ".video" ),
+        controls;
+
+    container.classList.add( "full-screen" );
+
+    if ( fullScreenedElem.requestFullscreen ) {
+      fullScreenedElem.removeEventListener( "fullscreenchange", fullScreenEnabled, false );
+      fullScreenedElem.addEventListener( "fullscreenchange", fullScreenDisabled, false );
+    } else if ( fullScreenedElem.mozRequestFullScreen ) {
+      fullScreenedElem.removeEventListener( "mozfullscreenchange", fullScreenEnabled, false );
+      fullScreenedElem.addEventListener( "mozfullscreenchange", fullScreenDisabled, false );
+    } else if ( fullScreenedElem.webkitRequestFullscreen ) {
+      fullScreenedElem.removeEventListener( "webkitfullscreenchange", fullScreenEnabled, false );
+      fullScreenedElem.addEventListener( "webkitfullscreenchange", fullScreenDisabled, false );
+    }
+
+    // OSX has a nice fancy animation that delays the fullscreen transition, but our event still fires.
+    // Because of this, we recieve a "premature" innerHeight value.
+    setTimeout(function() {
+      controls = document.querySelector( "#controls" );
+      container.style.height = window.innerHeight - controls.offsetHeight + "px";
+    }, 1000 );
+  }
+
+  function fullScreenDisabled() {
+    var container = document.querySelector( ".video" );
+
+    container.classList.remove( "full-screen" );
+    container.style.height = "";
+    if ( fullScreenedElem.requestFullscreen ) {
+      fullScreenedElem.removeEventListener( "fullscreenchange", fullScreenDisabled, false );
+    } else if ( fullScreenedElem.mozRequestFullScreen ) {
+      fullScreenedElem.removeEventListener( "mozfullscreenchange", fullScreenDisabled, false );
+    } else if ( fullScreenedElem.webkitRequestFullscreen ) {
+      fullScreenedElem.removeEventListener( "webkitfullscreenchange", fullScreenDisabled, false );
+    }
+
+    fullScreenedElem = null;
+  }
+
   function requestFullscreen( elem ) {
+    fullScreenedElem = elem;
+
     if ( elem.requestFullscreen ) {
+      elem.addEventListener( "fullscreenchange", fullScreenEnabled, false );
       elem.requestFullscreen();
-    } else if ( elem.mozRequestFullscreen ) {
-      elem.mozRequestFullscreen();
     } else if ( elem.mozRequestFullScreen ) {
+      elem.addEventListener( "mozfullscreenchange", fullScreenEnabled, false );
       elem.mozRequestFullScreen();
     } else if ( elem.webkitRequestFullscreen ) {
+      elem.addEventListener( "webkitfullscreenchange", fullScreenEnabled, false );
       elem.webkitRequestFullscreen();
     }
   }
@@ -90,9 +135,8 @@ function init() {
   }
 
   function fullscreenClick() {
-    var container = document.getElementById( "container" );
     if( !isFullscreen() ) {
-      requestFullscreen( container );
+      requestFullscreen( document.body );
     } else {
       cancelFullscreen();
     }
