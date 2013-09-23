@@ -207,6 +207,8 @@ define( [ "core/eventmanager", "util/lang", "util/scroll-group" ],
       __onDraggableMouseUp( e );
       return;
     }
+    // Stop text selection in chrome.
+    e.preventDefault();
     e.stopPropagation();
     window.addEventListener( "mousemove", __onDraggableDragged, false );
     window.addEventListener( "mouseup", __onDraggableMouseUp, false );
@@ -306,6 +308,8 @@ define( [ "core/eventmanager", "util/lang", "util/scroll-group" ],
         };
 
     function onLeftMouseDown( e ) {
+      // Stop text selection in chrome.
+      e.preventDefault();
       e.stopPropagation();
 
       var originalRect = element.getBoundingClientRect(),
@@ -406,6 +410,8 @@ define( [ "core/eventmanager", "util/lang", "util/scroll-group" ],
     }
 
     function onRightMouseDown( e ) {
+      // Stop text selection in chrome.
+      e.preventDefault();
       e.stopPropagation();
 
       var originalPosition = element.offsetLeft,
@@ -1075,6 +1081,8 @@ define( [ "core/eventmanager", "util/lang", "util/scroll-group" ],
     }
 
     function onElementMouseDown( e ) {
+      // Stop text selection in chrome.
+      e.preventDefault();
       if ( e.which !== 1 ) {
         return;
       }

@@ -54,6 +54,8 @@ define( [ "core/eventmanager" ], function( EventManager ) {
     }
 
     function onMouseDown( e ){
+      // Stop text selection in chrome.
+      e.preventDefault();
       if( e.button === 0 ){
         var handleY = _handle.offsetTop;
         _mousePos = e.pageY - handleY;
@@ -177,6 +179,8 @@ define( [ "core/eventmanager" ], function( EventManager ) {
     }
 
     function onMouseDown( e ){
+      // Stop text selection in chrome.
+      e.preventDefault();
       if( e.button === 0 ){
         var handleX = _handle.offsetLeft;
         _mousePos = e.pageX - handleX;

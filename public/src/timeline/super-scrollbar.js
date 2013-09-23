@@ -92,6 +92,8 @@ define( [ "util/lang", "text!layouts/super-scrollbar.html" ],
     };
 
     onElementMouseDown = function( e ) {
+      // Stop text selection in chrome.
+      e.preventDefault();
       e.stopPropagation();
       media.currentTime = ( e.clientX - _rect.left ) / _rect.width * _duration;
       _viewPort.classList.remove( "viewport-transition" );
@@ -101,6 +103,8 @@ define( [ "util/lang", "text!layouts/super-scrollbar.html" ],
 
     onViewMouseDown = function( e ) {
       e.stopPropagation();
+      // Stop text selection in chrome.
+      e.preventDefault();
       _viewPort.classList.remove( "viewport-transition" );
       _offset = e.clientX - _rect.left - _viewPort.offsetLeft;
       _media.pause();  // pause the media here to diffuse confusion with scrolling & playing
@@ -109,6 +113,8 @@ define( [ "util/lang", "text!layouts/super-scrollbar.html" ],
     };
 
     onLeftMouseDown = function( e ) {
+      // Stop text selection in chrome.
+      e.preventDefault();
       e.stopPropagation();
       _media.pause();  // pause the media here to diffuse confusion with scrolling & playing
       _viewPort.classList.remove( "viewport-transition" );
@@ -118,6 +124,8 @@ define( [ "util/lang", "text!layouts/super-scrollbar.html" ],
     };
 
     onRightMouseDown = function( e ) {
+      // Stop text selection in chrome.
+      e.preventDefault();
       e.stopPropagation();
       _media.pause();  // pause the media here to diffuse confusion with scrolling & playing
       outerElement.removeEventListener( "scroll", updateView, false );
@@ -268,6 +276,8 @@ define( [ "util/lang", "text!layouts/super-scrollbar.html" ],
     }
 
     function zoomSliderContainerMouseDown( e ) {
+      // Stop text selection in chrome.
+      e.preventDefault();
       _viewPort.classList.add( "viewport-transition" );
       updateZoomSlider( e );
       _zoomSliderHandle.removeEventListener( "mousedown", zoomSliderHanldeMouseDown, false );
@@ -276,7 +286,9 @@ define( [ "util/lang", "text!layouts/super-scrollbar.html" ],
       window.addEventListener( "mouseup", zoomSliderMouseUp, false );
     }
 
-    function zoomSliderHanldeMouseDown() {
+    function zoomSliderHanldeMouseDown( e ) {
+      // Stop text selection in chrome.
+      e.preventDefault();
       _viewPort.classList.add( "viewport-transition" );
       _zoomSliderHandle.removeEventListener( "mousedown", zoomSliderHanldeMouseDown, false );
       _zoomSliderContainer.removeEventListener( "mousedown", zoomSliderContainerMouseDown, false );
