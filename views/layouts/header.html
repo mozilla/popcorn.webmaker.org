@@ -16,7 +16,13 @@
     <!-- webmaker user bar -->
     <div id="webmaker-nav">
       <nav class="webmaker-nav-container">
-
+        <div class="lang-picker">
+          <select id="lang-picker">
+          {% for language in supportedLanguages %}
+            <option {% if lang == language %} selected="selected" {% endif %} value="{{language}}">{{ languageNameFor(language) }}</option>
+          {% endfor %}
+          </select>
+        </div>
         <div class="tutorial-btn hidden"><button class="butter-btn btn-white">{{ gettext("Tutorials") }}</button></div>
 
         <div class="butter-btn-menu-container butter-project-menu">

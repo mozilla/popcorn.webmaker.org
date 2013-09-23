@@ -2,6 +2,7 @@
 * HEADER
 */
 @_logoWidth: 220px;
+@midgrey: #ddd;
 
 // Used to position absolute elements in the middle of our header bar area
 @HEADER_ALIGN_MIDDLE: 2.7;
@@ -326,6 +327,62 @@
     cursor: pointer;
     &:hover {
       color: @green;
+    }
+  }
+}
+
+/*********************************************************
+* Selects
+*/
+
+.ui-select {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  text-align: left;
+  border: 1px solid @midgrey;
+  padding: 10px;
+  margin-right: 15px;
+  height: 1.5em;
+  a {
+    color: black;
+  }
+}
+
+.ui-selected {
+  display: inline-block;
+}
+
+.ui-select-menu {
+  display: none;
+  position: absolute;
+  left: -1px;
+  border: 1px solid @midgrey;
+  z-index: 100;
+  vertical-align: middle;
+  &:hover {
+    border-color: @midgrey;
+  }
+  top: 100%;
+  width: 100%;
+  ul {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    > li {
+      color: lighten( #4d4e53, 30% );
+      padding: 0 1em;
+      background: #FFF;
+      border-bottom: 1px solid @midgrey;
+      padding: 10px;
+      &:last-child {
+        border-bottom: none;
+      }
+      &:hover,
+      &[data-selected] {
+        color: #4d4e53;
+        background: #e3eaee;
+      }
     }
   }
 }

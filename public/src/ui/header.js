@@ -1,6 +1,9 @@
 /*global $*/
-define([ "localized", "dialog/dialog", "util/lang", "l10n!/layouts/header.html", "l10n!/layouts/tutorial-list.html","text!layouts/tutorial-view.html", "ui/widget/textbox", "ui/widget/tooltip", "make-api", "json!/api/butterconfig" ],
-  function( Localized, Dialog, Lang, HEADER_TEMPLATE, TUTORIAL_LIST_TEMPLATE, TUTORIAL_VIEW_TEMPLATE, TextBoxWrapper, ToolTip, Make, config ) {
+define([ "/static/bower/webmaker-uijs/ui.js", "localized", "dialog/dialog", "util/lang",
+  "l10n!/layouts/header.html", "l10n!/layouts/tutorial-list.html","text!layouts/tutorial-view.html",
+  "ui/widget/textbox", "ui/widget/tooltip", "make-api", "json!/api/butterconfig" ],
+  function( WebmakerUI, Localized, Dialog, Lang, HEADER_TEMPLATE, TUTORIAL_LIST_TEMPLATE,
+    TUTORIAL_VIEW_TEMPLATE, TextBoxWrapper, ToolTip, Make, config ) {
 
   return function( butter, options ){
 
@@ -23,7 +26,11 @@ define([ "localized", "dialog/dialog", "util/lang", "l10n!/layouts/header.html",
         _projectMenuList = _projectMenu.querySelector( ".butter-btn-menu" ),
         _noProjectNameToolTip,
         _projectTitlePlaceHolderText = _projectName.innerHTML,
-        _toolTip, _loginTooltip;
+        _toolTip, _loginTooltip,
+        _langSelector = _rootElement.querySelector( ".lang-picker" );
+
+    // URL redirector for language picker
+    WebmakerUI.langPicker( _langSelector );
 
     // create a tooltip for the plrojectName element
     _toolTip = ToolTip.create({
