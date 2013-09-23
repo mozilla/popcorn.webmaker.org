@@ -7,6 +7,7 @@ module.exports = function( req, res, next ) {
   projectJSON.remixedFrom = res.locals.project.id;
   projectJSON.makeid = res.locals.project.makeid;
   projectJSON.background = res.locals.project.background;
+  projectJSON.thumbnail = res.locals.project.thumbnail;
   req.isRemix = true;
   req.projectJSON = projectJSON;
   projectJSON.isRemix = true;

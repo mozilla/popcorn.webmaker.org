@@ -33,7 +33,13 @@
           </div>
           <div class="color-picker hidden"></div>
         </div>
-        <label>{{ gettext("Thumbnail URL") }}</label>
+        <label class="tags-label">{{ gettext("Tags") }}:</label>
+        <div class="tags-wrapper">
+          <ul class="tags-output"></ul>
+          <input type="text" class="tags-input">
+        </div>
+        <label>{{ gettext("Thumbnail") }}</label>
+        <ul class="image-thumbnails"></ul>
         <input class="butter-project-thumbnail" type="text">
         <div class="droparea">
           <label>{{ gettext("Drag an image here from your desktop.") }}</label>
@@ -41,8 +47,6 @@
             <img src="/resources/watermark.png" alt="watermark">
           </div>
         </div>
-        <label>{{ gettext("Tags") }}</label>
-        <input class="butter-project-tags">
       </div>
 
       <!-- Share Container -->

@@ -5,15 +5,14 @@
 define([ "localized", "editor/editor", "editor/base-editor",
           "l10n!/layouts/project-editor.html",
           "util/social-media", "ui/widget/textbox",
-          "ui/widget/tooltip" ],
-  function( Localized, Editor, BaseEditor, LAYOUT_SRC, SocialMedia, TextboxWrapper, ToolTip ) {
+          "ui/widget/tooltip", "util/keys" ],
+  function( Localized, Editor, BaseEditor, LAYOUT_SRC, SocialMedia, TextboxWrapper, ToolTip, KEYS ) {
 
   Editor.register( "project-editor", LAYOUT_SRC, function( rootElement, butter ) {
 
     var _rootElement = rootElement,
         _socialMedia = new SocialMedia(),
         _projectURL = _rootElement.querySelector( ".butter-project-url" ),
-        _tagInput = _rootElement.querySelector( ".butter-project-tags" ),
         _descriptionInput = _rootElement.querySelector( ".butter-project-description" ),
         _dropArea = _rootElement.querySelector( ".image-droparea" ),
         _thumbnailInput = _rootElement.querySelector( ".butter-project-thumbnail" ),
@@ -31,6 +30,10 @@ define([ "localized", "editor/editor", "editor/base-editor",
         _shareTwitter = _rootElement.querySelector( ".butter-share-twitter" ),
         _shareGoogle = _rootElement.querySelector( ".butter-share-google" ),
         _loginToSaveDialog = _rootElement.querySelector( ".login-to-save-dialog" ),
+        _imageThumbs = _rootElement.querySelector( ".image-thumbnails" ),
+        _tagsList = _rootElement.querySelector( ".tags-output" ),
+        _tagsInput = _rootElement.querySelector( ".tags-input" ),
+        _currentTags = [],
         _embedDimensions = _embedSize.value.split( "x" ),
         _embedWidth = _embedDimensions[ 0 ],
         _embedHeight = _embedDimensions[ 1 ],
@@ -125,31 +128,21 @@ define([ "localized", "editor/editor", "editor/base-editor",
     }
 
     function applyInputListeners( element, key ) {
-      var ignoreBlur = false,
-          target;
-
       function checkValue( e ) {
-        target = e.target;
-        if ( key === "tags" ) {
-          target.value = checkTags( target.value );
-        }
+        var target = e.target;
         if ( target.value !== _project[ key ] ) {
           _project[ key ] = target.value;
         }
+
+        if ( key === "thumbnail" ) {
+          addThumbnail( _project.thumbnail, true );
+        }
       }
 
-      element.addEventListener( "blur", function( e ) {
-        if ( !ignoreBlur ) {
-          checkValue( e );
-        } else {
-          ignoreBlur = false;
-        }
-      }, false );
+      element.addEventListener( "blur", checkValue, false );
     }
 
     applyInputListeners( _thumbnailInput, "thumbnail" );
-    applyInputListeners( _tagInput, "tags" );
-
     applyInputListeners( _descriptionInput, "description" );
     _descriptionInput.addEventListener( "keyup", checkDescription, false );
 
@@ -171,6 +164,7 @@ define([ "localized", "editor/editor", "editor/base-editor",
     butter.listen( "droppable-succeeded", function uploadSuceeded( e ) {
       _project.thumbnail = _dropArea.querySelector( "img" ).src = e.data;
       _thumbnailInput.value = _project.thumbnail;
+      addThumbnail( _project.thumbnail, true );
     });
 
     function onProjectSaved() {
@@ -184,11 +178,13 @@ define([ "localized", "editor/editor", "editor/base-editor",
       _projectLinkUrl.classList.remove( "butter-disabled" );
       _loginToSaveDialog.classList.add( "hidden" );
     }
+
     function onLogin() {
       if ( butter.project.isSaved ) {
         onProjectSaved();
       }
     }
+
     function onProjectChanged() {
       _shareTabBtn.classList.add( "butter-disabled" );
       _viewSourceBtn.classList.add( "butter-disabled" );
@@ -199,11 +195,122 @@ define([ "localized", "editor/editor", "editor/base-editor",
       _loginToSaveDialog.classList.remove( "hidden" );
     }
 
+    function addThumbnail( url, isSelected ) {
+      var li = document.createElement( "li" ),
+          image = _imageThumbs.querySelector( "[data-source='" + url + "']" );
+
+      if ( image ) {
+        return;
+      }
+
+      li.setAttribute( "data-source", url );
+      li.style.backgroundImage = "url('" + url + "')";
+      li.addEventListener( "click", function( e ) {
+        var source = e.target.dataset.source,
+            selected = _imageThumbs.querySelector( ".selected" );
+
+        selected.classList.remove( "selected" );
+        e.target.classList.add( "selected" );
+        _project.thumbnail = source;
+        _thumbnailInput.value = _project.thumbnail;
+      }, false );
+
+      if ( isSelected ) {
+        var selected = _imageThumbs.querySelector( ".selected" );
+
+        if ( selected ) {
+          selected.classList.remove( "selected" );
+        }
+
+        li.classList.add( "selected" );
+      }
+
+      _imageThumbs.appendChild( li );
+    }
+
+    function addTags( tags, addFromOpen ) {
+      var tag;
+
+      if ( !tags ) {
+        return;
+      }
+
+      if ( typeof tags === "string" ) {
+        tags = tags.split( "," );
+      }
+
+      for ( var i = 0; i < tags.length; i++ ) {
+        tag = tags[ i ];
+
+        var val = tag.replace( /[,#\s]/g, "" );
+
+        if ( val && _currentTags.indexOf( val ) === -1 ) {
+          var currentProjectTags = butter.project.tags,
+              li = document.createElement( "li" );
+
+          _currentTags.push( val );
+
+          if ( !addFromOpen ) {
+            currentProjectTags.push( val );
+            butter.project.tags = currentProjectTags.join( "," );
+          }
+
+          li.innerHTML = val;
+          _tagsList.appendChild( li );
+        }
+      }
+
+      _tagsInput.value = "";
+    }
+
+    _tagsInput.addEventListener( "keydown", function( e ) {
+      if ( e.keyCode === KEYS.ENTER || e.keyCode === KEYS.COMMA ) {
+        addTags( e.target.value );
+      }
+    }, false );
+
+    _tagsInput.addEventListener( "blur", function( e ) {
+      addTags( e.target.value );
+    }, false );
+
+    // Removal of Tags from project
+    _tagsList.addEventListener( "click", function( e ) {
+      if ( e.target.tagName === "LI" ) {
+        var target = e.target,
+            tag = target.value;
+
+        // Remove from tags array
+        var i = _currentTags.indexOf( tag );
+        _currentTags.splice( i, 1 );
+        _tagsList.removeChild( target );
+        butter.project.tags = _currentTags.join( "," );
+      }
+    }, false );
+
+    function trackEventHandle( e ) {
+      var trackEvent = e.data,
+          src = trackEvent.popcornOptions.src,
+          image = _imageThumbs.querySelector( "[data-source='" + src + "']" );
+
+      if ( e.type === "trackeventremoved" && image ) {
+        _imageThumbs.removeChild( image );
+        return;
+      }
+
+      if ( !image && src ) {
+        addThumbnail( src );
+        return;
+      }
+    }
+
     butter.listen( "projectsaved", onProjectSaved );
     butter.listen( "autologinsucceeded", onLogin );
     butter.listen( "authenticated", onLogin );
     butter.listen( "projectchanged", onProjectChanged );
     butter.listen( "logout", onProjectChanged );
+    butter.listen( "trackeventadded", trackEventHandle );
+    butter.listen( "trackeventremoved", trackEventHandle );
+    butter.listen( "trackeventupdated", trackEventHandle );
 
     Editor.BaseEditor.extend( this, butter, rootElement, {
       open: function() {
@@ -218,6 +325,37 @@ define([ "localized", "editor/editor", "editor/base-editor",
           }
         });
 
+        if ( !_imageThumbs.childNodes.length ) {
+          var imageEvents = butter.getTrackEvents( "type", "image" ),
+              foundProjectThumbnail =  _project.thumbnail.indexOf( "/resources/icons/fb-logo.png" ) !== -1 ? true : false;
+
+          // Thumbnail is the default.
+          if ( foundProjectThumbnail ) {
+             addThumbnail( _project.thumbnail, true );
+          } else {
+            addThumbnail( location.protocol + "//" + location.host + "/resources/icons/fb-logo.png" );
+          }
+
+          for ( var i = 0; i < imageEvents.length; i++ ) {
+            if ( imageEvents[ i ].popcornOptions.src ) {
+              var source = imageEvents[ i ].popcornOptions.src;
+
+              if ( source === _project.thumbnail ) {
+                foundProjectThumbnail = true;
+                addThumbnail( source, foundProjectThumbnail );
+                return;
+              }
+
+              addThumbnail( source );
+            }
+          }
+
+          // Project has a thumbnail that wasn' added VIA image events and isn't the default
+          if ( !foundProjectThumbnail ) {
+            addThumbnail( _project.thumbnail, true );
+          }
+        }
+
         _previewBtn.href = _projectURL.value = _project.publishUrl || "";
         if ( !_project.isSaved ) {
           _shareTabBtn.classList.add( "butter-disabled" );
@@ -229,7 +367,7 @@ define([ "localized", "editor/editor", "editor/base-editor",
         }
         _viewSourceBtn.href = "view-source:" + _project.iframeUrl;
         _thumbnailInput.value = _project.thumbnail;
-        _tagInput.value = _project.tags;
+        addTags( _project.tags, true );
         updateEmbed( _project.iframeUrl );
 
         _previewBtn.onclick = function() {

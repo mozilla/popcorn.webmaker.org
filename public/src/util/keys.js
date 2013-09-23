@@ -54,6 +54,7 @@ define( [], function() {
     Z:          90,
 
     EQUALS:     187,
+    COMMA:      188,
     MINUS:      189
 
   };
