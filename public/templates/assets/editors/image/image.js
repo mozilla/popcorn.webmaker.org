@@ -73,27 +73,28 @@ EditorHelper.addPlugin( "image", function( trackEvent ) {
               imageTop,
               imageLeft;
 
+          if ( left < 0 ) {
+            width += left;
+            left = 0;
+          }
+          if ( top < 0 ) {
+            height += top;
+            top = 0;
+          }
+
+          if ( width + left > _target.clientWidth ) {
+            width = _target.clientWidth - left;
+          }
+          if ( height + top > _target.clientHeight ) {
+            height = _target.clientHeight - top;
+          }
+
+          width = width / _target.clientWidth * 100;
+          height = height / _target.clientHeight * 100;
+          left = left / _target.clientWidth * 100;
+          top = top / _target.clientHeight * 100;
+
           if ( image ) {
-            if ( left < 0 ) {
-              width += left;
-              left = 0;
-            }
-            if ( top < 0 ) {
-              height += top;
-              top = 0;
-            }
-
-            if ( width + left > _target.clientWidth ) {
-              width = _target.clientWidth - left;
-            }
-            if ( height + top > _target.clientHeight ) {
-              height = _target.clientHeight - top;
-            }
-
-            width = width / _target.clientWidth * 100;
-            height = height / _target.clientHeight * 100;
-            left = left / _target.clientWidth * 100;
-            top = top / _target.clientHeight * 100;
 
             imageWidth = image.offsetWidth / _container.clientWidth * 100;
             imageHeight = image.offsetHeight / _container.clientHeight * 100;
@@ -115,6 +116,14 @@ EditorHelper.addPlugin( "image", function( trackEvent ) {
               innerHeight: imageHeight,
               innerTop: imageTop,
               innerLeft: imageLeft,
+              width: width,
+              height: height,
+              left: left,
+              top: top
+            });
+          } else {
+
+            trackEvent.update({
               width: width,
               height: height,
               left: left,
