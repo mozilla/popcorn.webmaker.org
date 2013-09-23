@@ -45,7 +45,7 @@ EditorHelper.addPlugin( "image", function( trackEvent ) {
         containment: "parent",
         start: function() {
           var image = trackEvent.popcornTrackEvent.image;
-          if ( image ) {
+          if ( image && _container.classList.contains( "track-event-editing" ) ) {
             image.style.top = image.offsetTop + "px";
             image.style.left = image.offsetLeft + "px";
             image.style.width = image.clientWidth + "px";
