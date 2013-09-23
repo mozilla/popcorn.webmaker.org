@@ -17,7 +17,10 @@ define( [ "util/time", "util/keys" ], function( util, Keys ){
         _button.setAttribute( "data-state", true );
       }
     }
-
+    _button.addEventListener( "mousedown", function( e ) {
+      // Disable text selection in chrome while clicking.
+      e.preventDefault();
+    }, false );
     _button.addEventListener( "click", onClick, false );
 
     Object.defineProperties( this, {
