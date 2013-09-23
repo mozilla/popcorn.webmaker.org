@@ -9,7 +9,8 @@ EditorHelper.addPlugin( "slider", function( trackEvent ) {
 
   if ( window.jQuery ) {
     EditorHelper.draggable( trackEvent, _container, target, {
-      disableTooltip: true
+      disableTooltip: true,
+      editable: false
     });
     EditorHelper.selectable( trackEvent, _container );
   }
