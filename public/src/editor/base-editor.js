@@ -192,7 +192,10 @@ define( [ "localized", "core/eventmanager", "util/scrollbars", "ui/widget/toolti
       });
 
       inputElement.addEventListener( "change", function() {
-        colorPicker.setColor( inputElement.value );
+        var value = inputElement.value;
+        colorPicker.setColor( value );
+        colorToggle.style.background = value;
+        updateColor( value );
       }, false );
 
       inputElement.addEventListener( "focus", function() {
@@ -201,6 +204,10 @@ define( [ "localized", "core/eventmanager", "util/scrollbars", "ui/widget/toolti
 
       inputElement.addEventListener( "blur", function() {
         colorPickerElement.classList.add( "hidden" );
+      }, false );
+
+      colorToggle.addEventListener( "click", function() {
+        inputElement.focus();
       }, false );
     };
 
