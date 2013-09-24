@@ -127,38 +127,57 @@ define( [ "localized", "core/eventmanager", "util/scrollbars", "ui/widget/toolti
 
     extendObject.attachColorChangeHandler = function( element, trackEvent, propertyName, callback ) {
 
-      function updateColor( value ) {
+      var colorPickerElement = element.querySelector( ".color-picker" ),
+          inputElement = element.querySelector( "input" ),
+          initialValue = inputElement.value,
+          self = this,
+          colorToggle = element.querySelector( ".color-picker-toggle" ),
+          colorPicker = $.farbtastic( colorPickerElement, {
+            callback: function() {},
+            height: 195,
+            width: 195
+          });
+
+      function validateColorValue( value ) {
         var message,
-            updateOptions = {},
-            i,
-            flag = true;
+            i;
 
         if ( value.indexOf( "#" ) === -1 ) {
-
+          message = Localized.get( "Invalid Color update" ) + " ";
           for ( i in _colorHexCodes ) {
             if ( _colorHexCodes.hasOwnProperty( i ) ) {
               if ( i === value.toLowerCase() ) {
-                flag = false;
-                break;
-              }
-            }
-          }
-
-          if ( flag ) {
-
-            message = Localized.get( "Invalid Color update" ) + " ";
-            for ( i in _colorHexCodes ) {
-              if ( _colorHexCodes.hasOwnProperty( i ) ) {
+                // Valid colour found.
+                return "";
+              } else {
                 message += i + ", ";
               }
             }
+          }
 
-            message = message.substring( 0, message.lastIndexOf( "," ) ) + ".";
+          return message.substring( 0, message.lastIndexOf( "," ) ) + ".";
+        } else if ( !value.match( /^#(?:[0-9a-fA-F]{3}){1,2}$/ ) ) {
+          return Localized.get( "Invalid Hex Color format" );
+        }
+
+        return "";
+      }
+
+      function updateColor( value ) {
+        var message = validateColorValue( value ),
+            updateOptions = {};
+
+        // This is a valid colour
+        if ( !message ) {
+          inputElement.value = value;
+          if ( _colorHexCodes[ value ] ) {
+            // Colour picker only works with hex values, do not send named colours.
+            colorPicker.setColor( _colorHexCodes[ value ] );
+          } else {
+            colorPicker.setColor( value );
           }
-        } else {
-          if ( !value.match( /^#(?:[0-9a-fA-F]{3}){1,2}$/ ) ) {
-            message = Localized.get( "Invalid Hex Color format" );
-          }
+          colorToggle.style.background = value;
+          self.setErrorState( false );
         }
 
         updateOptions[ propertyName ] = value;
@@ -169,33 +188,18 @@ define( [ "localized", "core/eventmanager", "util/scrollbars", "ui/widget/toolti
         }
       }
 
-      var colorPickerElement = element.querySelector( ".color-picker" ),
-          inputElement = element.querySelector( "input" ),
-          initialValue = inputElement.value,
-          colorToggle = element.querySelector( ".color-picker-toggle" ),
-          colorPicker = $.farbtastic( colorPickerElement, {
-            callback: function() {},
-            height: 195,
-            width: 195
-          });
-
       // Set default, but don't fire any callbacks yet.
       colorPicker.setColor( initialValue );
       colorToggle.style.background = initialValue;
       // Now we can setup the callback.
       colorPicker.linkTo(function( value ) {
         if ( inputElement.value !== value ) {
-          inputElement.value = value;
-          colorToggle.style.background = value;
           updateColor( value );
         }
       });
 
       inputElement.addEventListener( "change", function() {
-        var value = inputElement.value;
-        colorPicker.setColor( value );
-        colorToggle.style.background = value;
-        updateColor( value );
+        updateColor( inputElement.value );
       }, false );
 
       inputElement.addEventListener( "focus", function() {
