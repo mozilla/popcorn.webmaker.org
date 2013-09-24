@@ -19,7 +19,8 @@ var express = require('express'),
     middleware,
     APP_HOSTNAME = config.hostname,
     WWW_ROOT =  __dirname + '/public',
-    i18n = require( 'webmaker-i18n' );
+    i18n = require( 'webmaker-i18n' ),
+    emulate_s3 = config.S3_EMULATION || !config.S3_KEY;
 
 nunjucksEnv.addFilter( "instantiate", function( input ) {
     var tmpl = new nunjucks.Template( input );
@@ -256,3 +257,9 @@ app.listen( config.PORT, function() {
   console.log( 'HTTP Server started on ' + APP_HOSTNAME );
   console.log( 'Press Ctrl+C to stop' );
 });
+
+// If we're in running in emulated S3 mode, run a mini
+// server for serving up the "s3" published content.
+if ( emulate_s3 ) {
+  require( 'mox-server' ).runServer( config.MOX_PORT || 12319 );
+}
