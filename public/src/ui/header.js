@@ -1,5 +1,5 @@
 /*global $*/
-define([ "/static/bower/webmaker-uijs/ui.js", "localized", "dialog/dialog", "util/lang",
+define([ "WebmakerUI", "localized", "dialog/dialog", "util/lang",
   "l10n!/layouts/header.html", "l10n!/layouts/tutorial-list.html","text!layouts/tutorial-view.html",
   "ui/widget/textbox", "ui/widget/tooltip", "make-api", "json!/api/butterconfig" ],
   function( WebmakerUI, Localized, Dialog, Lang, HEADER_TEMPLATE, TUTORIAL_LIST_TEMPLATE,
