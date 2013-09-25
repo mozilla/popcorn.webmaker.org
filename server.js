@@ -94,7 +94,9 @@ app.configure( function() {
         optimize: "none",
         preserveLicenseComments: false,
         paths: {
-          "localized": path.resolve( __dirname, "bower_components/webmaker-i18n/localized" )
+          "localized": path.resolve( __dirname, "bower_components/webmaker-i18n/localized" ),
+          "WebmakerUI": path.resolve( __dirname, "bower_components/webmaker-ui/ui" ),
+          "webmaker-ui-fragments": path.resolve( __dirname, "bower_components/webmaker-ui/webmaker-ui-fragments" )
         },
         wrap: {
           startFile: __dirname + "/tools/wrap.start",
