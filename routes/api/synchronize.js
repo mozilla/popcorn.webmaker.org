@@ -19,13 +19,14 @@ module.exports = function( Project ) {
       Project.update( { email: req.session.email, id: req.body.id, data: projectData },
                       function( err, doc ) {
         if ( err ) {
+          metrics.increment( 'project.update.error' );
           res.json( 500, { error: err } );
           return;
         }
 
         req.project = doc;
         req.makeTags = projectData.tags;
-        metrics.increment( 'project.save' );
+        metrics.increment( 'project.update.success' );
         next();
       });
     } else {
@@ -33,16 +34,16 @@ module.exports = function( Project ) {
       Project.create( { email: req.session.email, data: projectData }, function( err, doc ) {
         if ( err ) {
           res.json( 500, { error: err } );
-          metrics.increment( 'error.save' );
+          metrics.increment( 'project.create.error' );
           return;
         }
 
         req.project = doc;
         req.remixedMakeId = projectData.makeid;
         req.makeTags = projectData.tags;
-        metrics.increment( 'project.create' );
+        metrics.increment( 'project.create.success' );
         if ( doc.remixedFrom ) {
-          metrics.increment( 'project.remix' );
+          metrics.increment( 'project.remix.success' );
         }
         next();
       });

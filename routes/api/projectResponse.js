@@ -8,10 +8,12 @@ module.exports = function( Project ) {
     makeClient.id( res.locals.project.makeid ).then(function( err, make ) {
       var remixId;
       if ( err ) {
+        metrics.increment( "project.load.error" );
         return res.json( 500, { error: err } );
       }
 
       if ( !make.length ) {
+        metrics.increment( "project.make.load.error" );
         return res.json( 404, { error: "Make was not found" } );
       }
       req.projectJSON.tags = make[ 0 ].rawTags;
@@ -25,10 +27,12 @@ module.exports = function( Project ) {
       if ( remixId || remixId === 0 ) {
         Project.find({ id: remixId }, function( err, doc ) {
           if ( err ) {
+            metrics.increment( "project.remixedFrom.removed" );
             return next( utils.error( 500, err ) );
           }
 
           if ( !doc ) {
+            metrics.increment( "project.make.load.error" );
             return res.json( req.projectJSON );
           }
 

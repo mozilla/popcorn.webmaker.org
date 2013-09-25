@@ -44,11 +44,12 @@ module.exports = function( req, res, next ) {
         return next( utils.error( 500, err.toString() ) );
       }
 
-      metrics.increment( "project.delete" );
+      metrics.increment( "project.delete.success" );
       res.json( { error: "okay" }, 200 );
     });
   })
   .error(function( err ) {
+    metrics.increment( "project.s3.delete.error" );
     next( utils.error( 500, err.toString() ) );
   });
 };
