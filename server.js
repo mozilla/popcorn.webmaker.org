@@ -154,6 +154,14 @@ require( './lib/loginapi' )( app, {
   loginURL: config.LOGIN_SERVER_URL_WITH_AUTH
 });
 
+require( 'webmaker-mediasync' )( app, {
+  serviceKeys: {
+    soundcloud: config.SYNC_SOUNDCLOUD,
+    flickr: config.SYNC_FLICKR,
+    giphy: config.SYNC_GIPHY
+  }
+});
+
 middleware = require( './lib/middleware' );
 
 var routes = require( './routes' );

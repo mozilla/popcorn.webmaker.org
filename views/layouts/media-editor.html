@@ -1,8 +1,8 @@
-<div class="media-editor butter-editor fadable alternates-hidden allow-scrollbar">
+<div class="media-editor butter-editor fadable alternates-hidden allow-scrollbar user-gallery">
   <h1 class="add-new-media">{{ gettext("Create new media clip") }}</h1>
   <div class="butter-editor-body">
     <fieldset class="add-media-panel">
-      <div class="media-editor-inner-wrapper primary-media-wrapper">
+      <div class="media-editor-inner-wrapper primary-media-wrapper user-clips">
         <p>
           <span class="fl-right">
             <span class="media-icon youtube-icon"></span>
@@ -14,34 +14,79 @@
           {{ gettext("Paste a link") }}
         </p>
         <textarea class="add-media-input" placeholder="{{ gettext("Paste an HTML") }}"></textarea>
-        <span class="butter-btn-slide-out">
-          <a class="add-media-btn butter-btn btn-green hidden">{{ gettext("Create clip") }}</a>
-          <span class="media-loading-spinner butter-spinner hidden" ></span>
-          <label class="media-error-message hidden"></label>
-        </span>
       </div>
+      <div class="media-editor-inner-wrapper primary-media-wrapper search-items butter-hidden">
+        <p>
+          <span class="fl-right">
+            <span class="media-icon youtube-icon"></span>
+            <span class="media-icon soundcloud-icon"></span>
+            <img class="media-icon" alt="image icon" src="/resources/icons/giphy.png">
+            <img class="media-icon" alt="image icon" src="/resources/icons/flickr-black.png">
+          </span>
+          {{ gettext("Search the web") }}
+        </p>
+        <textarea class="search-media-input" placeholder="{{ gettext("Search for items") }}"></textarea>
+      </div>
+      <span class="butter-btn-slide-out">
+        <a class="add-media-btn butter-btn btn-green hidden">{{ gettext("Create clip") }}</a>
+        <span class="media-loading-spinner butter-spinner hidden" ></span>
+        <label class="media-error-message hidden"></label>
+      </span>
     </fieldset>
 
     <div class="media-gallery">
       <div class="media-gallery-heading">
-        {{ gettext("Media Gallery") }}
+        <span class="heading-text">{{ gettext("Project Gallery") }}</span>
+        <div class="media-gallery-selector">
+          <select>
+            <option value="user">{{ gettext("Project") }}</option>
+            <option value="YouTube" id="select-youtube">YouTube</option>
+            <option value="SoundCloud" id="select-soundcloud">SoundCloud</option>
+            <option value="Flickr" id="select-flickr">Flickr</option>
+            <option value="Giphy" id="select-giphy">Giphy</option>
+          </select>
+        </div>
       </div>
       <div class="media-gallery-scroll-container scrollbar-container">
-        <ul class="media-gallery-list scrollbar-outer scrollbar-inner"></ul>
+        <div class="scrollbar-outer scrollbar-inner">
+          <ul class="media-gallery-list" id="user-items" data-page="1"></ul>
+          <ul class="media-gallery-list" id="youtube-items" data-page="1"></ul>
+          <ul class="media-gallery-list" id="soundcloud-items" data-page="1"></ul>
+          <ul class="media-gallery-list" id="flickr-items" data-page="1"></ul>
+          <ul class="media-gallery-list" id="giphy-items" data-page="1"></ul>
+        </div>
       </div>
     </div>
+
+    <fieldset class="media-gallery-base-media butter-form-inline form-single bottom">
+      <div class="paging-container">
+        <ul></ul>
+      </div>
+    </fieldset>
 
   </div>
 </div>
 
-<!-- This is added to media-gallery for each new media item -->
-<li class="media-gallery-item">
+<!-- This is used for photo based media items -->
+<li class="media-gallery-item gallery-item-grid gallery-photo">
   <div class="mg-thumbnail"><span class="icon-plus hidden"></span></div>
   <div class="mg-meta-data">
     <div class="mg-title"></div>
-    <div class="mg-type media-icon"><span class="mg-type-text"></span></div>
+    <div class="mg-type">
+      <img class="media-icon" alt="image icon">
+      <span class="mg-type-text photo"></span>
+    </div>
+  </div>
+  <span class="mg-delete-btn icon icon-trash"></span>
+</li>
+
+<!-- This is added to media-gallery for each new media item -->
+<li class="media-gallery-item gallery-video">
+  <div class="mg-thumbnail"><span class="icon-plus hidden"></span></div>
+  <div class="mg-meta-data">
+    <div class="mg-title"></div>
+    <div class="mg-type media-icon"><span class="mg-type-text media"></span></div>
     <div class="mg-duration"></div>
-    <div class="mg-error"></div>
   </div>
   <span class="mg-delete-btn icon icon-trash"></span>
 </li>

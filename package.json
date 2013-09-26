@@ -109,6 +109,7 @@
     "shelljs": "0.1.2",
     "webmaker-i18n": "https://github.com/mozilla/node-webmaker-i18n/archive/v0.1.5.tar.gz",
     "webmaker-loginapi": "https://github.com/mozilla/node-webmaker-loginapi/tarball/v0.1.11",
+    "webmaker-mediasync": "https://github.com/mozilla/webmaker-mediasync/tarball/v0.1.19",
     "webmaker-sso": "https://github.com/jbuck/node-webmaker-sso/tarball/v0.0.4"
   },
   "optionalDependencies": {
