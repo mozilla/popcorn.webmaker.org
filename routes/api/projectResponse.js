@@ -6,6 +6,7 @@ var utils = require( "../../lib/utilities" ),
 module.exports = function( Project ) {
   return function( req, res, next ) {
     makeClient.id( res.locals.project.makeid ).then(function( err, make ) {
+      var remixId;
       if ( err ) {
         return res.json( 500, { error: err } );
       }
@@ -15,8 +16,14 @@ module.exports = function( Project ) {
       }
       req.projectJSON.tags = make[ 0 ].rawTags;
 
-      if ( res.locals.project.remixedFrom || res.locals.project.remixedFrom === 0 ) {
-        Project.find({ id: res.locals.project.remixedFrom }, function( err, doc ) {
+      if ( req.isRemix ) {
+        remixId = req.projectJSON.remixedFrom;
+      } else {
+        remixId = res.locals.project.remixedFrom;
+      }
+
+      if ( remixId || remixId === 0 ) {
+        Project.find({ id: remixId }, function( err, doc ) {
           if ( err ) {
             return next( utils.error( 500, err ) );
           }
@@ -34,7 +41,7 @@ module.exports = function( Project ) {
               // TODO FIX THIS API
               req.projectJSON.remixedFromUrl = "http://popcorn.webmadecontent.org/" + doc.id.toString( 36 );
             } else {
-              req.projectJSON.remixedFromUrl = utils.embedShellURL( user, doc.id );
+              req.projectJSON.remixedFromUrl = utils.embedShellURL( doc.author, doc.id );
             }
 
             if ( req.isRemix ) {
