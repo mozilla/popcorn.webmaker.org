@@ -14,7 +14,7 @@ define( [ "util/lang", "editor/editor", "text!layouts/tutorial-editor.html" ],
   function selectTutorialItem( index ) {
     _select.selectedIndex = 0;
     _iframe.src = _items[ index ].url;
-  };
+  }
 
   function createTutorialItem( item ) {
     var option = document.createElement( "option" );
@@ -23,7 +23,7 @@ define( [ "util/lang", "editor/editor", "text!layouts/tutorial-editor.html" ],
     option.innerHTML = item.title;
     option.value = item.url;
     _select.appendChild( option );
-  };
+  }
 
   Editor.register( "tutorial-editor", null, function( rootElement, butter ) {
     rootElement = _parentElement;
@@ -40,7 +40,7 @@ define( [ "util/lang", "editor/editor", "text!layouts/tutorial-editor.html" ],
         if ( !results ) {
           return;
         }
-        _tutorialButton.classList.remove( "hidden" );
+        _tutorialButton.classList.remove( "butter-hidden" );
 
         for ( var i = 0; i < results.length; i++ ) {
           createTutorialItem( results[ i ] );
