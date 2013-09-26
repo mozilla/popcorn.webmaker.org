@@ -113,7 +113,7 @@
   },
   "optionalDependencies": {
     "node-statsd": "git://github.com/sivy/node-statsd.git#d6997fff",
-    "sqlite3": "2.1.7"
+    "sqlite3": "2.1.17"
   },
   "devDependencies": {
     "awsbox": "0.4.2",
