@@ -7,6 +7,7 @@ module.exports = function( req, res, next ) {
   projectJSON.projectID = res.locals.project.id;
   projectJSON.description = res.locals.project.description;
   projectJSON.template = res.locals.project.template;
+  projectJSON.thumbnail = res.locals.project.thumbnail;
   projectJSON.publishUrl = utils.embedShellURL( req.session.username, res.locals.project.id );
   projectJSON.iframeUrl = utils.embedURL( req.session.username, res.locals.project.id );
   projectJSON.makeid = res.locals.project.makeid;
