@@ -18,8 +18,8 @@
       <nav class="webmaker-nav-container">
         <div class="lang-picker">
           <select id="lang-picker">
-          {% for language in supportedLanguages %}
-            <option {% if lang == language %} selected="selected" {% endif %} value="{{language}}">{{ languageNameFor(language) }}</option>
+          {% for language in listDropdownLang %}
+            <option {% if languageNameFor(lang) == languageNameFor(language) %} selected="selected" {% endif %} value="{{language}}">{{ languageNameFor(language) }}</option>
           {% endfor %}
           </select>
         </div>
@@ -38,7 +38,7 @@
           </div>
           <ul class="menu-container">
             <li class="my-makes"><span class="icon icon-th-large"></span> <button>{{ gettext("My makes") }}</button></li>
-            <li class="login"><span class="icon icon-signout"></span><iframe src="{{audience}}/sso/include.html" class="include-frame"></iframe>
+            <li class="login"><span class="icon icon-signout"></span><iframe src="{{audience}}/{{lang}}/sso/include.html" class="include-frame"></iframe>
             </li>
           </ul>
         </div>
