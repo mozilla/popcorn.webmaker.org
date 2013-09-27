@@ -30,7 +30,7 @@ nunjucksEnv.addFilter( "instantiate", function( input ) {
 nunjucksEnv.express( app );
 
 // List of supported languages - Please add them here in an alphabetical order
-var listDropdownLang = [ "en-US" ],
+var listDropdownLang = [ "en-US", "ru-RU", "th-TH" ],
     // We create another array based on listDropdownLang to use it in the i18n.middleware
     // supported_language which will be modified from the i18n mapping function
     supportedLanguages = listDropdownLang.slice(0);
@@ -116,7 +116,9 @@ app.configure( function() {
     supported_languages: supportedLanguages,
     default_lang: "en-US",
     mappings: {
-      'en': 'en-US'
+      "en": "en-US",
+      "ru": "ru-RU",
+      "th": "th-TH"
     },
     translation_directory: path.resolve( __dirname, "locale" )
   }));

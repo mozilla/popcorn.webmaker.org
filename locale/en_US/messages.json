@@ -72,7 +72,7 @@
 	"from": "from",
 	"Fullscreen": "Fullscreen",
 	"Gallery": "Gallery",
-	"Go back to the homepage": "Go back to <a href=\"/{{lang}}/\">the homepage</a>",
+	"Go back to the homepage": "Go back to <a href=\"/{{localeInfo.lang}}/\">the homepage</a>",
 	"Google Maps Editor": "Google Maps Editor",
 	"googlemap": "googlemap",
 	"Heading": "Heading",

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{lang}}" dir="{{lang_dir}}">
+<html lang="{{localeInfo.lang}}" dir="{{localeInfo.direction}}">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -52,11 +52,11 @@
             </div>
             <div class="post-roll-description">{{description | safe }}
               <br>
-              <a href="/{{lang}}/" target="_blank">{{ gettext("Create a project like this!") }}</a>
+              <a href="/{{localeInfo.lang}}/" target="_blank">{{ gettext("Create a project like this!") }}</a>
             </div>
             <ul class="embed-nav post-roll-options">
               <li><a id="replay-post"><span>{{ gettext("Replay") }}</span></a></li>
-              <li><a href="/{{lang}}{{projectUrl}}/remix" target="_blank" id="remix-post"><span>{{ gettext("Remix") }}</span></a></li>
+              <li><a href="/{{localeInfo.lang}}{{projectUrl}}/remix" target="_blank" id="remix-post"><span>{{ gettext("Remix") }}</span></a></li>
               <li><a id="share-post"><span>{{ gettext("Share") }}</span></a></li>
             </ul>
           </div>
