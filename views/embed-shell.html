@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{lang}}" dir="{{lang_dir}}">
+<html lang="{{localeInfo.lang}}" dir="{{localeInfo.direction}}">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -29,7 +29,7 @@
       </div>
       <div class="make-bar">
         <div class="wrapper"><span class="logospan"><a href="#"><img src="{{config.app_hostname}}/resources/img/logo_small.png" alt="Mozilla Webmaker"></a><span class="made-with">{{ gettext("Made with") }}<a href="//webmaker.org"> Webmaker</a></span></span><span class="expand-collapse">{{ gettext("Details") }}<img src="{{config.app_hostname}}/resources/icons/icon-arrow-down.png"></span>
-        <div class="button"><a href="{{config.app_hostname}}/{{lang}}{{projectUrl}}/remix" target="_blank" class="button-remix"><span>{{ gettext("Remix") }}</span></a></div>
+        <div class="button"><a href="{{config.app_hostname}}/{{localeInfo.lang}}{{projectUrl}}/remix" target="_blank" class="button-remix"><span>{{ gettext("Remix") }}</span></a></div>
         </div>
       </div>
       <div class="wrapper">
