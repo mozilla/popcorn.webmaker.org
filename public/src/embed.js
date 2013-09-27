@@ -432,26 +432,41 @@ function init() {
             var imagesContainer = __defaultLayouts.querySelector( ".attribution-images" ).cloneNode( true ),
                 imgCont,
                 img,
-                foundFlickr = false;
+                foundMatch = false;
 
             for ( var k = 0; k < imageEvents.length; k++ ) {
               img = imageEvents[ k ];
+              imgCont = __defaultLayouts.querySelector( ".data-container.image" ).cloneNode( true );
+
+              var href = img.photosetId || img.src || "http://www.flickr.com/search/?m=tags&q=" + img.tags,
+                  text = img.src || img.photosetId || img.tags,
+                  icon = imgCont.querySelector( "img" );
+
+              imgCont.querySelector( "a" ).href = href;
+              imgCont.querySelector( "a" ).innerHTML = text;
+
+              // We have a slight edgecase where "default" image events have all attributes
+              // to support better user experience when trying different options in the image
+              // plugin editor. In this scenario, they didn't change past the default single image.
+              if ( img.tags && img.photosetId && img.src ) {
+                img.tags = img.photosetId = "";
+              }
+
               if ( img.tags || img.photosetId || MediaUtil.checkUrl( img.src ) === "Flickr" ) {
-                foundFlickr = true;
-                imgCont = __defaultLayouts.querySelector( ".data-container.image" ).cloneNode( true );
-
-                var href = img.photosetId || img.src || "http://www.flickr.com/search/?m=tags&q=" + img.tags,
-                    text = img.src || img.photosetId || img.tags;
-
-                imgCont.querySelector( "a" ).href = href;
-                imgCont.querySelector( "a" ).innerHTML = text;
-
+                foundMatch = true;
+                icon.src += "flickr-black.png";
                 imagesContainer.appendChild( imgCont );
+              } else if ( img.src.indexOf( "giphy" ) !== -1 ) {
+                foundMatch = true;
+                icon.src += "giphy.png";
+                imagesContainer.appendChild( imgCont );
+              } else {
+                imgCont = null;
               }
             }
 
-            // We only care about attributing Flickr Images
-            if ( foundFlickr ) {
+            // We only care about attributing Flickr and Giphy images
+            if ( foundMatch ) {
               attributionContainer.appendChild( imagesContainer );
             }
           }
