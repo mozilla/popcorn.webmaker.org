@@ -8,9 +8,9 @@
  * Supports a single event in the Media > Track > TrackEvent model.
  */
 define( [ "./logger", "./eventmanager", "./observer",
-          "util/lang", "util/time", "./views/trackevent-view" ],
+          "util/lang", "util/time", "./views/trackevent-view", "localized" ],
   function( Logger, EventManager, Observer,
-            LangUtil, TimeUtil, TrackEventView ) {
+            LangUtil, TimeUtil, TrackEventView, Localized ) {
 
   var __guid = 0;
 
@@ -113,7 +113,8 @@ define( [ "./logger", "./eventmanager", "./observer",
       var newOptions = {},
           manifestOptions = {},
           popcornOptions = this.popcornOptions,
-          foundMissingOptions = false;
+          foundMissingOptions = false,
+          value;
       if ( !this.manifest ) {
         return;
       }
@@ -122,7 +123,8 @@ define( [ "./logger", "./eventmanager", "./observer",
         if ( manifestOptions.hasOwnProperty( prop ) ) {
           if ( !popcornOptions.hasOwnProperty( prop ) ) {
             foundMissingOptions = true;
-            newOptions[ prop ] = defaultValue( prop, manifestOptions );
+            value = defaultValue( prop, manifestOptions );
+            newOptions[ prop ] = Localized.get( value ) ? Localized.get( value ) : value;
           }
         }
       }

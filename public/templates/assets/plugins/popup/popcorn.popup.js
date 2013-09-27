@@ -392,7 +392,7 @@
       innerDiv.appendChild( textContainer );
       container.appendChild( innerDiv );
 
-      if ( options.type === "popup" ) {
+      if ( options.type !== "speech" && options.type !== "thought" ) {
         innerDiv.classList.add( "popup-inner-div" );
         container.classList.add( "popcorn-popup" );
 
