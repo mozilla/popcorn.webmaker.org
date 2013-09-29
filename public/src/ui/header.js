@@ -316,7 +316,7 @@ define([ "WebmakerUI", "localized", "dialog/dialog", "util/lang", "l10n!/layouts
 
         container.classList.add( "open" );
         iframe.style.height = "300px";
-        iframe.src = "/dashboard";
+        iframe.src = "/dashboard/" + Localized.getCurrentLang();
       }
 
       myProjectsButton.addEventListener( "click", open, false );
