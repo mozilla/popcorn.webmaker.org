@@ -42,7 +42,8 @@ app.locals({
     ga_account: config.GA_ACCOUNT,
     ga_domain: config.GA_DOMAIN,
     make_endpoint: config.MAKE_ENDPOINT,
-    user_bar: config.USER_BAR
+    user_bar: config.USER_BAR,
+    sync_limit: config.SYNC_LIMIT
   },
   supportedLanguages: supportedLanguages,
   listDropdownLang: listDropdownLang
@@ -168,7 +169,8 @@ require( 'webmaker-mediasync' )( app, {
     soundcloud: config.SYNC_SOUNDCLOUD,
     flickr: config.SYNC_FLICKR,
     giphy: config.SYNC_GIPHY
-  }
+  },
+  limit: config.SYNC_LIMIT
 });
 
 middleware = require( './lib/middleware' );
@@ -230,7 +232,8 @@ app.get( '/api/butterconfig', function( req, res ) {
   res.json({
     "audience": app.locals.config.audience,
     "make_endpoint": app.locals.config.make_endpoint,
-    "user_bar": app.locals.config.user_bar
+    "user_bar": app.locals.config.user_bar,
+    "sync_limit": app.locals.config.sync_limit
   });
 });
 
