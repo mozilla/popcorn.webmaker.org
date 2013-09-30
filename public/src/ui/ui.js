@@ -104,7 +104,7 @@ define( [ "core/eventmanager", "./toggler",
         tutorialUrl = butter.project.remixedFromUrl;
       }
 
-      make.tags( "tutorial-" + escape( tutorialUrl ) ).then( function( err, results ) {
+      make.tags( "tutorial-" + encodeURIComponent( tutorialUrl ) ).then( function( err, results ) {
         if ( err || !results.length ) {
           return;
         }
