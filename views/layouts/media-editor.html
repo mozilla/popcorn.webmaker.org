@@ -1,8 +1,12 @@
 <div class="media-editor butter-editor fadable alternates-hidden allow-scrollbar user-gallery">
   <h1 class="add-new-media">{{ gettext("Create new media clip") }}</h1>
-  <div class="butter-editor-body">
+  <ul class="butter-editor-tabs">
+    <li><a class="butter-btn project-tab butter-active">{{ gettext("My Media") }}</a></li>
+    <li><a class="butter-btn search-tab">{{ gettext("Search for Media") }}</a></li>
+  </ul>
+  <div class="butter-editor-body butter-tabs-spacing">
     <fieldset class="add-media-panel">
-      <div class="media-editor-inner-wrapper primary-media-wrapper user-clips">
+      <div class="media-editor-inner-wrapper primary-media-wrapper project-clips">
         <p>
           <span class="fl-right">
             <span class="media-icon youtube-icon"></span>
@@ -25,7 +29,14 @@
           </span>
           {{ gettext("Search the web") }}
         </p>
-        <textarea class="search-media-input" placeholder="{{ gettext("Search for items") }}"></textarea>
+        <span>{{ gettext("Search for items from") }}: </span>
+        <select>
+          <option value="YouTube" id="select-youtube">YouTube</option>
+          <option value="SoundCloud" id="select-soundcloud">SoundCloud</option>
+          <option value="Flickr" id="select-flickr">Flickr</option>
+          <option value="Giphy" id="select-giphy">Giphy</option>
+        </select>
+        <textarea class="search-media-input" placeholder="{{ gettext("Type Here") }}"></textarea>
       </div>
       <span class="butter-btn-slide-out">
         <a class="add-media-btn butter-btn btn-green hidden">{{ gettext("Create clip") }}</a>
@@ -35,21 +46,10 @@
     </fieldset>
 
     <div class="media-gallery">
-      <div class="media-gallery-heading">
-        <span class="heading-text">{{ gettext("Project Gallery") }}</span>
-        <div class="media-gallery-selector">
-          <select>
-            <option value="user">{{ gettext("Project") }}</option>
-            <option value="YouTube" id="select-youtube">YouTube</option>
-            <option value="SoundCloud" id="select-soundcloud">SoundCloud</option>
-            <option value="Flickr" id="select-flickr">Flickr</option>
-            <option value="Giphy" id="select-giphy">Giphy</option>
-          </select>
-        </div>
-      </div>
+      <div class="media-gallery-heading">{{ gettext("My Media Gallery") }}</div>
       <div class="media-gallery-scroll-container scrollbar-container">
         <div class="scrollbar-outer scrollbar-inner">
-          <ul class="media-gallery-list" id="user-items" data-page="1"></ul>
+          <ul class="media-gallery-list" id="project-items" data-page="1"></ul>
           <ul class="media-gallery-list" id="youtube-items" data-page="1"></ul>
           <ul class="media-gallery-list" id="soundcloud-items" data-page="1"></ul>
           <ul class="media-gallery-list" id="flickr-items" data-page="1"></ul>
