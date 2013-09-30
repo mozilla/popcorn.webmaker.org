@@ -3,8 +3,8 @@
  * obtain one at https://raw.github.com/mozilla/butter/master/LICENSE */
 
 define( [ "localized", "util/lang", "util/uri", "util/xhr", "util/keys", "util/mediatypes", "editor/editor",
- "util/time", "util/dragndrop", "l10n!/layouts/media-editor.html" ],
-  function( Localized, LangUtils, URI, XHR, KeysUtils, MediaUtils, Editor, Time, DragNDrop, EDITOR_LAYOUT ) {
+ "util/time", "util/dragndrop", "l10n!/layouts/media-editor.html", "json!/api/butterconfig" ],
+  function( Localized, LangUtils, URI, XHR, KeysUtils, MediaUtils, Editor, Time, DragNDrop, EDITOR_LAYOUT, CONFIG ) {
 
   var _parentElement =  LangUtils.domFragment( EDITOR_LAYOUT, ".media-editor" ),
       _addMediaTitle = _parentElement.querySelector( ".add-new-media" ),
@@ -47,7 +47,7 @@ define( [ "localized", "util/lang", "util/uri", "util/xhr", "util/keys", "util/m
       _media,
       _mediaLoadTimeout,
       _cancelSpinner,
-      _LIMIT = 16,
+      _LIMIT = CONFIG.sync_limit,
       MEDIA_LOAD_TIMEOUT = 10000,
       _this,
       TRANSITION_TIME = 2000,
