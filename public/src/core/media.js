@@ -212,6 +212,14 @@
         }
       };
 
+      this.getTrackByOrder = function( order ) {
+        for ( var i = 0; i < _orderedTracks.length; i++ ) {
+          if ( order === _orderedTracks[ i ].order ) {
+            return _orderedTracks[ i ];
+          }
+        }
+      };
+
       this.removeTrack = function ( track ) {
         var idx = _tracks.indexOf( track ),
             trackEvent,
@@ -585,7 +593,8 @@
               popcornOptions: _popcornOptions,
               controls: _popcornWrapper.popcorn ? _popcornWrapper.popcorn.controls() : false,
               tracks: exportJSONTracks,
-              clipData: _clipData
+              clipData: _clipData,
+              currentTime: _currentTime
             };
           },
           set: function( importData ){

@@ -24,7 +24,8 @@ define([ "WebmakerUI", "localized", "dialog/dialog", "util/lang", "l10n!/layouts
         _projectTitlePlaceHolderText = _projectName.innerHTML,
         _toolTip, _loginTooltip,
         _projectDetails = new ProjectDetails( butter ),
-        _langSelector = _rootElement.querySelector( "#lang-picker" );
+        _langSelector = _rootElement.querySelector( "#lang-picker" ),
+        _togetherjsBtn = _rootElement.querySelector( ".together-toggle" );
 
     // URL redirector for language picker
     WebmakerUI.langPicker( _langSelector );
@@ -50,6 +51,26 @@ define([ "WebmakerUI", "localized", "dialog/dialog", "util/lang", "l10n!/layouts
     _this.element = _rootElement;
 
     ToolTip.apply( _projectTitle );
+
+    // Feature flag might not be enabled.
+    if ( _togetherjsBtn ) {
+      var toggleTogether = function( started ) {
+        return function() {
+          _togetherjsBtn.innerHTML = started ? Localized.get( "Go it alone" ) : Localized.get( "Collaborate" );
+        };
+      };
+
+      TogetherJS.on( "ready", toggleTogether( true ) );
+      TogetherJS.on( "close", toggleTogether( false ) );
+
+      _togetherjsBtn.addEventListener( "click", function() {
+        TogetherJS( this );
+      });
+
+      if ( TogetherJS.running ) {
+        toggleTogether( true )();
+      }
+    }
 
     function showErrorDialog( message ) {
       var dialog = Dialog.spawn( "error-message", {

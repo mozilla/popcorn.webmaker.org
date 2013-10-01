@@ -41,8 +41,24 @@ define( [ "./logger", "./eventmanager", "./observer",
 
     options = options || {};
 
+    // If we've been passed an Id then use it, otherwise use __guid like usual.
+    if ( "id" in options ) {
+      // If we've been passed an Id with the same Id as the current GUID then
+      // just increment __guid.
+      if ( options.id === __guid ) {
+        __guid++;
+      }
+      // If the id we've been passed is greater then Id then this means we're
+      // out of sync. Update __guid to be in sync.
+      else if( options.id > __guid ) {
+        __guid = options.id + 1;
+      }
+    } else {
+      options.id = __guid++;
+    }
+
     var _this = this,
-        _id = "TrackEvent" + __guid++,
+        _id = "TrackEvent" + options.id,
         _name = options.name || _id,
         _logger = new Logger( _id ),
         _track = null,

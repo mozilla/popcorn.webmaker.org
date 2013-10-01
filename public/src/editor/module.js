@@ -182,14 +182,21 @@ define( [ "localized", "core/eventmanager", "core/trackevent", "./editor",
             _this.dispatch( "editortoggled", newState );
           };
 
+          var _togetherjs = document.querySelector( ".togetherjs-dock-right" );
           _toggler.state = newState;
           if ( newState ) {
             document.body.classList.remove( "editor-open" );
             _editorAreaDOMRoot.classList.add( "minimized" );
+            if ( _togetherjs ) {
+              _togetherjs.classList.add( "minimized" );
+            }
           }
           else {
             document.body.classList.add( "editor-open" );
             _editorAreaDOMRoot.classList.remove( "minimized" );
+            if ( _togetherjs ) {
+              _togetherjs.classList.remove( "minimized" );
+            }
           }
 
           LangUtils.applyTransitionEndListener( _editorAreaDOMRoot, onTransitionEnd );
