@@ -3,6 +3,6 @@
   "dependencies": {
     "farbtastic": "git://github.com/mattfarina/farbtastic.git#40a18515931d8150510d1b7b823369b18b2c8f30",
     "webmaker-i18n": "https://github.com/mozilla/node-webmaker-i18n/archive/v0.2.2.tar.gz",
-    "webmaker-ui": "0.0.8"
+    "webmaker-ui": "0.0.10"
   }
 }

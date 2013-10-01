@@ -17,7 +17,7 @@
     <div id="webmaker-nav">
       <nav class="webmaker-nav-container">
         <div class="lang-picker">
-          <select id="lang-picker">
+          <select id="lang-picker" data-supported="{{supportedLanguages}}">
           {% for language in listDropdownLang %}
             <option {% if languageNameFor(localeInfo.lang) == languageNameFor(language) %} selected="selected" {% endif %} value="{{language}}">{{ languageNameFor(language) }}</option>
           {% endfor %}
