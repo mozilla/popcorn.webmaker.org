@@ -12,9 +12,25 @@ define( [ "localized", "./eventmanager", "./trackevent", "./views/track-view", "
   Track = function( options ) {
     options = options || {};
 
+    // If we've been passed an Id then use it, otherwise use __guid like usual.
+    if ( "id" in options ) {
+      // If we've been passed an Id with the same Id as the current GUID then
+      // just increment __guid.
+      if ( options.id === __guid ) {
+        __guid++;
+      }
+      // If the id we've been passed is greater then Id then this means we're
+      // out of sync. Update __guid to be in sync.
+      else if( options.id > __guid ) {
+        __guid = options.id + 1;
+      }
+    } else {
+      options.id = __guid++;
+    }
+
     var _trackEvents = [],
         _target = options.target,
-        _id = "" + __guid++,
+        _id = "" + options.id,
         _view = new TrackView( _id, this ),
         _popcornWrapper = null,
         _this = this,
@@ -101,6 +117,7 @@ define( [ "localized", "./eventmanager", "./trackevent", "./views/track-view", "
           return {
             name: _name,
             id: _id,
+            order: _order,
             trackEvents: exportJSONTrackEvents
           };
         },
@@ -340,6 +357,10 @@ define( [ "localized", "./eventmanager", "./trackevent", "./views/track-view", "
     }; //deselectEvents
 
   }; //Track
+
+  Track.setGuid = function( val ) {
+    __guid = val;
+  };
 
   return Track;
 
