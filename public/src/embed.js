@@ -204,7 +204,7 @@ function init() {
 
   function setupEventHandlers( popcorn, config ) {
     var sizeOptions = document.querySelectorAll( ".option" ),
-        i, l;
+        i, l, messages;
 
     $( "#share-close" ).addEventListener( "click", function() {
       hide( "#share-container" );
@@ -237,12 +237,87 @@ function init() {
       } else {
         setStateClass( "embed-paused" );
       }
+      window.postMessage({
+        currentTime: popcorn.currentTime(),
+        type: "pause"
+      }, window.location.origin );
+    });
+
+    popcorn.on( "play", function() {
+      window.postMessage({
+        currentTime: popcorn.currentTime(),
+        type: "play"
+      }, window.location.origin );
+    });
+
+    popcorn.on( "timeupdate", function() {
+      window.postMessage({
+        currentTime: popcorn.currentTime(),
+        type: "timeupdate"
+      }, window.location.origin );
     });
 
     popcorn.on( "playing", function() {
       hide( "#share-container" );
       setStateClass( "embed-playing" );
     });
+
+    function buildOptions( data, manifest ) {
+      var options = {};
+
+      for( var option in manifest ) {
+        if ( manifest.hasOwnProperty( option ) ) {
+          options[ option ] = data[ option ];
+        }
+      }
+
+      return options;
+    }
+
+    popcorn.on( "trackstart", function( e ) {
+      window.postMessage({
+        plugin: e.plugin,
+        type: e.type,
+        options: buildOptions( e, e._natives.manifest.options )
+      }, window.location.origin );
+    });
+
+    popcorn.on( "trackend", function( e ) {
+      window.postMessage({
+        plugin: e.plugin,
+        type: e.type,
+        options: buildOptions( e, e._natives.manifest.options )
+      }, window.location.origin );
+    });
+
+    messages = {
+      play: function( data ) {
+        popcorn.play( data.currentTime );
+      },
+      pause: function( data ) {
+        popcorn.pause( data.currentTime );
+      },
+      currentTime: function( data ) {
+        popcorn.currentTime( data.currentTime );
+      }
+    };
+
+    function onMessage( e ) {
+      var type = e.data.type,
+          message = messages[ type ];
+      // We only want to accept messages from our parent.
+      // We also ensure we don't listen to our own event
+      // dispatches to the parent.
+      if ( e.origin !== window.parent.location.origin ||
+           e.source.location.pathname === window.location.pathname ) {
+        return;
+      }
+      if ( message ) {
+        message( e.data );
+      }
+    }
+
+    window.addEventListener( "message", onMessage, false );
 
     function onCanPlay() {
       if ( config.autoplay ) {
