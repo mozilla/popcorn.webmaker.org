@@ -237,11 +237,43 @@ function init() {
       } else {
         setStateClass( "embed-paused" );
       }
+      parent.postMessage({
+        currentTime: popcorn.currentTime(),
+        type: "pause"
+      }, "*" );
+    });
+
+    popcorn.on( "play", function() {
+      parent.postMessage({
+        currentTime: popcorn.currentTime(),
+        type: "play"
+      }, "*" );
+    });
+
+    popcorn.on( "timeupdate", function() {
+      parent.postMessage({
+        currentTime: popcorn.currentTime(),
+        type: "timeupdate"
+      }, "*" );
     });
 
     popcorn.on( "playing", function() {
       hide( "#share-container" );
       setStateClass( "embed-playing" );
+    });
+
+    popcorn.on( "trackstart", function( e ) {
+      parent.postMessage({
+        plugin: e.plugin,
+        type: e.type
+      }, "*" );
+    });
+
+    popcorn.on( "trackend", function( e ) {
+      parent.postMessage({
+        plugin: e.plugin,
+        type: e.type
+      }, "*" );
     });
 
     function onCanPlay() {
