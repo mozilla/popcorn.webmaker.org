@@ -22,7 +22,7 @@ define([ "WebmakerUI", "localized", "dialog/dialog", "util/lang", "l10n!/layouts
         _noProjectNameToolTip,
         _projectTitlePlaceHolderText = _projectName.innerHTML,
         _toolTip, _loginTooltip,
-        _langSelector = _rootElement.querySelector( ".lang-picker" );
+        _langSelector = _rootElement.querySelector( "#lang-picker" );
 
     // URL redirector for language picker
     WebmakerUI.langPicker( _langSelector );
