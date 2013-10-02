@@ -100,7 +100,7 @@
     "multiparty": "2.1.8",
     "mysql": "2.0.0-alpha8",
     "nconf": "0.6.7",
-    "newrelic": "0.9.20",
+    "newrelic": "0.11.4",
     "node-uuid": "1.4.0",
     "noxmox": "0.2.4",
     "nunjucks": "0.1.10",
