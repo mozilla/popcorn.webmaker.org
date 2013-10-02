@@ -649,6 +649,7 @@ define( [ "localized", "util/lang", "util/uri", "util/xhr", "util/keys", "util/m
             _currentSearch = key;
             container.style.display = "";
             _galleryHeader.innerHTML = _currentSearch + " " + _resultsText;
+            pagination( container.dataset.page, container.dataset.total, pagingSearchCallback );
           } else {
             container.style.display = "none";
           }
