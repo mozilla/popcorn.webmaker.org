@@ -150,7 +150,7 @@ module.exports = function( req, res ) {
     },
   ], function( err, results ) {
     if ( err ) {
-	  metrics.increment( 'project.publish.error' );
+      metrics.increment( "project.publish.error" );
       return res.json(500, { error: err });
     }
 
@@ -159,6 +159,6 @@ module.exports = function( req, res ) {
       publishUrl: publishUrl,
       iframeUrl: iframeUrl
     });
-    metrics.increment( 'project.publish.success' );
+    metrics.increment( "project.publish.success" );
   });
 };

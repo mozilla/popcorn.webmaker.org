@@ -27,12 +27,12 @@ module.exports = function( Project ) {
       if ( remixId || remixId === 0 ) {
         Project.find({ id: remixId }, function( err, doc ) {
           if ( err ) {
-            metrics.increment( "project.load.error" );
+            metrics.increment( "project.remixedFrom.removed" );
             return next( utils.error( 500, err ) );
           }
 
           if ( !doc ) {
-            metrics.increment( "project.load.error" );
+            metrics.increment( "project.make.load.error" );
             return res.json( req.projectJSON );
           }
 

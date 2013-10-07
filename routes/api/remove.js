@@ -7,7 +7,6 @@ module.exports = function( req, res, next ) {
   var project = res.locals.project;
 
   if ( !project ) {
-    metrics.increment( "project.load.error" );
     return next( utils.error( 404, "project not found" ) );
   }
 
@@ -42,7 +41,6 @@ module.exports = function( req, res, next ) {
       publishUrlRemix
     ], removeUrl, function( err, results ) {
       if ( err ) {
-	    metrics.increment( "project.delete.error" );
         return next( utils.error( 500, err.toString() ) );
       }
 
@@ -51,6 +49,7 @@ module.exports = function( req, res, next ) {
     });
   })
   .error(function( err ) {
+    metrics.increment( "project.s3.delete.error" );
     next( utils.error( 500, err.toString() ) );
   });
 };

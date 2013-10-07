@@ -19,7 +19,7 @@ module.exports = function( Project ) {
       Project.update( { email: req.session.email, id: req.body.id, data: projectData },
                       function( err, doc ) {
         if ( err ) {
-		  metrics.increment( 'project.update.error' )
+          metrics.increment( 'project.update.error' )
           res.json( 500, { error: err } );
           return;
         }
