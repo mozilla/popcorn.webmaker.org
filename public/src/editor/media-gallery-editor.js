@@ -253,7 +253,6 @@ define( [ "localized", "util/lang", "util/uri", "util/xhr", "util/keys", "util/m
             linkback: data.linkback,
             hidden: data.hidden || false
           };
-console.log(start, end, "2");
 
       options.callback = options.callback || addMediaEvent;
 
