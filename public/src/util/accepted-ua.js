@@ -43,7 +43,7 @@
     }
 
     if ( !acceptedUA ) {
-      Warn.showWarning( Localized.get( "UA_WARNING_TEXT" ) );
+      Warn.showWarning( Localized.get( "UA_WARNING_TEXT" ) + " " + Localized.get( "Click to remove warning" ) );
     }
   });
 }());
