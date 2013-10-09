@@ -157,12 +157,9 @@ define( [ "localized", "util/lang", "util/uri", "util/xhr", "util/keys", "util/m
     options.callback = options.callback || addPhotoEvent;
 
     function addEvent() {
-      var start = _butter.currentTime,
-          end = start + data.duration,
-          popcornOptions = {
+      var popcornOptions = {
             src: source,
-            start: start,
-            end: end,
+            start: _butter.currentTime,
             title: data.title
           };
 
@@ -192,6 +189,8 @@ define( [ "localized", "util/lang", "util/uri", "util/xhr", "util/keys", "util/m
         thumbnailImg,
         thumbnailSrc = data.thumbnail,
         source = data.source;
+
+    data.duration = (+data.duration);
 
     dragNDrop( thumbnailBtn, {
       source: data.source,
