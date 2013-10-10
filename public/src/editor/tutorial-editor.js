@@ -18,7 +18,6 @@ define( [ "util/lang", "editor/editor", "text!layouts/tutorial-editor.html" ],
 
   function createTutorialItem( item ) {
     var option = document.createElement( "option" );
-    item.url += "?details=hidden";
     _items.push( item );
     option.innerHTML = item.title;
     option.value = item.url;
