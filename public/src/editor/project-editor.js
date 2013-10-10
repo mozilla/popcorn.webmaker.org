@@ -243,8 +243,7 @@ define([ "localized", "editor/editor", "editor/base-editor",
         tag = tags[ i ];
 
         var val = tag.replace( /[,#\s]/g, "" );
-
-        if ( val && _currentTags.indexOf( val ) === -1 ) {
+        if ( val && _currentTags.indexOf( val ) === -1 && val.indexOf( ":" ) === -1 ) {
           var currentProjectTags = butter.project.tags,
               li = document.createElement( "li" );
 
@@ -255,7 +254,7 @@ define([ "localized", "editor/editor", "editor/base-editor",
             butter.project.tags = currentProjectTags.join( "," );
           }
 
-          li.innerHTML = val;
+          li.innerHTML = decodeURIComponent( val );
           _tagsList.appendChild( li );
         }
       }
@@ -265,12 +264,12 @@ define([ "localized", "editor/editor", "editor/base-editor",
 
     _tagsInput.addEventListener( "keydown", function( e ) {
       if ( e.keyCode === KEYS.ENTER || e.keyCode === KEYS.COMMA ) {
-        addTags( e.target.value );
+        addTags( encodeURIComponent( e.target.value ) );
       }
     }, false );
 
     _tagsInput.addEventListener( "blur", function( e ) {
-      addTags( e.target.value );
+      addTags( encodeURIComponent( e.target.value ) );
     }, false );
 
     // Removal of Tags from project
