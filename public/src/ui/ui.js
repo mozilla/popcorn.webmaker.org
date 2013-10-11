@@ -121,10 +121,11 @@ define( [ "core/eventmanager", "./toggler",
           }
 
           make.url( url ).then( function( err, results ) {
-            if ( !err ) {
+            var result = results[ 0 ];
+            if ( !err && result ) {
               tutorials.push({
                 url: url,
-                title: results[ 0 ].title
+                title: result.title || result.url
               });
             }
             addNext( urls.pop() );
@@ -138,7 +139,7 @@ define( [ "core/eventmanager", "./toggler",
         for ( var i = 0; i < results[ 0 ].tags.length; i++ ) {
           tag = results[ 0 ].tags[ i ];
           if ( tag.indexOf( "tutorial-" ) === 0 ) {
-            urls.push( decodeURIComponent( tag.split("tutorial-")[ 1 ] ) );
+            urls.push( decodeURIComponent( tag.split( "tutorial-" )[ 1 ] ) );
           }
         }
 
