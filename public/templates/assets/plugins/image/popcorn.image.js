@@ -6,26 +6,31 @@
 
   var APIKEY = "&api_key=b939e5bd8aa696db965888a31b2f1964",
       flickrUrl = window.location.protocol === "https:" ? "https://secure.flickr.com/services/" : "http://api.flickr.com/services/",
-      searchPhotosCmd = flickrUrl + "rest/?method=flickr.photos.search&page=1&extras=url_m&media=photos&safe_search=1",
+      searchPhotosCmd = flickrUrl + "rest/?method=flickr.photos.search&extras=url_m&media=photos&safe_search=1",
       getPhotosetCmd = flickrUrl + "rest/?method=flickr.photosets.getPhotos&extras=url_m&media=photos",
       getPhotoSizesCmd = flickrUrl + "rest/?method=flickr.photos.getSizes",
       jsonBits = "&format=json&jsoncallback=flickr",
       FLICKR_SINGLE_CHECK = "flickr.com/photos/",
+      PER_PAGE_MAX = 100,
       urlRegex = /[\w-]+(\.[\w-]+)+([\w.,@?^=%&amp;:\/~+#-]*[\w@?^=%&amp;\/~+#-])?/;
 
   function searchImagesFlickr( tags, count, userId, ready ) {
-    var uri = searchPhotosCmd + APIKEY + "&per_page=" + count + "&";
+    var uri = searchPhotosCmd + APIKEY + "&page=1&per_page=" + PER_PAGE_MAX;
     if ( userId && typeof userId !== "function" ) {
       uri += "&user_id=" + userId;
     }
     if ( tags ) {
-      uri += "&tags=" + tags;
+      uri += "&tags=" + window.encodeURIComponent( tags );
     }
     uri += jsonBits;
-    Popcorn.getJSONP( uri, ready || userId );
+    Popcorn.getJSONP( uri, function( data ) {
+      var callback = ready || userId;
+
+      callback( data, uri );
+    });
   }
 
-  function getPhotoSet( photosetId , ready, pluginInstance ) {
+  function getPhotoSet( photosetId, ready, pluginInstance ) {
     var photoSplit,
         ln,
         url,
@@ -59,8 +64,10 @@
       }
     }
 
-    uri = getPhotosetCmd + "&photoset_id=" + photosetId + APIKEY + jsonBits;
-    Popcorn.getJSONP( uri, ready );
+    uri = getPhotosetCmd + "&photoset_id=" + photosetId + "&per_page=" + PER_PAGE_MAX + APIKEY + jsonBits;
+    Popcorn.getJSONP( uri, function( data ) {
+      ready( data, uri );
+    });
   }
 
   function calculateInOutTimes( start, duration, count ) {
@@ -190,65 +197,89 @@
           }
         } else {
 
-          _flickrCallback = function( data ) {
+          var _inOuts,
+              _lastVisible,
+              _tagRefs = [];
+
+          options._updateImage = function() {
+            var io,
+                ref,
+                currTime = _this.currentTime(),
+                i = _tagRefs.length - 1;
+            for ( ; i >= 0; i-- ) {
+              io = _inOuts[ i ];
+              ref = _tagRefs[ i ];
+              if ( currTime >= io[ "in" ] && currTime < io.out && ref.classList.contains( "image-plugin-hidden" ) ) {
+                if ( _lastVisible ) {
+                  _lastVisible.classList.add( "image-plugin-hidden" );
+                }
+                ref.classList.remove( "image-plugin-hidden" );
+                _lastVisible = ref;
+                break;
+              }
+            }
+          };
+
+          _flickrCallback = function( data, url ) {
 
             var _collection = ( data.photos || data.photoset ),
                 _photos,
-                _inOuts,
-                _lastVisible,
                 _url,
-                _tagRefs = [],
-                _count = options.count || _photos.length;
+                _totalPhotos,
+                item;
 
             if ( !_collection ) {
               return;
             }
 
+            _totalPhotos = _collection.total;
             _photos = _collection.photo;
 
             if ( !_photos ) {
               return;
             }
 
-            Popcorn.forEach( _photos, function ( item, i ) {
-
-              _url = ( item.media && item.media.m ) || window.unescape( item.url_m );
-
-              if ( i < _count ) {
+            for ( var i = 0; i < _photos.length; i++ ) {
+              if ( options.count > _tagRefs.length ) {
+                item = _photos[ i ];
+                _url = ( item.media && item.media.m ) || window.unescape( item.url_m );
                 _link = createImageDiv( _url, _url, _this );
                 _link.classList.add( "image-plugin-hidden" );
                 _container.insertBefore( _link, _container.children[ i ] );
                 _tagRefs.push( _link );
+              } else {
+                break;
               }
-            });
+            }
 
-            _inOuts = calculateInOutTimes( options.start, options.end - options.start, _count );
+            if ( _tagRefs.length < options.count && _collection.page !== _collection.pages && _photos.length === PER_PAGE_MAX ) {
+              url = url.replace( /\&per\_page\=[0-9]+/, "" );
+              url += "&per_page=" + _collection.page + 1;
 
-            options._updateImage = function() {
-              var io,
-                  ref,
-                  currTime = _this.currentTime(),
-                  i = _tagRefs.length - 1;
-              for ( ; i >= 0; i-- ) {
-                io = _inOuts[ i ];
-                ref = _tagRefs[ i ];
-                if ( currTime >= io[ "in" ] && currTime < io.out && ref.classList.contains( "image-plugin-hidden" ) ) {
-                  if ( _lastVisible ) {
-                    _lastVisible.classList.add( "image-plugin-hidden" );
-                  }
-                  ref.classList.remove( "image-plugin-hidden" );
-                  _lastVisible = ref;
-                  break;
-                }
+              Popcorn.getJSONP( url, function( data ) {
+                _flickrCallback( data, url );
+              });
+            } else {
+              _inOuts = calculateInOutTimes( options.start, options.end - options.start, _tagRefs.length );
+
+              if ( !_tagRefs.length ) {
+                _this.emit( "popcorn-image-failed-retrieve" );
+                return;
               }
-            };
 
-            // Check if should be currently visible
-            options._updateImage();
+              if ( options.count !== _tagRefs.length ) {
+                options.count = _tagRefs.length;
+                // Used to sync back the new count data with Butter Events
+                _this.emit( "popcorn-image-count-update", options.count );
+              }
 
-            //  Check if should be updating
-            if ( _this.currentTime() >= options.start && _this.currentTime() <= options.end ) {
-              _this.on( "timeupdate", options._updateImage );
+              // Check if should be currently visible
+              options._updateImage();
+
+              //  Check if should be updating
+              if ( _this.currentTime() >= options.start && _this.currentTime() <= options.end ) {
+                _this.on( "timeupdate", options._updateImage );
+              }
             }
           };
 
