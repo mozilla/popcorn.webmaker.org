@@ -247,6 +247,7 @@ define( [ "localized", "util/lang", "util/uri", "util/xhr", "util/keys", "util/m
             denied: data.denied,
             start: start,
             end: end,
+            thumbnailSrc: thumbnailSrc,
             from: data.from || 0,
             title: data.title,
             duration: data.duration,
