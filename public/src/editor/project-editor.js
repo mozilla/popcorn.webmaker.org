@@ -288,9 +288,8 @@ define([ "localized", "editor/editor", "editor/base-editor",
 
     function trackEventHandle( e ) {
       var trackEvent = e.data,
-          src = trackEvent.popcornOptions.src,
+          src = trackEvent.popcornOptions.src || trackEvent.popcornOptions.thumbnailSrc,
           image = _imageThumbs.querySelector( "[data-source='" + src + "']" );
-
       if ( e.type === "trackeventremoved" && image ) {
         _imageThumbs.removeChild( image );
         return;
