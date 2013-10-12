@@ -198,6 +198,7 @@ define( [ "localized", "util/lang", "util/uri", "util/xhr", "util/keys", "util/m
       end: data.duration,
       from: data.from || 0,
       title: data.title,
+      thumbnailSrc: thumbnailSrc,
       duration: data.duration,
       hidden: data.hidden
     });

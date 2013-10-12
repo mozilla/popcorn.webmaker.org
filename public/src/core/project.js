@@ -34,7 +34,7 @@ define( [ "localized", "core/eventmanager", "core/media", "util/sanitizer" ],
         // Interval for backups, starts first time user clicks Save.
         _backupInterval = -1,
 
-        _thumbnail = location.protocol + "//" + location.host + "/resources/icons/fb-logo.png",
+        _thumbnail,
         _background = "#FFFFFF";
 
     function invalidate() {
