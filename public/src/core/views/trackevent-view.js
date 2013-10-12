@@ -73,7 +73,7 @@ define( [ "core/logger", "core/eventmanager", "util/dragndrop",
      * Used to notify the user when a trackevent overlaps and where the new location will be
      * when the trackevent is dropped
      */
-    this.createGhost = function() {
+    this.createGhost = function( left ) {
       if ( _ghost ) {
         return _ghost;
       }
@@ -83,8 +83,11 @@ define( [ "core/logger", "core/eventmanager", "util/dragndrop",
 
       // Copy the `left` attribute here, once. Successive updates are done using
       // the translate transform property.
-      clone.style.left = _element.style.left;
-
+      if ( left || left === 0 ) {
+        clone.style.left = left + "px";
+      } else {
+        clone.style.left = _element.style.left;
+      }
       clone.classList.add( "butter-track-event-ghost" );
       LangUtils.setTransformProperty( clone, "" );
 
