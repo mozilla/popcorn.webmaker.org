@@ -135,7 +135,8 @@ define([ "localized", "editor/editor", "editor/base-editor",
         }
 
         if ( key === "thumbnail" ) {
-          addThumbnail( _project.thumbnail, true );
+          addThumbnail( _project.thumbnail );
+          selectThumb( _project.thumbnail );
         }
       }
 
@@ -164,7 +165,8 @@ define([ "localized", "editor/editor", "editor/base-editor",
     butter.listen( "droppable-succeeded", function uploadSuceeded( e ) {
       _project.thumbnail = _dropArea.querySelector( "img" ).src = e.data;
       _thumbnailInput.value = _project.thumbnail;
-      addThumbnail( _project.thumbnail, true );
+      addThumbnail( _project.thumbnail );
+      selectThumb( _project.thumbnail );
     });
 
     function onProjectSaved() {
@@ -195,7 +197,16 @@ define([ "localized", "editor/editor", "editor/base-editor",
       _loginToSaveDialog.classList.remove( "hidden" );
     }
 
-    function addThumbnail( url, isSelected ) {
+    function selectThumb( url ) {
+      var li = _imageThumbs.querySelector( "[data-source='" + url + "']" ),
+          selected = _imageThumbs.querySelector( ".selected" );
+      if ( selected ) {
+        selected.classList.remove( "selected" );
+      }
+      li.classList.add( "selected" );
+    }
+
+    function addThumbnail( url ) {
       var li = document.createElement( "li" ),
           image = _imageThumbs.querySelector( "[data-source='" + url + "']" );
 
@@ -209,21 +220,13 @@ define([ "localized", "editor/editor", "editor/base-editor",
         var source = e.target.dataset.source,
             selected = _imageThumbs.querySelector( ".selected" );
 
-        selected.classList.remove( "selected" );
+        if ( selected ) {
+          selected.classList.remove( "selected" );
+        }
         e.target.classList.add( "selected" );
         _project.thumbnail = source;
         _thumbnailInput.value = _project.thumbnail;
       }, false );
-
-      if ( isSelected ) {
-        var selected = _imageThumbs.querySelector( ".selected" );
-
-        if ( selected ) {
-          selected.classList.remove( "selected" );
-        }
-
-        li.classList.add( "selected" );
-      }
 
       _imageThumbs.appendChild( li );
     }
@@ -294,9 +297,16 @@ define([ "localized", "editor/editor", "editor/base-editor",
         _imageThumbs.removeChild( image );
         return;
       }
-
       if ( !image && src ) {
-        addThumbnail( src );
+        // This means we only have one thumbnail and it's the default,
+        // so we should make the new one the current thumbnail.
+        if ( _imageThumbs.childNodes.length === 1 && _project.thumbnail.indexOf( "/resources/icons/fb-logo.png" ) >= 0 ) {
+          addThumbnail( src );
+          selectThumb( src );
+          _project.thumbnail = src;
+        } else {
+          addThumbnail( src );
+        }
         return;
       }
     }
@@ -312,6 +322,9 @@ define([ "localized", "editor/editor", "editor/base-editor",
 
     Editor.BaseEditor.extend( this, butter, rootElement, {
       open: function() {
+        var events,
+            source,
+            foundProjectThumbnail;
         _project = butter.project;
 
         this.attachColorChangeHandler( _colorContainer, null, "background", function( te, options, message, prop ) {
@@ -322,36 +335,29 @@ define([ "localized", "editor/editor", "editor/base-editor",
             _project.background = options.background;
           }
         });
-
         if ( !_imageThumbs.childNodes.length ) {
-          var imageEvents = butter.getTrackEvents( "type", "image" ),
-              foundProjectThumbnail =  _project.thumbnail.indexOf( "/resources/icons/fb-logo.png" ) !== -1 ? true : false;
+          events = butter.getTrackEvents( "type", "image" ).concat( butter.getTrackEvents( "type", "sequencer" ) );
 
-          // Thumbnail is the default.
-          if ( foundProjectThumbnail ) {
-             addThumbnail( _project.thumbnail, true );
-          } else {
-            addThumbnail( location.protocol + "//" + location.host + "/resources/icons/fb-logo.png" );
-          }
-
-          for ( var i = 0; i < imageEvents.length; i++ ) {
-            if ( imageEvents[ i ].popcornOptions.src ) {
-              var source = imageEvents[ i ].popcornOptions.src;
-
-              if ( source === _project.thumbnail ) {
-                foundProjectThumbnail = true;
-                addThumbnail( source, foundProjectThumbnail );
-                return;
+          for ( var i = 0; i < events.length; i++ ) {
+            source = events[ i ].popcornOptions.src || events[ i ].popcornOptions.thumbnailSrc;
+            if ( source ) {
+              if ( !_project.thumbnail ) {
+                // Default it to something cool, if we can.
+                _project.thumbnail = source;
               }
 
               addThumbnail( source );
             }
           }
 
-          // Project has a thumbnail that wasn' added VIA image events and isn't the default
-          if ( !foundProjectThumbnail ) {
-            addThumbnail( _project.thumbnail, true );
+          // Still no default,
+          // so default it to something not as cool,
+          // but still pretty cool.
+          if ( !_project.thumbnail ) {
+            _project.thumbnail = location.protocol + "//" + location.host + "/resources/icons/fb-logo.png";
           }
+          addThumbnail( _project.thumbnail );
+          selectThumb( _project.thumbnail );
         }
 
         _previewBtn.href = _projectURL.value = _project.publishUrl || "";
