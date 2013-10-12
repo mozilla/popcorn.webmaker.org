@@ -9,7 +9,7 @@ define( [ "./ghost-track" ], function( GhostTrack ) {
     var _media = media,
         _tracksContainerElement = tracksContainerElement;
 
-    function createGhostTrackForTrack( track, nextTrack ) {
+    function createGhostTrackForNextTrack( track, nextTrack ) {
       var ghostTrack;
       if ( !track.ghost ) {
         ghostTrack = track.ghost = new GhostTrack( track, nextTrack );
@@ -19,6 +19,15 @@ define( [ "./ghost-track" ], function( GhostTrack ) {
         else {
           _tracksContainerElement.insertBefore( ghostTrack.view.element, nextTrack.view.element );
         }
+      }
+      return track.ghost;
+    }
+
+    function createGhostTrackForPreviousTrack( track, previousTrack ) {
+      var ghostTrack;
+      if ( !track.ghost ) {
+        ghostTrack = track.ghost = new GhostTrack( previousTrack, track );
+        _tracksContainerElement.insertBefore( ghostTrack.view.element, track.view.element );
       }
       return track.ghost;
     }
@@ -38,31 +47,71 @@ define( [ "./ghost-track" ], function( GhostTrack ) {
       }
     }
 
-    this.trackEventDragged = function( trackEventView, trackView ) {
-      var track, nextTrack, ghostTrack,
-          overlappingTrackEvent;
+    function cleanUpGhostTrackEvent( trackEventView ) {
+      var ghostTrack = trackEventView.ghost.track;
+      trackEventView.cleanupGhost();
+      if ( ghostTrack.lastTrack ) {
+        cleanUpGhostTrack( ghostTrack.lastTrack );
+      }
+    }
 
+    this.trackEventDragged = function( trackEventView, trackView ) {
+      var track, nextTrack,
+          ghostLeft, ghostWidth,
+          ghostLeftAbsolute,
+          overlappingTrackEvent,
+          overlappingDirection;
       if ( trackView ) {
         track = trackView.track;
 
         overlappingTrackEvent = trackView.findOverlappingTrackEvent( trackEventView );
-
         if ( overlappingTrackEvent ) {
-          nextTrack = _media.getNextTrack( track );
-          if ( !nextTrack || nextTrack.view.findOverlappingTrackEvent( trackEventView ) ) {
-            nextTrack = createGhostTrackForTrack( track, nextTrack );
+
+          overlappingDirection = trackView.findOverlappingDirection( trackEventView, overlappingTrackEvent.view );
+          if ( overlappingDirection === "top" || overlappingDirection === "bottom" ) {
+            nextTrack = _media.getNextTrack( track );
+            if ( !nextTrack || nextTrack.view.findOverlappingTrackEvent( trackEventView ) ) {
+              nextTrack = createGhostTrackForNextTrack( track, nextTrack );
+            }
             if ( trackEventView.ghost && trackEventView.ghost.track !== nextTrack ) {
-              ghostTrack = trackEventView.ghost.track;
-              trackEventView.cleanupGhost();
-              if ( ghostTrack.lastTrack ) {
-                cleanUpGhostTrack( ghostTrack.lastTrack );
+              cleanUpGhostTrackEvent( trackEventView );
+            }
+            if ( !trackEventView.ghost ) {
+              nextTrack.view.addTrackEventGhost( trackEventView.createGhost() );
+            }
+            trackEventView.updateGhost();
+          } else {
+            if ( trackEventView.ghost && trackEventView.ghost.track !== track ) {
+              cleanUpGhostTrackEvent( trackEventView );
+            }
+            if ( !trackEventView.ghost ) {
+              if ( overlappingDirection === "right" ) {
+                ghostLeft = overlappingTrackEvent.view.element.offsetLeft - trackEventView.element.offsetWidth;
+                ghostLeftAbsolute = overlappingTrackEvent.view.element.getBoundingClientRect().left - trackEventView.element.offsetWidth;
+              } else if ( overlappingDirection === "left" ) {
+                ghostLeft = overlappingTrackEvent.view.element.offsetLeft + overlappingTrackEvent.view.element.offsetWidth;
+                ghostLeftAbsolute = overlappingTrackEvent.view.element.getBoundingClientRect().left + overlappingTrackEvent.view.element.offsetWidth;
+              }
+              ghostWidth = trackEventView.element.offsetWidth;
+              if ( ghostLeft < 0 ||
+                   ( ghostLeft + ghostWidth ) > _tracksContainerElement.offsetWidth ||
+                   track.view.findOverlappingTrackEvent( trackEventView, ghostLeftAbsolute, ghostWidth ) ) {
+                nextTrack = _media.getNextTrack( track );
+                if ( !nextTrack || nextTrack.view.findOverlappingTrackEvent( trackEventView ) ) {
+                  nextTrack = createGhostTrackForNextTrack( track, nextTrack );
+                }
+                if ( trackEventView.ghost && trackEventView.ghost.track !== nextTrack ) {
+                  cleanUpGhostTrackEvent( trackEventView );
+                }
+                if ( !trackEventView.ghost ) {
+                  nextTrack.view.addTrackEventGhost( trackEventView.createGhost() );
+                }
+                trackEventView.updateGhost();
+              } else {
+                track.view.addTrackEventGhost( trackEventView.createGhost( ghostLeft ) );
               }
             }
           }
-          if ( !trackEventView.ghost ) {
-            nextTrack.view.addTrackEventGhost( trackEventView.createGhost() );
-          }
-          trackEventView.updateGhost();
         }
         else if ( trackEventView.ghost ) {
           track = trackEventView.ghost.track;

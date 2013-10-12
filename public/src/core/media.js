@@ -343,6 +343,14 @@
         return null;
       };
 
+      this.getPreviousTrack = function( currentTrack ) {
+        var trackIndex = _orderedTracks.indexOf( currentTrack );
+        if ( trackIndex > -1 && trackIndex <= _orderedTracks.length - 1 ) {
+          return _orderedTracks[ trackIndex - 1 ];
+        }
+        return null;
+      };
+
       this.getLastTrack = function( currentTrack ) {
         var trackIndex = _orderedTracks.indexOf( currentTrack );
         if ( trackIndex > 0 ) {

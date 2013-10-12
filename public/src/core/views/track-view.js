@@ -50,7 +50,11 @@ define( [ "core/logger", "core/eventmanager", "util/dragndrop" ],
 
             // Avoid using width values to derive end value to circumvent padding/border issues.
             duration = trackEvent.popcornOptions.end - trackEvent.popcornOptions.start;
-            left = trackEventRect.left - trackRect.left;
+            if ( trackEventView.ghost ) {
+              left = trackEventView.ghost.element.getBoundingClientRect().left - trackRect.left;
+            } else {
+              left = trackEventRect.left - trackRect.left;
+            }
             start = left / trackRect.width * _duration;
             end = start + duration;
 
@@ -172,12 +176,33 @@ define( [ "core/logger", "core/eventmanager", "util/dragndrop" ],
       _element.removeChild( ghost.element );
     };
 
+    this.findOverlappingDirection = function( draggingView, otherView ) {
+      var draggingRect = draggingView.element.getBoundingClientRect(),
+          otherRect = otherView.element.getBoundingClientRect(),
+          leftDiff, rightDiff, topDiff, bottomDiff;
+
+      rightDiff = draggingRect.right - otherRect.left;
+      leftDiff = otherRect.right - draggingRect.left;
+      bottomDiff = draggingRect.bottom - otherRect.top;
+      topDiff = otherRect.bottom - draggingRect.top;
+
+      if ( rightDiff < leftDiff && rightDiff < topDiff && rightDiff < bottomDiff ) {
+        return "right";
+      } else if ( leftDiff < topDiff && leftDiff < bottomDiff ) {
+        return "left";
+      } else if ( topDiff < bottomDiff ) {
+        return "top";
+      } else {
+        return "bottom";
+      }
+    };
+
     this.findOverlappingTrackEvent = function( trackEventView, leftValue, widthValue ) {
       var otherTrackEventView,
           rect1 = trackEventView.element.getBoundingClientRect(),
           rect2,
+          overlapDirection,
           left, right, width;
-
       left = leftValue || rect1.left;
       width = widthValue || rect1.width;
       right = left + width;
