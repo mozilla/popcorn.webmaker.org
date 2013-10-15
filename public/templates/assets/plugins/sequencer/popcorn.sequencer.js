@@ -285,6 +285,7 @@
         if ( options._isBuffering() && !_this.paused() ) {
           options.playWhenReady = true;
           _this.pause();
+          options._clip.pause();
           options.displayLoading();
         }
       };
@@ -333,13 +334,9 @@
         }
         if ( options.playIfReady() ) {
           options._clip.play();
-          options._clip.on( "pause", options._clipPauseEvent );
-          _this.on( "pause", options._pauseEvent );
-        } else {
-          options._clip.pause();
-          options._clip.on( "play", options._clipPlayEvent );
-          _this.on( "play", options._playEvent );
         }
+        _this.on( "play", options._playEvent );
+        _this.on( "pause", options._pauseEvent );
         options.hideLoading();
         options.setZIndex();
         if ( options.active ) {
@@ -357,70 +354,18 @@
         options._container.style.zIndex = 0;
       };
 
-      // Two events for playing the main timeline if the clip is playing.
-      options._clipPlayEvent = function() {
-        if ( _this.paused() ) {
-          _this.off( "play", options._playEvent );
-          _this.on( "play", options._playEventSwitch );
-          _this.play();
-        }
-      };
-
-      // Switch event is used to ensure we don't listen in loops.
-      options._clipPlayEventSwitch = function() {
-        options._clip.off( "play", options._clipPlayEventSwitch );
-        options._clip.on( "pause", options._clipPauseEvent );
-        _this.on( "pause", options._pauseEvent );
-      };
-
-      // Two events for playing the clip timeline if the main is playing.
       options._playEvent = function() {
         if ( options._clip.paused() &&
              !_waiting &&
              !options._clip.ended() ) {
-          options._clip.off( "play", options._clipPlayEvent );
-          options._clip.on( "play", options._clipPlayEventSwitch );
           options._clip.play();
         }
       };
 
-      // Switch event is used to ensure we don't listen in loops.
-      options._playEventSwitch = function() {
-        _this.off( "play", options._playEventSwitch );
-        _this.on( "pause", options._pauseEvent );
-        options._clip.on( "pause", options._clipPauseEvent );
-      };
-
-      // Two events for pausing the main timeline if the clip is paused.
-      options._clipPauseEvent = function() {
-        if ( !_this.paused() && !options._clip.ended() ) {
-          _this.off( "pause", options._pauseEvent );
-          _this.on( "pause", options._pauseEventSwitch );
-          _this.pause();
-        }
-      };
-
-      // Switch event is used to ensure we don't listen in loops.
-      options._clipPauseEventSwitch = function() {
-        options._clip.off( "pause", options._clipPauseEventSwitch );
-        options._clip.on( "play", options._clipPlayEvent );
-        _this.on( "play", options._playEvent );
-      };
-
-      // Two events for pausing the clip timeline if the main is paused.
       options._pauseEvent = function() {
         if ( !options._clip.paused() ) {
-          options._clip.off( "pause", options._clipPauseEvent );
-          options._clip.on( "pause", options._clipPauseEventSwitch );
           options._clip.pause();
         }
-      };
-
-      // Switch event is used to ensure we don't listen in loops.
-      options._pauseEventSwitch = function() {
-        _this.off( "pause", options._pauseEventSwitch );
-        _this.on( "play", options._playEvent );
-        options._clip.on( "play", options._clipPlayEvent );
       };
 
       // event to seek the clip if the main timeline seeked.
@@ -558,12 +503,6 @@
       options.clearEvents();
       options.hideLoading();
       if ( options.ready ) {
-        // video element can be clicked on. Keep them in sync with the main timeline.
-        // We need to also clear these events.
-        options._clip.off( "play", options._clipPlayEvent );
-        options._clip.off( "pause", options._clipPauseEvent );
-        options._clip.off( "play", options._clipPlayEventSwitch );
-        options._clip.off( "pause", options._clipPauseEventSwitch );
         options._clip.off( "progress", options._onProgress );
         options._endEvent();
       } else {
