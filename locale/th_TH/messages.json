@@ -145,7 +145,7 @@
   "Pop!": "ป็อป!",
   "Pop": "ป๊อป",
   "Popcorn Maker encountered an error": "Popcorn Maker พบข้อผิดพลาด",
-  "Popcorn Maker found an automatic back for your project:": "Popcorn Maker พบการกลับอัตโนมัติสำหรับโครงการของคุณ",
+  "Popcorn Maker found an automatic backup for your project:": "Popcorn Maker พบการกลับอัตโนมัติสำหรับโครงการของคุณ",
   "Popcorn Maker needs to be reloaded": "Popcorn Maker ต้องการโหลดใหม่. งานของคุณได้ทำการบันทึกเรียบร้อยและสามารถทำการคืนค่าเดิมใหม่ได้. คุณสามารถส่งรายงานการผิดพลาด ( คลิ๊ก 'i' ข้างบนเพื่อดูรายละเอียด) ถึง Mozilla หรือ ข้ามขั้นตอนนี้ และ เริ่มการทำงานใหม่ทันที. ถ้าคุณมีข้อมูลเพิ่มเติมอยากจะส่ง สามารถเขียนข้อความข้างล่าง. Mozilla ให้บริการส่งรายงานความผิดพลาดไปยังสื่อกลางได้",
   "Popcorn Maker": "Popcorn Maker",
   "Popup Editor": "แสดงตัวแก้ไขข้อความ",
