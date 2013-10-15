@@ -34,7 +34,7 @@ module.exports = function( Project ) {
 
           req.projectJSON.remixedFrom = doc.id;
 
-          loginClient.getUser( doc.email, function( err, user ) {
+          loginClient.getUserByEmail( doc.email, function( err, user ) {
             if ( err || !user ) {
               // If there's an error, user doesn't exist on loginapi so we use popcorn.wmc.o
               // Or there could actually be an error of some sort.
