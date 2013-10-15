@@ -122,11 +122,18 @@ define( [ "core/eventmanager", "./toggler",
 
           make.url( url ).then( function( err, results ) {
             var result = results[ 0 ];
-            if ( !err && result ) {
-              tutorials.push({
-                url: url,
-                title: result.title || result.url
-              });
+            if ( !err ) {
+              if ( result ) {
+                tutorials.push({
+                  url: result.url + "?details=hidden",
+                  title: result.title || result.url
+                });
+              } else {
+                tutorials.push({
+                  url: url,
+                  title: url
+                });
+              }
             }
             addNext( urls.pop() );
           });
