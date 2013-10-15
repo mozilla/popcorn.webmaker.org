@@ -208,6 +208,7 @@
         _this.off( "play", options._playEvent );
         _this.off( "pause", options._pauseEvent );
         _this.off( "seeked", options._onSeeked );
+        _this.off( "timeupdate", options._onTimeUpdate );
       };
 
       options.addSource = function() {
@@ -243,30 +244,45 @@
       };
 
       options._onProgress = function() {
-        var i, l,
-            buffered = options._clip.media.buffered;
 
-        // We're likely in a wrapper that does not support buffered.
-        // Assume we are buffered.
-        // Once these wrappers have a buffered time range object, it should just work.
-        if ( buffered.length === 0 || options._clip.ended() ) {
+        if ( options._clip.ended() ) {
           return;
         }
+        if ( !options._isBuffering() ) {
+          // We found a valid range so playing can resume.
+          options.hideLoading();
+          if ( options.playIfReady() ) {
+            options._clip.play();
+          }
+          return;
+        }
+      };
+
+      options._isBuffering = function() {
+        var i, l,
+            buffered = options._clip.media.buffered,
+            time = _this.currentTime() - options.start + ( +options.from );
 
         for ( i = 0, l = buffered.length; i < l; i++ ) {
           // Check if a range is valid, if so, return early.
-          if ( buffered.start( i ) <= options._clip.currentTime() &&
-               buffered.end( i ) > options._clip.currentTime() ) {
+          if ( buffered.start( i ) <= time &&
+               buffered.end( i ) > time ) {
             // We found a valid range so playing can resume.
-            options.playIfReady();
-            options.hideLoading();
-            return;
+            return false;
           }
+        }
+        return true;
+      };
+
+      options._onTimeUpdate = function() {
+
+        if ( options._clip.ended() ) {
+          return;
         }
 
         // If we hit here, we failed to find a valid range,
         // so we should probably stop everything. We'll get out of sync.
-        if ( !_this.paused() ) {
+        if ( options._isBuffering() && !_this.paused() ) {
           options.playWhenReady = true;
           _this.pause();
           options.displayLoading();
@@ -277,13 +293,11 @@
       // Returns true for successful seeks.
       options._setClipCurrentTime = function( time ) {
         if ( !time && time !== 0 ) {
-          time = _this.currentTime() - options.start + (+options.from);
+          time = _this.currentTime() - options.start + ( +options.from );
         }
         if ( time !== options._clip.currentTime() &&
-             time >= (+options.from) && time <= options.duration ) {
+             time >= ( +options.from ) && time <= options.duration ) {
           options._clip.currentTime( time );
-          // Seek was successful.
-          return true;
         }
       };
 
@@ -307,20 +321,24 @@
         loadingHandler.add( options, options.addSource );
       }
 
-      options._playedEvent = function() {
-        options._clip.off( "play", options._playedEvent );
-        options._clip.off( "ended", options._playedEvent );
+      options._startEvent = function() {
+        options._setClipCurrentTime();
         _this.on( "seeked", options._onSeeked );
-        // Setup on progress after initial load.
-        // This way if an initial load never happens, we never pause.
-        options._clip.on( "progress", options._onProgress );
-        if ( !options.playIfReady() ) {
+
+        // Ensure this wrapper supports buffered.
+        // Once these wrappers have a buffered time range object, it should just work.
+        if ( options._clip.media.buffered.length ) {
+          _this.on( "timeupdate", options._onTimeUpdate );
+          options._clip.on( "progress", options._onProgress );
+        }
+        if ( options.playIfReady() ) {
+          options._clip.play();
+          options._clip.on( "pause", options._clipPauseEvent );
+          _this.on( "pause", options._pauseEvent );
+        } else {
           options._clip.pause();
           options._clip.on( "play", options._clipPlayEvent );
           _this.on( "play", options._playEvent );
-        } else {
-          options._clip.on( "pause", options._clipPauseEvent );
-          _this.on( "pause", options._pauseEvent );
         }
         options.hideLoading();
         options.setZIndex();
@@ -329,32 +347,7 @@
         }
       };
 
-      options._startEvent = function() {
-        // wait for this seek to finish before displaying it
-        // we then wait for a play as well, because youtube has no seek event,
-        // but it does have a play, and won't play until after the seek.
-        // so we know if the play has finished, the seek is also finished.
-        var seekedEvent = function () {
-          options._clip.off( "seeked", seekedEvent );
-          options._clip.on( "play", options._playedEvent );
-          // if a user seeks into ended time, a play event is never hit.
-          // an end event is, though, so one or the other
-          // of these events are going to be triggered.
-          options._clip.on( "ended", options._playedEvent );
-          options._clip.play();
-        };
-        options._clip.mute();
-        options._clip.on( "seeked", seekedEvent);
-        // If the seek failed, we're already at the desired time.
-        // fire the seekedEvent right away.
-        if ( !options._setClipCurrentTime() ) {
-          seekedEvent();
-        }
-      };
-
       options._endEvent = function() {
-        options._clip.off( "pause", options._endEvent );
-        options._clip.off( "timeupdate", options._endTimeupdateEvent );
         if ( !options._clip.paused() ) {
           options._clip.pause();
         }
@@ -362,13 +355,6 @@
         options._setClipCurrentTime( +options.from );
         options._clip.mute();
         options._container.style.zIndex = 0;
-      };
-
-      options._endTimeupdateEvent = function() {
-        var clipTime = ( options._clip.currentTime() + options.start ) - ( +options.from );
-        if ( options.end <= clipTime ) {
-          options._endEvent();
-        }
       };
 
       // Two events for playing the main timeline if the clip is playing.
@@ -579,15 +565,7 @@
         options._clip.off( "play", options._clipPlayEventSwitch );
         options._clip.off( "pause", options._clipPauseEventSwitch );
         options._clip.off( "progress", options._onProgress );
-        if ( this.paused() || options._clip.ended() ) {
-          options._endEvent();
-        } else {
-          // this pause event ensures we fire an event if the user
-          // seeked after we hit ended, but before the timeupdate.
-          options._clip.on( "pause", options._endEvent );
-          // this timeupdate ensures we turn this event off after its designated time is hit.
-          options._clip.on( "timeupdate", options._endTimeupdateEvent );
-        }
+        options._endEvent();
       } else {
         options._container.style.zIndex = 0;
       }
