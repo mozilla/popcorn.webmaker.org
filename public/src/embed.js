@@ -204,7 +204,7 @@ function init() {
 
   function setupEventHandlers( popcorn, config ) {
     var sizeOptions = document.querySelectorAll( ".option" ),
-        i, l;
+        i, l, messages;
 
     $( "#share-close" ).addEventListener( "click", function() {
       hide( "#share-container" );
@@ -237,21 +237,21 @@ function init() {
       } else {
         setStateClass( "embed-paused" );
       }
-      parent.postMessage({
+      window.postMessage({
         currentTime: popcorn.currentTime(),
         type: "pause"
       }, "*" );
     });
 
     popcorn.on( "play", function() {
-      parent.postMessage({
+      window.postMessage({
         currentTime: popcorn.currentTime(),
         type: "play"
       }, "*" );
     });
 
     popcorn.on( "timeupdate", function() {
-      parent.postMessage({
+      window.postMessage({
         currentTime: popcorn.currentTime(),
         type: "timeupdate"
       }, "*" );
@@ -262,19 +262,55 @@ function init() {
       setStateClass( "embed-playing" );
     });
 
+    function buildOptions( data, manifest ) {
+      var options = {};
+
+      for( var option in manifest ) {
+        if ( manifest.hasOwnProperty( option ) ) {
+          options[ option ] = data[ option ];
+        }
+      }
+
+      return options;
+    }
+
     popcorn.on( "trackstart", function( e ) {
-      parent.postMessage({
+      window.postMessage({
         plugin: e.plugin,
-        type: e.type
+        type: e.type,
+        options: buildOptions( e, e._natives.manifest.options )
       }, "*" );
     });
 
     popcorn.on( "trackend", function( e ) {
-      parent.postMessage({
+      window.postMessage({
         plugin: e.plugin,
-        type: e.type
+        type: e.type,
+        options: buildOptions( e, e._natives.manifest.options )
       }, "*" );
     });
+
+    messages = {
+      play: function() {
+        popcorn.play();
+      },
+      pause: function() {
+        popcorn.pause();
+      },
+      currentTime: function( data ) {
+        popcorn.currentTime( data.currentTime );
+      }
+    };
+
+    function onMessage( e ) {
+      var type = e.data.type,
+          message = messages[ type ];
+      if ( message ) {
+        message( e.data );
+      }
+    }
+
+    window.addEventListener("message", onMessage, false );
 
     function onCanPlay() {
       if ( config.autoplay ) {
