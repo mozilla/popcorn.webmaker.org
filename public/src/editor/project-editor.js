@@ -323,8 +323,8 @@ define([ "localized", "editor/editor", "editor/base-editor",
     Editor.BaseEditor.extend( this, butter, rootElement, {
       open: function() {
         var events,
-            source,
-            foundProjectThumbnail;
+            source;
+
         _project = butter.project;
 
         this.attachColorChangeHandler( _colorContainer, null, "background", function( te, options, message, prop ) {
