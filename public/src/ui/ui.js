@@ -104,14 +104,53 @@ define( [ "core/eventmanager", "./toggler",
         tutorialUrl = butter.project.remixedFromUrl;
       }
 
-      make.tags( "tutorial-" + encodeURIComponent( tutorialUrl ) ).then( function( err, results ) {
+      make.id( butter.project.makeid ).then( function( err, results ) {
+
+        var urls = [],
+            tutorials = [],
+            tag = "";
+
+        function addNext( url ) {
+          if ( !url ) {
+            if ( tutorials.length ) {
+              butter.editor.openEditor( "tutorial-editor", {
+                openData: tutorials
+              });
+            }
+            return;
+          }
+
+          make.url( url ).then( function( err, results ) {
+            var result = results[ 0 ];
+            if ( !err ) {
+              if ( result ) {
+                tutorials.push({
+                  url: result.url + "?details=hidden",
+                  title: result.title || result.url
+                });
+              } else {
+                tutorials.push({
+                  url: url,
+                  title: url
+                });
+              }
+            }
+            addNext( urls.pop() );
+          });
+        }
+
         if ( err || !results.length ) {
           return;
         }
 
-        butter.editor.openEditor( "tutorial-editor", {
-          openData: results
-        });
+        for ( var i = 0; i < results[ 0 ].tags.length; i++ ) {
+          tag = results[ 0 ].tags[ i ];
+          if ( tag.indexOf( "tutorial-" ) === 0 ) {
+            urls.push( decodeURIComponent( tag.split( "tutorial-" )[ 1 ] ) );
+          }
+        }
+
+        addNext( urls.pop() );
       });
     }
 
