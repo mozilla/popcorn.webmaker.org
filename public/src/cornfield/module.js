@@ -17,7 +17,7 @@ define( [ "util/xhr", "sso-include" ], function( xhr ) {
           username = webmakerUserName;
           butter.dispatch( "authenticated" );
         }
-        if ( butter.project.id ) {
+        if ( butter.project && butter.project.id ) {
           xhr.get( "/api/project/" + butter.project.id, function( res ) {
             if ( res.status !== 404 ) {
               return finishCallback();
