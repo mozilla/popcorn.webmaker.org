@@ -22,7 +22,6 @@
         _flickrImageTab = _rootElement.querySelector( ".image-flickr" ),
         _dropArea = _rootElement.querySelector( ".image-droparea" ),
         _imageToggler = _rootElement.querySelector( "#image-toggler" ),
-        _maxImageCount,
         _urlRegex,
         _this = this,
         _trackEvent,
@@ -184,7 +183,6 @@
           manifestOpts = trackEvent.popcornTrackEvent._natives.manifest.options;
 
       _inSetup = true;
-      _maxImageCount = manifestOpts.count.MAX_COUNT ? manifestOpts.count.MAX_COUNT : 20;
       _urlRegex = manifestOpts.linkSrc.validation;
 
       function callback( elementType, element, trackEvent, name ) {
@@ -276,11 +274,6 @@
 
         _this.attachInputChangeHandler( _countInput, trackEvent, "count", function( te, prop ) {
           var count = prop.count > 0 ? prop.count : 1;
-
-          if ( count > _maxImageCount ) {
-            _this.setErrorState( Butter.localized.get( "You can only use 20 images per slideshow." ) );
-            return;
-          }
 
           if ( isEmptyInput( prop.count ) ) {
             return;
@@ -427,6 +420,16 @@
         // The current popcorn instance
         _popcornInstance.on( "invalid-flickr-image", function() {
           _this.setErrorState( Butter.localized.get( "Invalid Flicker Gallery URL" ) );
+        });
+
+        _popcornInstance.on( "popcorn-image-count-update", function( count ) {
+          _trackEvent.popcornOptions.count = count;
+          _cachedValues.count.data = count;
+          _countInput.value = count;
+        });
+
+        _popcornInstance.on( "popcorn-image-failed-retrieve", function() {
+          _this.setErrorState( Butter.localized.get( "No Images" ) );
         });
 
         _trackEvent.listen( "trackeventupdated", onTrackEventUpdated );
