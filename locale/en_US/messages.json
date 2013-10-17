@@ -260,5 +260,11 @@
 	"Your media source is taking too long to load": "Your media source is taking too long to load",
 	"Your search contained no results!": "Your search contained no results!",
 	"Zoom cannot be a decimal number.": "Zoom cannot be a decimal number.",
-	"Zoom": "Zoom"
+	"Zoom": "Zoom",
+	"Zulu": "Zulu",
+  "imageSelect": "Background Image",
+  "interaction": "Interaction",
+  "combo1": "Combo 1",
+  "combo2": "Combo 2",
+  "combo3": "Combo 3"
 }

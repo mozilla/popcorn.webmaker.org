@@ -264,6 +264,7 @@ app.get( '/templates/assets/editors/popup/popup-editor.html', routes.path( '/plu
 app.get( '/templates/assets/editors/image/image-editor.html', routes.path( '/plugins/image-editor.html' ) );
 app.get( '/templates/assets/editors/text/text-editor.html', routes.path( '/plugins/text-editor.html' ) );
 app.get( '/templates/assets/editors/sketchfab/sketchfab-editor.html', routes.path( '/plugins/sketchfab-editor.html' ) );
+app.get( '/templates/assets/editors/interactions/interaction-editor.html', routes.path( '/plugins/interaction-editor.html' ) );
 
 // Localized Strings
 app.get( "/strings/:lang?", middleware.crossOrigin, i18n.stringsRoute( 'en-US' ) );

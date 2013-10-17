@@ -22,6 +22,7 @@ requirejs.config({
     // Plugins
     "popcorn.googlemap": "../templates/assets/plugins/googlemap/popcorn.googlemap",
     "popcorn.image": "../templates/assets/plugins/image/popcorn.image",
+    "popcorn.interaction": "../templates/assets/plugins/interaction/popcorn.interaction",
     "popcorn.loopPlugin": "../templates/assets/plugins/loopPlugin/popcorn.loopPlugin",
     "popcorn.pausePlugin": "../templates/assets/plugins/pausePlugin/popcorn.pausePlugin",
     "popcorn.popup": "../templates/assets/plugins/popup/popcorn.popup",
@@ -64,6 +65,7 @@ requirejs.config({
     // Plugins
     "popcorn.googlemap": [ "popcorn.core" ],
     "popcorn.image": [ "popcorn.core" ],
+    "popcorn.interaction": [ "popcorn.core" ],
     "popcorn.loopPlugin": [ "popcorn.core" ],
     "popcorn.pausePlugin": [ "popcorn.core" ],
     "popcorn.popup": [ "popcorn.core"],
@@ -84,6 +86,7 @@ define([
   "popcorn.youtube",
   "popcorn.googlemap",
   "popcorn.image",
+  "popcorn.interaction",
   "popcorn.loopPlugin",
   "popcorn.pausePlugin",
   "popcorn.popup",
