@@ -240,21 +240,21 @@ function init() {
       window.postMessage({
         currentTime: popcorn.currentTime(),
         type: "pause"
-      }, "*" );
+      }, window.parent.location.origin );
     });
 
     popcorn.on( "play", function() {
       window.postMessage({
         currentTime: popcorn.currentTime(),
         type: "play"
-      }, "*" );
+      }, window.parent.location.origin );
     });
 
     popcorn.on( "timeupdate", function() {
       window.postMessage({
         currentTime: popcorn.currentTime(),
         type: "timeupdate"
-      }, "*" );
+      }, window.parent.location.origin );
     });
 
     popcorn.on( "playing", function() {
@@ -279,7 +279,7 @@ function init() {
         plugin: e.plugin,
         type: e.type,
         options: buildOptions( e, e._natives.manifest.options )
-      }, "*" );
+      }, window.parent.location.origin );
     });
 
     popcorn.on( "trackend", function( e ) {
@@ -287,15 +287,15 @@ function init() {
         plugin: e.plugin,
         type: e.type,
         options: buildOptions( e, e._natives.manifest.options )
-      }, "*" );
+      }, window.parent.location.origin );
     });
 
     messages = {
-      play: function() {
-        popcorn.play();
+      play: function( data ) {
+        popcorn.play( data.currentTime );
       },
-      pause: function() {
-        popcorn.pause();
+      pause: function( data ) {
+        popcorn.pause( data.currentTime );
       },
       currentTime: function( data ) {
         popcorn.currentTime( data.currentTime );
@@ -305,12 +305,19 @@ function init() {
     function onMessage( e ) {
       var type = e.data.type,
           message = messages[ type ];
+      // We only want to accept messages from our parent.
+      // We also ensure we don't listen to our own event
+      // dispatches to the parent.
+      if ( e.origin !== window.parent.location.origin ||
+           e.source.location.pathname === window.location.pathname ) {
+        return;
+      }
       if ( message ) {
         message( e.data );
       }
     }
 
-    window.addEventListener("message", onMessage, false );
+    window.addEventListener( "message", onMessage, false );
 
     function onCanPlay() {
       if ( config.autoplay ) {
