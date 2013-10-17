@@ -240,21 +240,21 @@ function init() {
       window.postMessage({
         currentTime: popcorn.currentTime(),
         type: "pause"
-      }, window.parent.location.origin );
+      }, window.location.origin );
     });
 
     popcorn.on( "play", function() {
       window.postMessage({
         currentTime: popcorn.currentTime(),
         type: "play"
-      }, window.parent.location.origin );
+      }, window.location.origin );
     });
 
     popcorn.on( "timeupdate", function() {
       window.postMessage({
         currentTime: popcorn.currentTime(),
         type: "timeupdate"
-      }, window.parent.location.origin );
+      }, window.location.origin );
     });
 
     popcorn.on( "playing", function() {
@@ -279,7 +279,7 @@ function init() {
         plugin: e.plugin,
         type: e.type,
         options: buildOptions( e, e._natives.manifest.options )
-      }, window.parent.location.origin );
+      }, window.location.origin );
     });
 
     popcorn.on( "trackend", function( e ) {
@@ -287,7 +287,7 @@ function init() {
         plugin: e.plugin,
         type: e.type,
         options: buildOptions( e, e._natives.manifest.options )
-      }, window.parent.location.origin );
+      }, window.location.origin );
     });
 
     messages = {
