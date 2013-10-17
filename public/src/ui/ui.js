@@ -146,7 +146,7 @@ define( [ "core/eventmanager", "./toggler",
         for ( var i = 0; i < results[ 0 ].tags.length; i++ ) {
           tag = results[ 0 ].tags[ i ];
           if ( tag.indexOf( "tutorial-" ) === 0 ) {
-            urls.push( decodeURIComponent( tag.split( "tutorial-" )[ 1 ] ) );
+            urls.push( decodeURIComponent( tag.replace( "tutorial-", "" ) ) );
           }
         }
 
