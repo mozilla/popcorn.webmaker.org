@@ -145,7 +145,7 @@ define([ "WebmakerUI", "localized", "dialog/dialog", "util/lang", "l10n!/layouts
       butter.project.remove(function( e ) {
 
         if ( e.error === "okay" ) {
-          butter.ui.unloadDialog.toggle( false );
+          window.onbeforeunload = null;
           window.history.replaceState( {}, "", "/" + Localized.getCurrentLang() + "/editor/" );
           window.location.reload();
         } else {
@@ -333,6 +333,7 @@ define([ "WebmakerUI", "localized", "dialog/dialog", "util/lang", "l10n!/layouts
         toggleSaveButton( false );
         toggleDeleteProject( false );
       }
+
       _clearEvents.addEventListener( "click", clearEventsClick, false );
     });
   };
