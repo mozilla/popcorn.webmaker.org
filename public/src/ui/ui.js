@@ -36,6 +36,7 @@ define( [ "core/eventmanager", "./toggler",
     var _visibility = true,
         _uiConfig = butter.config,
         _uiOptions = _uiConfig.value( "ui" ),
+        _unloadDialog,
         _this = this;
 
     // Top-level way to test our crash reporter.
@@ -59,7 +60,7 @@ define( [ "core/eventmanager", "./toggler",
 
     if ( _uiOptions.enabled ) {
       if ( _uiOptions.onLeaveDialog ) {
-        _this.unloadDialog = new UnloadDialog( butter );
+        _unloadDialog = new UnloadDialog( butter );
       }
       document.body.classList.add( "butter-header-spacing" );
       document.body.classList.add( "butter-tray-spacing" );
