@@ -23,7 +23,7 @@
       <div class="settings-container editor-container">
         <label>{{ gettext("Description") }}</label>
         <div class="description-wrapper">
-          <textarea class="butter-project-description" maxlength="200" placeholder="{{ gettext("A project about...") }}"></textarea>
+          <textarea class="butter-project-description description-input" maxlength="200" placeholder="{{ gettext("A project about...") }}"></textarea>
         </div>
         <div class="color-container">
           <label class="property-name">{{ gettext("Background color") }}</label>
@@ -39,8 +39,8 @@
           <input type="text" class="tags-input">
         </div>
         <label>{{ gettext("Thumbnail") }}</label>
-        <ul class="image-thumbnails"></ul>
-        <input class="butter-project-thumbnail" type="text">
+        <ul class="thumbnail-choices"></ul>
+        <input class="butter-project-thumbnail thumbnail-input" type="text">
         <div class="droparea">
           <label>{{ gettext("Drag an image here from your desktop.") }}</label>
           <div class="image-droparea">

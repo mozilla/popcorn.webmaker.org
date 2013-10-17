@@ -20,7 +20,7 @@
 
     function updateTrackEvent( te, prop ) {
       _this.setErrorState( false );
-      _this.updateTrackEventSafe( te, prop );      
+      _this.updateTrackEventSafe( te, prop );
     }
 
     // Extend this object to become a BaseEditor

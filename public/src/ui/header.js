@@ -1,5 +1,5 @@
-define([ "WebmakerUI", "localized", "dialog/dialog", "util/lang", "l10n!/layouts/header.html", "ui/widget/textbox", "ui/widget/tooltip" ],
-  function( WebmakerUI, Localized, Dialog, Lang, HEADER_TEMPLATE, TextBoxWrapper, ToolTip ) {
+define([ "WebmakerUI", "localized", "dialog/dialog", "util/lang", "l10n!/layouts/header.html", "ui/widget/textbox", "ui/widget/tooltip", "ui/widget/ProjectDetails" ],
+  function( WebmakerUI, Localized, Dialog, Lang, HEADER_TEMPLATE, TextBoxWrapper, ToolTip, ProjectDetails ) {
 
   return function( butter, options ){
 
@@ -20,8 +20,10 @@ define([ "WebmakerUI", "localized", "dialog/dialog", "util/lang", "l10n!/layouts
         _projectMenuControl = _rootElement.querySelector( ".butter-project-menu-control" ),
         _projectMenuList = _projectMenu.querySelector( ".butter-btn-menu" ),
         _noProjectNameToolTip,
+        _makeDetails = _rootElement.querySelector( "#make-details" ),
         _projectTitlePlaceHolderText = _projectName.innerHTML,
         _toolTip, _loginTooltip,
+        _projectDetails = new ProjectDetails( butter ),
         _langSelector = _rootElement.querySelector( "#lang-picker" );
 
     // URL redirector for language picker
@@ -61,36 +63,38 @@ define([ "WebmakerUI", "localized", "dialog/dialog", "util/lang", "l10n!/layouts
       dialog.open();
     }
 
-    function saveProject() {
-      function afterSave() {
-        butter.editor.openEditor( "project-editor" );
-        togglePreviewButton( true );
-        toggleProjectNameListeners( true );
-        toggleDeleteProject( true );
-      }
+    function afterSave() {
+      openProjectEditor();
+      togglePreviewButton( true );
+      toggleProjectNameListeners( true );
+      toggleDeleteProject( true );
+    }
 
+    function submitSave() {
+      toggleSaveButton( false );
+
+      butter.project.save(function( e ) {
+        if ( e.error === "okay" ) {
+          afterSave();
+          return;
+        } else {
+          toggleSaveButton( true );
+          togglePreviewButton( false );
+          toggleProjectNameListeners( true );
+          showErrorDialog( Localized.get( "There was a problem saving your project" ) );
+        }
+      });
+    }
+
+    function saveProject() {
       if ( butter.project.isSaved ) {
         return;
       } else if ( !checkProjectName( butter.project.name ) ) {
         nameError();
+      } else if ( !butter.project.id ) {
+        _makeDetails.classList.remove( "butter-hidden" );
       } else {
-        if ( !butter.project.isSaved ) {
-          toggleSaveButton( false );
-
-          butter.project.save(function( e ) {
-            if ( e.error === "okay" ) {
-              afterSave();
-              return;
-            } else {
-              toggleSaveButton( true );
-              togglePreviewButton( false );
-              toggleProjectNameListeners( true );
-              showErrorDialog( Localized.get( "There was a problem saving your project" ) );
-            }
-          });
-        } else {
-          afterSave();
-        }
+        submitSave();
       }
     }
 
@@ -333,6 +337,20 @@ define([ "WebmakerUI", "localized", "dialog/dialog", "util/lang", "l10n!/layouts
         toggleSaveButton( false );
         toggleDeleteProject( false );
       }
+
+      _projectDetails.thumbnail( _makeDetails.querySelector( "[name='thumbnail']" ) );
+      _projectDetails.tags( _makeDetails.querySelector( "[name='tags']" ) );
+      _projectDetails.description( _makeDetails.querySelector( "[name='description']" ) );
+      _projectDetails.buttons( _makeDetails.querySelector( "[name='buttons']" ), function( save ) {
+        if ( save ) {
+          submitSave();
+        }
+
+        _makeDetails.classList.add( "butter-hidden" );
+        toggleSaveButton( true );
+        togglePreviewButton( false );
+        toggleProjectNameListeners( true );
+      });
 
       _clearEvents.addEventListener( "click", clearEventsClick, false );
     });
