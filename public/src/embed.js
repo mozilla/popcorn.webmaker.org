@@ -237,24 +237,38 @@ function init() {
       } else {
         setStateClass( "embed-paused" );
       }
-      window.postMessage({
+      window.parent.postMessage({
         currentTime: popcorn.currentTime(),
         type: "pause"
-      }, window.location.origin );
+      }, "*" );
     });
 
     popcorn.on( "play", function() {
-      window.postMessage({
+      window.parent.postMessage({
         currentTime: popcorn.currentTime(),
         type: "play"
-      }, window.location.origin );
+      }, "*" );
     });
 
+    if ( document.querySelector( ".embed" ).getAttribute( "data-state-waiting" ) ) {
+      popcorn.on( "sequencesReady", function() {
+        window.parent.postMessage({
+          type: "loadedmetadata"
+        }, "*" );
+      });
+    } else {
+      popcorn.on( "loadedmetadata", function() {
+        window.parent.postMessage({
+          type: "loadedmetadata"
+        }, "*" );
+      });
+    }
+
     popcorn.on( "timeupdate", function() {
-      window.postMessage({
+      window.parent.postMessage({
         currentTime: popcorn.currentTime(),
         type: "timeupdate"
-      }, window.location.origin );
+      }, "*" );
     });
 
     popcorn.on( "playing", function() {
@@ -275,19 +289,19 @@ function init() {
     }
 
     popcorn.on( "trackstart", function( e ) {
-      window.postMessage({
+      window.parent.postMessage({
         plugin: e.plugin,
         type: e.type,
         options: buildOptions( e, e._natives.manifest.options )
-      }, window.location.origin );
+      }, "*" );
     });
 
     popcorn.on( "trackend", function( e ) {
-      window.postMessage({
+      window.parent.postMessage({
         plugin: e.plugin,
         type: e.type,
         options: buildOptions( e, e._natives.manifest.options )
-      }, window.location.origin );
+      }, "*" );
     });
 
     messages = {
@@ -303,17 +317,11 @@ function init() {
     };
 
     function onMessage( e ) {
-      var type = e.data.type,
+      var data = e.data,
+          type = data.type,
           message = messages[ type ];
-      // We only want to accept messages from our parent.
-      // We also ensure we don't listen to our own event
-      // dispatches to the parent.
-      if ( e.origin !== window.parent.location.origin ||
-           e.source.location.pathname === window.location.pathname ) {
-        return;
-      }
       if ( message ) {
-        message( e.data );
+        message( data );
       }
     }
 
