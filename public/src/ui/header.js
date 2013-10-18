@@ -92,6 +92,7 @@ define([ "WebmakerUI", "localized", "dialog/dialog", "util/lang", "l10n!/layouts
       } else if ( !checkProjectName( butter.project.name ) ) {
         nameError();
       } else if ( !butter.project.id ) {
+        toggleSaveButton( false );
         _makeDetails.classList.remove( "butter-hidden" );
       } else {
         submitSave();
@@ -146,16 +147,26 @@ define([ "WebmakerUI", "localized", "dialog/dialog", "util/lang", "l10n!/layouts
     }
 
     function removeProject() {
-      butter.project.remove(function( e ) {
+      var dialog;
+      if ( butter.project.id && butter.project.isSaved ) {
+        dialog = Dialog.spawn( "remove-project", {
+          data: {
+            callback: function() {
+              butter.project.remove(function( e ) {
 
-        if ( e.error === "okay" ) {
-          window.onbeforeunload = null;
-          window.history.replaceState( {}, "", "/" + Localized.getCurrentLang() + "/editor/" );
-          window.location.reload();
-        } else {
-          showErrorDialog( Localized.get( "There was a problem saving your project" ) );
-        }
-      });
+                if ( e.error === "okay" ) {
+                  window.onbeforeunload = null;
+                  window.history.replaceState( {}, "", "/" + Localized.getCurrentLang() + "/editor/" );
+                  window.location.reload();
+                } else {
+                  showErrorDialog( Localized.get( "There was a problem saving your project" ) );
+                }
+              });
+            }
+          }
+        });
+        dialog.open();
+      }
     }
 
     function toggleDeleteProject( state ) {

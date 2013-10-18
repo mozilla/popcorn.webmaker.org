@@ -258,6 +258,7 @@ app.get( '/dialog/dialogs/error-message.html', routes.path( '/dialog/dialogs/err
 app.get( '/dialog/dialogs/feedback.html', routes.path( '/dialog/dialogs/feedback.html' ) );
 app.get( '/dialog/dialogs/first-run.html', routes.path( '/dialog/dialogs/first-run.html' ) );
 app.get( '/dialog/dialogs/track-data.html', routes.path( '/dialog/dialogs/track-data.html' ) );
+app.get( '/dialog/dialogs/remove-project.html', routes.path( '/dialog/dialogs/remove-project.html' ) );
 app.get( '/editors/default.html', routes.path( '/editor/default.html' ) );
 app.get( '/templates/assets/editors/googlemap/googlemap-editor.html', routes.path( '/plugins/googlemap-editor.html' ) );
 app.get( '/templates/assets/editors/popup/popup-editor.html', routes.path( '/plugins/popup-editor.html' ) );
