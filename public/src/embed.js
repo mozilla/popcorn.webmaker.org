@@ -250,11 +250,19 @@ function init() {
       }, "*" );
     });
 
-    popcorn.on( "sequencesReady", function() {
-      window.parent.postMessage({
-        type: "canplay"
-      }, "*" );
-    });
+    if ( document.querySelector( ".embed" ).getAttribute( "data-state-waiting" ) ) {
+      popcorn.on( "sequencesReady", function() {
+        window.parent.postMessage({
+          type: "canplay"
+        }, "*" );
+      });
+    } else {
+      popcorn.on( "canplay", function() {
+        window.parent.postMessage({
+          type: "canplay"
+        }, "*" );
+      });
+    }
 
     popcorn.on( "timeupdate", function() {
       window.parent.postMessage({
