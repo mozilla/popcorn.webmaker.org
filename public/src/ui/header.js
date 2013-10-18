@@ -92,6 +92,7 @@ define([ "WebmakerUI", "localized", "dialog/dialog", "util/lang", "l10n!/layouts
       } else if ( !checkProjectName( butter.project.name ) ) {
         nameError();
       } else if ( !butter.project.id ) {
+        toggleSaveButton( false );
         _makeDetails.classList.remove( "butter-hidden" );
       } else {
         submitSave();
