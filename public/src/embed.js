@@ -250,9 +250,9 @@ function init() {
       }, "*" );
     });
 
-    popcorn.on( "loadedmetadata", function() {
+    popcorn.on( "sequencesReady", function() {
       window.parent.postMessage({
-        type: "loadedmetadata"
+        type: "canplay"
       }, "*" );
     });
 
