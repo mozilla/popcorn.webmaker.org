@@ -20,7 +20,52 @@ define( [ "localized", "util/uri" ],
       YOUTUBE_EMBED_DISABLED = Localized.get ( "Embedding of this YouTube video is disabled" ),
       YOUTUBE_EMBED_UNPLAYABLE = Localized.get( "This YouTube video is unplayable" ),
       ARCHIVE_EMBED_DISABLED = Localized.get( "Embedding of this Archive item is not available yet" ),
+      EMBED_UNPLAYABLE = Localized.get( "This media source is unplayable" ),
       SOUNDCLOUD_EMBED_DISABLED = Localized.get( "Embedding of this SoundCloud audio source is disabled" );
+
+  function JWPlayerFallback( options, successCallback ) {
+    // We hit an error trying to load HTML5, try the jwplayer instead
+    var media,
+        div = document.createElement( "div" ),
+        container = document.createElement( "div" );
+
+    div.style.height = "400px";
+    div.style.width = "400px";
+    div.style.left = "-400px";
+    div.style.position = "absolute";
+    container.style.height = "100%";
+    container.style.width = "100%";
+
+    document.body.appendChild( div );
+    div.appendChild( container );
+
+    function errorEvent() {
+      media.removeEventListener( "loadedmetadata", readyEvent, false );
+      media.removeEventListener( "error", errorEvent, false );
+      errorCallback( EMBED_UNPLAYABLE );
+      document.body.removeChild( div );
+    }
+
+    function readyEvent() {
+      media.removeEventListener( "loadedmetadata", readyEvent, false );
+      media.removeEventListener( "error", errorEvent, false );
+      document.body.removeChild( div );
+      successCallback({
+        source: options.source,
+        title: options.title || options.source,
+        type: options.type,
+        thumbnail: options.thumbnail || "",
+        linkback: options.linkback,
+        duration: media.duration
+      });
+    }
+    container.id = Popcorn.guid( "popcorn-jwplayer-" );
+    media = Popcorn.HTMLJWPlayerVideoElement( container );
+    media.addEventListener( "error", errorEvent, false );
+    media.addEventListener( "loadedmetadata", readyEvent, false );
+    media.src = options.source;
+  }
+
   return {
     checkUrl: function( url ) {
       for ( var type in REGEX_MAP ) {
@@ -184,6 +229,16 @@ define( [ "localized", "util/uri" ],
           }
 
           videoElem = document.createElement( "video" );
+          videoElem.addEventListener( "error", function() {
+            var options = {
+              source: respData.media,
+              type: type,
+              title: respData.title,
+              thumbnail: respData.thumb,
+              linkback: respData.linkback
+            };
+            JWPlayerFallback( options, successCallback );
+          }, false );
           videoElem.addEventListener( "loadedmetadata", function() {
             successCallback({
               source: respData.media,
@@ -213,6 +268,14 @@ define( [ "localized", "util/uri" ],
             thumbnail: URI.makeUnique( baseUrl ).toString(),
             duration: videoElem.duration
           });
+        }, false );
+        videoElem.addEventListener( "error", function() {
+          var options = {
+            source: baseUrl,
+            type: type,
+            title: baseUrl
+          };
+          JWPlayerFallback( options, successCallback );
         }, false );
         videoElem.src = URI.makeUnique( baseUrl ).toString();
       }
