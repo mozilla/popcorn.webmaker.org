@@ -141,6 +141,8 @@ define( [ "util/keys", "ui/widget/tooltip", "localized", "ui/widget/textbox" ],
       },
 
       thumbnail: function( container ) {
+       var source,
+           events;
         _thumbnailInput = container.querySelector( ".thumbnail-input" );
         _thumbnailUl = container.querySelector( ".thumbnail-choices" );
 

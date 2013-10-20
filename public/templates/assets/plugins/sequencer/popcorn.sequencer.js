@@ -191,7 +191,7 @@
         jwDiv.id = Popcorn.guid( "popcorn-jwplayer-" );
         var jwplayer = Popcorn.HTMLJWPlayerVideoElement( jwDiv );
         // Now we can fail.
-        options._clip = Popcorn( jwplayer, { frameAnimation: true } );
+        options._clip = new Popcorn( jwplayer, { frameAnimation: true } );
         options._clip.on( "error", options.fail );
         options._clip.on( "loadedmetadata", options.readyEvent );
         options._clip.on( "loadedmetadata", options.clearLoading );

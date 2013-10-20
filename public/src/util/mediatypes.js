@@ -23,7 +23,7 @@ define( [ "localized", "util/uri" ],
       EMBED_UNPLAYABLE = Localized.get( "This media source is unplayable" ),
       SOUNDCLOUD_EMBED_DISABLED = Localized.get( "Embedding of this SoundCloud audio source is disabled" );
 
-  function JWPlayerFallback( options, successCallback ) {
+  function jwPlayerFallback( options, successCallback, errorCallback ) {
     // We hit an error trying to load HTML5, try the jwplayer instead
     var media,
         div = document.createElement( "div" ),
@@ -237,7 +237,7 @@ define( [ "localized", "util/uri" ],
               thumbnail: respData.thumb,
               linkback: respData.linkback
             };
-            JWPlayerFallback( options, successCallback );
+            jwPlayerFallback( options, successCallback, errorCallback );
           }, false );
           videoElem.addEventListener( "loadedmetadata", function() {
             successCallback({
@@ -275,7 +275,7 @@ define( [ "localized", "util/uri" ],
             type: type,
             title: baseUrl
           };
-          JWPlayerFallback( options, successCallback );
+          jwPlayerFallback( options, successCallback, errorCallback );
         }, false );
         videoElem.src = URI.makeUnique( baseUrl ).toString();
       }
