@@ -253,13 +253,13 @@ function init() {
     if ( document.querySelector( ".embed" ).getAttribute( "data-state-waiting" ) ) {
       popcorn.on( "sequencesReady", function() {
         window.parent.postMessage({
-          type: "canplay"
+          type: "loadedmetadata"
         }, "*" );
       });
     } else {
-      popcorn.on( "canplay", function() {
+      popcorn.on( "loadedmetadata", function() {
         window.parent.postMessage({
-          type: "canplay"
+          type: "loadedmetadata"
         }, "*" );
       });
     }
