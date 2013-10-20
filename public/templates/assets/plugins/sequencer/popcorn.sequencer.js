@@ -194,7 +194,7 @@
             // We use an already decoded src string from before.
             src = options._clip.media.src;
         // Now we can fail.
-        options._clip = Popcorn( jwplayer, { frameAnimation: true } );
+        options._clip = new Popcorn( jwplayer, { frameAnimation: true } );
         options._clip.on( "error", options.fail );
         options._clip.on( "loadedmetadata", options.readyEvent );
         options._clip.on( "loadedmetadata", options.clearLoading );
