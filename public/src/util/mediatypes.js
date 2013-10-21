@@ -72,10 +72,10 @@ define( [ "localized", "util/uri" ],
           document.body.appendChild( div );
 
           if ( resp.error ) {
-            if (resp.error.code === 403)
-              errorCallback( YOUTUBE_EMBED_PRIVATE );
-            else
-              errorCallback( YOUTUBE_EMBED_UNPLAYABLE );
+            if (resp.error.code === 403){
+              return errorCallback( YOUTUBE_EMBED_PRIVATE );
+            }
+            errorCallback( YOUTUBE_EMBED_UNPLAYABLE );
           }
 
           if ( !respData ) {
