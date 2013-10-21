@@ -62,6 +62,10 @@ define( [ "localized", "core/eventmanager", "util/scrollbars", "ui/widget/toolti
 
       extendObject.parentElement = parentElement;
 
+      if( butter.project.name && butter.project.name.length !== 0 ){
+        document.title = butter.project.name + " - Popcorn Maker";
+      }
+      
       // Attach the editor's root element to the given parentElement.
       // Do this before calling the open event so that element size and structure are defined.
       extendObject.parentElement.appendChild( extendObject.rootElement );
