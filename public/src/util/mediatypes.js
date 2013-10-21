@@ -19,6 +19,7 @@ define( [ "localized", "util/uri" ],
       },
       YOUTUBE_EMBED_DISABLED = Localized.get ( "Embedding of this YouTube video is disabled" ),
       YOUTUBE_EMBED_UNPLAYABLE = Localized.get( "This YouTube video is unplayable" ),
+      YOUTUBE_EMBED_PRIVATE = Localized.get( "Private Video" ),
       ARCHIVE_EMBED_DISABLED = Localized.get( "Embedding of this Archive item is not available yet" ),
       EMBED_UNPLAYABLE = Localized.get( "This media source is unplayable" ),
       SOUNDCLOUD_EMBED_DISABLED = Localized.get( "Embedding of this SoundCloud audio source is disabled" );
@@ -116,6 +117,8 @@ define( [ "localized", "util/uri" ],
           document.body.appendChild( div );
 
           if ( resp.error ) {
+            if (resp.error.message.substring(0, 7) == "Private")
+              errorCallback( YOUTUBE_EMBED_PRIVATE );
             errorCallback( YOUTUBE_EMBED_UNPLAYABLE );
           }
 
