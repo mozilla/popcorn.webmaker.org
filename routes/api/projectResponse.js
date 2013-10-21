@@ -13,7 +13,7 @@ module.exports = function( Project ) {
       }
 
       if ( !make.length ) {
-        metrics.increment( "project.load.error" );
+        metrics.increment( "project.make.load.error" );
         return res.json( 404, { error: "Make was not found" } );
       }
       req.projectJSON.tags = make[ 0 ].rawTags;
