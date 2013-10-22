@@ -184,18 +184,21 @@
       };
 
       options.attemptJWPlayer = function() {
+        options._clip.off( "error", options.attemptJWPlayer );
         var jwDiv = document.createElement( "div" );
         // Remove the dead html5 video element.
         options._container.removeChild( document.getElementById( options._clip.media.id ) );
         options._container.appendChild( jwDiv );
         jwDiv.id = Popcorn.guid( "popcorn-jwplayer-" );
-        var jwplayer = Popcorn.HTMLJWPlayerVideoElement( jwDiv );
+        var jwplayer = Popcorn.HTMLJWPlayerVideoElement( jwDiv ),
+            // We use an already decoded src string from before.
+            src = options._clip.media.src;
         // Now we can fail.
         options._clip = Popcorn( jwplayer, { frameAnimation: true } );
         options._clip.on( "error", options.fail );
         options._clip.on( "loadedmetadata", options.readyEvent );
         options._clip.on( "loadedmetadata", options.clearLoading );
-        jwplayer.src = options.source[ 0 ];
+        jwplayer.src = src;
       };
 
       options.tearDown = function() {
