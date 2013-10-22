@@ -41,6 +41,7 @@ app.locals({
     audience: config.AUDIENCE,
     ga_account: config.GA_ACCOUNT,
     ga_domain: config.GA_DOMAIN,
+    jwplayer_key: config.JWPLAYER_KEY,
     make_endpoint: config.MAKE_ENDPOINT,
     user_bar: config.USER_BAR,
     sync_limit: config.SYNC_LIMIT
@@ -199,6 +200,9 @@ app.get( '/external/make-api.js', function( req, res ) {
 });
 app.get( '/external/sso-include.js', function( req, res ) {
   res.sendfile( path.resolve( __dirname, "node_modules/webmaker-sso/include.js" ) );
+});
+app.get( '/external/jwplayer.js', function( req, res ) {
+  res.redirect( "//jwpsrv.com/library/" + app.locals.config.jwplayer_key + ".js" );
 });
 
 // Project Endpoints
