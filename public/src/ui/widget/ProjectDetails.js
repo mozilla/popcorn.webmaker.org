@@ -83,7 +83,6 @@ define( [ "util/keys", "ui/widget/tooltip", "localized", "ui/widget/textbox" ],
               var currentProjectTags = _butter.project.tags,
                   li = document.createElement( "li" );
 
-              val = encodeURIComponent( val );
               _currentTags.push( val );
 
               if ( !addFromOpen ) {
@@ -100,13 +99,13 @@ define( [ "util/keys", "ui/widget/tooltip", "localized", "ui/widget/textbox" ],
         input.addEventListener( "keydown", function( e ) {
           if ( e.keyCode === KEYS.ENTER || e.keyCode === KEYS.COMMA ) {
             e.preventDefault();
-            addTags( e.target.value );
+            addTags( encodeURIComponent( e.target.value ) );
             input.value = "";
           }
         }, false );
 
         input.addEventListener( "blur", function( e ) {
-          addTags( e.target.value );
+          addTags( encodeURIComponent( e.target.value ) );
           input.value = "";
         }, false );
 
