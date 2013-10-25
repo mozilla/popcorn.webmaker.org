@@ -318,6 +318,7 @@ define([ "WebmakerUI", "localized", "dialog/dialog", "util/lang", "l10n!/layouts
           iframe = document.querySelector( ".my-projects-iframe" );
 
      function close() {
+        document.removeEventListener( "mousedown", close, false );
         myProjectsButton.addEventListener( "click", open, false );
         myProjectsButton.removeEventListener( "click", close, false );
 
@@ -332,6 +333,10 @@ define([ "WebmakerUI", "localized", "dialog/dialog", "util/lang", "l10n!/layouts
         container.classList.add( "open" );
         iframe.style.height = "300px";
         iframe.src = "/dashboard/" + Localized.getCurrentLang();
+        // WARNING: this works because we don't use mousedown in other events,
+        //          but only click events, which trigger after mousedown. If we
+        //          do add more mousedown events, this may introduce timing issues.
+        document.addEventListener( "mousedown", close, false );
       }
 
       myProjectsButton.addEventListener( "click", open, false );
