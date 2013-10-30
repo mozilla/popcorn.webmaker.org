@@ -197,7 +197,7 @@
           }
         } else {
 
-          var _inOuts,
+          var _inOuts = [],
               _lastVisible,
               _tagRefs = [];
 
