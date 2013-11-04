@@ -65,7 +65,9 @@ define( [ "util/lang", "util/time", "text!layouts/controls.html" ],
 
       bigPlayButton.removeEventListener( "click", onInit, false );
       controlsContainer.classList.remove( "controls-hide" );
-      attributionContainer.classList.add( "show" );
+      if ( attributionContainer ) {
+        attributionContainer.classList.add( "show" );
+      }
       function setPopcorn( popcorn ) {
         p = popcorn;
       }
