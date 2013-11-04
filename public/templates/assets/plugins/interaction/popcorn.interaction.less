@@ -1,0 +1,141 @@
+/*****
+ ** Main styling
+ */
+
+
+/*****
+ ** Keyboard Styles
+ */
+
+/* Base classes */
+.keyboard {
+  width: 70%;
+  height: 45%;
+  margin: 0 auto;
+
+  position: absolute;
+  bottom: 0;
+  left: 15%;
+  background-color: white;
+
+  font-size: 0.8em;
+  z-index: 1;
+}
+
+.keyboard-row {
+  height: 20%;
+}
+
+.keyboard_right {
+  position: relative;
+  width: 25%;
+  height: 100%;
+  display: inline-block;
+  vertical-align: top;
+  height: 100%;
+
+  .key {
+    width: 30%;
+    height: 100%;
+    padding: 6% 0;
+  }
+
+  .keyboard_row {
+    position: relative;
+    left: 10%;
+  }
+}
+
+.keyboard_left {
+  width: 75%;
+  height: 100%;
+  display: inline-block;
+}
+
+.keyboard_arrows {
+  position: relative;
+  left:10%;
+
+  width: 90%;
+  height: 100%;
+  vertical-align: bottom;
+
+  .keyboard_row {
+    position: relative;
+    left: 0;
+  }
+
+  .key {
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    width: 33%;
+    height: 100%;
+    padding: 7% 0;
+  }
+}
+
+.key {
+  width: 6.5%;
+  height: 100%;
+
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  display: inline-block;
+
+  border: 1px black solid;
+  text-align: center;
+  padding: 2% 0;
+
+  span {
+    vertical-align: middle;
+  }
+}
+
+.off {
+  display: none;
+}
+
+/* Colour styling */
+.valid {
+  background-color: #94EE5B;
+}
+
+.invalid {
+  background-color: #FF3121;
+}
+
+/* Individual keys */
+.key_backspace, .key_macBackspace, .key_shift, .key_tab, .key_ctrl, .key_meta, .key_macMeta, .key_alt {
+  width: 13%;
+}
+
+.key_backspace, .key_macBackspace, .key_tab {
+  width: 15.5%;
+}
+
+.key_capslock {
+  width: 13%;
+}
+
+.key_enter, .key_macEnter {
+  width: 15.5%;
+}
+
+.key_shift {
+  width: 17.5%;
+}
+
+.key_up {
+  position: relative;
+  left: 33%;
+}
+
+.key_space {
+  width: 35%;
+}
+
+.key_blank {
+  margin-top: 1px;
+  border: white solid 1px;
+}
+
