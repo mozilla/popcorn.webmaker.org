@@ -20,6 +20,22 @@
 
   font-size: 0.8em;
   z-index: 1;
+
+  /***
+   * CSS TRANSITION CONFIG
+   **
+   * Ensure that the transition time matches
+   * the value (in milliseconds) of the
+   * `transitionDelay` variable in the
+   * `_keyboardHelper`.
+   *
+   * See `interaction-editor.js` for more.
+   **/
+  -moz-transition: opacity 1s;
+  -webkit-transition: opacity 1s;
+  -ms-transition: opacity 1s;
+  -o-transition: opacity 1s;
+  transition: opacity 1s;
 }
 
 .keyboard-row {
@@ -105,7 +121,7 @@
 }
 
 /* Individual keys */
-.key_backspace, .key_macBackspace, .key_shift, .key_tab, .key_ctrl, .key_meta, .key_macMeta, .key_alt {
+.key_backspace, .key_macBackspace, .key_shift, .key_tab, .key_ctrl, .key_meta, .key_macMeta, .key_alt, .key_macAlt {
   width: 13%;
 }
 

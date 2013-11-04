@@ -40,7 +40,6 @@
    *  | Bind callback to the keyup event on the passed key
    */
   var _mousetrapHelper = (function mouseTrapHelperFactory( options ) {
-
     var KEYS = options.keys || {
       // Non Alphanumeric
       alt: "alt",
@@ -135,7 +134,9 @@
     }
 
     function bindAll( callback ) {
-      callback = callback || function(){ console.log( "No bindAll callback specified!" ); };
+      callback = callback || function(){
+        console.log( "No bindAll callback specified!" );
+      };
 
       for ( var key in KEYS ) {
         Mousetrap.bind( key, callback );
@@ -300,64 +301,11 @@
    *
    */
   var _keyboardHelper = (function keyboardHelperFactory( options ){
-    var keyboardCode = "<div class=\"keyboard_left\"><!-- row 1 --><div class=\"keyboard_row\"><div class=\"key key_backtick\">`</div><div class=\"key key_1\"><span>1</span></div><div class=\"key key_2\"><span>2</span></div><div class=\"key key_3\"><span>3</span></div><div class=\"key key_4\"><span>4</span></div><div class=\"key key_5\"><span>5</span></div><div class=\"key key_6\"><span>6</span></div><div class=\"key key_7\"><span>7</span></div><div class=\"key key_8\"><span>8</span></div><div class=\"key key_9\"><span>9</span></div><div class=\"key key_0\"><span>0</span></div><div class=\"key key_minus\"><span>-</span></div><div class=\"key key_equals\"><span>=</span></div><div class=\"key key_backspace\"><span>Backsp</span></div><div class=\"key key_macBackspace off\"><span>Delete</span></div></div><!-- row 2 --><div class=\"keyboard_row\"><div class=\"key key_tab\"><span>Tab</span></div><div class=\"key key_q\"><span>Q</span></div><div class=\"key key_w\"><span>W</span></div><div class=\"key key_e\"><span>E</span></div><div class=\"key key_r\"><span>R</span></div><div class=\"key key_t\"><span>T</span></div><div class=\"key key_y\"><span>Y</span></div><div class=\"key key_u\"><span>U</span></div><div class=\"key key_i\"><span>I</span></div><div class=\"key key_o\"><span>O</span></div><div class=\"key key_p\"><span>P</span></div><div class=\"key key_openBracket\"><span>[</span></div><div class=\"key key_closeBracket\"><span>]</span></div><div class=\"key key_\\\"><span>\\</span></div></div><!-- row 3 --><div class=\"keyboard_row\"><div class=\"key key_capslock\"><span>CAPS</span></div><div class=\"key key_a\"><span>A</span></div><div class=\"key key_s\"><span>S</span></div><div class=\"key key_d\"><span>D</span></div><div class=\"key key_f\"><span>F</span></div><div class=\"key key_g\"><span>G</span></div><div class=\"key key_h\"><span>H</span></div><div class=\"key key_j\"><span>J</span></div><div class=\"key key_k\"><span>K</span></div><div class=\"key key_l\"><span>L</span></div><div class=\"key key_;\"><span>;</span></div><div class=\"key key_'\"><span>'</span></div><div class=\"key key_enter\"><span>Enter</span></div><div class=\"key key_macEnter off\"><span>Enter</span></div></div><!-- row 4 --><div class=\"keyboard_row\"><div class=\"key key_shift\"><span>Shift</span></div><div class=\"key key_z\"><span>Z</span></div><div class=\"key key_x\"><span>X</span></div><div class=\"key key_c\"><span>C</span></div><div class=\"key key_v\"><span>V</span></div><div class=\"key key_b\"><span>B</span></div><div class=\"key key_n\"><span>N</span></div><div class=\"key key_m\"><span>M</span></div><div class=\"key key_,\"><span>,</span></div><div class=\"key key_.\"><span>.</span></div><div class=\"key key_/\"><span>/</span></div><div class=\"key key_shift\"><span>Shift</span></div></div><!-- row5 --><div class=\"keyboard_row\"><div class=\"key key_ctrl\"><span>Ctrl</span></div><div class=\"key key_meta\"><span>Win</span></div><div class=\"key key_macMeta off\"><span>Command</span></div><div class=\"key key_alt\"><span>Alt</span></div><div class=\"key key_space\"><span>Space</span></div><div class=\"key key_alt\"><span>Alt</span></div><div class=\"key key_ctrl\"><span>Ctrl</span></div></div></div><div class=\"keyboard_right\"><!-- row 1 --><div class=\"keyboard_row\"><div class=\"key key_ins\"><span>Ins</span></div><div class=\"key key_home\"><span>Home</span></div><div class=\"key key_pgup\"><span>PgUp</span></div></div><!-- row 2 --><div class=\"keyboard_row\"><div class=\"key key_minorDel\"><span>Del</span></div><div class=\"key key_end\"><span>End</span></div><div class=\"key key_pgdwn\"><span>PgDn</span></div></div><!-- row 3 --><div class=\"keyboard_row\"><div class=\"key key_blank\">&nbsp</div></div><!-- row 4 --><div class=\"keyboard_arrows\"><div class=\"keyboard_row\"><div class=\"key key_up\"><span>Up</span></div></div><!-- row5 --><div class=\"keyboard_row\"><div class=\"key key_left\"><span>Left</span></div><div class=\"key key_down\"><span>Down</span></div><div class=\"key key_right\"><span>Right</span></div></div></div></div>";
-
+    var keyboardCode = "<div class=\"keyboard_left\"><!-- row 1 --><div class=\"keyboard_row\"><div class=\"key key_backtick\">`</div><div class=\"key key_1\"><span>1</span></div><div class=\"key key_2\"><span>2</span></div><div class=\"key key_3\"><span>3</span></div><div class=\"key key_4\"><span>4</span></div><div class=\"key key_5\"><span>5</span></div><div class=\"key key_6\"><span>6</span></div><div class=\"key key_7\"><span>7</span></div><div class=\"key key_8\"><span>8</span></div><div class=\"key key_9\"><span>9</span></div><div class=\"key key_0\"><span>0</span></div><div class=\"key key_minus\"><span>-</span></div><div class=\"key key_equals\"><span>=</span></div><div class=\"key key_backspace\"><span>Backsp</span></div><div class=\"key key_backspace key_macBackspace off\"><span>Delete</span></div></div><!-- row 2 --><div class=\"keyboard_row\"><div class=\"key key_tab\"><span>Tab</span></div><div class=\"key key_q\"><span>Q</span></div><div class=\"key key_w\"><span>W</span></div><div class=\"key key_e\"><span>E</span></div><div class=\"key key_r\"><span>R</span></div><div class=\"key key_t\"><span>T</span></div><div class=\"key key_y\"><span>Y</span></div><div class=\"key key_u\"><span>U</span></div><div class=\"key key_i\"><span>I</span></div><div class=\"key key_o\"><span>O</span></div><div class=\"key key_p\"><span>P</span></div><div class=\"key key_openBracket\"><span>[</span></div><div class=\"key key_closeBracket\"><span>]</span></div><div class=\"key key_\\\"><span>\\</span></div></div><!-- row 3 --><div class=\"keyboard_row\"><div class=\"key key_capslock\"><span>CAPS</span></div><div class=\"key key_a\"><span>A</span></div><div class=\"key key_s\"><span>S</span></div><div class=\"key key_d\"><span>D</span></div><div class=\"key key_f\"><span>F</span></div><div class=\"key key_g\"><span>G</span></div><div class=\"key key_h\"><span>H</span></div><div class=\"key key_j\"><span>J</span></div><div class=\"key key_k\"><span>K</span></div><div class=\"key key_l\"><span>L</span></div><div class=\"key key_;\"><span>;</span></div><div class=\"key key_'\"><span>'</span></div><div class=\"key key_enter\"><span>Enter</span></div><div class=\"key key_enter key_macEnter off\"><span>Return</span></div></div><!-- row 4 --><div class=\"keyboard_row\"><div class=\"key key_shift\"><span>Shift</span></div><div class=\"key key_z\"><span>Z</span></div><div class=\"key key_x\"><span>X</span></div><div class=\"key key_c\"><span>C</span></div><div class=\"key key_v\"><span>V</span></div><div class=\"key key_b\"><span>B</span></div><div class=\"key key_n\"><span>N</span></div><div class=\"key key_m\"><span>M</span></div><div class=\"key key_,\"><span>,</span></div><div class=\"key key_.\"><span>.</span></div><div class=\"key key_/\"><span>/</span></div><div class=\"key key_shift\"><span>Shift</span></div></div><!-- row5 --><div class=\"keyboard_row\"><div class=\"key key_ctrl\"><span>Ctrl</span></div><div class=\"key key_meta\"><span>Win</span></div><div class=\"key key_meta key_macMeta off\"><span>Cmd</span></div><div class=\"key key_alt\"><span>Alt</span></div><div class=\"key key_alt key_macAlt off\"><span>Option</span></div><div class=\"key key_space\"><span>Space</span></div><div class=\"key key_alt\"><span>Alt</span></div><div class=\"key key_alt key_macAlt off\"><span>Option</span></div><div class=\"key key_ctrl\"><span>Ctrl</span></div></div></div><div class=\"keyboard_right\"><!-- row 1 --><div class=\"keyboard_row\"><div class=\"key key_ins\"><span>Ins</span></div><div class=\"key key_home\"><span>Home</span></div><div class=\"key key_pgup\"><span>PgUp</span></div></div><!-- row 2 --><div class=\"keyboard_row\"><div class=\"key key_minorDel\"><span>Del</span></div><div class=\"key key_end\"><span>End</span></div><div class=\"key key_pgdwn\"><span>PgDn</span></div></div><!-- row 3 --><div class=\"keyboard_row\"><div class=\"key key_blank\">&nbsp</div></div><!-- row 4 --><div class=\"keyboard_arrows\"><div class=\"keyboard_row\"><div class=\"key key_up\"><span>Up</span></div></div><!-- row5 --><div class=\"keyboard_row\"><div class=\"key key_left\"><span>Left</span></div><div class=\"key key_down\"><span>Down</span></div><div class=\"key key_right\"><span>Right</span></div></div></div></div>";
 
     var keyboard,
         localContainer,
-        keyElement,
-        fadeIn,
-        fadeOut;
-
-    // Fades in
-    fadeIn = function( styleReference ) {
-      var opacity;
-
-      if ( typeof( styleReference.opacity ) === "undefined" ) {
-        styleReference.opacity = 0;
-      }
-
-      function inTimer() {
-        opacity = Number( styleReference.opacity );
-
-        styleReference.opacity = opacity + 0.05;
-        if ( opacity < 0.9 ) {
-          setTimeout( inTimer, 30 );
-        } else {
-          styleReference.opacity = 1;
-        }
-      }
-
-      inTimer();
-    };
-
-    // Calls a recursive function for fading out the opacity of the passed
-    // "style" property
-    fadeOut = function( styleReference, callback ) {
-      callback = callback || function() {};
-
-      var opacity;
-
-      if ( typeof( styleReference.opacity ) === "undefined" ) {
-        styleReference.opacity = 1;
-      }
-
-      function outTimer() {
-        opacity = Number( styleReference.opacity );
-
-        styleReference.opacity -= 0.05;
-        if ( opacity > 0.1 ) {
-          setTimeout( outTimer, 30 );
-        } else {
-          styleReference.opacity = 0;
-
-          // When fade-in is complete, fire callback
-          callback();
-        }
-      }
-
-      outTimer();
-    };
+        keyElement;
 
     // Create & cache keyboard container
     keyboard = {
@@ -371,68 +319,119 @@
     keyboard.classes.add( "keyboard", "off" );
 
     // Cache reference to "styles"
-    keyboard.style = keyboard.el.style;
+    var styleReference = keyboard.el.style;
 
-    // TODO: Detect OS and update keyboard accordingly
+    // This should match the length of the css transition
+    var transitionDelay = 1000;
 
     return {
       insertKeyboard: function ( element ) {
-        element.appendChild( keyboard.el );
+        var macRegex = /Mac/g,
+            macKeys = [
+              "key_macAlt",
+              "key_macMeta",
+              "key_macEnter",
+              "key_macBackspace"
+            ],
+            winKeys = [
+              "key_alt",
+              "key_meta",
+              "key_enter",
+              "key_backspace"
+            ],
+            keys = keyboard.el,
+            currentKey,
+            i, j;
+
+        // Process OS specific keyboard keys
+        if ( window.navigator.userAgent.match( macRegex ) ) {
+          for ( i = 0; i < winKeys.length; i++ ) {
+            currentKey = keys.getElementsByClassName( winKeys[ i ] );
+
+            for ( j = 0; j < currentKey.length; j++ ) {
+              currentKey[ j ].classList.add( "off" );
+            }
+          }
+
+          for ( i = 0; i < macKeys.length; i++ ) {
+            currentKey = keys.getElementsByClassName( macKeys[ i ] );
+
+            for ( j = 0; j < currentKey.length; j++ ) {
+              currentKey[ j ].classList.remove( "off" );
+            }
+          }
+        }
+
+        element.appendChild( keys );
         localContainer = element;
       },
       showKeyboard: function () {
-        // Setting opacity
-        keyboard.style.opacity = 0;
-        // keyboard.classes.toggle( "off" );
+        var opacity;
 
-        // Compatibility hack
         if ( keyboard.classes.contains( "off" ) ) {
           keyboard.classes.remove( "off" );
         }
 
-        // Animate the fade-in
-        fadeIn( keyboard.style );
+        // A delay was needed in order for the removal of the "off"
+        // class not to interfere with the transition
+        window.setTimeout(function() {
+          // Triggers the transition and hides the div after the it finishes
+          styleReference.opacity = 1;
+        }, 100 );
       },
       hideKeyboard: function () {
-        // Animate the fade-out
-        fadeOut( keyboard.style, function(){ console.log( "inside toggle callback" );
-          // keyboard.classes.toggle( "off" );
+        var opacity;
 
-          // Compatibility hack
+        if ( typeof( styleReference.opacity ) === "undefined" ) {
+          styleReference.opacity = 1;
+        }
+
+        // Triggers the transition and hides the div after the it finishes
+        styleReference.opacity = 0;
+        window.setTimeout(function() {
           if ( !keyboard.classes.contains( "off" ) ) {
             keyboard.classes.add( "off" );
           }
-
-        });
+        }, transitionDelay );
       },
       correctKey: function ( key ) {
-        // TODO: Confirm key identifier strings are consistent everywhere
-        keyElement = keyboard.el.querySelector( ".key_" + key );
+        keyElement = keyboard.el.getElementsByClassName( "key_" + key );
+        var length = keyElement && keyElement.length;
 
-        if ( keyElement ) {
-          keyElement.classList.remove( "invalid" );
-          keyElement.classList.add( "valid" );
+        if ( length ) {
+          for ( var i = 0; i < length; i++ ) {
+            keyElement[ i ].classList.remove( "invalid" );
+            keyElement[ i ].classList.add( "valid" );
+          }
         }
       },
       incorrectKey: function ( key ) {
-        // TODO: Confirm key identifier strings are consistent everywhere
-        keyElement = keyboard.el.querySelector( ".key_" + key );
+        keyElement = keyboard.el.getElementsByClassName( "key_" + key );
+        var length = keyElement && keyElement.length;
 
-        if ( keyElement ) {
-          keyElement.classList.remove( "valid" );
-          keyElement.classList.add( "invalid" );
+        if ( length ) {
+          for ( var i = 0; i < length; i++ ) {
+            keyElement[ i ].classList.remove( "valid" );
+            keyElement[ i ].classList.add( "invalid" );
+          }
         }
       },
       keyOff: function ( key ) {
-        keyElement = keyboard.el.querySelector( ".key_" + key );
+        keyElement = keyboard.el.getElementsByClassName( "key_" + key );
+        var length = keyElement && keyElement.length,
+            classes;
 
-        if ( keyElement ) {
-          if ( keyElement.classList.contains( "valid" ) ) {
-            keyElement.classList.remove( "valid" );
-          }
+        if ( length ) {
+          for ( var i = 0; i < length; i++ ) {
+            classes = keyElement[ i ].classList;
 
-          if ( keyElement.classList.contains( "invalid" ) ) {
-            keyElement.classList.remove( "invalid" );
+            if ( classes.contains( "valid" ) ) {
+              classes.remove( "valid" );
+            }
+
+            if ( classes.contains( "invalid" ) ) {
+              classes.remove( "invalid" );
+            }
           }
         }
       },
