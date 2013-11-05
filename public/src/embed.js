@@ -515,6 +515,7 @@ function init() {
             var imagesContainer = __defaultLayouts.querySelector( ".attribution-images" ).cloneNode( true ),
                 imgCont,
                 img,
+                imgPrefix = "/resources/icons/",
                 foundMatch = false;
 
             for ( var k = 0; k < imageEvents.length; k++ ) {
@@ -537,11 +538,11 @@ function init() {
 
               if ( img.tags || img.photosetId || MediaUtil.checkUrl( img.src ) === "Flickr" ) {
                 foundMatch = true;
-                icon.src += "flickr-black.png";
+                icon.src += imgPrefix + "flickr-black.png";
                 imagesContainer.appendChild( imgCont );
               } else if ( img.src.indexOf( "giphy" ) !== -1 ) {
                 foundMatch = true;
-                icon.src += "giphy.png";
+                icon.src += imgPrefix + "giphy.png";
                 imagesContainer.appendChild( imgCont );
               } else {
                 imgCont = null;
