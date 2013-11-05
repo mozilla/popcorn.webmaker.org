@@ -263,7 +263,7 @@ define( [ "localized", "core/eventmanager", "core/media", "util/sanitizer" ],
         // templating rules being applied to project metadata, with
         // their plain form counterparts ("&", etc).
         _name = Sanitizer.reconstituteHTML( json.name );
-        document.title = _name + " - Popcorn Maker";
+        document.title = _name + " - " + Localized.get( "Popcorn Maker" );
       }
 
       if ( json.template ) {
