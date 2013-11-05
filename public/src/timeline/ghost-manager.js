@@ -85,10 +85,10 @@ define( [ "./ghost-track" ], function( GhostTrack ) {
               cleanUpGhostTrackEvent( trackEventView );
             }
             if ( !trackEventView.ghost ) {
-              if ( overlappingDirection === "right" ) {
+              if ( overlappingDirection === "left" ) {
                 ghostLeft = overlappingTrackEvent.view.element.offsetLeft - trackEventView.element.offsetWidth;
                 ghostLeftAbsolute = overlappingTrackEvent.view.element.getBoundingClientRect().left - trackEventView.element.offsetWidth;
-              } else if ( overlappingDirection === "left" ) {
+              } else if ( overlappingDirection === "right" ) {
                 ghostLeft = overlappingTrackEvent.view.element.offsetLeft + overlappingTrackEvent.view.element.offsetWidth;
                 ghostLeftAbsolute = overlappingTrackEvent.view.element.getBoundingClientRect().left + overlappingTrackEvent.view.element.offsetWidth;
               }
