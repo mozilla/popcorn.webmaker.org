@@ -33,7 +33,6 @@
       _trackEvent = trackEvent;
       _popcornOptions = _trackEvent.popcornOptions,
       _pluginOptions = trackEvent.popcornTrackEvent,
-      _resumePlayback = _pluginOptions._resumePlayback,
       _mousetrapHelper = _pluginOptions._mousetrapHelper;
 
       var sequences = _pluginOptions.sequences || [];
@@ -67,11 +66,11 @@
               _this.attachSelectChangeHandler( element, option.trackEvent, key, _this.updateTrackEventSafe );
             } else if ( elementType === "input" ) {
               if ( key === "combo1" ) {
-                _mousetrapHelper.bindInputTag( element, sequences[ 0 ], _resumePlayback );
+                _mousetrapHelper.bindInputTag( element, sequences[ 0 ] );
               } else if ( key === "combo2" ) {
-                _mousetrapHelper.bindInputTag( element, sequences[ 1 ], _resumePlayback );
+                _mousetrapHelper.bindInputTag( element, sequences[ 1 ] );
               } else if ( key === "combo3" ) {
-                _mousetrapHelper.bindInputTag( element, sequences[ 2 ], _resumePlayback );
+                _mousetrapHelper.bindInputTag( element, sequences[ 2 ] );
               }
 
               element.setAttribute( "readonly", "readonly" );

@@ -185,9 +185,9 @@
         for ( i = 0; i < length; i++ ) {
           key = sequence[ i ];
           if ( modifiers[ key ] ) {
-              modKeys.push( key );
+            modKeys.push( key );
           } else {
-              otherKeys.push( key );
+            otherKeys.push( key );
           }
         }
 
@@ -195,7 +195,7 @@
         modLength = modKeys.length;
         if ( modLength ) {
           for ( i = 0; i < modLength - 1; i++ ) {
-              modSequence += modKeys[ i ] + "+";
+            modSequence += modKeys[ i ] + "+";
           }
           modSequence += modKeys[ i ];
         }
@@ -205,7 +205,7 @@
         otherLength = otherKeys.length;
         if ( otherLength > 1 ) {
           for ( i = 0; i < otherLength - 1; i++ ) {
-              ret += modSequence + "+" + otherKeys[ i ] + " ";
+            ret += modSequence + "+" + otherKeys[ i ] + " ";
           }
           ret += modSequence + "+" + otherKeys[ i ];
         } else {
@@ -375,7 +375,6 @@
         // A delay was needed in order for the removal of the "off"
         // class not to interfere with the transition
         window.setTimeout(function() {
-          // Triggers the transition and hides the div after the it finishes
           styleReference.opacity = 1;
         }, 100 );
       },
@@ -442,14 +441,18 @@
             invalidLength = invalidKeys && invalidKeys.length,
             i;
 
+        // Notice the static '0's in the for loops.
+        // Accessing an element "pops" it off the
+        // HTMLCollection object, so we loop through
+        // as many times as there are elements.
         if ( validLength ) {
-          for ( i = 0; i < validKeys; i++ ) {
-            validKeys[ i ].classList.remove( "valid" );
+          for ( i = 0; i < validLength; i++ ) {
+            validKeys[ 0 ].classList.remove( "valid" );
           }
         }
         if ( invalidLength ) {
-          for ( i = 0; i < invalidKeys; i++ ) {
-            invalidKeys[ i ].classList.remove( "invalid" );
+          for ( i = 0; i < invalidLength; i++ ) {
+            invalidKeys[ 0 ].classList.remove( "invalid" );
           }
         }
       }
@@ -474,6 +477,25 @@
     _keyboardHelper.keyOff( combo );
   }
 
+  // Returns the callback that fires when a keycombination
+  // is pressed. Add extra logic here.
+  function resumePlaybackConstructor( combo ) {
+    return function ( e ) {
+      e.preventDefault();
+      if ( combo.length ) {
+        for ( var i = 0; i < combo.length; i++ ) {
+          _keyboardHelper.correctKey( combo[ i ] );
+        }
+      }
+
+      window.setTimeout(function(){
+        _keyboardHelper.clearKeys();
+
+        // TODO: Display congrats message
+        self.play();
+      }, 1500)
+    }
+  }
   Popcorn.plugin( "interaction", function() {
     var self = this,
         sequences = [],
@@ -495,11 +517,24 @@
         options.end = options.start + 0.5;
 
         // Cache resume playback callback
-        var resumePlayback = function resumePlayback( e, combo ) {
-          e.preventDefault();
-          return self.play();
-        };
-        options._resumePlayback = resumePlayback;
+        var resumePlaybackConstructor = function ( combo ) {
+          return function ( e ) {
+            e.preventDefault();
+            if ( combo.length ) {
+              for ( var i = 0; i < combo.length; i++ ) {
+                _keyboardHelper.correctKey( combo[ i ] );
+              }
+            }
+
+            // TODO: Display congrats message
+            window.setTimeout(function(){
+              _keyboardHelper.clearKeys();
+
+              self.play();
+            }, 1500)
+          }
+        }
+        options._resumePlaybackConstructor = resumePlaybackConstructor;
 
         var target = Popcorn.dom.find( options.target );
 
@@ -546,92 +581,15 @@
         this.emit( "interactionStart" );
         _keyboardHelper.showKeyboard();
 
-        if ( sequences.length ) {
-          _mousetrapHelper.bindAll(function( e, combo ) {
-            if ( !sequencePosition ) {
-              // Determine which sequence we're working with
-              workingSequence = null;
-              for ( i = 0; i < sequences.length; i++ ) {
-                if ( sequences[ i ].length &&
-                     sequences[ i ][ 0 ] === combo ) {
-                  workingSequence = sequences[ i ];
-
-                  sequencePosition++;
-
-                  // Highlight key
-                  _keyboardHelper.correctKey( combo );
-
-                  break;
-                }
-              }
-
-              // The key matched the first key in a sequence?
-              if ( workingSequence ) {
-                _mousetrapHelper.bindKeyup( combo, function( e, combo ) {
-                  e.preventDefault();
-
-                  // Reset counters
-                  keyCounter = 0;
-                  sequencePosition = 0;
-
-                  // Remove highlighting from key
-                  _keyboardHelper.keyOff( combo );
-
-                  return false;
-                });
-              } else {
-                // Highlight key
-                _keyboardHelper.incorrectKey( combo );
-
-                // Remove highlighting from key on keyup
-                _mousetrapHelper.bindKeyup( combo, keyUpCallback );
-              }
-            } else {
-              if ( workingSequence[ sequencePosition ] === combo ) {
-                sequencePosition++;
-
-                _keyboardHelper.correctKey( combo );
-
-                // What happens if they release the key?
-                _mousetrapHelper.bindKeyup( combo, function( e, combo ) {
-                  e.preventDefault();
-
-                  rKeyPosition = workingSequence.indexOf( combo );
-
-                  // Remove highlighting from key
-                  _keyboardHelper.keyOff( combo );
-
-                  if ( rKeyPosition <= sequencePosition ) {
-                    var invalidKey;
-
-                    // Change key highlighting to invalid for all keys
-                    // currently pressed in the sequence AFTER the key that was
-                    // just released.
-                    for ( --sequencePosition; rKeyPosition !== sequencePosition; sequencePosition-- ) {
-                      invalidKey = workingSequence[ sequencePosition ];
-
-                      _keyboardHelper.incorrectKey( invalidKey );
-                      _mousetrapHelper.bindKeyup( invalidKey, keyUpCallback );
-                    }
-                  } // End-if {rKeyPosition}
-                });
-              } else {
-                _keyboardHelper.incorrectKey( combo );
-                _mousetrapHelper.bindKeyup( combo, keyUpCallback );
-              }
-            }
-          });
-        }
-
         // Bind key listeners
         if ( sequences[ 0 ] && sequences[ 0 ].length ) {
-          _mousetrapHelper.bindSequence( sequences[ 0 ] );
+          _mousetrapHelper.bindSequence( sequences[ 0 ], options._resumePlaybackConstructor( sequences[ 0 ] ) );
         }
         if ( sequences[ 1 ] && sequences[ 1 ].length ) {
-          _mousetrapHelper.bindSequence( sequences[ 1 ] );
+          _mousetrapHelper.bindSequence( sequences[ 1 ], options._resumePlaybackConstructor( sequences[ 1 ] ) );
         }
         if ( sequences[ 2 ] && sequences[ 2 ].length ) {
-          _mousetrapHelper.bindSequence( sequences[ 2 ] );
+          _mousetrapHelper.bindSequence( sequences[ 2 ], options._resumePlaybackConstructor( sequences[ 2 ] ) );
         }
 
         this.pause();
