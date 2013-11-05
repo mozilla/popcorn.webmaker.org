@@ -28,7 +28,7 @@
     }
 
     if ( options.src ) {
-      src = options.src.match( /sketchfab\.com\/show\/([A-Za-z0-9]{9,27})|^([A-Za-z0-9]{9,27})$/ );
+      src = options.src.match( /https?:\/\/sketchfab\.com\/show\/(\w+)/ );
       if ( src ) {
         src = src[ src.length - 1 ] || src[ src.length - 2 ];
 
