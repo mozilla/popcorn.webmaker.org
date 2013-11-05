@@ -40,7 +40,7 @@
         var sketchfabOptions = {
           nocamera: 0,
           autostart: 1,
-          autospin: 0,
+          autospin: ( options.autospin ? "1" : "0" ),
           transparent: ( options.background ? "0" : "1" ),
           controls: 0,
           watermark: 0,
@@ -157,6 +157,11 @@
         resetIframe = true;
       }
 
+      if ( [ true, false ].indexOf( options.autospin ) > -1 && options.autospin !== trackEvent.autospin ) {
+        trackEvent.autospin = options.autospin;
+        resetIframe = true;
+      }
+
       if ( resetIframe ) {
         setupIframe( trackEvent );
       }
@@ -213,6 +218,12 @@
         elem: "input",
         type: "checkbox",
         label: "Background (Transparency)",
+        "default": false
+      },
+      autospin: {
+        elem: "input",
+        type: "checkbox",
+        label: "Automatically Spin Model",
         "default": false
       },
       width: {
