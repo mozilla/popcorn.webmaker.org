@@ -71,7 +71,7 @@ define( [ "localized", "core/eventmanager", "core/media", "util/sanitizer" ],
         set: function( value ) {
           if ( value !== _name ) {
             _name = value;
-            document.title = _name + " - Popcorn Maker";
+            document.title = _name + " - " + Localized.get( "Popcorn Maker" );
             invalidate();
           }
         },
