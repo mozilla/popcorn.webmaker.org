@@ -14,6 +14,7 @@ module.exports = function( req, res, next ) {
       author: project.author,
       email: project.email,
       contentType: "application/x-popcorn",
+      locale: req.localeInfo.locale || "en_US",
       url: utils.embedShellURL( project.author, project.id ),
       contenturl: utils.embedURL( project.author, project.id ),
       thumbnail: project.thumbnail,

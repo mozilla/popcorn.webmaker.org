@@ -2,7 +2,7 @@
  * If a copy of the MIT license was not distributed with this file, you can
  * obtain one at https://raw.github.com/mozilla/butter/master/LICENSE */
 
-define( [ "util/xhr", "sso-include" ], function( xhr ) {
+define( [ "util/xhr", "localized", "sso-include" ], function( xhr, Localized ) {
 
   var Cornfield = function( butter ) {
 
@@ -72,7 +72,7 @@ define( [ "util/xhr", "sso-include" ], function( xhr ) {
       // received from the server.
       self.save = savePlaceholder;
 
-      var url = "/api/project/";
+      var url = Localized.getCurrentLang() + "/api/project/";
 
       if ( id ) {
         url += id;
