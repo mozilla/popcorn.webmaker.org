@@ -53,23 +53,28 @@
             option,
             element,
             elementType,
-            label;
+            label,
+            trackEvent;
 
         for ( key in pluginOptions ) {
           if ( pluginOptions.hasOwnProperty( key ) ) {
             option = pluginOptions[ key ];
+            trackEvent = option.trackEvent;
             element = option.element;
             elementType = option.elementType;
             label = option.label;
 
             if ( elementType === "select" ) {
-              _this.attachSelectChangeHandler( element, option.trackEvent, key, _this.updateTrackEventSafe );
+              _this.attachSelectChangeHandler( element, trackEvent, key, _this.updateTrackEventSafe );
             } else if ( elementType === "input" ) {
               if ( key === "combo1" ) {
+                _this.attachInputChangeHandler( element, trackEvent, key, _this.updateTrackEventSafe );
                 _mousetrapHelper.bindInputTag( element, sequences[ 0 ] );
               } else if ( key === "combo2" ) {
+                _this.attachInputChangeHandler( element, trackEvent, key, _this.updateTrackEventSafe );
                 _mousetrapHelper.bindInputTag( element, sequences[ 1 ] );
               } else if ( key === "combo3" ) {
+                _this.attachInputChangeHandler( element, trackEvent, key, _this.updateTrackEventSafe );
                 _mousetrapHelper.bindInputTag( element, sequences[ 2 ] );
               }
 

@@ -38,6 +38,10 @@
    *
    * bindKeyup( key, callback )
    *  | Bind callback to the keyup event on the passed key
+   *
+   * sequenceToString( key, callback )
+   *  | Returns a human-readable string representing the sequence
+   *  | in the passed array
    */
   var _mousetrapHelper = (function mouseTrapHelperFactory( options ) {
     var KEYS = options.keys || {
@@ -261,11 +265,12 @@
       unbindSequence: function( sequence ) {
         Mousetrap.unbind( sequenceToKeycombo( sequence ) );
       },
-      bindAll: bindAll,
-      unbindAll: unbindAll,
       bindKeyup: function( key, callback ) {
         Mousetrap.bind( key, callback, "keyup" );
-      }
+      },
+      bindAll: bindAll,
+      unbindAll: unbindAll,
+      sequenceToString: sequenceToString
     };
   })({});
 
@@ -294,10 +299,6 @@
    *
    * clearKeys()
    *  | Removes all key highlights
-   *
-   * switchOS( osType )
-   *  | Displays the correct keyboard keys for the
-   *  | operating system detected by the plugin
    *
    */
   var _keyboardHelper = (function keyboardHelperFactory( options ){
@@ -496,6 +497,10 @@
       }, 1500)
     }
   }
+
+  /**
+   * Plugin Definition
+   */
   Popcorn.plugin( "interaction", function() {
     var self = this,
         sequences = [],
