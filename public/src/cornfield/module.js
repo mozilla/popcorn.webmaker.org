@@ -15,7 +15,16 @@ define( [ "util/xhr", "localized", "sso-include" ], function( xhr, Localized ) {
         function finishCallback() {
           authenticated = true;
           username = webmakerUserName;
-          butter.dispatch( "authenticated" );
+
+          if ( butter.isReady ) {
+            return butter.dispatch( "authenticated" );
+          }
+
+          butter.listen( "ready", function onReady() {
+            butter.unlisten( "ready", onReady );
+
+            butter.dispatch( "authenticated" );
+          });
         }
         if ( butter.project && butter.project.id ) {
           xhr.get( "/api/project/" + butter.project.id, function( res ) {
