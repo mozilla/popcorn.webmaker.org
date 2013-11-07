@@ -12,14 +12,21 @@
         _trackEvent,
         _butter,
         _popcornOptions,
+        _pluginOptions,
+        _mousetrapHelper,
         _popcorn = butter.currentMedia.popcorn.popcorn;
+
+    function stopPropagation( e ) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
 
     // Listen for start/stop and disable/enable keyboard shortcuts
     _popcorn.on( "interactionStart", function() {
-      butter.ui.toggleShortcutListeners( false );
+      window.addEventListener( "keydown", stopPropagation, false )
     });
     _popcorn.on( "interactionEnd", function() {
-      butter.ui.toggleShortcutListeners( true );
+      window.removeEventListener( "keydown", stopPropagation, false );
     });
 
     /**
@@ -31,8 +38,8 @@
      */
     function setup( trackEvent ) {
       _trackEvent = trackEvent;
-      _popcornOptions = _trackEvent.popcornOptions,
-      _pluginOptions = trackEvent.popcornTrackEvent,
+      _popcornOptions = _trackEvent.popcornOptions;
+      _pluginOptions = trackEvent.popcornTrackEvent;
       _mousetrapHelper = _pluginOptions._mousetrapHelper;
 
       var sequences = _pluginOptions.sequences || [];

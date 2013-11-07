@@ -646,14 +646,6 @@ define( [ "core/eventmanager", "./toggler",
       window.addEventListener( "keydown", onKeyDown, false );
     }
 
-    function toggleShortcutListeners( state ) {
-      if ( state ) {
-        bindKeyDownListener();
-      } else {
-        unbindKeyDownListener();
-      }
-    }
-
     DragNDrop.listen( "dragstarted", unbindKeyDownListener );
     DragNDrop.listen( "dragstopped", bindKeyDownListener );
     DragNDrop.listen( "resizestarted", unbindKeyDownListener );
