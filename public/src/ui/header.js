@@ -60,6 +60,8 @@ define([ "WebmakerUI", "localized", "dialog/dialog", "util/lang", "l10n!/layouts
         };
       };
 
+      TogetherJS.config("disableWebRTC", true);
+
       TogetherJS.on( "ready", toggleTogether( true ) );
       TogetherJS.on( "close", toggleTogether( false ) );
 
