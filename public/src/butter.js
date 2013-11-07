@@ -43,7 +43,7 @@ window.Butter = {
             "util/xhr", "util/lang", "util/tutorial",
             "text!default-config.json",
             "ui/widget/tooltip", "crashreporter", "core/project",
-            "localized", "util/accepted-ua"
+            "localized", "util/uri", "util/mediatypes","util/accepted-ua"
           ],
           function(
             EventManager, Logger, Config, Track,
@@ -53,7 +53,7 @@ window.Butter = {
             xhr, Lang, Tutorial,
             DEFAULT_CONFIG_JSON,
             ToolTip, CrashReporter, Project,
-            Localized
+            Localized, URI, MediaUtil
           ){
 
     var __guid = 0;
@@ -77,6 +77,7 @@ window.Butter = {
           _defaultConfig,
           _defaultTarget,
           _this = Object.create( Butter ),
+          _isReady = false,
           _selectedEvents = [],
           _copiedEvents = [],
           _pluginDefaults = {},
@@ -650,6 +651,12 @@ window.Butter = {
           get: function() {
             return _defaultTrackeventDuration;
           }
+        },
+        isReady: {
+          enumerable: true,
+          get: function() {
+            return _isReady;
+          }
         }
       });
 
@@ -807,11 +814,13 @@ window.Butter = {
         var savedDataUrl,
             remixOrEdit = "",
             item = [],
-            project = new Project( _this );
+            project = new Project( _this ),
+            parsedUri = URI.parse( window.location ),
+            qs = parsedUri.queryKey;
 
         // see if savedDataUrl is in the page's query string
         // using query string here is kept for backwards comp
-        window.location.search.substring( 1 ).split( "&" ).forEach(function( item ){
+        parsedUri.query.split( "&" ).forEach(function( item ){
           item = item.split( "=" );
           if ( item && item[ 0 ] === "savedDataUrl" ) {
             savedDataUrl = item[ 1 ];
@@ -825,7 +834,7 @@ window.Butter = {
 
         // the new way to load a project is with /editor/:id/edit
         if ( !savedDataUrl ) {
-          var pathname = window.location.pathname.replace( "/" + Localized.getCurrentLang() + "/", "/" );
+          var pathname = parsedUri.path.replace( "/" + Localized.getCurrentLang() + "/", "/" );
           item = pathname.split( "/" );
           // item[ 2 ] is the id
           if ( item[ 2 ] ) {
@@ -850,14 +859,70 @@ window.Butter = {
           }
         }
 
+        function projectDataReady( savedData ) {
+          if ( savedData ) {
+            doImport( savedData );
+          }
+          finishedCallback( project );
+        }
+
         function loadConfigDefault() {
           // if previous attempt failed,
           // try loading data from the savedDataUrl value in the config
           loadFromSavedDataUrl( _config.value( "savedDataUrl" ), function( savedData ) {
-            if ( savedData ) {
-              doImport( savedData );
+            var initialMediaSource;
+
+            if ( !qs.initialMedia ) {
+              return projectDataReady( savedData );
             }
-            finishedCallback( project );
+
+            initialMediaSource = decodeURIComponent( qs.initialMedia );
+
+            // If we successfully retrieve data for that initial media we will hand write it
+            // into the default project data before the import.
+            MediaUtil.getMetaData( initialMediaSource, function onSuccess( data ) {
+              var media = savedData.media[ 0 ],
+                  track;
+
+              if ( media ) {
+                media.url = "#t=," + data.duration;
+                media.duration = data.duration;
+
+                track = media.tracks[ 0 ];
+
+                if ( track ) {
+                  track.trackEvents.push({
+                    id: "TrackEvent1",
+                    type: "sequencer",
+                    popcornOptions: {
+                      source: [ data.source ],
+                      start: 0,
+                      end: data.duration,
+                      title: data.title,
+                      from: data.from,
+                      duration: data.duration,
+                      target: "video-container",
+                      fallback: "",
+                      zindex: 1000,
+                      id: "TrackEvent1",
+                      thumbnailSrc: data.thumbnail
+                    }
+                  });
+
+                  media.clipData = media.clipData || {};
+
+                  // Don't forget to add the clip data!
+                  if ( !media.clipData[ data.source ] ) {
+                    media.clipData[ data.source ] = data;
+                  }
+
+                  projectDataReady( savedData );
+                }
+              }
+            },
+            function onError() {
+              projectDataReady( savedData );
+            });
           });
         }
 
@@ -927,6 +992,7 @@ window.Butter = {
                     _this.chain( project, [ "projectchanged", "projectsaved" ] );
 
                     // Fire the ready event
+                    _isReady = true;
                     _this.dispatch( "ready", _this );
                   }
 
