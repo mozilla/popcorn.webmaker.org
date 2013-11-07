@@ -72,7 +72,7 @@ define( [ "util/xhr", "localized", "sso-include" ], function( xhr, Localized ) {
       // received from the server.
       self.save = savePlaceholder;
 
-      var url = Localized.getCurrentLang() + "/api/project/";
+      var url = "/" + Localized.getCurrentLang() + "/api/project/";
 
       if ( id ) {
         url += id;
