@@ -241,7 +241,8 @@ app.get( '/api/butterconfig', function( req, res ) {
 app.get( '/layouts/header.html', function( req, res ) {
   res.render( '/layouts/header.html', {
     user_bar: app.locals.config.user_bar,
-    audience: app.locals.config.audience
+    audience: app.locals.config.audience,
+    togetherjsEnabled: config.TOGETHERJS_ENABLED
   });
 });
 

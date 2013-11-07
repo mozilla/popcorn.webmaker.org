@@ -43,7 +43,7 @@ window.Butter = {
             "util/xhr", "util/lang", "util/tutorial",
             "text!default-config.json",
             "ui/widget/tooltip", "crashreporter", "core/project",
-            "localized", "util/accepted-ua"
+            "localized", "util/togetherjs-syncer", "util/accepted-ua"
           ],
           function(
             EventManager, Logger, Config, Track,
@@ -53,7 +53,7 @@ window.Butter = {
             xhr, Lang, Tutorial,
             DEFAULT_CONFIG_JSON,
             ToolTip, CrashReporter, Project,
-            Localized
+            Localized, TogetherJSSyncer
           ){
 
     var __guid = 0;
@@ -83,7 +83,8 @@ window.Butter = {
           _sortedSelectedEvents = [],
           _defaultPopcornScripts = {},
           _defaultPopcornCallbacks = {},
-          _defaultTrackeventDuration;
+          _defaultTrackeventDuration,
+          _togetherJSSyncer;
 
       _this.pluginDefaults = _pluginDefaults;
 
@@ -101,6 +102,7 @@ window.Butter = {
       }
 
       EventManager.extend( _this );
+      _togetherJSSyncer = new TogetherJSSyncer( _this );
 
       // Leave a reference on the instance to expose dialogs to butter users at runtime.
       // Especially good for letting people use/create dialogs without being in the butter core.
@@ -413,6 +415,15 @@ window.Butter = {
         return undefined;
       }; //getMediaByType
 
+      _this.getMediaById = function( id ) {
+        for ( var i = 0; i < _media.length; i++ ) {
+          if ( id === _media[ i ].id ) {
+            return _media[ i ];
+          }
+        }
+        return undefined;
+      };
+
       //addMedia - add a media object
       _this.addMedia = function ( media ) {
         if ( !( media instanceof Media ) ) {
@@ -437,6 +448,7 @@ window.Butter = {
           "trackadded",
           "trackremoved",
           "tracktargetchanged",
+          "trackorderchanged",
           "trackeventadded",
           "trackeventremoved",
           "trackeventupdated",
@@ -540,6 +552,18 @@ window.Butter = {
         return _this.getTrackEvents( "type", query );
       };
 
+      /****************************************************************
+       * Tracks
+       ****************************************************************/
+      _this.getTrackById = function( id ) {
+        for ( var i = 0; i < _media.length; i++ ) {
+          var track = _media[ i ].getTrackById( id );
+          if ( track ) {
+            return track;
+          }
+        }
+        return undefined;
+      };
       /****************************************************************
        * Properties
        ****************************************************************/

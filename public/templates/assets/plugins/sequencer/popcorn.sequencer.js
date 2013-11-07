@@ -461,10 +461,6 @@
           loadingHandler.add( options, options.addSource );
         }
       }
-      if ( updates.hasOwnProperty( "mute" ) ) {
-        options.mute = updates.mute;
-        options._volumeEvent();
-      }
       if ( updates.hasOwnProperty( "top" ) ) {
         options.top = updates.top;
         options._container.style.top = ( options.top || "0" ) + "%";
@@ -482,6 +478,10 @@
         options._container.style.width = ( options.width || "100" ) + "%";
       }
       if ( options.ready ) {
+        if ( updates.hasOwnProperty( "mute" ) ) {
+          options.mute = updates.mute;
+          options._volumeEvent();
+        }
         if ( updates.hasOwnProperty( "volume" ) ) {
           options.volume = updates.volume;
           options._volumeEvent();
