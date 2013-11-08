@@ -29,27 +29,6 @@ nunjucksEnv.addFilter( "instantiate", function( input ) {
 
 nunjucksEnv.express( app );
 
-// List of supported languages - Please add them here in an alphabetical order
-var listDropdownLang = config.SUPPORTED_LANGS,
-    // We create another array based on listDropdownLang to use it in the i18n.middleware
-    // supported_language which will be modified from the i18n mapping function
-    supportedLanguages = listDropdownLang.slice(0);
-
-app.locals({
-  config: {
-    app_hostname: APP_HOSTNAME,
-    audience: config.AUDIENCE,
-    ga_account: config.GA_ACCOUNT,
-    ga_domain: config.GA_DOMAIN,
-    jwplayer_key: config.JWPLAYER_KEY,
-    make_endpoint: config.MAKE_ENDPOINT,
-    user_bar: config.USER_BAR,
-    sync_limit: config.SYNC_LIMIT
-  },
-  supportedLanguages: supportedLanguages,
-  listDropdownLang: listDropdownLang
-});
-
 app.configure( function() {
   var tmpDir = path.normalize( require( "os" ).tmpDir() + "/mozilla.butter/" );
 
@@ -115,11 +94,26 @@ app.configure( function() {
 
   // Setup locales with i18n
   app.use( i18n.middleware({
-    supported_languages: supportedLanguages,
+    supported_languages: config.SUPPORTED_LANGS,
     default_lang: "en-US",
     mappings: config.LANG_MAPPINGS,
     translation_directory: path.resolve( __dirname, "locale" )
   }));
+
+  app.locals({
+    config: {
+      app_hostname: APP_HOSTNAME,
+      audience: config.AUDIENCE,
+      ga_account: config.GA_ACCOUNT,
+      ga_domain: config.GA_DOMAIN,
+      jwplayer_key: config.JWPLAYER_KEY,
+      make_endpoint: config.MAKE_ENDPOINT,
+      user_bar: config.USER_BAR,
+      sync_limit: config.SYNC_LIMIT
+    },
+    supportedLanguages: i18n.getLanguages(),
+    listDropdownLang: config.SUPPORTED_LANGS
+  });
 
   app.use( express.json() )
     .use( express.urlencoded() )
