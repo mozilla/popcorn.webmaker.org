@@ -484,5 +484,20 @@ define( [ "util/mediatypes", "editor/editor", "util/time",
         _trackEvent.unlisten( "trackeventupdated", onTrackEventUpdated );
       }
     });
+  }, false, function( trackEvent ) {
+    var _container,
+        _popcornOptions,
+        _target;
+
+    _popcornOptions = trackEvent.popcornTrackEvent;
+    _container = _popcornOptions._container;
+    _target = _popcornOptions._target;
+
+    this.draggable( trackEvent, _container, _target );
+    this.resizable( trackEvent, _container, _target, {
+      handlePositions: "n,ne,e,se,s,sw,w,nw",
+      minWidth: 10,
+      minHeight: 10
+    });
   });
 });

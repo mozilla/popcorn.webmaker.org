@@ -29,8 +29,15 @@ window.Butter = {
     baseUrl: "/src",
     paths: {
       "localized": "/static/bower/webmaker-i18n/localized",
+      "jquery": "/static/bower/jquery/jquery.min",
+      "jquery-ui": "/static/bower/jquery-ui/ui/jquery-ui",
+      "farbtastic": "/static/bower/farbtastic/src/farbtastic",
       "WebmakerUI": "/static/bower/webmaker-ui/ui",
       "webmaker-ui-fragments": "/static/bower/webmaker-ui/webmaker-ui-fragments"
+    },
+    shim: {
+      "jquery-ui": [ "jquery" ],
+      "farbtastic": [ "jquery" ]
     }
   });
 
@@ -44,7 +51,7 @@ window.Butter = {
             "text!default-config.json",
             "ui/widget/tooltip", "crashreporter", "core/project",
             "localized", "util/uri", "util/mediatypes",
-            "util/accepted-ua"
+            "util/accepted-ua", "jquery", "jquery-ui", "farbtastic"
           ],
           function(
             EventManager, Logger, Config, Track,

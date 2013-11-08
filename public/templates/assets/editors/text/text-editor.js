@@ -175,5 +175,36 @@
         _trackEvent.unlisten( "trackeventupdated", onTrackEventUpdated );
       }
     });
+  }, false, function( trackEvent ) {
+    var _container,
+        target;
+
+    _container = trackEvent.popcornTrackEvent._container;
+    target = trackEvent.popcornTrackEvent._target;
+
+    this.draggable( trackEvent, _container, target, {
+      end: function() {
+        if ( trackEvent.popcornOptions.position !== "custom" ) {
+          trackEvent.update({
+            position: "custom"
+          });
+        }
+      }
+    });
+    this.resizable( trackEvent, _container, target, {
+      minWidth: 10,
+      handlePositions: "e,w",
+      end: function() {
+        if ( trackEvent.popcornOptions.position !== "custom" ) {
+          trackEvent.update({
+            position: "custom"
+          });
+        }
+      }
+    });
+
+    this.selectable( trackEvent, _container );
+    this.contentEditable( trackEvent, _container.querySelectorAll( ".text-inner-div > span" ) );
+
   });
 }( window.Butter ));

@@ -1,66 +1,74 @@
-/*global Butter*/
-(function( global, $ ) {
-  var plugins = {};
+define( [ "util/xhr", "localized", "jquery" ], function( XHR, Localized, $ ) {
 
-  var EditorHelper = function() {
-    throw "Do not use EditorHelper in this manner. Use EditorHelper.init instead.";
-  };
+  var __plugins = {};
 
-  // This fix is to ensure content-editable still updates correctly, and deals with ie9 not reading document.activeElement properly
-  function blurActiveEl() {
-   if ( document.activeElement && document.activeElement.blur ) {
-      document.activeElement.blur();
-    }
-  }
+  function EditorHelper( butter ) {
+    var _this = this;
 
-  function calculateFinalPositions( event, ui, trackEvent, targetContainer, container, options ) {
-    var target = targetContainer.getBoundingClientRect(),
-        height = container.clientHeight,
-        width = container.clientWidth,
-        top = ui.position.top,
-        left = ui.position.left,
-        targetHeight = target.height,
-        targetWidth = target.width,
-        minHeightPix = targetHeight * ( ( options.minHeight || 0 ) / 100 ),
-        minWidthPix = targetWidth * ( ( options.minWidth || 0 ) / 100 );
+    function _updateFunction( e ) {
 
-    top = Math.max( 0, top );
-    left = Math.max( 0, left );
-    height = Math.max( minHeightPix, height );
-    width = Math.max( minWidthPix, width );
+      var trackEvent = e.target;
 
-    if ( ( container.offsetTop + height ) > targetHeight ) {
-      top = targetHeight - height;
+      if ( trackEvent.popcornTrackEvent && __plugins[ trackEvent.type ] ) {
+        __plugins[ trackEvent.type ].call( _this, trackEvent, butter.currentMedia.popcorn.popcorn, $ );
+      }
+    } //updateFunction
+
+    butter.listen( "trackeventupdated", _updateFunction );
+
+    // This fix is to ensure content-editable still updates correctly, and deals with ie9 not reading document.activeElement properly
+    function blurActiveEl() {
+     if ( document.activeElement && document.activeElement.blur ) {
+        document.activeElement.blur();
+      }
     }
 
-    if ( ( container.offsetLeft + width ) > targetWidth ) {
-      left = targetWidth - width;
+    function calculateFinalPositions( event, ui, trackEvent, targetContainer, container, options ) {
+      var target = targetContainer.getBoundingClientRect(),
+          height = container.clientHeight,
+          width = container.clientWidth,
+          top = ui.position.top,
+          left = ui.position.left,
+          targetHeight = target.height,
+          targetWidth = target.width,
+          minHeightPix = targetHeight * ( ( options.minHeight || 0 ) / 100 ),
+          minWidthPix = targetWidth * ( ( options.minWidth || 0 ) / 100 );
+
+      top = Math.max( 0, top );
+      left = Math.max( 0, left );
+      height = Math.max( minHeightPix, height );
+      width = Math.max( minWidthPix, width );
+
+      if ( ( container.offsetTop + height ) > targetHeight ) {
+        top = targetHeight - height;
+      }
+
+      if ( ( container.offsetLeft + width ) > targetWidth ) {
+        left = targetWidth - width;
+      }
+
+      height = ( height / targetHeight ) * 100;
+      width = ( width / targetWidth ) * 100;
+
+      if ( options.end ) {
+        options.end();
+      }
+
+      // Enforce container size here, instead of relying on the update.
+      container.style.width = width + "%";
+      container.style.height = height + "%";
+
+      blurActiveEl();
+
+      trackEvent.update({
+        height: height,
+        width: width,
+        top: ( top / targetHeight ) * 100,
+        left: ( left / targetWidth ) * 100
+      });
     }
 
-    height = ( height / targetHeight ) * 100;
-    width = ( width / targetWidth ) * 100;
-
-    if ( options.end ) {
-      options.end();
-    }
-
-    // Enforce container size here, instead of relying on the update.
-    container.style.width = width + "%";
-    container.style.height = height + "%";
-
-    blurActiveEl();
-
-    trackEvent.update({
-      height: height,
-      width: width,
-      top: ( top / targetHeight ) * 100,
-      left: ( left / targetWidth ) * 100
-    });
-  }
-
-  EditorHelper.init = function( butter ) {
-
-    global.EditorHelper.selectable = function( trackEvent, dragContainer ) {
+    _this.selectable = function( trackEvent, dragContainer ) {
 
       var highlight = function() {
 
@@ -127,7 +135,7 @@
      *                    {Function} start: Function to execute on drag start event
      *                    {Function} end: Fucntion to execute on drag end event
      */
-    global.EditorHelper.draggable = function( trackEvent, dragContainer, targetContainer, options ) {
+    _this.draggable = function( trackEvent, dragContainer, targetContainer, options ) {
       if ( $( dragContainer ).data( "draggable" ) ) {
         return;
       }
@@ -147,7 +155,7 @@
 
       if ( !options.disableTooltip ) {
         tooltipElement = document.createElement( "div" );
-        tooltipElement.innerHTML = options.tooltip || Butter.localized.get( "Double click to edit" );
+        tooltipElement.innerHTML = options.tooltip || Localized.get( "Double click to edit" );
         tooltipElement.classList.add( "butter-tooltip" );
         tooltipElement.classList.add( "butter-tooltip-middle" );
         dragContainer.appendChild( tooltipElement );
@@ -246,7 +254,7 @@
      *                    {Number} minWidth: Minimum width that the resizeContainer should be
      *                    {Number} minHeight: Minimum height that the resizeContainer should be
      */
-    global.EditorHelper.resizable = function( trackEvent, resizeContainer, targetContainer, options ) {
+    _this.resizable = function( trackEvent, resizeContainer, targetContainer, options ) {
       if ( $( resizeContainer ).data( "resizable" ) ) {
         return;
       }
@@ -305,7 +313,7 @@
      * @param {TrackEvent} trackEvent: The trackEvent to update when content changes
      * @param {DOMElement} contentContainer: the container which to listen for changes and set as editable
      */
-    global.EditorHelper.contentEditable = function( trackEvent, contentContainers ) {
+    _this.contentEditable = function( trackEvent, contentContainers ) {
       var newText = "",
           contentContainer,
           updateText,
@@ -351,8 +359,6 @@
 
         // Open the editor
         butter.editor.editTrackEvent( trackEvent );
-
-        $( contentContainer ).draggable( "destroy" );
       };
 
       for ( var i = 0, l = contentContainers.length; i < l; i++ ) {
@@ -375,7 +381,7 @@
      * @param {DOMElement} dropContainer: The container that listens for the drop events
      */
 
-    global.EditorHelper.droppable = function( trackEvent, dropContainer ) {
+    _this.droppable = function( trackEvent, dropContainer ) {
       dropContainer.addEventListener( "dragover", function( e ) {
         e.preventDefault();
         dropContainer.classList.add( "butter-dragover" );
@@ -409,18 +415,16 @@
         fd.append( "image", file );
 
 
-        require( [ "util/xhr" ], function( XHR ) {
-          XHR.put( "/api/image", fd, function( data ) {
-            if ( !data.error ) {
-              if ( trackEvent ) {
-                trackEvent.update( { src: data.url } );
-              }
-
-              butter.dispatch( "droppable-succeeded", data.url );
-            } else {
-              butter.dispatch( "droppable-upload-failed", data.error );
+        XHR.put( "/api/image", fd, function( data ) {
+          if ( !data.error ) {
+            if ( trackEvent ) {
+              trackEvent.update( { src: data.url } );
             }
-          });
+
+            butter.dispatch( "droppable-succeeded", data.url );
+          } else {
+            butter.dispatch( "droppable-upload-failed", data.error );
+          }
         });
 
         if ( trackEvent ) {
@@ -429,22 +433,13 @@
       }, false );
     };
 
-    function _updateFunction( e ) {
+    _this.addPlugin = function( plugin, callback ) {
+      __plugins[ plugin ] = callback;
+    };
 
-      var trackEvent = e.target;
+  }
 
-      if ( trackEvent.popcornTrackEvent && plugins[ trackEvent.type ] ) {
-        plugins[ trackEvent.type ]( trackEvent, butter.currentMedia.popcorn.popcorn );
-      }
-    } //updateFunction
+  return EditorHelper;
 
-    butter.listen( "trackeventupdated", _updateFunction );
-  };
+}); //define
 
-  EditorHelper.addPlugin = function( plugin, callback ) {
-    plugins[ plugin ] = callback;
-  };
-
-  global.EditorHelper = EditorHelper;
-
-}( window, window.jQuery ));

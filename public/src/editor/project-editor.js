@@ -5,8 +5,8 @@
 define([ "localized", "editor/editor", "editor/base-editor",
           "l10n!/layouts/project-editor.html",
           "util/social-media", "ui/widget/textbox",
-          "ui/widget/tooltip", "util/keys", "ui/widget/ProjectDetails" ],
-  function( Localized, Editor, BaseEditor, LAYOUT_SRC, SocialMedia, TextboxWrapper, ToolTip, KEYS, ProjectDetails ) {
+          "ui/widget/tooltip", "util/keys", "ui/widget/ProjectDetails", "editor/editorhelper" ],
+  function( Localized, Editor, BaseEditor, LAYOUT_SRC, SocialMedia, TextboxWrapper, ToolTip, KEYS, ProjectDetails, EditorHelper ) {
 
   Editor.register( "project-editor", LAYOUT_SRC, function( rootElement, butter ) {
 
@@ -38,6 +38,7 @@ define([ "localized", "editor/editor", "editor/base-editor",
         _project,
         _projectTab,
         _projectDetails,
+        _editorHelper = new EditorHelper( butter ),
         _idx;
 
     _backgroundInput.value = butter.project.background ? butter.project.background : "#FFFFFF";
@@ -89,7 +90,7 @@ define([ "localized", "editor/editor", "editor/base-editor",
     TextboxWrapper.applyTo( _projectURL, { readOnly: true } );
     TextboxWrapper.applyTo( _projectEmbedURL, { readOnly: true } );
 
-    window.EditorHelper.droppable( null, _dropArea );
+    _editorHelper.droppable( null, _dropArea );
 
     butter.listen( "droppable-unsupported", function unSupported() {
       _this.setErrorState( Localized.get( "Sorry, but your browser doesn't support this feature." ) );

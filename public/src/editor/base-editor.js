@@ -1,11 +1,9 @@
-/*globals $*/
-
 /* This Source Code Form is subject to the terms of the MIT license
  * If a copy of the MIT license was not distributed with this file, you can
  * obtain one at https://raw.github.com/mozilla/butter/master/LICENSE */
 
-define( [ "localized", "core/eventmanager", "util/scrollbars", "ui/widget/tooltip", "ui/widget/textbox" ],
-  function( Localized, EventManager, Scrollbars, ToolTip, TextboxWrapper ) {
+define( [ "localized", "core/eventmanager", "util/scrollbars", "ui/widget/tooltip", "ui/widget/textbox", "jquery" ],
+  function( Localized, EventManager, Scrollbars, ToolTip, TextboxWrapper, $ ) {
 
   /**
    * Class: BaseEditor
