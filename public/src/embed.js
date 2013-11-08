@@ -524,7 +524,9 @@ function init() {
 
               var href = img.photosetId || img.src || "http://www.flickr.com/search/?m=tags&q=" + img.tags,
                   text = img.src || img.photosetId || img.tags,
-                  icon = imgCont.querySelector( "img" );
+                  icon = document.createElement( "img" );
+
+              icon.classList.add( "media-icon" );
 
               imgCont.querySelector( "a" ).href = href;
               imgCont.querySelector( "a" ).innerHTML = text;
@@ -539,10 +541,12 @@ function init() {
               if ( img.tags || img.photosetId || MediaUtil.checkUrl( img.src ) === "Flickr" ) {
                 foundMatch = true;
                 icon.src += imgPrefix + "flickr-black.png";
+                imgCont.insertBefore( icon, imgCont.firstChild );
                 imagesContainer.appendChild( imgCont );
               } else if ( img.src.indexOf( "giphy" ) !== -1 ) {
                 foundMatch = true;
                 icon.src += imgPrefix + "giphy.png";
+                imgCont.insertBefore( icon, imgCont.firstChild );
                 imagesContainer.appendChild( imgCont );
               } else {
                 imgCont = null;

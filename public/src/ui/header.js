@@ -1,3 +1,4 @@
+/*globals TogetherJS*/
 define([ "WebmakerUI", "localized", "dialog/dialog", "util/lang", "l10n!/layouts/header.html", "ui/widget/textbox", "ui/widget/tooltip", "ui/widget/ProjectDetails" ],
   function( WebmakerUI, Localized, Dialog, Lang, HEADER_TEMPLATE, TextBoxWrapper, ToolTip, ProjectDetails ) {
 
@@ -24,6 +25,7 @@ define([ "WebmakerUI", "localized", "dialog/dialog", "util/lang", "l10n!/layouts
         _projectTitlePlaceHolderText = _projectName.innerHTML,
         _toolTip, _loginTooltip,
         _projectDetails = new ProjectDetails( butter ),
+        _togetherJS,
         _langSelector = _rootElement.querySelector( "#lang-picker" ),
         _togetherjsBtn = _rootElement.querySelector( ".together-toggle" );
 
@@ -66,7 +68,7 @@ define([ "WebmakerUI", "localized", "dialog/dialog", "util/lang", "l10n!/layouts
       TogetherJS.on( "close", toggleTogether( false ) );
 
       _togetherjsBtn.addEventListener( "click", function() {
-        TogetherJS( this );
+        _togetherJS = new TogetherJS( this );
       });
 
       if ( TogetherJS.running ) {
