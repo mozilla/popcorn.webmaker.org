@@ -2,8 +2,9 @@
  * If a copy of the MIT license was not distributed with this file, you can
  * obtain one at https://raw.github.com/mozilla/butter/master/LICENSE */
 
-define( [ "core/media", "core/track", "core/trackevent" ],
-        function( Media, Track, TrackEvent ) {
+/*globals TogetherJS*/
+define( [ "core/media", "core/track", "core/trackevent", "util/sanitizer" ],
+        function( Media, Track, TrackEvent, Sanitizer ) {
 
   // TogetherJSSyncer listens for particular Popcorn events that other Popcorns
   // connected through TogetherJS need to know about, i.e. ones where we need to
@@ -147,7 +148,7 @@ define( [ "core/media", "core/track", "core/trackevent" ],
       var mediaJson = projectJson.media[ 0 ],
           media = butter.getMediaById( mediaJson.id );
       if ( !media ) {
-        throw "Couldn't get requested media to sync on 'ahoy'."
+        throw "Couldn't get requested media to sync on 'ahoy'.";
       }
 
       for ( var i = 0; i < mediaJson.tracks.length; i++ ) {
