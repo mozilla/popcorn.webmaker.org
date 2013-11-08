@@ -38,6 +38,7 @@ define([ "localized", "editor/editor", "editor/base-editor",
         _numProjectTabs = _projectTabs.length,
         _project,
         _projectTab,
+        _projectDetails,
         _idx;
 
     _backgroundInput.value = butter.project.background ? butter.project.background : "#FFFFFF";
@@ -101,9 +102,8 @@ define([ "localized", "editor/editor", "editor/base-editor",
 
     butter.listen( "droppable-succeeded", function uploadSuceeded( e ) {
       _project.thumbnail = _dropArea.querySelector( "img" ).src = e.data;
-      _rootElement.querySelector( ".thumbnail-choices" ).value = _project.thumbnail;
-      ProjectDetails.addThumbnail( _project.thumbnail );
-      ProjectDetails.selectThumb( _project.thumbnail );
+      _projectDetails.addThumbnail( _project.thumbnail, _dropArea );
+      _projectDetails.selectThumb( _project.thumbnail );
     });
 
     function onProjectSaved() {
@@ -168,10 +168,10 @@ define([ "localized", "editor/editor", "editor/base-editor",
         _viewSourceBtn.href = "view-source:" + _project.iframeUrl;
         updateEmbed( _project.iframeUrl );
 
-        var projectDetails = new ProjectDetails( butter );
-        projectDetails.tags( _settingsContainer );
-        projectDetails.thumbnail( _settingsContainer );
-        projectDetails.description( _settingsContainer );
+        _projectDetails = new ProjectDetails( butter );
+        _projectDetails.tags( _settingsContainer );
+        _projectDetails.thumbnail( _settingsContainer, _dropArea );
+        _projectDetails.description( _settingsContainer );
 
         _previewBtn.onclick = function() {
           return _project.isSaved && butter.cornfield.authenticated();

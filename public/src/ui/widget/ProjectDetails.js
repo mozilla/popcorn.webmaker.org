@@ -12,12 +12,16 @@ define( [ "util/keys", "ui/widget/tooltip", "localized", "ui/widget/textbox" ],
         _thumbnailInput,
         _thumbnailUl;
 
-    function addThumbnail( url ) {
+    function addThumbnail( url, dropArea ) {
       var li = document.createElement( "li" ),
           image = _thumbnailUl.querySelector( "[data-source='" + url + "']" );
 
       if ( image ) {
         return;
+      }
+
+      if ( dropArea ) {
+        dropArea.querySelector( "img" ).src = url;
       }
 
       li.setAttribute( "data-source", url );
@@ -32,6 +36,11 @@ define( [ "util/keys", "ui/widget/tooltip", "localized", "ui/widget/textbox" ],
 
         e.target.classList.add( "selected" );
         _butter.project.thumbnail = source;
+
+        if ( dropArea ) {
+          dropArea.querySelector( "img" ).src = source;
+        }
+
         _thumbnailInput.value = _butter.project.thumbnail;
       }, false );
 
@@ -139,7 +148,7 @@ define( [ "util/keys", "ui/widget/tooltip", "localized", "ui/widget/textbox" ],
         }
       },
 
-      thumbnail: function( container ) {
+      thumbnail: function( container, dropArea ) {
        var source,
            events;
         _thumbnailInput = container.querySelector( ".thumbnail-input" );
@@ -158,15 +167,26 @@ define( [ "util/keys", "ui/widget/tooltip", "localized", "ui/widget/textbox" ],
             // This means we only have one thumbnail and it's the default,
             // so we should make the new one the current thumbnail.
             if ( _thumbnailUl.childNodes.length === 1 && _butter.project.thumbnail.indexOf( "/resources/icons/fb-logo.png" ) >= 0 ) {
-              addThumbnail( src );
+              addThumbnail( src, dropArea );
               selectThumb( src );
               _butter.project.thumbnail = src;
             } else {
-              addThumbnail( src );
+              addThumbnail( src, dropArea );
             }
             return;
           }
         }
+
+        _thumbnailInput.addEventListener( "blur", function( e ) {
+          var source = e.target.value;
+
+          if ( source !== _butter.project.thumbnail ) {
+            _butter.project.thumbnail = source;
+            addThumbnail( source, dropArea );
+            selectThumb( source );
+          }
+
+        }, false );
 
         if ( !_thumbnailUl.childNodes.length ) {
           events = _butter.getTrackEvents( "type", "image" ).concat( _butter.getTrackEvents( "type", "sequencer" ) );
@@ -179,7 +199,7 @@ define( [ "util/keys", "ui/widget/tooltip", "localized", "ui/widget/textbox" ],
                 _butter.project.thumbnail = source;
               }
 
-              addThumbnail( source );
+              addThumbnail( source, dropArea );
             }
           }
 
@@ -190,7 +210,7 @@ define( [ "util/keys", "ui/widget/tooltip", "localized", "ui/widget/textbox" ],
             _butter.project.thumbnail = location.protocol + "//" + location.host + "/resources/icons/fb-logo.png";
           }
 
-          addThumbnail( _butter.project.thumbnail );
+          addThumbnail( _butter.project.thumbnail, dropArea );
           selectThumb( _butter.project.thumbnail );
 
           _butter.listen( "trackeventadded", trackEventHandle );
