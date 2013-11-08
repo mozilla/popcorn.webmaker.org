@@ -355,12 +355,14 @@ function init() {
       "util/lang",
       "ui/widget/controls",
       "ui/widget/textbox",
+      "ui/resizeHandler",
       "util/mediatypes",
       "text!layouts/attribution.html",
       "util/accepted-ua",
       "popcorn"
     ],
-    function( URI, LangUtil, Controls, TextboxWrapper, MediaUtil, DEFAULT_LAYOUT_SNIPPETS ) {
+    function( URI, LangUtil, Controls, TextboxWrapper, resizeHandler, MediaUtil, DEFAULT_LAYOUT_SNIPPETS ) {
+
       var __defaultLayouts = LangUtil.domFragment( DEFAULT_LAYOUT_SNIPPETS );
       /**
        * Expose Butter so we can get version info out of the iframe doc's embed.
@@ -416,6 +418,9 @@ function init() {
         branding: qs.branding === "0" ? false : true,
         showinfo: qs.showinfo === "0" ? false : true
       };
+
+      resizeHandler();
+      window.addEventListener( "resize", resizeHandler, false );
 
       Controls.create( "controls", {
         onShareClick: function() {
