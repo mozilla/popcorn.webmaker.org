@@ -30,6 +30,6 @@ EditorHelper.addPlugin( "text", function( trackEvent ) {
     });
 
     EditorHelper.selectable( trackEvent, _container );
-    EditorHelper.contentEditable( trackEvent, _container.querySelectorAll( ".popcorn-text div span" ) );
+    EditorHelper.contentEditable( trackEvent, _container.querySelectorAll( ".text-inner-div > span" ) );
   }
 });
