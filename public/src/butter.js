@@ -925,7 +925,6 @@ window.Butter = {
                       from: data.from,
                       duration: data.duration,
                       target: "video-container",
-                      fallback: "",
                       zindex: 1000,
                       id: "TrackEvent1",
                       thumbnailSrc: data.thumbnail

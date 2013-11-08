@@ -364,8 +364,6 @@ define( [ "util/mediatypes", "editor/editor", "util/time",
 
       var sourceEl = _rootElement.querySelector( "[data-manifest-key=source]" ),
           startEndContainer = _rootElement.querySelector( ".start-end-container" ),
-          fallbackEl = _rootElement.querySelector( "[data-manifest-key=fallback]" ),
-          fallbackContainer = _rootElement.querySelector( ".fallback-container" ),
           muteEl = _rootElement.querySelector( "#mute-toggler" ),
           hiddenEl = _rootElement.querySelector( "#hidden-toggler" ),
           titleEl = _rootElement.querySelector( "[data-manifest-key=title]" ),
@@ -378,9 +376,6 @@ define( [ "util/mediatypes", "editor/editor", "util/time",
       var sourceCallback = function( trackEvent, updateOptions ) {
         if ( !Array.isArray( updateOptions.source ) ) {
           updateOptions.source = [ updateOptions.source ];
-        }
-        if ( _mediaType && _mediaType !== "HTML5" ) {
-          updateOptions.fallback = [ "" ];
         }
         updateOptions.source[ 0 ] = updateOptions.source[ 0 ] || _popcornOptions.source[ 0 ];
 
@@ -425,14 +420,10 @@ define( [ "util/mediatypes", "editor/editor", "util/time",
 
         _mediaType = MediaUtils.checkUrl( source );
 
-        if ( _mediaType === "HTML5" ) {
-          fallbackContainer.classList.add( "show" );
-        } else if ( _mediaType === "SoundCloud" ) {
+        if ( _mediaType === "SoundCloud" ) {
           videoToggleContainer.classList.add( "butter-hidden" );
-          fallbackContainer.classList.remove( "show" );
         } else {
           videoToggleContainer.classList.remove( "butter-hidden" );
-          fallbackContainer.classList.remove( "show" );
         }
 
         if ( _mediaType === "Archive" ) {
@@ -440,14 +431,6 @@ define( [ "util/mediatypes", "editor/editor", "util/time",
         } else {
           el.value = URI.stripUnique( source ).toString();
         }
-      },
-      fallbackUpdateUI = function( el ) {
-        if ( !_popcornOptions.fallback || !_popcornOptions.fallback.length ) {
-          return;
-        } else if ( !Array.isArray( _popcornOptions.fallback ) ) {
-          _popcornOptions.fallback = [ _popcornOptions.fallback ];
-        }
-        el.value = URI.stripUnique( _popcornOptions.fallback[ 0 ] ).toString();
       },
       muteUpdateUI = function() {
         if ( _popcornOptions.mute === true ) {
@@ -459,7 +442,6 @@ define( [ "util/mediatypes", "editor/editor", "util/time",
 
       _fields.startEnd = new StartEnd( startEndContainer, "start", _this.updateTrackEventSafe );
       _fields.source = new Input( sourceEl, "source", sourceCallback, sourceUpdateUI );
-      _fields.fallback = new Input( fallbackEl, "fallback", _this.updateTrackEventSafe, fallbackUpdateUI );
       _fields.title = new Input( titleEl, "title", _this.updateTrackEventSafe );
       _fields.mute = new Toggler( muteEl, "mute", "reverse", muteUpdateUI );
       _fields.hidden = new Toggler( hiddenEl, "hidden", "reverse" );
@@ -468,7 +450,6 @@ define( [ "util/mediatypes", "editor/editor", "util/time",
       _this.attachSliderChangeHandler( sliderEl, _trackEvent, "volume" );
 
       Textbox.applyTo( _fields.source.el, "textarea" );
-      Textbox.applyTo( _fields.fallback.el, "textarea" );
 
     } //setup
 
