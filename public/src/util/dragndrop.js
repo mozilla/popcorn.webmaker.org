@@ -391,7 +391,7 @@ define( [ "core/eventmanager", "util/lang", "util/scroll-group" ],
         mousePosition = e.clientX;
         if ( _updateInterval === -1 ) {
           _lastDims = [];
-          _resizeEvent.direction = 'left';
+          _resizeEvent.direction = "left";
           _updateInterval = setInterval( update, SCROLL_INTERVAL );
           _onStart( _resizeEvent );
         }
@@ -478,7 +478,7 @@ define( [ "core/eventmanager", "util/lang", "util/scroll-group" ],
         mousePosition = e.clientX;
         if ( _updateInterval === -1 ) {
           _lastDims = [];
-          _resizeEvent.direction = 'right';
+          _resizeEvent.direction = "right";
           _updateInterval = setInterval( update, SCROLL_INTERVAL );
           _onStart( _resizeEvent );
         }
@@ -699,7 +699,7 @@ define( [ "core/eventmanager", "util/lang", "util/scroll-group" ],
         element.removeEventListener( "dragover", onDragOver, false );
         element.removeEventListener( "dragenter", onDragEnter, false );
         element.removeEventListener( "dragleave", onDragLeave, false );
-      },
+      }
     };
 
     Object.defineProperties( _droppable, {

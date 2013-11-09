@@ -13,7 +13,6 @@ define([ "localized", "editor/editor", "editor/base-editor",
     var _rootElement = rootElement,
         _socialMedia = new SocialMedia(),
         _projectURL = _rootElement.querySelector( ".butter-project-url" ),
-        _descriptionInput = _rootElement.querySelector( ".butter-project-description" ),
         _dropArea = _rootElement.querySelector( ".image-droparea" ),
         _backgroundInput = _rootElement.querySelector( ".butter-project-background-colour" ),
         _colorContainer = _rootElement.querySelector( ".color-container" ),
@@ -142,12 +141,9 @@ define([ "localized", "editor/editor", "editor/base-editor",
 
     Editor.BaseEditor.extend( this, butter, rootElement, {
       open: function() {
-        var events,
-            source;
-
         _project = butter.project;
 
-        this.attachColorChangeHandler( _colorContainer, null, "background", function( te, options, message, prop ) {
+        this.attachColorChangeHandler( _colorContainer, null, "background", function( te, options, message ) {
           if ( message ) {
             _this.setErrorState( message );
             return;

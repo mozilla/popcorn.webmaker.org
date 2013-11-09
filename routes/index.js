@@ -1,5 +1,3 @@
-'use strict';
-
 module.exports = {
   api: require( "./api" ),
   make: require( "./make" ),

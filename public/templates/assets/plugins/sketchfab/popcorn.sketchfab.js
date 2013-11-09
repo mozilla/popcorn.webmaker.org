@@ -11,7 +11,7 @@
   }
 
   function setupIframe( options ) {
-    var iframe, src, iframeOptions;
+    var iframe, src;
 
     if ( options._sketchfabAPI ) {
       options._sketchfabAPI._preventStartFlag = true;
@@ -48,7 +48,7 @@
           stop_button: 0
         };
 
-        SketchfabQuery.when( api.load( src, sketchfabOptions ) ).then( function( data ) {
+        SketchfabQuery.when( api.load( src, sketchfabOptions ) ).then( function() {
           if ( !api._preventStartFlag ) {
             api.start();
           }

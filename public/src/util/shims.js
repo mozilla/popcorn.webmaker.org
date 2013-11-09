@@ -20,7 +20,7 @@ define([], function(){
 
   /*************************************************************************/
   // Support createContextualFragment when missing (IE9)
-  if ( 'Range' in window &&
+  if ( "Range" in window &&
        !Range.prototype.createContextualFragment ) {
 
     // Implementation used under MIT License, http://code.google.com/p/rangy/

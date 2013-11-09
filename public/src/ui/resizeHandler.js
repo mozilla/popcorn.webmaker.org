@@ -1,4 +1,4 @@
-define([ "localized" ], function( Localized ) {
+define([], function() {
 
   return function() {
     var container = document.querySelector( ".video-container" ),

@@ -32,7 +32,7 @@
       defaultValue: "./",
       validate: function( value ){
         // Make sure value ends in a trailing /
-        return value.replace( /\/?$/, '/' );
+        return value.replace( /\/?$/, "/" );
       }
     }
 
@@ -40,7 +40,7 @@
 
   /**
    * Validates any variable value being set, for example,
-   * making sure paths end in '/'.
+   * making sure paths end in "/".
    */
   function __validateVariable( property, value ){
     var variable = __variables[ property ];

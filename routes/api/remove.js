@@ -39,7 +39,7 @@ module.exports = function( req, res, next ) {
       publishUrl,
       publishUrlEdit,
       publishUrlRemix
-    ], removeUrl, function( err, results ) {
+    ], removeUrl, function( err ) {
       if ( err ) {
         return next( utils.error( 500, err.toString() ) );
       }

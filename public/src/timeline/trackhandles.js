@@ -5,8 +5,6 @@
 define( [ "dialog/dialog", "util/dragndrop", "util/lang", "text!layouts/track-handle.html" ],
   function( Dialog, DragNDrop, LangUtils, TRACK_HANDLE_LAYOUT ) {
 
-  var ADD_TRACK_BUTTON_Y_ADJUSTMENT = 37;
-
   return function( butter, media, mediaInstanceRootElement, tracksContainer ) {
 
     var _media = media,

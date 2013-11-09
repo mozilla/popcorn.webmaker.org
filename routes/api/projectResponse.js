@@ -49,7 +49,7 @@ module.exports = function( Project ) {
             }
 
             if ( req.isRemix ) {
-              metrics.increment( 'user.remix' );
+              metrics.increment( "user.remix" );
             }
 
             res.json( req.projectJSON );

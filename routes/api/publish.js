@@ -11,9 +11,6 @@ module.exports = function( req, res ) {
       publishUrl = utilities.embedShellURL( req.session.username, res.locals.project.id ),
       projectUrl = "/editor/" + res.locals.project.id;
 
-  var mediaUrl = projectData.media[ 0 ].url,
-      attribURL = Array.isArray( mediaUrl ) ? mediaUrl[ 0 ] : mediaUrl;
-
   async.parallel([
     function( asyncCallback ) {
       res.render( "embed.html", {
@@ -147,8 +144,8 @@ module.exports = function( req, res ) {
           asyncCallback();
         }).end( html );
       });
-    },
-  ], function( err, results ) {
+    }
+  ], function( err ) {
     if ( err ) {
       metrics.increment( "project.publish.error" );
       return res.json(500, { error: err });
