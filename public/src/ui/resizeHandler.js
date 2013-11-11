@@ -21,7 +21,6 @@ define([], function() {
       wrapper = video;
     }
     container = wrapper.parentNode;
-console.log(container);
 
     wrapper.style.width = ( container.clientWidth - borderOffset - marginOffset ) + "px";
     wrapper.style.margin = margin + "px " + margin + "px";
