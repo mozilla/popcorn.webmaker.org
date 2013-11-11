@@ -4,6 +4,29 @@
 
 
 /*****
+ ** Message-box styling
+ */
+.messageBox {
+  width: 100%;
+  display: block;
+};
+
+.messageBox p {
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 0;
+  margin-bottom: 0;
+
+  width: 60%;
+
+  text-align: center;
+  font-weight: bold;
+
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+/*****
  ** Keyboard Styles
  */
 
@@ -21,6 +44,9 @@
   font-size: 0.8em;
   z-index: 2000;
 
+  visibility: visible;
+  opacity: 1;
+
   /***
    * CSS TRANSITION CONFIG
    **
@@ -31,11 +57,11 @@
    *
    * See `interaction-editor.js` for more.
    **/
-  -moz-transition: opacity 1s;
-  -webkit-transition: opacity 1s;
-  -ms-transition: opacity 1s;
-  -o-transition: opacity 1s;
-  transition: opacity 1s;
+  -moz-transition: opacity 1s, visibility 1s;
+  -webkit-transition: opacity 1s, visbility 1s;
+  -ms-transition: opacity 1s, visibility 1s;
+  -o-transition: opacity 1s, visibility 1s;
+  transition: opacity 1s, visibility 1s;
 }
 
 .keyboard-row {
@@ -107,8 +133,13 @@
   }
 }
 
-.off {
+.keyOff {
   display: none;
+}
+
+.off {
+  opacity: 0;
+  visibility: hidden;
 }
 
 /* Colour styling */
@@ -118,6 +149,13 @@
 
 .invalid {
   background-color: #FF3121;
+}
+
+.key.key_backspace.valid, .key.key_macBackspace.valid, .key.key_shift.valid, .key.key_tab.valid, .key.key_ctrl.valid, .key.key_meta.valid,
+.key.key_macMeta.valid, .key.key_alt.valid, .key.key_macAlt.valid, .key.key_capslock.valid, .key.key_enter.valid, .key.key_macEnter.valid,
+.key.key_space.valid {
+  border: dashed black 2px;
+  background-color: #CFF0BB;
 }
 
 /* Individual keys */

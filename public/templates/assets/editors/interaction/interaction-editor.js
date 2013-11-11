@@ -21,13 +21,17 @@
       e.stopPropagation();
     }
 
-    // Listen for start/stop and disable/enable keyboard shortcuts
-    _popcorn.on( "interactionStart", function() {
+    function blockShortcuts() {
       window.addEventListener( "keydown", stopPropagation, false )
-    });
-    _popcorn.on( "interactionEnd", function() {
+    }
+
+    function unblockShortcuts() {
       window.removeEventListener( "keydown", stopPropagation, false );
-    });
+    }
+
+    // Listen for start/stop and disable/enable keyboard shortcuts
+    _popcorn.on( "interactionStart", blockShortcuts );
+    _popcorn.on( "interactionEnd", unblockShortcuts );
 
     /**
      * Member: setup
@@ -76,13 +80,13 @@
             } else if ( elementType === "input" ) {
               if ( key === "combo1" ) {
                 _this.attachInputChangeHandler( element, trackEvent, key, _this.updateTrackEventSafe );
-                _mousetrapHelper.bindInputTag( element, sequences[ 0 ] );
+                _mousetrapHelper.bindInputTag( element, sequences[ 0 ], unblockShortcuts, blockShortcuts );
               } else if ( key === "combo2" ) {
                 _this.attachInputChangeHandler( element, trackEvent, key, _this.updateTrackEventSafe );
-                _mousetrapHelper.bindInputTag( element, sequences[ 1 ] );
+                _mousetrapHelper.bindInputTag( element, sequences[ 1 ], unblockShortcuts, blockShortcuts );
               } else if ( key === "combo3" ) {
                 _this.attachInputChangeHandler( element, trackEvent, key, _this.updateTrackEventSafe );
-                _mousetrapHelper.bindInputTag( element, sequences[ 2 ] );
+                _mousetrapHelper.bindInputTag( element, sequences[ 2 ], unblockShortcuts, blockShortcuts );
               }
 
               element.setAttribute( "readonly", "readonly" );

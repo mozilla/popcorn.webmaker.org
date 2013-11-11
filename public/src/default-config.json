@@ -39,7 +39,7 @@
       },
       {
         "type": "interaction",
-        "icon": "{{baseDir}}templates/assets/plugins/text/text-icon.png"
+        "icon": "{{baseDir}}templates/assets/plugins/interaction/interaction-icon.png"
       },
       {
         "type": "loopPlugin",
