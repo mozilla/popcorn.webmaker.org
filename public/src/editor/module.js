@@ -8,12 +8,12 @@
  * Butter Module for Editors
  */
 define( [ "localized", "core/eventmanager", "core/trackevent", "./editor",
-          "ui/toggler", "util/lang", "l10n!/layouts/editor-area.html",
+          "ui/toggler", "ui/resizeHandler", "util/lang", "l10n!/layouts/editor-area.html",
           "./default", "core/logger", "./header", "./editorhelper",
           // Included here to register themselves.
           "./media-gallery-editor", "./project-editor", "./sequencer-editor", "./tutorial-editor" ],
   function( Localized, EventManager, TrackEvent, Editor,
-            Toggler, LangUtils, EDITOR_AREA_LAYOUT,
+            Toggler, resizeHandler, LangUtils, EDITOR_AREA_LAYOUT,
             DefaultEditor, Logger, Header, EditorHelper ){
 
   var DEFAULT_EDITOR_NAME = "plugin-list";
@@ -47,6 +47,7 @@ define( [ "localized", "core/eventmanager", "core/trackevent", "./editor",
     _editorHelper = new EditorHelper( butter );
 
     _header = new Header( _editorAreaDOMRoot, _this );
+    LangUtils.applyTransitionEndListener( _editorAreaDOMRoot, resizeHandler );
 
     /**
      * Member: openEditor

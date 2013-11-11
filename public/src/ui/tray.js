@@ -2,10 +2,10 @@
  * If a copy of the MIT license was not distributed with this file, you can
  * obtain one at https://raw.github.com/mozilla/butter/master/LICENSE */
 
-define( [ "util/lang",  "./logo-spinner",
+define( [ "util/lang",  "./logo-spinner", "./resizeHandler",
           "text!layouts/tray.html",
           "l10n!/layouts/status-area.html", "text!layouts/timeline-area.html" ],
-  function( LangUtils, LogoSpinner,
+  function( LangUtils, LogoSpinner, resizeHandler,
             TRAY_LAYOUT,
             STATUS_AREA_LAYOUT, TIMELINE_AREA_LAYOUT ) {
 
@@ -25,6 +25,8 @@ define( [ "util/lang",  "./logo-spinner",
 
     this.statusArea.appendChild( statusAreaFragment );
     this.timelineArea.appendChild( timelineAreaFragment );
+
+    LangUtils.applyTransitionEndListener( trayRoot, resizeHandler );
 
     addTrackButton.addEventListener( "click", function() {
       butter.currentMedia.addTrack( null, true );
