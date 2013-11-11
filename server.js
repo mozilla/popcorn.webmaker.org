@@ -18,7 +18,9 @@ var express = require( "express" ),
     APP_HOSTNAME = config.hostname,
     WWW_ROOT =  __dirname + "/public",
     i18n = require( "webmaker-i18n" ),
-    emulate_s3 = config.S3_EMULATION || !config.S3_KEY;
+    emulate_s3 = config.S3_EMULATION || !config.S3_KEY,
+    messina,
+    logger;
 
 nunjucksEnv.addFilter( "instantiate", function( input ) {
     var tmpl = new nunjucks.Template( input );
@@ -30,7 +32,15 @@ nunjucksEnv.express( app );
 app.configure( function() {
   var tmpDir = path.normalize( require( "os" ).tmpDir() + "/mozilla.butter/" );
 
-  app.use( express.logger( config.logger ) );
+  if ( config.ENABLE_GELF_LOGS ) {
+    messina = require( "messina" );
+    logger = messina( "popcorn.webmaker.org-" + config.NODE_ENV || "development" );
+    logger.init();
+    app.use(logger.middleware());
+  } else {
+    app.use(express.logger());
+  }
+
   app.use( "/static/bower", express.static( path.join( __dirname, "/bower_components" ), {
     maxAge: "31556952000" // one year
   }));
