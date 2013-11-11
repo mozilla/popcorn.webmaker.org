@@ -920,6 +920,52 @@ textarea {
 }
 
 /*********************************************************
+* Hotspot
+*/
+
+.frame-selector, .hotspot-selector {
+  height: 100px !important;
+  width: 90% !important;
+}
+
+.frame-sort-menu, .hotspot-sort-menu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  position: absolute;
+  top: 40px;
+  margin-top: -1px;
+  border-radius: 0 2px 2px 2px;
+  right: 5px;
+  width: 45px;
+
+  .icon {
+    font-size: 16px;
+    display: inline-block;
+    width: 16px;
+  }
+  // The link inside the menu item
+  > li > a {
+    cursor: default;
+    color: @baseText;
+    padding: 0 15px;
+    min-width: 16px;
+    border: none;
+    display: block;
+    text-decoration: none;
+    line-height: 30px;
+
+    > span {
+      cursor: pointer;
+    }
+  }
+}
+
+.hotspot-sort-menu {
+  top: 360px;
+}
+
+/*********************************************************
 * Tutorial
 */
 

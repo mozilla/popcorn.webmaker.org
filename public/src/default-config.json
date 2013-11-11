@@ -38,6 +38,10 @@
         "icon": "{{baseDir}}templates/assets/plugins/image/image-icon.png"
       },
       {
+        "type": "hotspot",
+        "icon": "{{baseDir}}templates/assets/plugins/hotspot/hotspot-icon.png"
+      },
+      {
         "type": "loopPlugin",
         "displayName": "loop",
         "icon": "{{baseDir}}templates/assets/plugins/loopPlugin/loop-icon.png"

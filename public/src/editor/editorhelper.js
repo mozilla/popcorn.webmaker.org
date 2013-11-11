@@ -32,7 +32,8 @@ define( [ "util/xhr", "localized", "jquery" ], function( XHR, Localized, $ ) {
           targetHeight = target.height,
           targetWidth = target.width,
           minHeightPix = targetHeight * ( ( options.minHeight || 0 ) / 100 ),
-          minWidthPix = targetWidth * ( ( options.minWidth || 0 ) / 100 );
+          minWidthPix = targetWidth * ( ( options.minWidth || 0 ) / 100 ),
+          dimensions;
 
       top = Math.max( 0, top );
       left = Math.max( 0, left );
@@ -50,22 +51,24 @@ define( [ "util/xhr", "localized", "jquery" ], function( XHR, Localized, $ ) {
       height = ( height / targetHeight ) * 100;
       width = ( width / targetWidth ) * 100;
 
-      if ( options.end ) {
-        options.end();
-      }
-
       // Enforce container size here, instead of relying on the update.
       container.style.width = width + "%";
       container.style.height = height + "%";
 
       blurActiveEl();
 
-      trackEvent.update({
+      dimensions = {
         height: height,
         width: width,
         top: ( top / targetHeight ) * 100,
         left: ( left / targetWidth ) * 100
-      });
+      };
+
+      if ( options.end ) {
+        options.end( dimensions, container );
+      } else {
+        trackEvent.update( dimensions );
+      }
     }
 
     _this.selectable = function( trackEvent, dragContainer ) {

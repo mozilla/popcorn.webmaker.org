@@ -277,6 +277,7 @@ app.get( "/templates/assets/editors/popup/popup-editor.html", routes.path( "/plu
 app.get( "/templates/assets/editors/image/image-editor.html", routes.path( "/plugins/image-editor.html" ) );
 app.get( "/templates/assets/editors/text/text-editor.html", routes.path( "/plugins/text-editor.html" ) );
 app.get( "/templates/assets/editors/wikipedia/wikipedia-editor.html", routes.path( "/plugins/wikipedia-editor.html" ) );
+app.get( "/templates/assets/editors/hotspot/hotspot-editor.html", routes.path( "/plugins/hotspot-editor.html" ) );
 app.get( "/templates/assets/editors/sketchfab/sketchfab-editor.html", routes.path( "/plugins/sketchfab-editor.html" ) );
 
 // Localized Strings
