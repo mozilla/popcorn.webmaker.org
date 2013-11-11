@@ -6,12 +6,14 @@ define( [ "core/eventmanager", "./toggler",
           "./header", "./unload-dialog", "crashreporter",
           "first-run", "./tray", "editor/ui-kit",
           "core/trackevent", "dialog/dialog",
-          "util/dragndrop", "localized", "make-api", "json!/api/butterconfig" ],
+          "util/dragndrop", "localized", "make-api",
+          "./resizeHandler", "json!/api/butterconfig" ],
   function( EventManager, Toggler, Header,
             UnloadDialog, CrashReporter,
             FirstRun, Tray, UIKitDummy,
             TrackEvent, Dialog,
-            DragNDrop, Localized, Make, config ){
+            DragNDrop, Localized, Make,
+            resizeHandler, config ){
 
   var TRANSITION_DURATION = 500,
       BUTTER_CSS_FILE = "{css}/butter.ui.css";
@@ -671,6 +673,8 @@ define( [ "core/eventmanager", "./toggler",
     _this.loadIndicator.start();
 
     butter.listen( "ready", function(){
+      resizeHandler();
+      window.addEventListener( "resize", resizeHandler, false );
       _this.loadIndicator.stop();
       _this.visible = true;
       _this.tray.show();

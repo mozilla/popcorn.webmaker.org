@@ -106,32 +106,6 @@ body.editor-minimized .body-wrapper {
 .video-container {
   @baseFontSize: 14px;
   position: relative;
-  @media @small {
-    font-size: @baseFontSize;
-  }
-  @media @medium {
-    font-size: @baseFontSize * ( @medium-w / @small-w );
-  }
-  @media @large {
-    font-size: @baseFontSize * ( @large-w / @small-w );
-  }
-  @media @xlarge {
-    font-size: @baseFontSize * ( @xlarge-w / @small-w );
-  }
-  .butter-header-spacing & {
-    @media @small-in-editor {
-      font-size: @baseFontSize;
-    }
-    @media @medium-in-editor {
-      font-size: @baseFontSize * ( @medium-w / @small-w );
-    }
-    @media @large-in-editor {
-      font-size: @baseFontSize * ( @large-w / @small-w );
-    }
-    @media @xlarge-in-editor {
-      font-size: @baseFontSize * ( @xlarge-w / @small-w );
-    }
-  }
 }
 
 .video {
