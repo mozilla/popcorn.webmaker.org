@@ -1,6 +1,7 @@
 /*globals TogetherJS*/
-define([ "WebmakerUI", "localized", "dialog/dialog", "util/lang", "l10n!/layouts/header.html", "ui/widget/textbox", "ui/widget/tooltip", "ui/widget/ProjectDetails" ],
-  function( WebmakerUI, Localized, Dialog, Lang, HEADER_TEMPLATE, TextBoxWrapper, ToolTip, ProjectDetails ) {
+define([ "WebmakerUI", "localized", "dialog/dialog", "util/lang", "l10n!/layouts/header.html", "ui/widget/textbox", "ui/widget/tooltip",
+         "ui/widget/ProjectDetails", "util/togetherjs-syncer" ],
+  function( WebmakerUI, Localized, Dialog, Lang, HEADER_TEMPLATE, TextBoxWrapper, ToolTip, ProjectDetails, TogetherJSSyncer ) {
 
   return function( butter, options ){
 
@@ -23,7 +24,8 @@ define([ "WebmakerUI", "localized", "dialog/dialog", "util/lang", "l10n!/layouts
         _projectDetails = new ProjectDetails( butter ),
         _togetherJS,
         _langSelector = _rootElement.querySelector( "#lang-picker" ),
-        _togetherjsBtn = _rootElement.querySelector( ".together-toggle" );
+        _togetherjsBtn = _rootElement.querySelector( ".together-toggle" ),
+        _togetherJSSyncer;
 
     // URL redirector for language picker
     WebmakerUI.langPicker( _langSelector );
@@ -52,6 +54,8 @@ define([ "WebmakerUI", "localized", "dialog/dialog", "util/lang", "l10n!/layouts
 
     // Feature flag might not be enabled.
     if ( _togetherjsBtn ) {
+      _togetherJSSyncer = new TogetherJSSyncer( butter );
+
       var toggleTogether = function( started ) {
         return function() {
           _togetherjsBtn.innerHTML = started ? Localized.get( "Go it alone" ) : Localized.get( "Collaborate" );

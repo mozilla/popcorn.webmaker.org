@@ -4,6 +4,7 @@ module.exports.editor = function( req, res ) {
   res.render( "editor.html", {
     csrf: req.session._csrf,
     personaEmail: req.session.email,
-    togetherjs: config.TOGETHERJS
+    togetherjs: config.TOGETHERJS,
+    togetherjsEnabled: config.TOGETHERJS_ENABLED
   });
 };
