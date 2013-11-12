@@ -43,7 +43,7 @@ window.Butter = {
             "util/xhr", "util/lang", "util/tutorial",
             "text!default-config.json",
             "ui/widget/tooltip", "crashreporter", "core/project",
-            "localized", "util/uri", "util/mediatypes", "util/togetherjs-syncer",
+            "localized", "util/uri", "util/mediatypes",
             "util/accepted-ua"
           ],
           function(
@@ -54,7 +54,7 @@ window.Butter = {
             xhr, Lang, Tutorial,
             DEFAULT_CONFIG_JSON,
             ToolTip, CrashReporter, Project,
-            Localized, URI, MediaUtil, TogetherJSSyncer
+            Localized, URI, MediaUtil
           ){
 
     var __guid = 0;
@@ -85,8 +85,7 @@ window.Butter = {
           _sortedSelectedEvents = [],
           _defaultPopcornScripts = {},
           _defaultPopcornCallbacks = {},
-          _defaultTrackeventDuration,
-          _togetherJSSyncer;
+          _defaultTrackeventDuration;
 
       _this.pluginDefaults = _pluginDefaults;
 
@@ -104,7 +103,6 @@ window.Butter = {
       }
 
       EventManager.extend( _this );
-      _togetherJSSyncer = new TogetherJSSyncer( _this );
 
       // Leave a reference on the instance to expose dialogs to butter users at runtime.
       // Especially good for letting people use/create dialogs without being in the butter core.
