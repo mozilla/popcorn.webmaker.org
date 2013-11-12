@@ -22,7 +22,7 @@
 	"Center": "Center",
 	"Change the name of your project": "Change the name of your project",
 	"Clear Events": "Clear Events",
-	"Click to remove warning": "Click <a href=\"#\" class=\"close-button\">here</a> to remove this warning.",
+	"Click to remove warning": "Click <i class=\"icon-remove boxclose\" id="boxclose"></i> to remove this warning.",
 	"Clip editor": "Clip editor",
 	"Clip Title": "Clip Title",
 	"Clip title": "Clip title",
