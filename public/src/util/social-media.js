@@ -5,7 +5,6 @@
 /*
  * Thanks to Atul and Pomax for this! https://github.com/toolness/friendlycode/blob/gh-pages/js/fc/ui/social-media.js
  */
-"use strict";
 
 /**
  * A tiny library for load-loading social media share buttons.

@@ -65,7 +65,6 @@
       var highlight = function() {
 
         var media,
-            manifest,
             manifestOptions,
             track = trackEvent.track;
 
@@ -139,7 +138,6 @@
 
       var el = document.createElement( "div" ),
           stopPropagation = false,
-          toolTip,
           onBlur,
           onStopPropagation,
           onMouseDown,

@@ -2,7 +2,6 @@
  * If a copy of the MIT license was not distributed with this file, you can
  * obtain one at https://raw.github.com/mozilla/butter/master/LICENSE */
 
-/*global $*/
 define([ "localized", "util/lang", "util/keys", "util/time", "./base-editor", "ui/widget/tooltip",
           "l10n!/layouts/trackevent-editor-defaults.html" ],
   function( Localized, LangUtils, KeysUtils, TimeUtils, BaseEditor, ToolTip,

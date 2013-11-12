@@ -7,7 +7,7 @@ module.exports = function( Project ) {
         if ( err ) {
           res.jsonp( 500, { error: err } );
         }
-        res.jsonp( { status: 'okay', results: utils.pruneSearchResults( projects ) } );
+        res.jsonp( { status: "okay", results: utils.pruneSearchResults( projects ) } );
       });
     };
   }

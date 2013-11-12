@@ -27,7 +27,7 @@ module.exports = function( req, res, next ) {
       }
 
       project.updateAttributes({ makeid: make._id })
-      .error( function( error ) {
+      .error( function() {
         return next( utils.error( 500, "Failed to add Make ID" ) );
       })
       .success( function( projectUpdateResult ) {
@@ -48,7 +48,7 @@ module.exports = function( req, res, next ) {
         email: project.email,
         tags: req.makeTags
       }
-    }, function( error, make ) {
+    }, function( error ) {
       if ( error ) {
         return next( utils.error( 500, error.toString() ) );
       }

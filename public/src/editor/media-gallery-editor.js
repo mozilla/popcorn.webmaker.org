@@ -242,7 +242,6 @@ define( [ "localized", "util/lang", "util/uri", "util/xhr", "util/keys", "util/m
       var start = _butter.currentTime,
           end = start + data.duration,
           playWhenReady = false,
-          trackEvent,
           popcornOptions = {
             source: URI.makeUnique( data.source ).toString(),
             denied: data.denied,
@@ -362,10 +361,6 @@ define( [ "localized", "util/lang", "util/uri", "util/xhr", "util/keys", "util/m
 
   function formatSource( value ) {
     return !value ? "" : value.trim().split( " " ).join( "" );
-  }
-
-  function onBlur( e ) {
-    e.preventDefault();
   }
 
   function onAddMediaClick() {
@@ -660,7 +655,7 @@ define( [ "localized", "util/lang", "util/uri", "util/xhr", "util/keys", "util/m
       }
     }, false );
 
-    _projectTab.addEventListener( "mouseup", function( e ) {
+    _projectTab.addEventListener( "mouseup", function() {
       if ( !_projectTab.classList.contains( "butter-active" ) ) {
         _searchTab.classList.remove( "butter-active" );
         _projectTab.classList.add( "butter-active" );
@@ -681,7 +676,7 @@ define( [ "localized", "util/lang", "util/uri", "util/xhr", "util/keys", "util/m
       }
     });
 
-    _searchTab.addEventListener( "mouseup", function( e ) {
+    _searchTab.addEventListener( "mouseup", function() {
       if ( !_searchTab.classList.contains( "butter-active" ) ) {
         var container = _itemContainers[ _currentSearch ];
 

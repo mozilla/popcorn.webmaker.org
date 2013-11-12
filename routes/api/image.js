@@ -19,16 +19,16 @@ module.exports = function( req, res ) {
     "Content-Type": image.headers[ "content-type" ]
   }).on( "error", function( err ) {
     res.json( 500, { error: "S3.putImage returned " + err } );
-    metrics.increment( 'image.upload.error' );
+    metrics.increment( "image.upload.error" );
   }).on( "response", function( s3res ) {
     if ( s3res.statusCode !== 200 ) {
       res.json( 500, { error: "Failed to upload image. Uploading file failed." } );
-      metrics.increment( 'image.upload.error' );
+      metrics.increment( "image.upload.error" );
       return;
     }
 
     res.json( { url: s3.url( s3Path ) } );
-    metrics.increment( 'image.upload.success' );
+    metrics.increment( "image.upload.success" );
   });
 
   fs.createReadStream( image.path ).pipe( s3req );

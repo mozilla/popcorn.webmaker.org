@@ -2,8 +2,6 @@
  * If a copy of the MIT license was not distributed with this file, you can
  * obtain one at https://raw.github.com/mozilla/butter/master/LICENSE */
 
-"use strict";
-
 define( [ "localized", "util/uri" ],
   function( Localized, URI ) {
 

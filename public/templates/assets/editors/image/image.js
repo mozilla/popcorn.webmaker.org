@@ -5,7 +5,6 @@ EditorHelper.addPlugin( "image", function( trackEvent ) {
   var _popcornOptions = trackEvent.popcornTrackEvent,
       _container = _popcornOptions._container,
       _clone,
-      _draggable,
       _cloneContainer,
       _target = _popcornOptions._target;
 

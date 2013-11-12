@@ -161,8 +161,8 @@ function init() {
       width = shareSize[ 0 ],
       height = shareSize[ 1 ];
 
-    return '<iframe src="' + src + '" width="' + width + '" height="' + height +
-           '" frameborder="0" mozallowfullscreen webkitallowfullscreen allowfullscreen></iframe>';
+    return "<iframe src='" + src + "' width='" + width + "' height='" + height +
+           "' frameborder='0' mozallowfullscreen webkitallowfullscreen allowfullscreen></iframe>";
   }
 
   // We put the embed's cannoncial URL in a <link rel="cannoncial" href="...">

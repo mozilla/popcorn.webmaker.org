@@ -13,8 +13,7 @@ define( [ "core/media", "core/track", "core/trackevent", "util/sanitizer" ],
   // the originator in a loop.
   function TogetherJSSyncer( butter ) {
 
-    var _this = this,
-        _fromRemoteQueue = [];
+    var _fromRemoteQueue = [];
 
     // Check if the passed event type has been triggered from a remote source
     // i.e. the event was received via a "TogetherJS.hub.on(...)" call.
@@ -42,7 +41,7 @@ define( [ "core/media", "core/track", "core/trackevent", "util/sanitizer" ],
 
     // Popcorn is ready to do things (this happens on page load) so send a
     // "hello" to everyone so that we can sync up with them.
-    butter.listen( "ready", function( e ) {
+    butter.listen( "ready", function() {
       if ( TogetherJS.running ) {
         TogetherJS.send({
           type: "hello"
@@ -55,14 +54,14 @@ define( [ "core/media", "core/track", "core/trackevent", "util/sanitizer" ],
       "trackeventadded",
       "trackeventremoved",
       "trackeventupdated",
-      "mediadurationchanged",
+      "mediadurationchanged"
     ].forEach( function( syncedEvent ) {
       butter.listen( syncedEvent, dispatchToTogetherJS );
     });
 
     // Someone has joined the TogetherJS session so let's send our project state
     // so that they can sync up with us.
-    TogetherJS.hub.on( "hello", function( e ) {
+    TogetherJS.hub.on( "hello", function() {
       TogetherJS.send({
         type: "ahoy",
         data: butter.project.export()

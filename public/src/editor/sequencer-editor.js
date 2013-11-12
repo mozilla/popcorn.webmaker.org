@@ -52,7 +52,7 @@ define( [ "util/mediatypes", "editor/editor", "util/time",
 
         return {
           el: el,
-          updateUI: updateUI,
+          updateUI: updateUI
         };
 
       }
