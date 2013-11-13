@@ -209,7 +209,7 @@
             for ( ; i >= 0; i-- ) {
               io = _inOuts[ i ];
               ref = _tagRefs[ i ];
-              if ( currTime >= io[ "in" ] && currTime < io.out && ref.classList.contains( "image-plugin-hidden" ) ) {
+              if ( io && currTime >= io[ "in" ] && currTime < io.out && ref.classList.contains( "image-plugin-hidden" ) ) {
                 if ( _lastVisible ) {
                   _lastVisible.classList.add( "image-plugin-hidden" );
                 }
