@@ -12,7 +12,7 @@
     /**
      * mouseTrapHelperFactory()
      * ----
-     * Returns an object with five methods:
+     * Returns an object with seven methods:
      *
      * bindInputTag( tag, sequence )
      *  | Sets up key-selection functionality in the passed
@@ -47,6 +47,8 @@
      *  | in the passed array
      */
     var _mousetrapHelper = (function mouseTrapHelperFactory( options ) {
+      var _self = this;
+
       var KEYS = options.keys || {
         // Non Alphanumeric
         alt: "alt",
@@ -112,6 +114,7 @@
         y: "y",
         z: "z"
       },
+      MAX_KEYS_PER_SEQUENCE = 4,
       modifiers = options.modifiers || {
         ctrl: "ctrl",
         alt: "alt",
@@ -126,30 +129,24 @@
         backspace: "delete"
       };
 
-      var keyComboCallback = function keyComboCallback( e ) {
+      function keyComboCallback( e ) {
         console.error( "No callback has been specified for the mouseTrapHelper." );
         e.preventDefault();
-      };
-      var _self = this;
+      }
 
       options = options || {};
 
       // Removes all elements from the passed array reference
       function cleanArray( array ) {
         if ( array && array.length ) {
-          var length = array.length,
-              i;
-
-          for ( i = 0; i < length; i++ ) {
-            array.pop();
-          }
+          array.length = 0;
         }
       }
 
       function bindAll( callback ) {
-        callback = callback || function() {
-          console.log( "No bindAll callback specified!" );
-        };
+        if ( !callback ){
+          throw( "No bindAll callback specified!" );
+        }
 
         for ( var key in KEYS ) {
           if ( KEYS.hasOwnProperty( key ) ) {
@@ -169,7 +166,7 @@
       function listenForAssignment( tag, sequence ) {
         function addKeyToSequence( e, combo ) {
           e.preventDefault();
-          if ( sequence.length < 4 ) {
+          if ( sequence.length < MAX_KEYS_PER_SEQUENCE ) {
             sequence.push( combo );
           } else {
             cleanArray( sequence );
@@ -185,6 +182,7 @@
       // Generates a string indicating the allowed
       // key-combos in a way the Mousetrap library
       // will understand
+      // i.e. ["ctrl", "a"] -> "ctrl+a"
       function sequenceToKeycombo( sequence ) {
         var modKeys = [],
             modSequence = "",
@@ -196,38 +194,40 @@
             ret = "",
             i;
 
-        if ( length ) {
-          // Split modifier and other keys into
-          // seperate arrays
-          for ( i = 0; i < length; i++ ) {
-            key = sequence[ i ];
-            if ( modifiers[ key ] ) {
-              modKeys.push( key );
-            } else {
-              otherKeys.push( key );
-            }
-          }
+        if ( !length ) {
+          return ret;
+        }
 
-          // Create first part of keycombo (modifiers)
-          modLength = modKeys.length;
-          if ( modLength ) {
-            for ( i = 0; i < modLength - 1; i++ ) {
-              modSequence += modKeys[ i ] + "+";
-            }
-            modSequence += modKeys[ i ];
-          }
-
-          // Create second part of keycombo (non-modifiers)
-          // and return result
-          otherLength = otherKeys.length;
-          if ( otherLength > 1 ) {
-            for ( i = 0; i < otherLength - 1; i++ ) {
-              ret += modSequence + "+" + otherKeys[ i ] + " ";
-            }
-            ret += modSequence + "+" + otherKeys[ i ];
+        // Split modifier and other keys into
+        // seperate arrays
+        for ( i = 0; i < length; i++ ) {
+          key = sequence[ i ];
+          if ( modifiers[ key ] ) {
+            modKeys.push( key );
           } else {
-            ret += modSequence + ( otherLength ? "+" + otherKeys[ 0 ] : "" );
+            otherKeys.push( key );
           }
+        }
+
+        // Create first part of keycombo (modifiers)
+        modLength = modKeys.length;
+        if ( modLength ) {
+          for ( i = 0; i < modLength - 1; i++ ) {
+            modSequence += modKeys[ i ] + "+";
+          }
+          modSequence += modKeys[ i ];
+        }
+
+        // Create second part of keycombo (non-modifiers)
+        // and return result
+        otherLength = otherKeys.length;
+        if ( otherLength > 1 ) {
+          for ( i = 0; i < otherLength - 1; i++ ) {
+            ret += modSequence + "+" + otherKeys[ i ] + " ";
+          }
+          ret += modSequence + "+" + otherKeys[ i ];
+        } else {
+          ret += modSequence + ( otherLength ? "+" + otherKeys[ 0 ] : "" );
         }
 
         return ret;
@@ -237,9 +237,7 @@
         var length = sequence.length,
             ret = "";
         if ( length ) {
-            var i = 0;
-
-            for ( ; i < length - 1; i++ ) {
+            for ( var i = 0; i < length - 1; i++ ) {
                 ret += sequence[ i ] + "+";
             }
             ret += sequence[ i ];
@@ -313,9 +311,6 @@
      * correctKey( key )
      *  | Highlights the passed key in green
      *
-     * incorrectKey( key )
-     *  | Highlights the passed key in red
-     *
      * keyOff( key )
      *  | Removes the highlight from the passed key
      *
@@ -329,8 +324,306 @@
      *  | Returns a string representing the OS type
      */
     var _keyboardHelper = (function keyboardHelperFactory( options ){
-      var keyboardCode = "<div class=\"keyboard_left\"><!-- row 1 --><div class=\"keyboard_row\"><div class=\"key key_backtick\">`</div><div class=\"key key_1\"><span>1</span></div><div class=\"key key_2\"><span>2</span></div><div class=\"key key_3\"><span>3</span></div><div class=\"key key_4\"><span>4</span></div><div class=\"key key_5\"><span>5</span></div><div class=\"key key_6\"><span>6</span></div><div class=\"key key_7\"><span>7</span></div><div class=\"key key_8\"><span>8</span></div><div class=\"key key_9\"><span>9</span></div><div class=\"key key_0\"><span>0</span></div><div class=\"key key_minus\"><span>-</span></div><div class=\"key key_equals\"><span>=</span></div><div class=\"key key_backspace\"><span>Backsp</span></div><div class=\"key key_backspace key_macBackspace keyOff\"><span>Delete</span></div></div><!-- row 2 --><div class=\"keyboard_row\"><div class=\"key key_tab\"><span>Tab</span></div><div class=\"key key_q\"><span>Q</span></div><div class=\"key key_w\"><span>W</span></div><div class=\"key key_e\"><span>E</span></div><div class=\"key key_r\"><span>R</span></div><div class=\"key key_t\"><span>T</span></div><div class=\"key key_y\"><span>Y</span></div><div class=\"key key_u\"><span>U</span></div><div class=\"key key_i\"><span>I</span></div><div class=\"key key_o\"><span>O</span></div><div class=\"key key_p\"><span>P</span></div><div class=\"key key_openBracket\"><span>[</span></div><div class=\"key key_closeBracket\"><span>]</span></div><div class=\"key key_\\\"><span>\\</span></div></div><!-- row 3 --><div class=\"keyboard_row\"><div class=\"key key_capslock\"><span>CAPS</span></div><div class=\"key key_a\"><span>A</span></div><div class=\"key key_s\"><span>S</span></div><div class=\"key key_d\"><span>D</span></div><div class=\"key key_f\"><span>F</span></div><div class=\"key key_g\"><span>G</span></div><div class=\"key key_h\"><span>H</span></div><div class=\"key key_j\"><span>J</span></div><div class=\"key key_k\"><span>K</span></div><div class=\"key key_l\"><span>L</span></div><div class=\"key key_;\"><span>;</span></div><div class=\"key key_'\"><span>'</span></div><div class=\"key key_enter\"><span>Enter</span></div><div class=\"key key_enter key_macEnter keyOff\"><span>Return</span></div></div><!-- row 4 --><div class=\"keyboard_row\"><div class=\"key key_shift\"><span>Shift</span></div><div class=\"key key_z\"><span>Z</span></div><div class=\"key key_x\"><span>X</span></div><div class=\"key key_c\"><span>C</span></div><div class=\"key key_v\"><span>V</span></div><div class=\"key key_b\"><span>B</span></div><div class=\"key key_n\"><span>N</span></div><div class=\"key key_m\"><span>M</span></div><div class=\"key key_,\"><span>,</span></div><div class=\"key key_.\"><span>.</span></div><div class=\"key key_/\"><span>/</span></div><div class=\"key key_shift\"><span>Shift</span></div></div><!-- row5 --><div class=\"keyboard_row\"><div class=\"key key_ctrl\"><span>Ctrl</span></div><div class=\"key key_meta\"><span>Win</span></div><div class=\"key key_meta key_macMeta keyOff\"><span>Cmd</span></div><div class=\"key key_alt\"><span>Alt</span></div><div class=\"key key_alt key_macAlt keyOff\"><span>Option</span></div><div class=\"key key_space\"><span>Space</span></div><div class=\"key key_alt\"><span>Alt</span></div><div class=\"key key_alt key_macAlt keyOff\"><span>Option</span></div><div class=\"key key_ctrl\"><span>Ctrl</span></div></div></div><div class=\"keyboard_right\"><!-- row 1 --><div class=\"keyboard_row\"><div class=\"key key_ins\"><span>Ins</span></div><div class=\"key key_home\"><span>Home</span></div><div class=\"key key_pgup\"><span>PgUp</span></div></div><!-- row 2 --><div class=\"keyboard_row\"><div class=\"key key_minorDel\"><span>Del</span></div><div class=\"key key_end\"><span>End</span></div><div class=\"key key_pgdwn\"><span>PgDn</span></div></div><!-- row 3 --><div class=\"keyboard_row\"><div class=\"key key_blank\">&nbsp</div></div><!-- row 4 --><div class=\"keyboard_arrows\"><div class=\"keyboard_row\"><div class=\"key key_up\"><span>Up</span></div></div><!-- row5 --><div class=\"keyboard_row\"><div class=\"key key_left\"><span>Left</span></div><div class=\"key key_down\"><span>Down</span></div><div class=\"key key_right\"><span>Right</span></div></div></div></div>",
+      var keyboardCode = "",
           messageBoxCode = "<div class=\"messageBox\"><p></p></div>";
+
+      var keyboardLeftRows = [
+            // Row 1
+            [{
+              classes: "key key_backtick",
+              contents: "`"
+            },{
+              classes: "key key_1",
+              contents: "1"
+            },{
+              classes: "key key_2",
+              contents: "2"
+            },{
+              classes: "key key_3",
+              contents: "3"
+            },{
+              classes: "key key_4",
+              contents: "4"
+            },{
+              classes: "key key_5",
+              contents: "5"
+            },{
+              classes: "key key_6",
+              contents: "6"
+            },{
+              classes: "key key_7",
+              contents: "7"
+            },{
+              classes: "key key_8",
+              contents: "8"
+            },{
+              classes: "key key_9",
+              contents: "9"
+            },{
+              classes: "key key_0",
+              contents: "0"
+            },{
+              classes: "key key_minus",
+              contents: "-"
+            },{
+              classes: "key key_equals",
+              contents: "="
+            },{
+              classes: "key key_backspace",
+              contents: "Backsp"
+            },{
+              classes: "key key_backspace key_macBackspace keyOff",
+              contents: "Delete"
+            }],
+            // Row 2
+            [{
+              classes: "key key_tab",
+              contents: "Tab"
+            },{
+              classes: "key key_q",
+              contents: "Q"
+            },{
+              classes: "key key_w",
+              contents: "W"
+            },{
+              classes: "key key_e",
+              contents: "E"
+            },{
+              classes: "key key_r",
+              contents: "R"
+            },{
+              classes: "key key_t",
+              contents: "T"
+            },{
+              classes: "key key_y",
+              contents: "Y"
+            },{
+              classes: "key key_u",
+              contents: "U"
+            },{
+              classes: "key key_i",
+              contents: "I"
+            },{
+              classes: "key key_o",
+              contents: "O"
+            },{
+              classes: "key key_p",
+              contents: "P"
+            },{
+              classes: "key key_openBracket",
+              contents: "["
+            },{
+              classes: "key key_closeBracket",
+              contents: "]"
+            },{
+              classes: "key key_\\",
+              contents: "\\"
+            }],
+            // Row 3
+            [{
+              classes: "key key_capslock",
+              contents: "CAPS"
+            },{
+              classes: "key key_a",
+              contents: "A"
+            },{
+              classes: "key key_s",
+              contents: "S"
+            },{
+              classes: "key key_d",
+              contents: "D"
+            },{
+              classes: "key key_f",
+              contents: "F"
+            },{
+              classes: "key key_g",
+              contents: "G"
+            },{
+              classes: "key key_h",
+              contents: "H"
+            },{
+              classes: "key key_j",
+              contents: "J"
+            },{
+              classes: "key key_k",
+              contents: "K"
+            },{
+              classes: "key key_l",
+              contents: "L"
+            },{
+              classes: "key key_;",
+              contents: ";"
+            },{
+              classes: "key key_'",
+              contents: "'"
+            },{
+              classes: "key key_enter",
+              contents: "Enter"
+            },{
+              classes: "key key_enter key_macEnter keyOff",
+              contents: "Return"
+            }],
+            // Row 4
+            [{
+              classes: "key key_shift",
+              contents: "Shift"
+            },{
+              classes: "key key_z",
+              contents: "Z"
+            },{
+              classes: "key key_x",
+              contents: "X"
+            },{
+              classes: "key key_c",
+              contents: "C"
+            },{
+              classes: "key key_v",
+              contents: "V"
+            },{
+              classes: "key key_b",
+              contents: "B"
+            },{
+              classes: "key key_n",
+              contents: "N"
+            },{
+              classes: "key key_m",
+              contents: "M"
+            },{
+              classes: "key key_,",
+              contents: ","
+            },{
+              classes: "key key_.",
+              contents: "."
+            },{
+              classes: "key key_/",
+              contents: "/"
+            },{
+              classes: "key key_shift",
+              contents: "Shift"
+            }],
+            // Row 5
+            [{
+              classes: "key key_ctrl",
+              contents: "Ctrl"
+            },{
+              classes: "key key_meta",
+              contents: "Win"
+            },{
+              classes: "key key_meta key_macMeta keyOff",
+              contents: "Cmd"
+            },{
+              classes: "key key_alt",
+              contents: "Alt"
+            },{
+              classes: "key key_alt key_macAlt keyOff",
+              contents: "Option"
+            },{
+              classes: "key key_space",
+              contents: "Space"
+            },{
+              classes: "key key_alt",
+              contents: "Alt"
+            },{
+              classes: "key key_alt key_macAlt keyOff",
+              contents: "Option"
+            },{
+              classes: "key key_ctrl",
+              contents: "Ctrl"
+            }]
+          ],
+          keyboardRightRows = [
+            // Row 1 - keyboardRightRows[ 0 ]
+            [{
+              classes: "key key_ins",
+              contents: "Ins"  // - keyboardRightRows[ 0 ][ 0 ]
+            },{
+              classes: "key key_home",
+              contents: "Home"
+            },{
+              classes: "key key_pgup",
+              contents: "PgUp"
+            }],
+            // Row 2 - keyboardRightRows[ 1 ]
+            [{
+              classes: "key key_minorDel",
+              contents: "Del"  // - keyboardRightRows[ 1 ][ 0 ]
+            },{
+              classes: "key key_end",
+              contents: "End"
+            },{
+              classes: "key key_pgdwn",
+              contents: "PgDn"
+            }],
+            // Row 3 - keyboardRightRows[ 2 ]
+            [{
+              classes: "key key_blank",
+              contents: "&nbsp"  // - keyboardRightRows[ 2 ][ 0 ]
+            }],
+            // Subdiv separation -  - keyboardRightRows[ 3 ]
+            [
+              // Row 4 - keyboardRightRows[ 3 ][ 0 ]
+              [{
+                classes: "key key_up",
+                contents: "Up"  // - keyboardRightRows[ 3 ][ 0 ][ 0 ]
+              }],
+              // Row 5
+              [{
+                classes: "key key_left",
+                contents: "Left"
+              },{
+                classes: "key key_down",
+                contents: "Down"
+              },{
+                classes: "key key_right",
+                contents: "Right"
+              }]
+            ]
+          ];
+
+      var currentRow,
+          currentDiv,
+          subRow;
+
+      // Construct "keyboard-left" div
+      keyboardCode = "<div class=\"keyboard_left\">";
+      for ( var i = 0; i < keyboardLeftRows.length; i++ ) {
+        currentRow = keyboardLeftRows[ i ];
+        keyboardCode += "<div class=\"keyboard_row\">";
+        for ( var j = 0; j < currentRow.length; j++ ) {
+          currentDiv = currentRow[ j ];
+
+          keyboardCode += "<div class=\"" + currentDiv.classes + "\">" + "<span>" + currentDiv.contents + "</span>" + "</div>";
+        }
+        keyboardCode += "</div>";
+      }
+      keyboardCode += "</div>";
+
+      // Construct "keyboard-right" div
+      keyboardCode += "<div class=\"keyboard_right\">";
+      for ( i = 0; i < keyboardRightRows.length; i++ ) {
+        currentRow = keyboardRightRows[ i ];
+
+        keyboardCode += currentRow[ 0 ].length ? "<div class=\"keyboard_arrows\">" : "<div class=\"keyboard_row\">";
+        for ( j = 0; j < currentRow.length; j++ ) {
+          currentDiv = currentRow[ j ];
+
+          // If there's length, this is a sub-div containing
+          // its own rows.
+          if (currentDiv.length) {
+            keyboardCode += "<div class=\"keyboard_row\">";
+
+            for ( var q = 0; q < currentDiv.length; q++ ) {
+              subRow = currentDiv[ q ];
+              keyboardCode += "<div class=\"" + subRow.classes + "\">" + "<span>" + subRow.contents + "</span>" + "</div>";
+            }
+            keyboardCode += "</div>";
+          } else {
+            keyboardCode += "<div class=\"" + currentDiv.classes + "\">" + "<span>" + currentDiv.contents + "</span>" + "</div>";
+          }
+        }
+        keyboardCode += "</div>";
+      }
+      keyboardCode += "</div>";
 
       var keyboard,
           messageBox,
@@ -412,50 +705,33 @@
         },
         correctKey: function ( key ) {
           keyElement = keyboard.el.getElementsByClassName( "key_" + key );
-          var length = keyElement && keyElement.length;
+          var length = keyElement && keyElement.length || 0;
 
-          if ( length ) {
-            for ( var i = 0; i < length; i++ ) {
-              keyElement[ i ].classList.remove( "invalid" );
-              keyElement[ i ].classList.add( "valid" );
-            }
-          }
-        },
-        incorrectKey: function ( key ) {
-          keyElement = keyboard.el.getElementsByClassName( "key_" + key );
-          var length = keyElement && keyElement.length;
-
-          if ( length ) {
-            for ( var i = 0; i < length; i++ ) {
-              keyElement[ i ].classList.remove( "valid" );
-              keyElement[ i ].classList.add( "invalid" );
-            }
+          for ( var i = 0; i < length; i++ ) {
+            keyElement[ i ].classList.remove( "invalid" );
+            keyElement[ i ].classList.add( "valid" );
           }
         },
         keyOff: function ( key ) {
           keyElement = keyboard.el.getElementsByClassName( "key_" + key );
-          var length = keyElement && keyElement.length,
+          var length = keyElement && keyElement.length || 0,
               classes;
 
-          if ( length ) {
-            for ( var i = 0; i < length; i++ ) {
-              classes = keyElement[ i ].classList;
+          for ( var i = 0; i < length; i++ ) {
+            classes = keyElement[ i ].classList;
 
-              if ( classes.contains( "valid" ) ) {
-                classes.remove( "valid" );
-              }
+            if ( classes.contains( "valid" ) ) {
+              classes.remove( "valid" );
+            }
 
-              if ( classes.contains( "invalid" ) ) {
-                classes.remove( "invalid" );
-              }
+            if ( classes.contains( "invalid" ) ) {
+              classes.remove( "invalid" );
             }
           }
         },
         clearKeys: function () {
           var validKeys = keyboard.el.getElementsByClassName( "valid" ),
-              invalidKeys = keyboard.el.getElementsByClassName( "invalid" ),
               validLength = validKeys && validKeys.length,
-              invalidLength = invalidKeys && invalidKeys.length,
               i;
 
           // Notice the static '0's in the for loops.
@@ -465,11 +741,6 @@
           if ( validLength ) {
             for ( i = 0; i < validLength; i++ ) {
               validKeys[ 0 ].classList.remove( "valid" );
-            }
-          }
-          if ( invalidLength ) {
-            for ( i = 0; i < invalidLength; i++ ) {
-              invalidKeys[ 0 ].classList.remove( "invalid" );
             }
           }
         },
@@ -501,26 +772,6 @@
       _keyboardHelper.keyOff( combo );
     }
 
-    // Returns the callback that fires when a keycombination
-    // is pressed. Add extra logic here.
-    function resumePlaybackConstructor( combo ) {
-      return function ( e ) {
-        e.preventDefault();
-        if ( combo.length ) {
-          for ( var i = 0; i < combo.length; i++ ) {
-            _keyboardHelper.correctKey( combo[ i ] );
-          }
-        }
-
-        window.setTimeout(function(){
-          _keyboardHelper.clearKeys();
-
-          // TODO: Display congrats message
-          self.play();
-        }, 1500);
-      };
-    }
-
     /**
      * Plugin Definition
      */
@@ -531,6 +782,29 @@
           workingSequence,
           rKeyPosition,
           i;
+
+      // This configures
+      var playbackDelay = 1500;
+
+      // Cache resume playback callback
+      var resumePlaybackConstructor = function ( combo ) {
+        return function ( e ) {
+          e.preventDefault();
+          if ( combo.length ) {
+            for ( var i = 0; i < combo.length; i++ ) {
+              _keyboardHelper.correctKey( combo[ i ] );
+            }
+          }
+
+          _keyboardHelper.setMessage( "Congratulations!");
+
+          window.setTimeout(function(){
+            _keyboardHelper.clearKeys();
+
+            self.play();
+          }, playbackDelay );
+        };
+      };
 
       return {
         _setup: function( options ) {
@@ -545,24 +819,6 @@
           options.end = options.start + 0.5;
 
           // Cache resume playback callback
-          var resumePlaybackConstructor = function ( combo ) {
-            return function ( e ) {
-              e.preventDefault();
-              if ( combo.length ) {
-                for ( var i = 0; i < combo.length; i++ ) {
-                  _keyboardHelper.correctKey( combo[ i ] );
-                }
-              }
-
-              _keyboardHelper.setMessage( "Congratulations!");
-
-              window.setTimeout(function(){
-                _keyboardHelper.clearKeys();
-
-                self.play();
-              }, 1500);
-            };
-          };
           options._resumePlaybackConstructor = resumePlaybackConstructor;
 
           var target = Popcorn.dom.find( options.target );
@@ -576,32 +832,6 @@
           // Insert keyboard
           _keyboardHelper.insertKeyboard( target );
 
-          // Build image
-          if ( options.imgSrc ) {
-            var imgDiv = document.createElement( "div" );
-
-            options._container = document.createElement( "div" );
-            options._container.style.position = "absolute";
-            options._container.style.width = options.width + "%";
-            options._container.style.height = options.height + "%";
-            options._container.style.top = options.top + "%";
-            options._container.style.left = options.left + "%";
-            options._container.style.zIndex = +options.zindex;
-            options._container.classList.add( options.transition );
-            options._container.classList.add( "off" );
-
-            imgDiv.style.borderStyle = "none";
-            imgDiv.style.width = "100%";
-            imgDiv.style.height = "100%";
-            imgDiv.style.backgroundPosition = "center center";
-            imgDiv.style.backgroundSize = "contain";
-            imgDiv.style.backgroundRepeat = "no-repeat";
-            imgDiv.style.backgroundImage = "url( \"" + options.imgSrc + "\" )";
-
-            options._container.appendChild( imgDiv );
-            options._target.appendChild( options._container );
-          }
-
           options.toString = function() {
             return "";
           };
@@ -611,17 +841,11 @@
           _keyboardHelper.showKeyboard();
 
           // Bind key listeners
-          if ( sequences[ 0 ] && sequences[ 0 ].length ) {
-            _mousetrapHelper.bindSequence( sequences[ 0 ], options._resumePlaybackConstructor( sequences[ 0 ] ) );
-            _keyboardHelper.setMessage( "Press " + _mousetrapHelper.sequenceToString( sequences[ 0 ] ) );
-          }
-          if ( sequences[ 1 ] && sequences[ 1 ].length ) {
-            _mousetrapHelper.bindSequence( sequences[ 1 ], options._resumePlaybackConstructor( sequences[ 1 ] ) );
-            _keyboardHelper.setMessage( "Press " + _mousetrapHelper.sequenceToString( sequences[ 1 ] ) );
-          }
-          if ( sequences[ 2 ] && sequences[ 2 ].length ) {
-            _mousetrapHelper.bindSequence( sequences[ 2 ], options._resumePlaybackConstructor( sequences[ 2 ] ) );
-            _keyboardHelper.setMessage( "Press " + _mousetrapHelper.sequenceToString( sequences[ 2 ] ) );
+          for ( var i = 0; i < sequences.length; i++ ) {
+            if ( sequences[ i ] && sequences[ i ].length ) {
+              _mousetrapHelper.bindSequence( sequences[ i ], options._resumePlaybackConstructor( sequences[ i ] ) );
+              _keyboardHelper.setMessage( "Press " + _mousetrapHelper.sequenceToString( sequences[ i ] ) );
+            }
           }
 
           this.pause();
@@ -630,14 +854,10 @@
           this.emit( "interactionEnd" );
           _keyboardHelper.hideKeyboard();
 
-          if ( sequences[ 0 ] ) {
-            _mousetrapHelper.unbindSequence( sequences [ 0 ] );
-          }
-          if ( sequences[ 1 ] ) {
-            _mousetrapHelper.unbindSequence( sequences [ 1 ] );
-          }
-          if ( sequences[ 2 ] ) {
-            _mousetrapHelper.unbindSequence( sequences [ 2 ] );
+          for ( var i = 0; i < sequences.length; i++ ) {
+            if ( sequences[ i ] ) {
+              _mousetrapHelper.unbindSequence( sequences [ i ] );
+            }
           }
         }
       };

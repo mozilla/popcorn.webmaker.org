@@ -22,7 +22,7 @@
     }
 
     function blockShortcuts() {
-      window.addEventListener( "keydown", stopPropagation, false )
+      window.addEventListener( "keydown", stopPropagation, false );
     }
 
     function unblockShortcuts() {
@@ -52,11 +52,11 @@
           sequences[ 2 ] = sequences[ 2 ] || [];
 
       var container = _rootElement.querySelector( ".editor-options" ),
-          pluginOptions = {},
+          manifestOptions = {},
           pickers = {};
 
-      function callback( elementType, element, trackEvent, name ) {
-        pluginOptions[ name ] = { element: element, trackEvent: trackEvent, elementType: elementType };
+      function onCreatePropertyFromManifest( elementType, element, trackEvent, name ) {
+        manifestOptions[ name ] = { element: element, trackEvent: trackEvent, elementType: elementType };
       }
 
       function attachHandlers() {
@@ -67,9 +67,14 @@
             label,
             trackEvent;
 
-        for ( key in pluginOptions ) {
-          if ( pluginOptions.hasOwnProperty( key ) ) {
-            option = pluginOptions[ key ];
+        function processCombo( index ) {
+          _this.attachInputChangeHandler( element, trackEvent, key, _this.updateTrackEventSafe );
+          _mousetrapHelper.bindInputTag( element, sequences[ index ], unblockShortcuts, blockShortcuts );
+        }
+
+        for ( key in manifestOptions ) {
+          if ( manifestOptions.hasOwnProperty( key ) ) {
+            option = manifestOptions[ key ];
             trackEvent = option.trackEvent;
             element = option.element;
             elementType = option.elementType;
@@ -79,14 +84,11 @@
               _this.attachSelectChangeHandler( element, trackEvent, key, _this.updateTrackEventSafe );
             } else if ( elementType === "input" ) {
               if ( key === "combo1" ) {
-                _this.attachInputChangeHandler( element, trackEvent, key, _this.updateTrackEventSafe );
-                _mousetrapHelper.bindInputTag( element, sequences[ 0 ], unblockShortcuts, blockShortcuts );
+                processCombo( 0 );
               } else if ( key === "combo2" ) {
-                _this.attachInputChangeHandler( element, trackEvent, key, _this.updateTrackEventSafe );
-                _mousetrapHelper.bindInputTag( element, sequences[ 1 ], unblockShortcuts, blockShortcuts );
+                processCombo( 1 );
               } else if ( key === "combo3" ) {
-                _this.attachInputChangeHandler( element, trackEvent, key, _this.updateTrackEventSafe );
-                _mousetrapHelper.bindInputTag( element, sequences[ 2 ], unblockShortcuts, blockShortcuts );
+                processCombo( 2 );
               }
 
               element.setAttribute( "readonly", "readonly" );
@@ -106,7 +108,7 @@
 
       _this.createPropertiesFromManifest({
         trackEvent: trackEvent,
-        callback: callback,
+        callback: onCreatePropertyFromManifest,
         basicContainer: container,
         ignoreManifestKeys: [ "start", "end", "" ]
       });
