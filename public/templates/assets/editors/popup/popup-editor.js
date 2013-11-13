@@ -204,5 +204,19 @@
         _trackEvent.unlisten( "trackeventupdated", onTrackEventUpdated );
       }
     });
+  }, false, function( trackEvent ) {
+    var _container,
+        target;
+
+    _container = trackEvent.popcornTrackEvent._container;
+    target = trackEvent.popcornTrackEvent._target;
+
+    this.contentEditable( trackEvent, _container.querySelectorAll( "span" ) );
+    this.selectable( trackEvent, _container );
+    this.draggable( trackEvent, _container, target );
+    this.resizable( trackEvent, _container, target, {
+      handlePositions: "e",
+      minWidth: 10
+    });
   });
 }( window.Butter ));

@@ -64,10 +64,6 @@ app.configure( function() {
         "/src/embed.js": {
           include: [ "embed" ],
           mainConfigFile: WWW_ROOT + "/src/popcorn.js"
-        },
-        "/templates/assets/editors/editorhelper.js": {
-          include: [ "../templates/assets/editors/editorhelper" ],
-          mainConfigFile: WWW_ROOT + "/src/popcorn.js"
         }
       },
       defaults: {
@@ -78,6 +74,9 @@ app.configure( function() {
         preserveLicenseComments: false,
         paths: {
           "localized": path.resolve( __dirname, "bower_components/webmaker-i18n/localized" ),
+          "jquery": path.resolve( __dirname, "bower_components/jquery/jquery.min" ),
+          "jquery-ui": path.resolve( __dirname, "bower_components/jquery-ui/ui/jquery-ui" ),
+          "farbtastic": path.resolve( __dirname, "bower_components/farbtastic/src/farbtastic" ),
           "WebmakerUI": path.resolve( __dirname, "bower_components/webmaker-ui/ui" ),
           "webmaker-ui-fragments": path.resolve( __dirname, "bower_components/webmaker-ui/webmaker-ui-fragments" )
         },
@@ -263,6 +262,7 @@ app.get( "/templates/assets/editors/googlemap/googlemap-editor.html", routes.pat
 app.get( "/templates/assets/editors/popup/popup-editor.html", routes.path( "/plugins/popup-editor.html" ) );
 app.get( "/templates/assets/editors/image/image-editor.html", routes.path( "/plugins/image-editor.html" ) );
 app.get( "/templates/assets/editors/text/text-editor.html", routes.path( "/plugins/text-editor.html" ) );
+app.get( "/templates/assets/editors/wikipedia/wikipedia-editor.html", routes.path( "/plugins/wikipedia-editor.html" ) );
 app.get( "/templates/assets/editors/sketchfab/sketchfab-editor.html", routes.path( "/plugins/sketchfab-editor.html" ) );
 
 // Localized Strings

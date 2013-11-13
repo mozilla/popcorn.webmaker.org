@@ -1,7 +1,9 @@
 {
   "name": "popcorn.webmaker.org",
   "dependencies": {
-    "farbtastic": "git://github.com/mattfarina/farbtastic.git#40a18515931d8150510d1b7b823369b18b2c8f30",
+    "farbtastic": "git://github.com/mattfarina/farbtastic.git#157decc8a325ad60c14b587e6d1cf87153be472a",
+    "jquery": "1.8.3",
+    "jquery-ui": "1.9.1",
     "webmaker-i18n": "https://github.com/mozilla/node-webmaker-i18n/archive/v0.2.9.tar.gz",
     "webmaker-ui": "0.0.12"
   }
