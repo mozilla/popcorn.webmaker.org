@@ -418,7 +418,7 @@ define( [ "util/xhr", "localized", "jquery" ], function( XHR, Localized, $ ) {
         XHR.put( "/api/image", fd, function( data ) {
           if ( !data.error ) {
             if ( trackEvent ) {
-              trackEvent.update( { src: data.url } );
+              trackEvent.update( { src: data.url, title: file.name } );
             }
 
             butter.dispatch( "droppable-succeeded", data.url );
