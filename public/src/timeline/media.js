@@ -113,10 +113,6 @@ define( [ "core/trackevent", "core/track", "core/eventmanager",
       window.addEventListener( "mousemove", onTrackEventDragStarted, false );
     }
 
-    function onTrackEventSelected( e ) {
-      butter.editor.editTrackEvent( e.target );
-    }
-
     function onTrackEventDeselected( e ) {
       butter.editor.closeTrackEventEditor( e.target );
     }
@@ -139,17 +135,21 @@ define( [ "core/trackevent", "core/track", "core/eventmanager",
 
       butter.ui.tray.setMediaInstance( _rootElement );
 
-      _media.listen( "trackeventremoved", function( e ){
-        var trackEvent = e.data;
-        trackEvent.view.unlisten( "trackeventmousedown", onTrackEventMouseDown );
-        trackEvent.unlisten( "trackeventselected", onTrackEventSelected );
-        trackEvent.unlisten( "trackeventdeselected", onTrackEventDeselected );
-      });
-
       function onTrackEventAdded( e ){
         var trackEvent = e.data;
+        function onTrackEventClicked() {
+          butter.editor.editTrackEvent( trackEvent );
+        }
+
+        _media.listen( "trackeventremoved", function( e ){
+          var trackEvent = e.data;
+          trackEvent.view.unlisten( "trackeventmousedown", onTrackEventMouseDown );
+          trackEvent.view.element.removeEventListener( "click", onTrackEventClicked, false );
+          trackEvent.unlisten( "trackeventdeselected", onTrackEventDeselected );
+        });
+
         trackEvent.view.listen( "trackeventmousedown", onTrackEventMouseDown );
-        trackEvent.listen( "trackeventselected", onTrackEventSelected );
+        trackEvent.view.element.addEventListener( "click", onTrackEventClicked, false );
         trackEvent.listen( "trackeventdeselected", onTrackEventDeselected );
       }
 

@@ -45,8 +45,82 @@ define( [ "core/logger", "util/dragndrop", "./ghost-manager" ],
       _vScrollbar.update();
     });
 
-    _container.addEventListener( "mousedown", function() {
-      butter.deselectAllTrackEvents();
+    var _startingPosition = [],
+        _containerRect = {},
+        _boundingBoxElement = document.createElement( "div" );
+
+    _boundingBoxElement.style.position = "absolute";
+    _boundingBoxElement.style.backgroundColor = "rgba(43, 124, 97, 0.2)";
+    _boundingBoxElement.style.border = "1px solid rgba(43, 124, 97, 0.8)";
+
+    function boundingBoxMouseDown( e ) {
+      // Stops selecting while moving.
+      e.preventDefault();
+      _container.appendChild( _boundingBoxElement );
+      _containerRect = _container.getBoundingClientRect();
+      _startingPosition = [ e.clientX - _containerRect.left, e.clientY - _containerRect.top ];
+      _container.removeEventListener( "mousedown", boundingBoxMouseDown, false );
+      _container.addEventListener( "mousemove", boundingBoxMouseMove, false );
+      _container.addEventListener( "mouseup", boundingBoxMouseUp, false );
+    }
+    function boundingBoxMouseMove( e ) {
+      var thisPosition = [ e.clientX - _containerRect.left, e.clientY - _containerRect.top ],
+          minLeft = Math.min( thisPosition[ 0 ], _startingPosition[ 0 ] ),
+          maxLeft = Math.max( thisPosition[ 0 ], _startingPosition[ 0 ] ),
+          minTop = Math.min( thisPosition[ 1 ], _startingPosition[ 1 ] ),
+          maxTop = Math.max( thisPosition[ 1 ], _startingPosition[ 1 ] ),
+          start = ( minLeft / _container.clientWidth ) * _media.duration,
+          end = ( maxLeft / _container.clientWidth ) * _media.duration,
+          trackStartIndex = Math.floor( ( minTop ) / 30 ),
+          trackEndIndex = Math.floor( ( maxTop ) / 30 ),
+          tracks = _media.orderedTracks,
+          track = {},
+          trackEvents = {},
+          trackEvent = {},
+          trackEventOptions = {};
+
+      _boundingBoxElement.style.top = minTop + "px";
+      _boundingBoxElement.style.height = maxTop - minTop + "px";
+
+      _boundingBoxElement.style.left = minLeft + "px";
+      _boundingBoxElement.style.width = maxLeft - minLeft + "px";
+
+      if ( !e.shiftKey ) {
+        butter.deselectAllTrackEvents();
+      }
+
+      for ( var i = trackStartIndex; i <= trackEndIndex; i++ ) {
+        track = _media.orderedTracks[ i ];
+        if ( !track ) {
+          continue;
+        }
+        trackEvents = track.trackEvents;
+        for ( var j = 0; j < trackEvents.length; j++ ) {
+          trackEvent = trackEvents[ j ];
+          trackEventOptions = trackEvent.popcornOptions;
+          if ( ( start <= trackEventOptions.end && end >= trackEventOptions.start ) ||
+               ( end >= trackEventOptions.start && start <= trackEventOptions.end ) ) {
+            trackEvent.selected = true;
+          }
+        }
+      }
+    }
+    function boundingBoxMouseUp() {
+      _startingPosition = [];
+      _container.removeChild( _boundingBoxElement );
+      _boundingBoxElement.style.width = "0";
+      _boundingBoxElement.style.height = "0";
+      _container.addEventListener( "mousedown", boundingBoxMouseDown, false );
+      _container.removeEventListener( "mousemove", boundingBoxMouseMove, false );
+      _container.removeEventListener( "mouseup", boundingBoxMouseUp, false );
+    }
+
+    _container.addEventListener( "mousedown", boundingBoxMouseDown, false );
+
+    _container.addEventListener( "mousedown", function( e ) {
+      if ( !e.shiftKey ) {
+        butter.deselectAllTrackEvents();
+      }
     }, false );
 
     _droppable = DragNDrop.droppable( _element, {
