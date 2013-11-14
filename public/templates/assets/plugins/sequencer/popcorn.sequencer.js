@@ -185,6 +185,11 @@
 
       options.attemptJWPlayer = function() {
         options._clip.off( "error", options.attemptJWPlayer );
+        if ( !options._clip.error ) {
+          // For some reason html5 media clips are throwing error events,
+          // with no actual error, only in the embed...
+          return;
+        }
         var jwDiv = document.createElement( "div" );
         // Remove the dead html5 video element.
         options._container.removeChild( document.getElementById( options._clip.media.id ) );
