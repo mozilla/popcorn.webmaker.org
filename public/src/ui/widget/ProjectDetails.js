@@ -99,7 +99,7 @@ define( [ "util/keys", "ui/widget/tooltip", "localized", "ui/widget/textbox" ],
                 _butter.project.tags = checkTags( currentProjectTags.join( "," ) );
               }
 
-              li.innerHTML = decodeURIComponent( val );
+              li.textContent = decodeURIComponent( val );
               ul.appendChild( li );
             }
           }
