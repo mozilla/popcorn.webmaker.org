@@ -908,6 +908,8 @@ define( [ "core/eventmanager", "util/lang", "util/scroll-group" ],
     };
 
     _draggable.start = function( e ) {
+      _oldZIndex = getComputedStyle( element ).getPropertyValue( "z-index" );
+      element.style.zIndex = MAXIMUM_Z_INDEX;
       // Store original position of the element and the offset of the mouse wrt the window. These values are used
       // in calculations elsewhere (e.g. update, containment, etc.) to figure out exactly how many pixels the user
       // moved the element. Later, _originalPosition is used to revert the element to its original position if
@@ -939,6 +941,7 @@ define( [ "core/eventmanager", "util/lang", "util/scroll-group" ],
     };
 
     _draggable.stop = function() {
+      element.style.zIndex = _oldZIndex;
       // If originalPosition is not null, start() was called
       if ( _originalPosition ) {
         LangUtils.setTransformProperty( _element, "" );
@@ -974,12 +977,9 @@ define( [ "core/eventmanager", "util/lang", "util/scroll-group" ],
         },
         set: function( val ) {
           if ( val ) {
-            _oldZIndex = getComputedStyle( element ).getPropertyValue( "z-index" );
-            element.style.zIndex = MAXIMUM_Z_INDEX;
             __selectedDraggables.push( _draggable );
           }
           else {
-            element.style.zIndex = _oldZIndex;
             for ( var i = __selectedDraggables.length - 1; i >= 0; --i ) {
               if ( __selectedDraggables[ i ].element === _element ) {
                 __selectedDraggables.splice( i, 1 );
