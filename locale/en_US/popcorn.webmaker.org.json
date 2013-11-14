@@ -264,5 +264,6 @@
 	"Your media source is taking too long to load": "Your media source is taking too long to load",
 	"Your search contained no results!": "Your search contained no results!",
 	"Zoom cannot be a decimal number.": "Zoom cannot be a decimal number.",
-	"Zoom": "Zoom"
+	"Zoom": "Zoom",
+	"Type your tag here...": "Type your tag here..."
 }
