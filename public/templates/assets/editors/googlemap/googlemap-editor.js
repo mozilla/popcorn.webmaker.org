@@ -320,7 +320,8 @@
 
     var container = trackEvent.popcornTrackEvent._container,
         target = trackEvent.popcornTrackEvent._target,
-        popcornEventMapReference;
+        popcornEventMapReference,
+        self = this;
 
     this.selectable( trackEvent, container );
 
@@ -330,11 +331,11 @@
         return;
       }
 
-      this.draggable( trackEvent, container, target, {
+      self.draggable( trackEvent, container, target, {
         tooltip: "Double click to interact"
       });
 
-      this.resizable( trackEvent, container, target, {
+      self.resizable( trackEvent, container, target, {
         handlePositions: "e, se, s, sw, w, n, ne, nw",
         minHeight: 20,
         minWidth: 20
