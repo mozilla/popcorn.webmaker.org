@@ -17,6 +17,7 @@ Prerequisites
 
 * node v0.8 or higher
 * npm (comes with node v0.8 installer)
+* bower (`npm install -g bower`)
 * A working build environment:
   * Mac OS X - Xcode or Command Line Tools package
   * Windows - Python 2.5+ and Visual Studio 2010; specifically:
