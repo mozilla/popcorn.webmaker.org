@@ -36,9 +36,9 @@ app.configure( function() {
     messina = require( "messina" );
     logger = messina( "popcorn.webmaker.org-" + config.NODE_ENV || "development" );
     logger.init();
-    app.use(logger.middleware());
+    app.use( logger.middleware() );
   } else {
-    app.use(express.logger());
+    app.use( express.logger( config.logger ) );
   }
 
   app.use( "/static/bower", express.static( path.join( __dirname, "/bower_components" ), {
