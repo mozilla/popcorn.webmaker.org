@@ -3,7 +3,7 @@
  * obtain one at https://raw.github.com/mozilla/butter/master/LICENSE */
 
 (function() {
-  var __csrfToken = document.querySelector("meta[name=X-CSRF-Token]").content;
+  var __csrfToken = document.querySelector("meta[name=csrf-token]").content;
 
   var defaultErrorHandler = function( xhr, statusText, errorThrown ) {
     if ( console && console.error ) {
@@ -78,7 +78,7 @@
         method: "POST",
         url: url,
         header: {
-          "x-csrf-token": __csrfToken,
+          "X-CSRF-Token": __csrfToken, // express.js uses a non-standard name for csrf-token
           "Accept": "application/json"
         },
         data: data,
@@ -90,7 +90,7 @@
         method: "PUT",
         url: url,
         header: {
-          "x-csrf-token": __csrfToken,
+          "X-CSRF-Token": __csrfToken, // express.js uses a non-standard name for csrf-token
           "Accept": "application/json"
         },
         data: data,
