@@ -1,6 +1,17 @@
 @import "globals";
 @import "webfonts";
 
+@controlsHeight: 43px;
+@small: 560px;
+@medium: 640px;
+@large: 853px;
+@xlarge: 1280px;
+
+.height-width( @width ) {
+  width: @width;
+  height: (.5625 * @width ) + @controlsHeight;
+}
+
 body {
   -webkit-font-smoothing: antialiased;
   font-family: "Open Sans", "Helvetica Neue", sans-serif;
@@ -27,3 +38,41 @@ body {
   margin: 1em auto 0;
 }
 
+/*********************************************************
+* Media queries
+*/
+@media only screen and ( max-width: @medium ) {
+  #embed {
+    .height-width( @small );
+  }
+  .wrapper {
+    width: @small;
+  }
+}
+
+@media only screen and ( min-width: @medium ) {
+  #embed {
+    .height-width( @medium );
+  }
+  .wrapper {
+    width: @medium;
+  }
+}
+
+@media only screen and ( min-width: @large ) {
+  #embed {
+    .height-width( @large );
+  }
+  .wrapper {
+    width: @large;
+  }
+}
+
+@media only screen and ( min-width: @xlarge ) {
+  #embed {
+    .height-width( @xlarge );
+  }
+  .wrapper {
+    width: @xlarge;
+  }
+}
