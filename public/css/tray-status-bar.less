@@ -1,9 +1,8 @@
 /*********************************************************
 * TRAY STATUS
 */
-@_butterStatusHeight: 50px;
-@_statusContainerHeight: @_butterStatusHeight - 25px;
-@_mediaStatusContainerHeight: @_butterStatusHeight;
+@_statusContainerHeight: @CONTROLS_HEIGHT - 25px;
+@_mediaStatusContainerHeight: @CONTROLS_HEIGHT;
 @_playButtonHeight: 20px;
 @_scrubberBarHeight: 8px;
 @_scrubberHandleHeight: 10px;
@@ -17,7 +16,7 @@
 
 .butter-status-area {
   position: absolute;
-  height: @_butterStatusHeight;
+  height: @CONTROLS_HEIGHT;
   top: 0;
   left: 0;
   width: 100%;
