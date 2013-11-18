@@ -157,6 +157,8 @@
         _this.on( "volumechange", options._volumeEvent );
         if ( options.active ) {
           options._startEvent();
+        } else {
+          options._setClipCurrentTime( +options.from );
         }
       };
 
