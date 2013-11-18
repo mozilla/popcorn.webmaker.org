@@ -5,7 +5,7 @@
 define( [ "util/lang",  "./logo-spinner", "./resizeHandler",
           "text!layouts/tray.html",
           "l10n!/layouts/status-area.html", "text!layouts/timeline-area.html" ],
-  function( LangUtils, LogoSpinner, resizeHandler,
+  function( LangUtils, LogoSpinner, ResizeHandler,
             TRAY_LAYOUT,
             STATUS_AREA_LAYOUT, TIMELINE_AREA_LAYOUT ) {
 
@@ -16,6 +16,7 @@ define( [ "util/lang",  "./logo-spinner", "./resizeHandler",
         trayRoot = LangUtils.domFragment( TRAY_LAYOUT, ".butter-tray" ),
         addTrackButton = statusAreaFragment.querySelector( "button.add-track" ),
         loadingContainer = trayRoot.querySelector( ".butter-loading-container" ),
+        resizeHandler = new ResizeHandler( { margin: 26, border: 15 } ),
         logoSpinner = new LogoSpinner( loadingContainer );
 
     this.statusArea = trayRoot.querySelector( ".butter-status-area" );
@@ -26,7 +27,7 @@ define( [ "util/lang",  "./logo-spinner", "./resizeHandler",
     this.statusArea.appendChild( statusAreaFragment );
     this.timelineArea.appendChild( timelineAreaFragment );
 
-    LangUtils.applyTransitionEndListener( trayRoot, resizeHandler );
+    LangUtils.applyTransitionEndListener( trayRoot, resizeHandler.resize );
 
     addTrackButton.addEventListener( "click", function() {
       butter.currentMedia.addTrack( null, true );

@@ -13,7 +13,7 @@ define( [ "core/eventmanager", "./toggler",
             FirstRun, Tray, UIKitDummy,
             TrackEvent, Dialog,
             DragNDrop, Localized, Make,
-            resizeHandler, config ){
+            ResizeHandler, config ){
 
   var TRANSITION_DURATION = 500,
       BUTTER_CSS_FILE = "{css}/butter.ui.css";
@@ -39,6 +39,7 @@ define( [ "core/eventmanager", "./toggler",
         _uiConfig = butter.config,
         _uiOptions = _uiConfig.value( "ui" ),
         _unloadDialog,
+        _resizeHandler,
         _this = this;
 
     // Top-level way to test our crash reporter.
@@ -673,8 +674,9 @@ define( [ "core/eventmanager", "./toggler",
     _this.loadIndicator.start();
 
     butter.listen( "ready", function(){
-      resizeHandler();
-      window.addEventListener( "resize", resizeHandler, false );
+      _resizeHandler = new ResizeHandler( { margin: 26, border: 15 } ),
+      _resizeHandler.resize();
+      window.addEventListener( "resize", _resizeHandler.resize, false );
       _this.loadIndicator.stop();
       _this.visible = true;
       _this.tray.show();

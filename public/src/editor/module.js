@@ -13,7 +13,7 @@ define( [ "localized", "core/eventmanager", "core/trackevent", "./editor",
           // Included here to register themselves.
           "./media-gallery-editor", "./project-editor", "./sequencer-editor", "./tutorial-editor" ],
   function( Localized, EventManager, TrackEvent, Editor,
-            Toggler, resizeHandler, LangUtils, EDITOR_AREA_LAYOUT,
+            Toggler, ResizeHandler, LangUtils, EDITOR_AREA_LAYOUT,
             DefaultEditor, Logger, Header, EditorHelper ){
 
   var DEFAULT_EDITOR_NAME = "plugin-list";
@@ -38,6 +38,7 @@ define( [ "localized", "core/eventmanager", "core/trackevent", "./editor",
         _editorHelper,
         _this = this,
         _createdEditors = {},
+        _resizeHandler = new ResizeHandler( { margin: 26, border: 15 } ),
         _logger = new Logger( butter.id );
 
     EventManager.extend( _this );
@@ -47,7 +48,7 @@ define( [ "localized", "core/eventmanager", "core/trackevent", "./editor",
     _editorHelper = new EditorHelper( butter );
 
     _header = new Header( _editorAreaDOMRoot, _this );
-    LangUtils.applyTransitionEndListener( _editorAreaDOMRoot, resizeHandler );
+    LangUtils.applyTransitionEndListener( _editorAreaDOMRoot, _resizeHandler.resize );
 
     /**
      * Member: openEditor

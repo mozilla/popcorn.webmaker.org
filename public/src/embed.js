@@ -361,7 +361,7 @@ function init() {
       "util/accepted-ua",
       "popcorn"
     ],
-    function( URI, LangUtil, Controls, TextboxWrapper, resizeHandler, MediaUtil, DEFAULT_LAYOUT_SNIPPETS ) {
+    function( URI, LangUtil, Controls, TextboxWrapper, ResizeHandler, MediaUtil, DEFAULT_LAYOUT_SNIPPETS ) {
 
       var __defaultLayouts = LangUtil.domFragment( DEFAULT_LAYOUT_SNIPPETS );
       /**
@@ -373,6 +373,7 @@ function init() {
             version: "Butter-Embed-@VERSION@"
           },
           popcorn,
+          resizeHandler = new ResizeHandler(),
           config,
           qs = URI.parse( window.location.href ).queryKey,
           container = document.querySelectorAll( ".container" )[ 0 ];
@@ -419,8 +420,8 @@ function init() {
         showinfo: qs.showinfo === "0" ? false : true
       };
 
-      resizeHandler();
-      window.addEventListener( "resize", resizeHandler, false );
+      resizeHandler.resize();
+      window.addEventListener( "resize", resizeHandler.resize, false );
 
       Controls.create( "controls", {
         onShareClick: function() {
