@@ -31,8 +31,8 @@ Prerequisites
 Environment Setup
 -----------------
 
-1. `git clone --recursive https://github.com/mozilla/butter.git`
-2. `cd butter`
+1. `git clone --recursive https://github.com/mozilla/popcorn.webmaker.org.git`
+2. `cd popcorn.webmaker.org`
 3. `npm install`
 
 Running Butter in development mode
