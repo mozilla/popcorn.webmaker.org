@@ -15,6 +15,7 @@ define( [ "util/time" ],
         _timeTooltip = _container.querySelector( ".butter-time-tooltip" ),
         _line = _container.querySelector( ".time-bar-scrubber-line" ),
         _fill = _container.querySelector( ".fill-bar" ),
+        _total = _container.querySelector( ".total-bar" ),
         _tracksContainer = tracksContainer,
         _tracksContainerWidth,
         _media = media,
@@ -54,10 +55,13 @@ define( [ "util/time" ],
         // Note the use of clientWidth here to account for padding/margin width fuzziness.
         if( pos < scrollLeft || pos - _lineWidth > _container.clientWidth + scrollLeft ){
           _node.style.display = "none";
+          _line.style.display = "none";
         }
         else {
           _node.style.left = adjustedPos + "px";
           _node.style.display = "block";
+          _line.style.left = adjustedPos + "px";
+          _line.style.display = "block";
         } //if
 
         if( pos < scrollLeft ){

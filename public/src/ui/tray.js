@@ -14,13 +14,19 @@ define( [ "util/lang",  "./logo-spinner", "./resizeHandler",
     var statusAreaFragment = LangUtils.domFragment( STATUS_AREA_LAYOUT, ".media-status-container" ),
         timelineAreaFragment = LangUtils.domFragment( TIMELINE_AREA_LAYOUT, ".butter-timeline" ),
         trayRoot = LangUtils.domFragment( TRAY_LAYOUT, ".butter-tray" ),
+        timelineArea = trayRoot.querySelector( ".butter-timeline-area" ),
+        trayHandle = trayRoot.querySelector( ".butter-tray-resize-handle" ),
+        wrapper = document.querySelector( ".wrapper" ),
         addTrackButton = statusAreaFragment.querySelector( "button.add-track" ),
         loadingContainer = trayRoot.querySelector( ".butter-loading-container" ),
         resizeHandler = new ResizeHandler( { margin: 26, border: 15 } ),
+        trayHeight = 0,
+        minHeight = 0,
+        _vScrollBar, _hScrollBar,
         logoSpinner = new LogoSpinner( loadingContainer );
 
     this.statusArea = trayRoot.querySelector( ".butter-status-area" );
-    this.timelineArea = trayRoot.querySelector( ".butter-timeline-area" );
+    this.timelineArea = timelineArea;
 
     this.rootElement = trayRoot;
 
@@ -43,8 +49,39 @@ define( [ "util/lang",  "./logo-spinner", "./resizeHandler",
       trayRoot.classList.add( "butter-tray-transitions" );
     };
 
+    function onTrayHandleMousedown( e ) {
+      e.preventDefault();
+      trayHandle.removeEventListener( "mousedown", onTrayHandleMousedown, false );
+      window.addEventListener( "mousemove", onTrayHandleMousemove, false );
+      window.addEventListener( "mouseup", onTrayHandleMouseup, false );
+    }
+    function onTrayHandleMousemove( e ) {
+      trayHeight = window.innerHeight - e.pageY;
+      if ( trayHeight < minHeight ) {
+        trayHeight = minHeight;
+      }
+      if ( e.pageY < wrapper.parentNode.offsetTop ) {
+        trayHeight = window.innerHeight - wrapper.parentNode.offsetTop;
+      }
+      trayRoot.style.height = trayHeight + "px";
+      wrapper.parentNode.style.bottom = trayHeight + "px";
+      resizeHandler.resize();
+      _vScrollBar.update();
+    }
+    function onTrayHandleMouseup() {
+      trayHandle.addEventListener( "mousedown", onTrayHandleMousedown, false );
+      window.removeEventListener( "mousemove", onTrayHandleMousemove, false );
+      window.removeEventListener( "mouseup", onTrayHandleMouseup, false );
+    }
+
+    trayHandle.addEventListener( "mousedown", onTrayHandleMousedown, false );
+
     this.setMediaInstance = function( mediaInstanceRootElement ) {
       var timelineContainer = this.timelineArea.querySelector( ".butter-timeline" );
+      trayHeight = trayRoot.offsetHeight;
+      minHeight = trayHeight - timelineArea.offsetHeight;
+      wrapper.parentNode
+      wrapper.parentNode.style.bottom = trayHeight + "px";
       timelineContainer.innerHTML = "";
       timelineContainer.appendChild( mediaInstanceRootElement );
     };
@@ -61,6 +98,11 @@ define( [ "util/lang",  "./logo-spinner", "./resizeHandler",
       }
     };
 
+    this.setScrollbars = function( vScrollBar, hScrollBar ) {
+      _vScrollBar = vScrollBar;
+      _hScrollBar = hScrollBar;
+    };
+
     Object.defineProperties( this, {
       minimized: {
         enumerable: true,
@@ -68,10 +110,20 @@ define( [ "util/lang",  "./logo-spinner", "./resizeHandler",
           if ( val ) {
             document.body.classList.add( "tray-minimized" );
             trayRoot.classList.add( "butter-tray-minimized" );
+            trayRoot.style.bottom = -this.timelineArea.offsetHeight + "px";
+            trayHeight = trayRoot.offsetHeight;
+            wrapper.parentNode.style.bottom = trayHeight - this.timelineArea.offsetHeight + "px";
+            trayHandle.removeEventListener( "mousedown", onTrayHandleMousedown, false );
           }
           else {
             document.body.classList.remove( "tray-minimized" );
             trayRoot.classList.remove( "butter-tray-minimized" );
+            trayHandle.addEventListener( "mousedown", onTrayHandleMousedown, false );
+            if ( trayHeight ) {
+              trayRoot.style.height = trayHeight + "px";
+              wrapper.parentNode.style.bottom = trayHeight + "px";
+            }
+            trayRoot.style.bottom = "0";
           }
         },
         get: function() {

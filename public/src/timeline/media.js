@@ -40,6 +40,7 @@ define( [ "core/trackevent", "core/track", "core/eventmanager",
     _status = new Status( _media, butter.ui.tray.statusArea );
 
     _tracksContainer.setScrollbars( _vScrollBar, _hScrollBar );
+    butter.ui.tray.setScrollbars( _vScrollBar, _hScrollBar );
 
     EventManager.extend( _this );
 
