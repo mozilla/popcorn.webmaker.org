@@ -25,10 +25,6 @@ define( [
       onModuleReady();
     };
 
-    this.getCurrentTrackWidth = function() {
-      return _currentMedia.trackContainer.getTrackWidth();
-    };
-
     butter.listen( "mediaadded", function( event ){
       var mediaObject = event.data,
           media = new Media( butter, mediaObject );
@@ -63,6 +59,14 @@ define( [
 
       butter.listen( "mediachanged", mediaChanged );
       butter.listen( "mediaremoved", mediaRemoved );
+    });
+    Object.defineProperties( this, {
+      media: {
+        enumerable: true,
+        get: function() {
+          return _currentMedia;
+        }
+      }
     });
 
   }; //Timeline

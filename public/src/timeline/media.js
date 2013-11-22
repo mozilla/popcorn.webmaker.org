@@ -49,11 +49,13 @@ define( [ "core/trackevent", "core/track", "core/eventmanager",
       _superScrollbar.resize();
     }
 
-    window.addEventListener( "resize", function() {
+    function onResize() {
       _vScrollBar.update();
       _timebar.update();
       _superScrollbar.resize();
-    }, false );
+    }
+
+    window.addEventListener( "resize", onResize, false );
 
     function onMediaTimeUpdate() {
       // Move the viewport to be centered around the scrubber
@@ -257,6 +259,7 @@ define( [ "core/trackevent", "core/track", "core/eventmanager",
     this.trackContainer = _tracksContainer;
     this.element = _rootElement;
     this.media = _media;
+    this.resize = onResize;
   }
 
   return MediaInstance;

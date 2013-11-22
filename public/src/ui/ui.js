@@ -2,17 +2,17 @@
  * If a copy of the MIT license was not distributed with this file, you can
  * obtain one at https://raw.github.com/mozilla/butter/master/LICENSE */
 
-define( [ "core/eventmanager", "./toggler",
-          "./header", "./unload-dialog", "crashreporter",
+define( [ "core/eventmanager", "./header",
+          "./unload-dialog", "crashreporter",
           "first-run", "./tray", "editor/ui-kit",
           "core/trackevent", "dialog/dialog",
-          "util/dragndrop", "localized", "make-api",
+          "util/dragndrop", "make-api",
           "./resizeHandler", "json!/api/butterconfig" ],
-  function( EventManager, Toggler, Header,
+  function( EventManager, Header,
             UnloadDialog, CrashReporter,
             FirstRun, Tray, UIKitDummy,
             TrackEvent, Dialog,
-            DragNDrop, Localized, Make,
+            DragNDrop, Make,
             ResizeHandler, config ){
 
   var TRANSITION_DURATION = 500,
@@ -35,8 +35,7 @@ define( [ "core/eventmanager", "./toggler",
 
   function UI( butter ){
 
-    var _visibility = true,
-        _uiConfig = butter.config,
+    var _uiConfig = butter.config,
         _uiOptions = _uiConfig.value( "ui" ),
         _unloadDialog,
         _resizeHandler,
@@ -54,12 +53,6 @@ define( [ "core/eventmanager", "./toggler",
 
     // Filled in by the editor module
     this.editor = null;
-
-    var _toggler = new Toggler( this.tray.rootElement.querySelector( ".butter-toggle-button" ),
-        function () {
-          butter.ui.visible = !butter.ui.visible;
-          _toggler.state = !_toggler.state;
-        }, Localized.get( "Show/Hide Timeline" ) );
 
     if ( _uiOptions.enabled ) {
       if ( _uiOptions.onLeaveDialog ) {
@@ -352,23 +345,6 @@ define( [ "core/eventmanager", "./toggler",
         get: function() {
           return _uiOptions.enabled;
         }
-      },
-      visible: {
-        enumerable: true,
-        get: function(){
-          return _visibility;
-        },
-        set: function( val ){
-          if( _visibility !== val ){
-            _visibility = val;
-            if( _visibility ){
-              this.tray.minimized = false;
-            }
-            else {
-              this.tray.minimized = true;
-            }
-          }
-        }
       }
     });
 
@@ -659,44 +635,14 @@ define( [ "core/eventmanager", "./toggler",
 
     this.TRANSITION_DURATION = TRANSITION_DURATION;
 
-    _toggler.visible = false;
-    _this.visible = false;
-
-    this.loadIndicator = {
-      start: function(){
-        _this.tray.toggleLoadingSpinner( true );
-      },
-      stop: function(){
-        _this.tray.toggleLoadingSpinner( false );
-      }
-    };
-
-    _this.loadIndicator.start();
-
     butter.listen( "ready", function(){
       _resizeHandler = new ResizeHandler( { margin: 26, border: 15 } ),
       _resizeHandler.resize();
       window.addEventListener( "resize", _resizeHandler.resize, false );
-      _this.loadIndicator.stop();
-      _this.visible = true;
-      _this.tray.show();
     });
 
-    butter.listen( "mediacontentchanged", function() {
-      unbindKeyDownListener();
-      _this.loadIndicator.start();
-      _toggler.visible = false;
-      butter.ui.visible = false;
-      _toggler.state = true;
-    });
-
-    butter.listen( "mediaready", function() {
-      _this.loadIndicator.stop();
-      _toggler.visible = true;
-      butter.ui.visible = true;
-      _toggler.state = false;
-      bindKeyDownListener();
-    });
+    butter.listen( "mediacontentchanged", unbindKeyDownListener );
+    butter.listen( "mediaready", bindKeyDownListener );
 
     _this.dialogDir = butter.config.value( "dirs" ).dialogs || "";
 
