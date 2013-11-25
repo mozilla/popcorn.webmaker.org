@@ -600,7 +600,9 @@
           set: function( importData ){
             var newTrack,
                 url,
-                i, l;
+                i, l,
+                fallbacks = [],
+                sources = [];
 
             function doImportTracks() {
               if ( importData.tracks ) {
@@ -620,8 +622,13 @@
                     // If sources is a single array and of type null player,
                     // don't bother making a sequence.
                     if ( url.length > 1 || MediaTypes.checkUrl( url[ 0 ] ) !== "null" ) {
+                      // grab first source as main source.
+                      sources.push( URI.makeUnique( url.shift() ).toString() );
+                      for ( i = 0; i < url.length; i++ ) {
+                        fallbacks.push( URI.makeUnique( url[ i ] ).toString() );
+                      }
 
-                      firstSource = URI.makeUnique( url.shift() ).toString();
+                      firstSource = sources[ 0 ];
                       MediaTypes.getMetaData( firstSource, function( data ) {
 
                         newTrack = new Track();
@@ -631,8 +638,9 @@
                           popcornOptions: {
                             start: 0,
                             end: _duration,
-                            source: [ firstSource ],
+                            source: sources,
                             title: data.title,
+                            fallback: fallbacks,
                             duration: _duration,
                             target: "video-container"
                           }

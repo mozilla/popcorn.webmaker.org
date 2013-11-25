@@ -58,6 +58,8 @@
 	"Events": "Events",
 	"Eye": "Eye",
 	"Fade": "Fade",
+	"Fallback URL (only applies to exported projects)": "Fallback URL (only applies to exported projects)",
+	"Fallback": "Fallback",
 	"Feedback": "Feedback",
 	"flashWarning": "Your web browser has an outdated Flash plugin. Flash media may not function as expected. Check your plugin version using <a href=\"https://www.mozilla.org/plugincheck\">Mozilla's plugin checking service</a>.",
 	"Flickr Slideshow": "Flickr Slideshow",
