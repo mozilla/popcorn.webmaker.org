@@ -271,9 +271,9 @@
 .track-handle {
   border: none;
   border-bottom: 1px solid darken( @baseLight, 25% );
-  cursor: url(/resources/cursors/hand.cur), default; /*EI Support*/
-  cursor: -webkit-grab;                      /*Chrome Support*/
-  cursor: -moz-grab;                         /*Mozzila Support*/
+  cursor: -webkit-grab;
+  cursor: -moz-grab;
+  cursor: grab
   width: 100%;
   height: @_trackHeight;
   background: @baseLight;
@@ -320,6 +320,12 @@
     &:after {
       border-bottom-color: #000;
     }
+  }
+  &.grabbing{
+    cursor: -webkit-grabbing;
+    cursor: -moz-grabbing;
+    cursor: grabbing;
+    cursor: grab;
   }
 }
 

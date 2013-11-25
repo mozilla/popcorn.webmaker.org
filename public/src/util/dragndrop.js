@@ -1081,16 +1081,7 @@ define( [ "core/eventmanager", "util/lang", "util/scroll-group" ],
     }
 
     function onElementMouseDown( e ) {
-      //Icon Grabbing for timeline
-      //if chrome or firefox 
-      $(".track-handle").css("cursor", "-moz-grabbing");
-      $(".track-handle").css("cursor", "-webkit-grabbing");
-      //if IE, use custom cursor icon
-      if($.browser.msie){
-        $(".track-handle").css({'cursor': 'url(/resources/cursors/hand-grab.cur), default'});
-      }
-
-      // Stop text selection in chrome.
+      
       e.preventDefault();
       if ( e.which !== 1 ) {
         return;
@@ -1106,11 +1097,10 @@ define( [ "core/eventmanager", "util/lang", "util/scroll-group" ],
 
       window.addEventListener( "mouseup", onElementMouseUp, false );
       window.addEventListener( "mousemove", onElementMouseMove, false );
-
       DragNDrop.dispatch( "sortstarted", e );
     }
 
-    function onElementMouseUp() {
+    function onElementMouseUp( e ) {
       _draggingElement.style.zIndex = _oldZIndex;
       window.removeEventListener( "mouseup", onElementMouseUp, false );
       window.removeEventListener( "mousemove", onElementMouseMove, false );
@@ -1122,15 +1112,8 @@ define( [ "core/eventmanager", "util/lang", "util/scroll-group" ],
         parentElement.replaceChild( _draggingElement, _placeHolder );
         _placeHolder = null;
       }
-      DragNDrop.dispatch( "sortstopped" );
-      //icon grabbing for timeline
-      //if chrome or firefox
-      $(".track-handle").css("cursor", "-moz-grab");
-      $(".track-handle").css("cursor", "-webkit-grab");
-      //if IE, use custom cursor icon
-      if($.browser.msie){
-        $(".track-handle").css({'cursor': 'url(/resources/cursors/hand.cur), default'});
-      }
+      DragNDrop.dispatch( "sortstopped", e);
+     
     }
 
     _instance.addItem = function( item ) {
