@@ -1081,7 +1081,7 @@ define( [ "core/eventmanager", "util/lang", "util/scroll-group" ],
     }
 
     function onElementMouseDown( e ) {
-      // Stop text selection in chrome.
+      
       e.preventDefault();
       if ( e.which !== 1 ) {
         return;
@@ -1097,11 +1097,10 @@ define( [ "core/eventmanager", "util/lang", "util/scroll-group" ],
 
       window.addEventListener( "mouseup", onElementMouseUp, false );
       window.addEventListener( "mousemove", onElementMouseMove, false );
-
       DragNDrop.dispatch( "sortstarted", e );
     }
 
-    function onElementMouseUp() {
+    function onElementMouseUp( e ) {
       _draggingElement.style.zIndex = _oldZIndex;
       window.removeEventListener( "mouseup", onElementMouseUp, false );
       window.removeEventListener( "mousemove", onElementMouseMove, false );
@@ -1113,7 +1112,8 @@ define( [ "core/eventmanager", "util/lang", "util/scroll-group" ],
         parentElement.replaceChild( _draggingElement, _placeHolder );
         _placeHolder = null;
       }
-      DragNDrop.dispatch( "sortstopped" );
+      DragNDrop.dispatch( "sortstopped", e);
+     
     }
 
     _instance.addItem = function( item ) {

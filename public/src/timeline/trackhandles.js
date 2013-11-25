@@ -42,7 +42,30 @@ define( [ "dialog/dialog", "util/dragndrop", "util/lang", "text!layouts/track-ha
           _draggingHandleId = id;
         }
       }
+  
+      var trackHandle = document.getElementsByClassName("track-handle");
+      for (var i = trackHandle.length - 1; i >= 0; i--) {
+        trackHandle[i].classList.add("grabbing");
+      };
 
+      //var trackHandle = document.querySelector('[class="track-handle"]' , '[data-butter-track-id="' + id + '"]');      
+      //trackHandle.classList.add("grabbing");
+      
+    });
+
+    DragNDrop.listen( "sortstopped", function onSortStopped( e ) {
+      var originalEvent = e.data,
+          orderedTracks = butter.currentMedia.orderedTracks,
+          id = originalEvent.target.getAttribute( "data-butter-track-id" );
+          console.log(id);
+          
+          //var trackHandle = document.querySelector('[class="track-handle grabbing"]' , '[data-butter-track-id="' + id + '"]');      
+          //console.log(trackHandle);
+          //trackHandle.classList.remove("grabbing");
+          var trackHandle = document.getElementsByClassName("track-handle");
+          for (var i = trackHandle.length - 1; i >= 0; i--) {
+            trackHandle[i].classList.remove("grabbing");
+          };
     });
 
     var _sortable = DragNDrop.sortable( _listElement, {
