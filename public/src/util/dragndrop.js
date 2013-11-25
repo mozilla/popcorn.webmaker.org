@@ -1081,6 +1081,15 @@ define( [ "core/eventmanager", "util/lang", "util/scroll-group" ],
     }
 
     function onElementMouseDown( e ) {
+      //Icon Grabbing for timeline
+      //if chrome or firefox 
+      $(".track-handle").css("cursor", "-moz-grabbing");
+      $(".track-handle").css("cursor", "-webkit-grabbing");
+      //if IE, use custom cursor icon
+      if($.browser.msie){
+        $(".track-handle").css({'cursor': 'url(/resources/cursors/hand-grab.cur), default'});
+      }
+
       // Stop text selection in chrome.
       e.preventDefault();
       if ( e.which !== 1 ) {
@@ -1114,6 +1123,14 @@ define( [ "core/eventmanager", "util/lang", "util/scroll-group" ],
         _placeHolder = null;
       }
       DragNDrop.dispatch( "sortstopped" );
+      //icon grabbing for timeline
+      //if chrome or firefox
+      $(".track-handle").css("cursor", "-moz-grab");
+      $(".track-handle").css("cursor", "-webkit-grab");
+      //if IE, use custom cursor icon
+      if($.browser.msie){
+        $(".track-handle").css({'cursor': 'url(/resources/cursors/hand.cur), default'});
+      }
     }
 
     _instance.addItem = function( item ) {
