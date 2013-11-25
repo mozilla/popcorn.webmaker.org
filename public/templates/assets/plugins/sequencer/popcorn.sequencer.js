@@ -342,6 +342,12 @@
       options.setupContainer();
       if ( options.source ) {
         options.sourceToArray( options, "source" );
+        if ( options.fallback ) {
+          options.sourceToArray( options, "fallback" );
+        }
+        if ( options.fallback ) {
+          options.source = options.source.concat( options.fallback );
+        }
         loadingHandler.add( options, options.addSource );
       }
 
@@ -429,13 +435,23 @@
         options.hidden = updates.hidden;
         options.setZIndex();
       }
+      if ( updates.fallback ) {
+        options.sourceToArray( updates, "fallback" );
+        options.fallback = updates.fallback;
+      }
       if ( updates.source ) {
         options.sourceToArray( updates, "source" );
+        if ( options.fallback ) {
+          updates.source = updates.source.concat( options.fallback );
+        }
         if ( updates.source.toString() !== options.source.toString() ) {
           options.ready = false;
           options.playWhenReady = false;
           if ( options.active ) {
             options.displayLoading();
+          }
+          if ( updates.fallback ) {
+            updates.source = updates.source.concat( updates.fallback );
           }
           options.source = updates.source;
           options.clearEvents();
@@ -541,6 +557,12 @@
           elem: "input",
           type: "url",
           label: "Source URL",
+          "default": ""
+        },
+        fallback: {
+          elem: "input",
+          type: "url",
+          label: "Fallback URL (only applies to exported projects)",
           "default": ""
         },
         title: {
