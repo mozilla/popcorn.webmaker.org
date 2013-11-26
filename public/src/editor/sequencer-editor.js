@@ -506,13 +506,23 @@ define( [ "util/mediatypes", "editor/editor", "util/time",
   }, false, function( trackEvent ) {
     var _container,
         _popcornOptions,
+        _dragOptions = {
+          disableTooltip: true,
+          editable: false
+        },
         _target;
 
     _popcornOptions = trackEvent.popcornTrackEvent;
     _container = _popcornOptions._container;
     _target = _popcornOptions._target;
 
-    this.draggable( trackEvent, _container, _target );
+    if ( MediaUtils.checkUrl( _popcornOptions.source[ 0 ] ) === "YouTube" ) {
+      _dragOptions.disableTooltip = false;
+      _dragOptions.editable = true;
+      _dragOptions.tooltip = "Double click to close ads";
+    }
+
+    this.draggable( trackEvent, _container, _target, _dragOptions );
     this.resizable( trackEvent, _container, _target, {
       handlePositions: "n,ne,e,se,s,sw,w,nw",
       minWidth: 10,
