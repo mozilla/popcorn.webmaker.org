@@ -16,7 +16,7 @@ define( [ "util/lang",  "./logo-spinner", "./resizeHandler",
         trayRoot = LangUtils.domFragment( TRAY_LAYOUT, ".butter-tray" ),
         timelineArea = trayRoot.querySelector( ".butter-timeline-area" ),
         trayHandle = trayRoot.querySelector( ".butter-tray-resize-handle" ),
-        wrapper = document.querySelector( ".wrapper" ),
+        bodyWrapper = document.querySelector( ".body-wrapper" ),
         addTrackButton = statusAreaFragment.querySelector( "button.add-track" ),
         loadingContainer = trayRoot.querySelector( ".butter-loading-container" ),
         resizeHandler = new ResizeHandler( { margin: 26, border: 15 } ),
@@ -60,11 +60,11 @@ define( [ "util/lang",  "./logo-spinner", "./resizeHandler",
       if ( trayHeight < minHeight ) {
         trayHeight = minHeight;
       }
-      if ( e.pageY < wrapper.parentNode.offsetTop ) {
-        trayHeight = window.innerHeight - wrapper.parentNode.offsetTop;
+      if ( e.pageY < bodyWrapper.offsetTop ) {
+        trayHeight = window.innerHeight - bodyWrapper.offsetTop;
       }
       trayRoot.style.height = trayHeight + "px";
-      wrapper.parentNode.style.bottom = trayHeight + "px";
+      bodyWrapper.style.bottom = trayHeight + "px";
       resizeHandler.resize();
       _vScrollBar.update();
     }
@@ -80,8 +80,7 @@ define( [ "util/lang",  "./logo-spinner", "./resizeHandler",
       var timelineContainer = this.timelineArea.querySelector( ".butter-timeline" );
       trayHeight = trayRoot.offsetHeight;
       minHeight = trayHeight - timelineArea.offsetHeight;
-      wrapper.parentNode
-      wrapper.parentNode.style.bottom = trayHeight + "px";
+      bodyWrapper.style.bottom = trayHeight + "px";
       timelineContainer.innerHTML = "";
       timelineContainer.appendChild( mediaInstanceRootElement );
     };
@@ -112,7 +111,7 @@ define( [ "util/lang",  "./logo-spinner", "./resizeHandler",
             trayRoot.classList.add( "butter-tray-minimized" );
             trayRoot.style.bottom = -this.timelineArea.offsetHeight + "px";
             trayHeight = trayRoot.offsetHeight;
-            wrapper.parentNode.style.bottom = trayHeight - this.timelineArea.offsetHeight + "px";
+            bodyWrapper.style.bottom = trayHeight - this.timelineArea.offsetHeight + "px";
             trayHandle.removeEventListener( "mousedown", onTrayHandleMousedown, false );
           }
           else {
@@ -121,7 +120,7 @@ define( [ "util/lang",  "./logo-spinner", "./resizeHandler",
             trayHandle.addEventListener( "mousedown", onTrayHandleMousedown, false );
             if ( trayHeight ) {
               trayRoot.style.height = trayHeight + "px";
-              wrapper.parentNode.style.bottom = trayHeight + "px";
+              bodyWrapper.style.bottom = trayHeight + "px";
             }
             trayRoot.style.bottom = "0";
           }
