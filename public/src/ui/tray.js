@@ -22,7 +22,6 @@ define( [ "util/lang",  "./logo-spinner", "./resizeHandler",
         resizeHandler = new ResizeHandler( { margin: 26, border: 15 } ),
         trayHeight = 0,
         minHeight = 0,
-        _vScrollBar, _hScrollBar,
         logoSpinner = new LogoSpinner( loadingContainer );
 
     this.statusArea = trayRoot.querySelector( ".butter-status-area" );
@@ -66,7 +65,7 @@ define( [ "util/lang",  "./logo-spinner", "./resizeHandler",
       trayRoot.style.height = trayHeight + "px";
       bodyWrapper.style.bottom = trayHeight + "px";
       resizeHandler.resize();
-      _vScrollBar.update();
+      butter.timeline.media.resize();
     }
     function onTrayHandleMouseup() {
       trayHandle.addEventListener( "mousedown", onTrayHandleMousedown, false );
@@ -95,11 +94,6 @@ define( [ "util/lang",  "./logo-spinner", "./resizeHandler",
           loadingContainer.style.display = "none";
         });
       }
-    };
-
-    this.setScrollbars = function( vScrollBar, hScrollBar ) {
-      _vScrollBar = vScrollBar;
-      _hScrollBar = hScrollBar;
     };
 
     Object.defineProperties( this, {
