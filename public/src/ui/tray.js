@@ -2,10 +2,10 @@
  * If a copy of the MIT license was not distributed with this file, you can
  * obtain one at https://raw.github.com/mozilla/butter/master/LICENSE */
 
-define( [ "util/lang",  "./logo-spinner", "./resizeHandler",
+define( [ "util/lang",  "./logo-spinner", "./resizeHandler", "./toggler", "localized",
           "text!layouts/tray.html",
           "l10n!/layouts/status-area.html", "text!layouts/timeline-area.html" ],
-  function( LangUtils, LogoSpinner, ResizeHandler,
+  function( LangUtils, LogoSpinner, ResizeHandler, Toggler, Localized,
             TRAY_LAYOUT,
             STATUS_AREA_LAYOUT, TIMELINE_AREA_LAYOUT ) {
 
@@ -95,23 +95,43 @@ define( [ "util/lang",  "./logo-spinner", "./resizeHandler",
         });
       }
     };
+var _this = this;
+    var _toggler = new Toggler( trayRoot.querySelector( ".butter-toggle-button" ),
+      function () {
+        _this.minimized = !_this.minimized;
+        _toggler.state = !_toggler.state;
+      }, Localized.get( "Show/Hide Timeline" ) );
+    _toggler.visible = false;
+    _toggler.state = true;
+
+    butter.listen( "mediacontentchanged", function() {
+      _toggler.visible = false;
+      //_toggler.state = true;
+    });
+
+    butter.listen( "mediaready", function() {
+      _toggler.visible = true;
+      //_toggler.state = false;
+    });
 
     Object.defineProperties( this, {
       minimized: {
         enumerable: true,
         set: function( val ) {
           if ( val ) {
+console.log("min");
             document.body.classList.add( "tray-minimized" );
             trayRoot.classList.add( "butter-tray-minimized" );
             trayRoot.style.bottom = -this.timelineArea.offsetHeight + "px";
             trayHeight = trayRoot.offsetHeight;
             bodyWrapper.style.bottom = trayHeight - this.timelineArea.offsetHeight + "px";
-            trayHandle.removeEventListener( "mousedown", onTrayHandleMousedown, false );
+            //trayHandle.removeEventListener( "mousedown", onTrayHandleMousedown, false );
           }
           else {
+console.log("max");
             document.body.classList.remove( "tray-minimized" );
             trayRoot.classList.remove( "butter-tray-minimized" );
-            trayHandle.addEventListener( "mousedown", onTrayHandleMousedown, false );
+            //trayHandle.addEventListener( "mousedown", onTrayHandleMousedown, false );
             if ( trayHeight ) {
               trayRoot.style.height = trayHeight + "px";
               bodyWrapper.style.bottom = trayHeight + "px";
