@@ -9,7 +9,7 @@ define( [ "localized", "util/uri" ],
         YouTube: /(?:https?:\/\/www\.|https?:\/\/|www\.|\.|^)youtu/,
         Vimeo: /https?:\/\/(www\.)?vimeo.com\/(\d+)($|\/)/,
         SoundCloud: /(?:https?:\/\/www\.|https?:\/\/|www\.|\.|^)(soundcloud)/,
-        Archive: /(?:https?:\/\/www\.|https?:\/\/|www\.|\.|^)archive\.org\/(details|download)\/((.*)start(\/|=)[\d\.]+(.*)end(\/|=)[\d\.]+)?/,
+        Archive: /(?:https?:\/\/www\.|https?:\/\/|www\.|\.|^)archive\.org\/(details|download|stream)\/((.*)start(\/|=)[\d\.]+(.*)end(\/|=)[\d\.]+)?/,
         // supports #t=<start>,<duration>
         // where start or duration can be: X, X.X or XX:XX
         "null": /^\s*#t=(?:\d*(?:(?:\.|\:)?\d+)?),?(\d+(?:(?:\.|\:)\d+)?)\s*$/,
@@ -218,7 +218,9 @@ define( [ "localized", "util/uri" ],
       } else if ( type === "Archive" ) {
         // We don't accept direct MP4/OGV links to videos since Archive.org doesn't want to directly
         // expose the main video's. Until noted, keep it this way and don't change this.
-        if ( baseUrl.indexOf( "details" ) === -1 ) {
+        // Basically always check that any valid types are not included so we can continue to
+        // prevent direct video links being pasted in and attributed as HTML5 video.
+        if ( baseUrl.indexOf( "details" ) === -1 && baseUrl.indexOf( "stream" ) === -1 ) {
           return errorCallback( ARCHIVE_EMBED_DISABLED );
         }
 
