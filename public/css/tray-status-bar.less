@@ -1,8 +1,7 @@
 /*********************************************************
 * TRAY STATUS
 */
-@_statusContainerHeight: @CONTROLS_HEIGHT - 25px;
-@_mediaStatusContainerHeight: @CONTROLS_HEIGHT;
+@_statusContainerHeight: 25px;
 @_playButtonHeight: 20px;
 @_scrubberBarHeight: 8px;
 @_scrubberHandleHeight: 10px;
@@ -16,7 +15,7 @@
 
 .butter-status-area {
   position: absolute;
-  bottom: 30px;
+  bottom: @_superScrollbarHeight;
   top: 0;
   left: 0;
   width: 100%;
@@ -50,7 +49,7 @@
 .time-bar {
   position: absolute;
   left: @_traySideWidth;
-  top: ( @_mediaStatusContainerHeight - @_scrubberBarHeight ) / 2;
+  top: ( @CONTROLS_HEIGHT - @_scrubberBarHeight ) / 2;
   right: @_timebarRight;
   bottom: 0;
 }
@@ -60,7 +59,7 @@
   position: absolute;
   left: 0;
   top: @_scrubberBarHeight;
-  height: ( @_mediaStatusContainerHeight / 2 ) - ( @_scrubberBarHeight / 2 );
+  height: ( @CONTROLS_HEIGHT / 2 ) - ( @_scrubberBarHeight / 2 );
   overflow: hidden;
   right: 0;
   opacity: 0.5;
