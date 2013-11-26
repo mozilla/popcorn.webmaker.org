@@ -146,72 +146,115 @@ window.Butter = {
         return _currentMedia.getManifest( name );
       }; //getManifest
 
-      _this.generateSafeTrackEvent = function( type, popcornOptions, track, position ) {
-        var trackEvent,
+      _this.generateSafeTrackEvent = function( options, callback ) {
+
+        options = options || {};
+
+        if ( !options.type ) {
+          console.warn( "No plugin type was specified!" );
+          return;
+        }
+
+        var type = options.type,
+            popcornOptions = options.popcornOptions,
+            track = options.track,
+            position = options.position,
+            trackEvent,
             relativePosition,
             start = popcornOptions.start,
             end = popcornOptions.end;
 
-        if ( start + _defaultTrackeventDuration > _currentMedia.duration ) {
-          start = _currentMedia.duration - _defaultTrackeventDuration;
-        }
-
-        if ( start < 0 ) {
-          start = 0;
-        }
-
-        if ( !end && end !== 0 ) {
-          end = start + _defaultTrackeventDuration;
-        }
-
-        if ( end > _currentMedia.duration ) {
-          end = _currentMedia.duration;
-        }
-
-        if ( !_defaultTarget ) {
-          console.warn( "No targets to drop events!" );
-          return;
-        }
-
-        if ( !( track instanceof Track ) ) {
-          if ( track && track.constructor === Array ) {
-            position = track;
+        function addEvent() {
+          if ( !_defaultTarget ) {
+            console.warn( "No targets to drop events!" );
+            return;
           }
-          track = _currentMedia.orderedTracks[ 0 ];
+
+          if ( !( track instanceof Track ) ) {
+            if ( track && track.constructor === Array ) {
+              position = track;
+            }
+            track = _currentMedia.orderedTracks[ 0 ];
+          }
+
+          track = track || _currentMedia.addTrack();
+
+          if ( track.findOverlappingTrackEvent( start, end ) ) {
+            track = _currentMedia.insertTrackBefore( track );
+          }
+
+          popcornOptions.start = start;
+          popcornOptions.end = end;
+          popcornOptions.target = _defaultTarget.elementID;
+
+          if ( position ) {
+            relativePosition = getRelativePosition( position, type );
+            popcornOptions.left = relativePosition[ 0 ];
+            popcornOptions.top = relativePosition[ 1 ];
+          }
+
+          trackEvent = track.addTrackEvent({
+            popcornOptions: popcornOptions,
+            type: type,
+            defaults: _this.pluginDefaults[ type ]
+          });
+
+          trackEvent.selected = true;
+
+          _defaultTarget.view.blink();
+
+          if ( callback ) {
+            return callback( trackEvent );
+          }
+
+          return trackEvent;
         }
 
-        track = track || _currentMedia.addTrack();
+        if ( type === "sequencer" ) {
+          var playWhenReady = false;
 
-        if ( track.findOverlappingTrackEvent( start, end ) ) {
-          track = _currentMedia.insertTrackBefore( track );
+          if ( end > _currentMedia.duration ) {
+            _this.listen( "mediaready", function onMediaReady() {
+              _this.unlisten( "mediaready", onMediaReady );
+              if ( playWhenReady ) {
+                _currentMedia.play();
+              }
+
+              addEvent();
+            });
+
+            playWhenReady = !_currentMedia.paused;
+            _currentMedia.url = "#t=," + end;
+          } else {
+            addEvent();
+          }
+        } else {
+          if ( start + _defaultTrackeventDuration > _currentMedia.duration ) {
+            start = _currentMedia.duration - _defaultTrackeventDuration;
+          }
+
+          if ( start < 0 ) {
+            start = 0;
+          }
+
+          if ( !end && end !== 0 ) {
+            end = start + _defaultTrackeventDuration;
+          }
+
+          if ( end > _currentMedia.duration ) {
+            end = _currentMedia.duration;
+          }
+
+          addEvent();
         }
-
-        popcornOptions.start = start;
-        popcornOptions.end = end;
-        popcornOptions.target = _defaultTarget.elementID;
-
-        if ( position ) {
-          relativePosition = getRelativePosition( position, type );
-          popcornOptions.left = relativePosition[ 0 ];
-          popcornOptions.top = relativePosition[ 1 ];
-        }
-
-        trackEvent = track.addTrackEvent({
-          popcornOptions: popcornOptions,
-          type: type,
-          defaults: _this.pluginDefaults[ type ]
-        });
-
-        trackEvent.selected = true;
-
-        _defaultTarget.view.blink();
-
-        return trackEvent;
       };
 
+      function addCallback( trackEvent ) {
+        _this.editor.editTrackEvent( trackEvent );
+      }
+
       function targetTrackEventRequested( e ) {
-        var trackEvent,
-            popcornOptions = {},
+        var popcornOptions = {},
             start = _currentMedia.currentTime;
 
         popcornOptions.start = start;
@@ -229,8 +272,12 @@ window.Butter = {
             popcornOptions.end = popcornOptions.end + start;
           }
           _this.deselectAllTrackEvents();
-          trackEvent = _this.generateSafeTrackEvent( e.data.element.getAttribute( "data-popcorn-plugin-type" ), popcornOptions, e.data.position );
-          _this.editor.editTrackEvent( trackEvent );
+
+          _this.generateSafeTrackEvent({
+            type: e.data.element.getAttribute( "data-popcorn-plugin-type" ),
+            popcornOptions: popcornOptions,
+            position: e.data.position
+          }, addCallback );
         }
         else {
           _logger.log( "Warning: No media to add dropped trackevent." );
@@ -238,11 +285,15 @@ window.Butter = {
       }
 
       function mediaTrackEventRequested( e ) {
-        var trackEvent;
+
         if ( _currentMedia.ready ) {
           _this.deselectAllTrackEvents();
-          trackEvent = _this.generateSafeTrackEvent( e.data.getAttribute( "data-popcorn-plugin-type" ), _currentMedia.currentTime );
-          _this.editor.editTrackEvent( trackEvent );
+          _this.generateSafeTrackEvent({
+            type: e.data.getAttribute( "data-popcorn-plugin-type" ),
+            popcornOptions: {
+              start: _currentMedia.currentTime
+            }
+          }, addCallback );
         }
       }
 
@@ -346,7 +397,11 @@ window.Butter = {
             trackIndex = _currentMedia.maxPluginZIndex - popcornOptions.zindex;
             track = _currentMedia.orderedTracks[ trackIndex ];
 
-            trackEvent = _this.generateSafeTrackEvent( _copiedEvents[ i ].type, popcornOptions, track );
+            trackEvent = _this.generateSafeTrackEvent({
+              type: _copiedEvents[ i ].type,
+              popcornOptions: popcornOptions,
+              track: track
+            });
             trackEvent.selected = true;
           }
         }

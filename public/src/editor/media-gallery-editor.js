@@ -103,7 +103,10 @@ define( [ "localized", "util/lang", "util/uri", "util/xhr", "util/keys", "util/m
 
   function addPhotoEvent( popcornOptions ) {
     _butter.deselectAllTrackEvents();
-    _butter.generateSafeTrackEvent( "image", popcornOptions );
+    _butter.generateSafeTrackEvent({
+      type: "image",
+      popcornOptions: popcornOptions
+    });
   }
 
   function addPhotos( data, options ) {
@@ -178,7 +181,10 @@ define( [ "localized", "util/lang", "util/uri", "util/xhr", "util/keys", "util/m
 
   function addMediaEvent( popcornOptions ) {
     _butter.deselectAllTrackEvents();
-    _butter.generateSafeTrackEvent( "sequencer", popcornOptions );
+    _butter.generateSafeTrackEvent({
+      type: "sequencer",
+      popcornOptions: popcornOptions
+    });
   }
 
   function addMedia( data, options ) {
@@ -241,7 +247,6 @@ define( [ "localized", "util/lang", "util/uri", "util/xhr", "util/keys", "util/m
     function addEvent() {
       var start = _butter.currentTime,
           end = start + data.duration,
-          playWhenReady = false,
           popcornOptions = {
             source: URI.makeUnique( data.source ).toString(),
             denied: data.denied,
@@ -256,21 +261,7 @@ define( [ "localized", "util/lang", "util/uri", "util/xhr", "util/keys", "util/m
           };
 
       options.callback = options.callback || addMediaEvent;
-
-      if ( end > _media.duration ) {
-        _butter.listen( "mediaready", function onMediaReady() {
-          _butter.unlisten( "mediaready", onMediaReady );
-          if ( playWhenReady ) {
-            _media.play();
-          }
-          options.callback( popcornOptions, data );
-        });
-
-        playWhenReady = !_media.paused;
-        _media.url = "#t=," + end;
-      } else {
-        options.callback( popcornOptions, data );
-      }
+      options.callback( popcornOptions, data );
     }
 
     thumbnailBtn.addEventListener( "click", addEvent, false );
