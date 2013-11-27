@@ -11,8 +11,7 @@ define( [ "util/lang",  "./logo-spinner", "./resizeHandler", "./toggler", "local
 
   return function( butter ){
 
-    var _this = this,
-        _toggler,
+    var _toggler,
         statusAreaFragment = LangUtils.domFragment( STATUS_AREA_LAYOUT, ".media-status-container" ),
         timelineAreaFragment = LangUtils.domFragment( TIMELINE_AREA_LAYOUT, ".butter-timeline" ),
         trayRoot = LangUtils.domFragment( TRAY_LAYOUT, ".butter-tray" ),
