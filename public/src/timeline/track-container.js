@@ -17,7 +17,8 @@ define( [ "core/logger", "util/dragndrop", "./ghost-manager" ],
         _this = this;
 
     var _element = mediaInstanceRootElement.querySelector( ".tracks-container-wrapper" ),
-        _container = mediaInstanceRootElement.querySelector( ".tracks-container" );
+        _container = mediaInstanceRootElement.querySelector( ".tracks-container" ),
+        _boundingBoxElement = _element.querySelector( ".bounding-box-selection" );
 
     var _vScrollbar, _hScrollbar;
 
@@ -47,22 +48,16 @@ define( [ "core/logger", "util/dragndrop", "./ghost-manager" ],
     });
 
     var _startingPosition = [],
-        _containerRect = {},
-        _boundingBoxElement = document.createElement( "div" );
-
-    _boundingBoxElement.style.position = "absolute";
-    _boundingBoxElement.style.backgroundColor = "rgba(43, 124, 97, 0.2)";
-    _boundingBoxElement.style.border = "1px solid rgba(43, 124, 97, 0.8)";
+        _containerRect = {};
 
     function boundingBoxMouseDown( e ) {
       // Stops selecting while moving.
       e.preventDefault();
-      _container.appendChild( _boundingBoxElement );
       _containerRect = _container.getBoundingClientRect();
       _startingPosition = [ e.clientX - _containerRect.left, e.clientY - _containerRect.top ];
-      _container.removeEventListener( "mousedown", boundingBoxMouseDown, false );
-      _container.addEventListener( "mousemove", boundingBoxMouseMove, false );
-      _container.addEventListener( "mouseup", boundingBoxMouseUp, false );
+      _element.removeEventListener( "mousedown", boundingBoxMouseDown, false );
+      window.addEventListener( "mousemove", boundingBoxMouseMove, false );
+      window.addEventListener( "mouseup", boundingBoxMouseUp, false );
     }
     function boundingBoxMouseMove( e ) {
       var thisPosition = [ e.clientX - _containerRect.left, e.clientY - _containerRect.top ],
@@ -78,6 +73,13 @@ define( [ "core/logger", "util/dragndrop", "./ghost-manager" ],
           trackEvents = {},
           trackEvent = {},
           trackEventOptions = {};
+
+      minLeft = Math.max( 0, minLeft );
+      minTop = Math.max( 0, minTop );
+      maxLeft = Math.min( _element.clientWidth, maxLeft );
+      maxTop = Math.min( _element.clientHeight, maxTop );
+
+      _boundingBoxElement.classList.remove( "hidden" );
 
       _boundingBoxElement.style.top = minTop + "px";
       _boundingBoxElement.style.height = maxTop - minTop + "px";
@@ -107,15 +109,13 @@ define( [ "core/logger", "util/dragndrop", "./ghost-manager" ],
     }
     function boundingBoxMouseUp() {
       _startingPosition = [];
-      _container.removeChild( _boundingBoxElement );
-      _boundingBoxElement.style.width = "0";
-      _boundingBoxElement.style.height = "0";
-      _container.removeEventListener( "mousemove", boundingBoxMouseMove, false );
-      _container.removeEventListener( "mouseup", boundingBoxMouseUp, false );
-      _container.addEventListener( "mousedown", boundingBoxMouseDown, false );
+      _boundingBoxElement.classList.add( "hidden" );
+      window.removeEventListener( "mousemove", boundingBoxMouseMove, false );
+      window.removeEventListener( "mouseup", boundingBoxMouseUp, false );
+      _element.addEventListener( "mousedown", boundingBoxMouseDown, false );
     }
 
-    _container.addEventListener( "mousedown", boundingBoxMouseDown, false );
+    _element.addEventListener( "mousedown", boundingBoxMouseDown, false );
 
     _container.addEventListener( "mousedown", function( e ) {
       if ( !e.shiftKey ) {
