@@ -7,6 +7,7 @@ define( [ "core/logger", "util/dragndrop", "./ghost-manager" ],
 
   var TWEEN_PERCENTAGE = 0.35,      // diminishing factor for tweening (see followCurrentTime)
       TWEEN_THRESHOLD = 10,         // threshold beyond which tweening occurs (see followCurrentTime)
+      TRACK_HEIGHT = 30,
       TRACKEVENT_BORDER_OFFSET = 2; // clientLeft prevents track events from being positioned side by
                                     // side, so factor it into our calculations.
 
@@ -16,7 +17,8 @@ define( [ "core/logger", "util/dragndrop", "./ghost-manager" ],
         _this = this;
 
     var _element = mediaInstanceRootElement.querySelector( ".tracks-container-wrapper" ),
-        _container = mediaInstanceRootElement.querySelector( ".tracks-container" );
+        _container = mediaInstanceRootElement.querySelector( ".tracks-container" ),
+        _boundingBoxElement = _element.querySelector( ".bounding-box-selection" );
 
     var _vScrollbar, _hScrollbar;
 
@@ -45,8 +47,80 @@ define( [ "core/logger", "util/dragndrop", "./ghost-manager" ],
       _vScrollbar.update();
     });
 
-    _container.addEventListener( "mousedown", function() {
-      butter.deselectAllTrackEvents();
+    var _startingPosition = [],
+        _containerRect = {};
+
+    function boundingBoxMouseDown( e ) {
+      // Stops selecting while moving.
+      e.preventDefault();
+      _containerRect = _container.getBoundingClientRect();
+      _startingPosition = [ e.clientX - _containerRect.left, e.clientY - _containerRect.top ];
+      _element.removeEventListener( "mousedown", boundingBoxMouseDown, false );
+      window.addEventListener( "mousemove", boundingBoxMouseMove, false );
+      window.addEventListener( "mouseup", boundingBoxMouseUp, false );
+    }
+    function boundingBoxMouseMove( e ) {
+      var thisPosition = [ e.clientX - _containerRect.left, e.clientY - _containerRect.top ],
+          minLeft = Math.min( thisPosition[ 0 ], _startingPosition[ 0 ] ),
+          maxLeft = Math.max( thisPosition[ 0 ], _startingPosition[ 0 ] ),
+          minTop = Math.min( thisPosition[ 1 ], _startingPosition[ 1 ] ),
+          maxTop = Math.max( thisPosition[ 1 ], _startingPosition[ 1 ] ),
+          start = ( minLeft / _container.clientWidth ) * _media.duration,
+          end = ( maxLeft / _container.clientWidth ) * _media.duration,
+          trackStartIndex = Math.floor( ( minTop ) / TRACK_HEIGHT ),
+          trackEndIndex = Math.floor( ( maxTop ) / TRACK_HEIGHT ),
+          track = {},
+          trackEvents = {},
+          trackEvent = {},
+          trackEventOptions = {};
+
+      minLeft = Math.max( 0, minLeft );
+      minTop = Math.max( 0, minTop );
+      maxLeft = Math.min( _element.clientWidth, maxLeft );
+      maxTop = Math.min( _element.clientHeight, maxTop );
+
+      _boundingBoxElement.classList.remove( "hidden" );
+
+      _boundingBoxElement.style.top = minTop + "px";
+      _boundingBoxElement.style.height = maxTop - minTop + "px";
+
+      _boundingBoxElement.style.left = minLeft + "px";
+      _boundingBoxElement.style.width = maxLeft - minLeft + "px";
+
+      if ( !e.shiftKey ) {
+        butter.deselectAllTrackEvents();
+      }
+
+      for ( var i = trackStartIndex; i <= trackEndIndex; i++ ) {
+        track = _media.orderedTracks[ i ];
+        if ( !track ) {
+          continue;
+        }
+        trackEvents = track.trackEvents;
+        for ( var j = 0; j < trackEvents.length; j++ ) {
+          trackEvent = trackEvents[ j ];
+          trackEventOptions = trackEvent.popcornOptions;
+          if ( ( start <= trackEventOptions.end && end >= trackEventOptions.start ) ||
+               ( end >= trackEventOptions.start && start <= trackEventOptions.end ) ) {
+            trackEvent.selected = true;
+          }
+        }
+      }
+    }
+    function boundingBoxMouseUp() {
+      _startingPosition = [];
+      _boundingBoxElement.classList.add( "hidden" );
+      window.removeEventListener( "mousemove", boundingBoxMouseMove, false );
+      window.removeEventListener( "mouseup", boundingBoxMouseUp, false );
+      _element.addEventListener( "mousedown", boundingBoxMouseDown, false );
+    }
+
+    _element.addEventListener( "mousedown", boundingBoxMouseDown, false );
+
+    _container.addEventListener( "mousedown", function( e ) {
+      if ( !e.shiftKey ) {
+        butter.deselectAllTrackEvents();
+      }
     }, false );
 
     _droppable = DragNDrop.droppable( _element, {

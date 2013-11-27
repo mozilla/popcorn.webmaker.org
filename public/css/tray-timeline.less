@@ -61,6 +61,14 @@
   border-left: 1px solid @baseLightOutline;
   border-right: 1px solid @baseLightOutline;
   box-shadow: inset 0 0 5px 0 rgba( 0, 0, 0, 0.2 );
+  .bounding-box-selection {
+    position: absolute;
+    background-color: rgba(43, 124, 97, 0.2);
+    border: 1px solid rgba(43, 124, 97, 0.8);
+    &.hidden {
+      display: none;
+    }
+  }
 }
 
 .tracks-container {
