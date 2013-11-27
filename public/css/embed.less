@@ -22,6 +22,13 @@ body {
   font-weight: 300;
   font-size: 14px;
   font-family: "Helvetica Neue", sans-serif;
+
+  &.show-loading .loading-message {
+    opacity: 1;
+    // this zindex puts it above all track events
+    z-index: @postRollZIndex;
+    visibility: visible;
+  }
 }
 
 #controls-big-play-button {
