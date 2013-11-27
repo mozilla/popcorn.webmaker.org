@@ -1,6 +1,7 @@
 var async = require( "async" ),
     metrics = require( "../../lib/metrics" ),
     s3 = require( "../../lib/s3" ),
+    config = require( "../../lib/config" ),
     sanitizer = require( "../../lib/sanitizer" ),
     utilities = require( "../../lib/utilities" );
 
@@ -17,6 +18,7 @@ module.exports = function( req, res ) {
         id: res.locals.project.id,
         author: res.locals.project.author,
         title: res.locals.project.name,
+        webmakerURL: config.AUDIENCE,
         description: description,
         embedShellSrc: publishUrl,
         projectUrl: projectUrl,

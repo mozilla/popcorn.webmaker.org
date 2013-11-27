@@ -50,7 +50,11 @@
             <div>
               <div class="mozpopcorn">Popcorn Maker</div>
               <div class="embed-title">{{title | safe }}</div>
-              <div class="embed-author">{{author}}</div>
+              {% if author %}
+                <div class="embed-author">
+                  <a href="{{webmakerURL}}/{{localeInfo.lang}}/u/{{author}}" target="_blank">{{author}}</a>
+                </div>
+              {% endif %}
             </div>
             <div class="post-roll-description">{{description | safe }}
               <br>
@@ -103,7 +107,9 @@
         <div class="attribution-mopop">Mozilla Popcorn</div>
         <div class="attribution-title">{{title | safe}}</div>
         {% if author %}
-          <div class="attribution-author">{{author}}</div>
+          <div class="attribution-author">
+            <a href="{{webmakerURL}}/{{localeInfo.lang}}/u/{{author}}" target="_blank">{{author}}</a>
+          </div>
         {% endif %}
       </div>
     </div>
