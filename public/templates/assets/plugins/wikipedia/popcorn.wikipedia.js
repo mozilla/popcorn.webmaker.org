@@ -147,14 +147,14 @@
     if ( options.src ) {
 
       _query = options.src + options.lang;
-      _href = "//" + window.escape( options.lang ) + ".wikipedia.org/w/";
+      _href = "//" + encodeURIComponent( options.lang ) + ".wikipedia.org/w/";
       _title = options.src.slice( options.src.lastIndexOf( "/" ) + 1 );
-      options._link = "//" + window.escape( options.lang + ".wikipedia.org/wiki/" + _title );
+      options._link = "//" + encodeURIComponent( options.lang + ".wikipedia.org/wiki/" + _title );
 
       if ( !cachedArticles[ _query ] ) {
         // gets the mobile format, so that we don't load unwanted images when the respose is turned into a documentFragment
         Popcorn.getScript( _href + "api.php?action=parse&prop=text&redirects&page=" +
-          window.escape( _title ) + "&noimages=1&mobileformat=html&format=json&callback=" + _guid );
+          encodeURIComponent( _title ) + "&noimages=1&mobileformat=html&format=json&callback=" + _guid );
       } else {
         buildArticle( cachedArticles[ _query ] );
       }
