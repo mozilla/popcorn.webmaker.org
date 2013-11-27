@@ -362,7 +362,8 @@
           elem: "input",
           type: "url",
           label: "Source URL",
-          "default": "https://popcorn.webmaker.org/resources/popcorn-logo.svg"
+          "default": "https://popcorn.webmaker.org/resources/popcorn-logo.svg",
+          FLICKR_SINGLE_CHECK: FLICKR_SINGLE_CHECK
         },
         linkSrc: {
           elem: "input",

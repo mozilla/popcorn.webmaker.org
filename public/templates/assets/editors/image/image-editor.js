@@ -451,6 +451,7 @@
         _container = _popcornOptions._container,
         _clone,
         _cloneContainer,
+        _src = _popcornOptions.src,
         _target = _popcornOptions._target;
 
     // Work around since I can't just require it in for this editor.
@@ -463,15 +464,20 @@
       return el;
     }
 
-    if ( _popcornOptions.src ) {
-      this.droppable( trackEvent, _container );
-    }
-
     this.selectable( trackEvent, _container );
-    if ( trackEvent.popcornOptions.src ) {
-      trackEvent.draggable = this.draggable( trackEvent, _container, _target, {
-        tooltip: "Double click to crop image"
-      });
+    if ( _src ) {
+      this.droppable( trackEvent, _container );
+
+      var options = {
+            tooltip: "Double click to crop image"
+          };
+
+      if ( _src.indexOf( trackEvent.manifest.options.src.FLICKR_SINGLE_CHECK ) > -1 ) {
+        options.disableTooltip = true;
+        options.editable = false;
+      }
+
+      trackEvent.draggable = this.draggable( trackEvent, _container, _target, options );
     } else {
       trackEvent.draggable = this.draggable( trackEvent, _container, _target, {
         disableTooltip: true,
