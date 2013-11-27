@@ -92,7 +92,7 @@
 
     this.selectable( trackEvent, _container );
     this.draggable( trackEvent, _container, target, {
-      tooltip: "Double click to interact"
+      tooltip: Butter.localized.get( "Double click to interact" )
     });
     this.resizable( trackEvent, _container, target, {
       minWidth: 40,
