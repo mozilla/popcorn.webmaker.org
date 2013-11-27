@@ -25,17 +25,15 @@
   right: 0;
   bottom: 0;
 
-  &.butter-tray-minimized {
-  }
-
   &.butter-tray-transitions {
-    .transition( bottom 0.35s, right 0.35s );
+    .transition( height 0.35s, right 0.35s );
   }
 
   .butter-toggle-button {
     top: 15px;
     right: 6px;
     z-index: @TRAY_Z_INDEX + 10;
+    cursor: pointer;
   }
 
   // This is the list of plugins in "my events"
@@ -65,7 +63,4 @@
     //TO-DO: This should be moved into a general UI kit
     .transition( opacity 0.5s );
   }
-
-
-
 }

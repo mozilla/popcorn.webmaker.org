@@ -11,7 +11,9 @@ define( [ "util/lang",  "./logo-spinner", "./resizeHandler", "./toggler", "local
 
   return function( butter ){
 
-    var statusAreaFragment = LangUtils.domFragment( STATUS_AREA_LAYOUT, ".media-status-container" ),
+    var _this = this,
+        _toggler,
+        statusAreaFragment = LangUtils.domFragment( STATUS_AREA_LAYOUT, ".media-status-container" ),
         timelineAreaFragment = LangUtils.domFragment( TIMELINE_AREA_LAYOUT, ".butter-timeline" ),
         trayRoot = LangUtils.domFragment( TRAY_LAYOUT, ".butter-tray" ),
         timelineArea = trayRoot.querySelector( ".butter-timeline-area" ),
@@ -20,8 +22,9 @@ define( [ "util/lang",  "./logo-spinner", "./resizeHandler", "./toggler", "local
         addTrackButton = statusAreaFragment.querySelector( "button.add-track" ),
         loadingContainer = trayRoot.querySelector( ".butter-loading-container" ),
         resizeHandler = new ResizeHandler( { margin: 26, border: 15 } ),
-        trayHeight = 0,
-        minHeight = 0,
+        trayHeight = 205,
+        minHeight = 50,
+        minimized = true,
         logoSpinner = new LogoSpinner( loadingContainer );
 
     this.statusArea = trayRoot.querySelector( ".butter-status-area" );
@@ -42,32 +45,41 @@ define( [ "util/lang",  "./logo-spinner", "./resizeHandler", "./toggler", "local
       document.body.appendChild( trayRoot );
     };
 
-    this.show = function() {
-      // This function's only purpose is to avoid having transitions on the tray while it's attached to the DOM,
-      // since Chrome doesn't display the element where it should be on load.
-      trayRoot.classList.add( "butter-tray-transitions" );
-    };
-
     function onTrayHandleMousedown( e ) {
       e.preventDefault();
+      trayRoot.classList.remove( "butter-tray-transitions" );
       trayHandle.removeEventListener( "mousedown", onTrayHandleMousedown, false );
       window.addEventListener( "mousemove", onTrayHandleMousemove, false );
       window.addEventListener( "mouseup", onTrayHandleMouseup, false );
     }
     function onTrayHandleMousemove( e ) {
-      trayHeight = window.innerHeight - e.pageY;
-      if ( trayHeight < minHeight ) {
-        trayHeight = minHeight;
+      var height = window.innerHeight - e.pageY;
+      // If it is dragged to be smaller than the min,
+      // instead minimize it.
+      if ( height <= minHeight ) {
+        minimize( true );
+        return;
+      } else if ( minimized ) {
+        minimize( false );
       }
       if ( e.pageY < bodyWrapper.offsetTop ) {
-        trayHeight = window.innerHeight - bodyWrapper.offsetTop;
+        height = window.innerHeight - bodyWrapper.offsetTop;
       }
-      trayRoot.style.height = trayHeight + "px";
-      bodyWrapper.style.bottom = trayHeight + "px";
+      trayRoot.style.height = height + "px";
+      bodyWrapper.style.bottom = height + "px";
       resizeHandler.resize();
       butter.timeline.media.resize();
     }
-    function onTrayHandleMouseup() {
+    function onTrayHandleMouseup( e ) {
+      var height = window.innerHeight - e.pageY;
+      if ( e.pageY < bodyWrapper.offsetTop  ) {
+        height = window.innerHeight - bodyWrapper.offsetTop;
+      }
+      // If we have a valid height, store it incase the panel is maximized.
+      if ( height > minHeight ) {
+        trayHeight = height;
+      }
+      trayRoot.classList.add( "butter-tray-transitions" );
       trayHandle.addEventListener( "mousedown", onTrayHandleMousedown, false );
       window.removeEventListener( "mousemove", onTrayHandleMousemove, false );
       window.removeEventListener( "mouseup", onTrayHandleMouseup, false );
@@ -76,75 +88,58 @@ define( [ "util/lang",  "./logo-spinner", "./resizeHandler", "./toggler", "local
     trayHandle.addEventListener( "mousedown", onTrayHandleMousedown, false );
 
     this.setMediaInstance = function( mediaInstanceRootElement ) {
-      var timelineContainer = this.timelineArea.querySelector( ".butter-timeline" );
-      trayHeight = trayRoot.offsetHeight;
-      minHeight = trayHeight - timelineArea.offsetHeight;
+      var timelineContainer = timelineArea.querySelector( ".butter-timeline" );
+      LangUtils.applyTransitionEndListener( trayRoot, butter.timeline.media.resize );
       bodyWrapper.style.bottom = trayHeight + "px";
       timelineContainer.innerHTML = "";
       timelineContainer.appendChild( mediaInstanceRootElement );
     };
 
-    this.toggleLoadingSpinner = function( state ) {
+    function toggleLoadingSpinner( state ) {
       if ( state ) {
         logoSpinner.start();
         loadingContainer.style.display = "block";
-      }
-      else {
+      } else {
         logoSpinner.stop( function() {
           loadingContainer.style.display = "none";
         });
       }
-    };
-var _this = this;
-    var _toggler = new Toggler( trayRoot.querySelector( ".butter-toggle-button" ),
-      function () {
-        _this.minimized = !_this.minimized;
-        _toggler.state = !_toggler.state;
-      }, Localized.get( "Show/Hide Timeline" ) );
-    _toggler.visible = false;
-    _toggler.state = true;
+    }
+    toggleLoadingSpinner( true );
+
+    function minimize( state ) {
+      _toggler.state = state;
+      minimized = state;
+      if ( state ) {
+        document.body.classList.add( "tray-minimized" );
+        trayRoot.style.height = minHeight + "px";
+        bodyWrapper.style.bottom = minHeight + "px";
+      } else {
+        document.body.classList.remove( "tray-minimized" );
+        trayRoot.style.height = trayHeight + "px";
+        bodyWrapper.style.bottom = trayHeight + "px";
+      }
+    }
+
+    _toggler = new Toggler( trayRoot.querySelector( ".butter-toggle-button" ), function () {
+      minimize( !_toggler.state );
+    }, Localized.get( "Show/Hide Timeline" ) );
 
     butter.listen( "mediacontentchanged", function() {
+      toggleLoadingSpinner( true );
+      minimize( true );
       _toggler.visible = false;
-      //_toggler.state = true;
     });
+    minimize( true );
 
     butter.listen( "mediaready", function() {
+      // This function's only purpose is to avoid having
+      // transitions on the tray while it's attached to the DOM,
+      // since Chrome doesn't display the element where it should be on load.
+      trayRoot.classList.add( "butter-tray-transitions" );
+      toggleLoadingSpinner( false );
+      minimize( false );
       _toggler.visible = true;
-      //_toggler.state = false;
     });
-
-    Object.defineProperties( this, {
-      minimized: {
-        enumerable: true,
-        set: function( val ) {
-          if ( val ) {
-console.log("min");
-            document.body.classList.add( "tray-minimized" );
-            trayRoot.classList.add( "butter-tray-minimized" );
-            trayRoot.style.bottom = -this.timelineArea.offsetHeight + "px";
-            trayHeight = trayRoot.offsetHeight;
-            bodyWrapper.style.bottom = trayHeight - this.timelineArea.offsetHeight + "px";
-            //trayHandle.removeEventListener( "mousedown", onTrayHandleMousedown, false );
-          }
-          else {
-console.log("max");
-            document.body.classList.remove( "tray-minimized" );
-            trayRoot.classList.remove( "butter-tray-minimized" );
-            //trayHandle.addEventListener( "mousedown", onTrayHandleMousedown, false );
-            if ( trayHeight ) {
-              trayRoot.style.height = trayHeight + "px";
-              bodyWrapper.style.bottom = trayHeight + "px";
-            }
-            trayRoot.style.bottom = "0";
-          }
-        },
-        get: function() {
-          return trayRoot.classList.contains( "butter-tray-minimized" );
-        }
-      }
-    });
-
   };
-
 });
