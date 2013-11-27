@@ -7,6 +7,7 @@ define( [ "core/logger", "util/dragndrop", "./ghost-manager" ],
 
   var TWEEN_PERCENTAGE = 0.35,      // diminishing factor for tweening (see followCurrentTime)
       TWEEN_THRESHOLD = 10,         // threshold beyond which tweening occurs (see followCurrentTime)
+      TRACK_HEIGHT = 30,
       TRACKEVENT_BORDER_OFFSET = 2; // clientLeft prevents track events from being positioned side by
                                     // side, so factor it into our calculations.
 
@@ -71,8 +72,8 @@ define( [ "core/logger", "util/dragndrop", "./ghost-manager" ],
           maxTop = Math.max( thisPosition[ 1 ], _startingPosition[ 1 ] ),
           start = ( minLeft / _container.clientWidth ) * _media.duration,
           end = ( maxLeft / _container.clientWidth ) * _media.duration,
-          trackStartIndex = Math.floor( ( minTop ) / 30 ),
-          trackEndIndex = Math.floor( ( maxTop ) / 30 ),
+          trackStartIndex = Math.floor( ( minTop ) / TRACK_HEIGHT ),
+          trackEndIndex = Math.floor( ( maxTop ) / TRACK_HEIGHT ),
           track = {},
           trackEvents = {},
           trackEvent = {},
@@ -109,9 +110,9 @@ define( [ "core/logger", "util/dragndrop", "./ghost-manager" ],
       _container.removeChild( _boundingBoxElement );
       _boundingBoxElement.style.width = "0";
       _boundingBoxElement.style.height = "0";
-      _container.addEventListener( "mousedown", boundingBoxMouseDown, false );
       _container.removeEventListener( "mousemove", boundingBoxMouseMove, false );
       _container.removeEventListener( "mouseup", boundingBoxMouseUp, false );
+      _container.addEventListener( "mousedown", boundingBoxMouseDown, false );
     }
 
     _container.addEventListener( "mousedown", boundingBoxMouseDown, false );
