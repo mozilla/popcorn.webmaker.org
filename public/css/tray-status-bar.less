@@ -1,8 +1,7 @@
 /*********************************************************
 * TRAY STATUS
 */
-@_statusContainerHeight: @CONTROLS_HEIGHT - 25px;
-@_mediaStatusContainerHeight: @CONTROLS_HEIGHT;
+@_statusContainerHeight: 25px;
 @_playButtonHeight: 20px;
 @_scrubberBarHeight: 8px;
 @_scrubberHandleHeight: 10px;
@@ -16,15 +15,16 @@
 
 .butter-status-area {
   position: absolute;
-  height: @CONTROLS_HEIGHT;
+  bottom: @_superScrollbarHeight;
   top: 0;
   left: 0;
   width: 100%;
+  min-height: @CONTROLS_HEIGHT;
 }
 
 .media-status-container {
   position: relative;
-  height: @_mediaStatusContainerHeight;
+  height: 100%;
   background: #FFF;
   border-top: 1px solid @baseLightOutline;
 
@@ -50,9 +50,9 @@
 .time-bar {
   position: absolute;
   left: @_traySideWidth;
-  top: ( @_mediaStatusContainerHeight - @_scrubberBarHeight ) / 2;
+  top: ( @CONTROLS_HEIGHT - @_scrubberBarHeight ) / 2;
   right: @_timebarRight;
-  height: ( @_mediaStatusContainerHeight / 2 ) + ( @_scrubberBarHeight / 2 );
+  bottom: 0;
 }
 
 // Time ticks
@@ -60,28 +60,33 @@
   position: absolute;
   left: 0;
   top: @_scrubberBarHeight;
-  height: ( @_mediaStatusContainerHeight / 2 ) - ( @_scrubberBarHeight / 2 );
+  height: ( @CONTROLS_HEIGHT / 2 ) - ( @_scrubberBarHeight / 2 );
   overflow: hidden;
   right: 0;
   opacity: 0.5;
 }
 
 .time-bar-scrubber-container {
-  background: fade( @baseDark, 20% );
   border-bottom: 1px solid #FFF;
   z-index: @TRAY_Z_INDEX + 10;
-  border-radius: 15px;
-  position: absolute;
-  top: 0;
-  right: 0;
-  left: 0;
-  height: @_scrubberBarHeight;
+  height: 100%;
   .fill-bar {
     background: @green;
     border-radius: 15px;
     height: @_scrubberBarHeight;
     position: absolute;
+    cursor: pointer;
     top: 0;
+  }
+  .total-bar {
+    background: fade( @baseDark, 20% );
+    border-radius: 15px;
+    height: @_scrubberBarHeight;
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    right: 0;
+    left: 0;
   }
 }
 
@@ -90,10 +95,11 @@
   top: @_scrubberHandleHeight + 3px;
   left: 4px;
   width: 2px;
-  height: 150px;
+  bottom: 0;
   cursor: pointer;
   z-index: @TRAY_Z_INDEX + 9;
   background: fade( @red, 50% );
+  margin-left: 2px;
   &:after {
     content: "";
     position: absolute;
@@ -159,7 +165,7 @@
   width: @_traySideWidth + 70px;
   height: @_statusContainerHeight;
   line-height: @_statusContainerHeight;
-  bottom: @_statusContainerHeight + 25px;
+  top: -25px;
   left: 25px;
   background-color: #FFFFFF;
   border-top-right-radius: 5px;

@@ -20,30 +20,33 @@
   background: #FFF;
   position: fixed;
   z-index: @TRAY_Z_INDEX;
-  bottom: 0;
+  height: @TRAY_HEIGHT;
   left: 0;
   right: 0;
-  height: @TRAY_HEIGHT;
-
-  &.butter-tray-minimized {
-    bottom: -@TRAY_HEIGHT + @CONTROLS_HEIGHT;
-  }
+  bottom: 0;
 
   &.butter-tray-transitions {
-    .transition( bottom 0.35s, right 0.35s );
+    .transition( height 0.35s, right 0.35s );
   }
 
   .butter-toggle-button {
     top: 15px;
     right: 6px;
     z-index: @TRAY_Z_INDEX + 10;
+    cursor: pointer;
   }
 
   // This is the list of plugins in "my events"
   .butter-timeline-area {
-    position: relative;
-    height: 160px;
     top: @CONTROLS_HEIGHT;
+  }
+
+  .butter-tray-resize-handle {
+    height: 8px;
+    position: absolute;
+    left: 0;
+    right: 0;
+    cursor: row-resize;
   }
 
   // This is the container for the spinning popcorn logo on the right side of the tray
@@ -60,7 +63,4 @@
     //TO-DO: This should be moved into a general UI kit
     .transition( opacity 0.5s );
   }
-
-
-
 }

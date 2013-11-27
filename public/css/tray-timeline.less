@@ -3,7 +3,6 @@
 */
 @_trackEventHeight: 27px;
 @_trackHeight: @_trackEventHeight + 3;
-@_mediaContainerHeight: 125px;
 @_trackContainerSpacing: 0;
 @_trackHandleWidth: 129px;
 
@@ -13,6 +12,9 @@
 .butter-timeline-area {
   position: absolute;
   left: 0;
+  bottom: 0;
+  top: 0;
+  right: 0;
   border-top: 1px solid @baseLightOutline;
 }
 
@@ -22,6 +24,7 @@
   top: 0;
   left: 0;
   right: @_timebarRight;
+  bottom: @_superScrollbarHeight;
   z-index: @TRAY_Z_INDEX + 1;
 }
 // inside .butter-timeline
@@ -50,7 +53,7 @@
 .media-container {
   position: relative;
   top: @_trackContainerSpacing;
-  height: @_mediaContainerHeight;
+  height: 100%;
 }
 
 .tracks-container-wrapper {
@@ -263,7 +266,7 @@
 .track-handle-container {
   position: absolute;
   width: @_trackHandleWidth;
-  height: @_mediaContainerHeight;
+  height: 100%;
   left: 0;
   top: @_trackContainerSpacing;
   bottom: 1px;

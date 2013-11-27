@@ -54,10 +54,13 @@ define( [ "util/time" ],
         // Note the use of clientWidth here to account for padding/margin width fuzziness.
         if( pos < scrollLeft || pos - _lineWidth > _container.clientWidth + scrollLeft ){
           _node.style.display = "none";
+          _line.style.display = "none";
         }
         else {
           _node.style.left = adjustedPos + "px";
           _node.style.display = "block";
+          _line.style.left = adjustedPos + "px";
+          _line.style.display = "block";
         } //if
 
         if( pos < scrollLeft ){
