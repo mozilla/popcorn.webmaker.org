@@ -124,18 +124,14 @@ define( [ "util/lang",  "./logo-spinner", "./resizeHandler", "./toggler", "local
       minimize( !_toggler.state );
     }, Localized.get( "Show/Hide Timeline" ) );
 
-    butter.listen( "mediacontentchanged", function() {
-      toggleLoadingSpinner( true );
-      minimize( true );
-      _toggler.visible = false;
-    });
     minimize( true );
 
-    butter.listen( "mediaready", function() {
+    butter.listen( "mediaready", function onMediaReady() {
       // This function's only purpose is to avoid having
       // transitions on the tray while it's attached to the DOM,
       // since Chrome doesn't display the element where it should be on load.
       trayRoot.classList.add( "butter-tray-transitions" );
+      butter.unlisten( "mediaready", onMediaReady );
       toggleLoadingSpinner( false );
       minimize( false );
       _toggler.visible = true;

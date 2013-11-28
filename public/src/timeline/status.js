@@ -166,10 +166,6 @@ define( [ "util/time", "util/keys" ], function( util, Keys ){
       _playButton.state = true;
     });
 
-    _media.listen( "mediacontentchanged", function(){
-      _playButton.state = true;
-    });
-
   };
 
 });

@@ -645,7 +645,6 @@ define( [ "core/eventmanager", "./header",
       window.addEventListener( "resize", _resizeHandler.resize, false );
     });
 
-    butter.listen( "mediacontentchanged", unbindKeyDownListener );
     butter.listen( "mediaready", bindKeyDownListener );
 
     _this.dialogDir = butter.config.value( "dirs" ).dialogs || "";

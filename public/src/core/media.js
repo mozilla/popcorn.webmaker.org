@@ -13,9 +13,6 @@
           ],
           function( Logger, EventManager, Track, PopcornWrapper, URI, MediaTypes ) {
 
-    var MEDIA_ELEMENT_SAFETY_POLL_INTERVAL = 500,
-        MEDIA_ELEMENT_SAFETY_POLL_ATTEMPTS = 10;
-
     var __guid = 0;
 
     var Media = function ( mediaOptions ) {
@@ -38,75 +35,75 @@
           _mediaUpdateInterval,
           _clipData = {},
           _this = this,
-          _popcornWrapper = new PopcornWrapper( _id, {
-            popcornEvents: {
-              muted: function(){
-                _this.dispatch( "mediamuted", _this );
-              },
-              unmuted: function(){
-                _this.dispatch( "mediaunmuted", _this );
-              },
-              volumechange: function(){
-                _this.dispatch( "mediavolumechange", _popcornWrapper.volume );
-              },
-              timeupdate: function(){
-                _currentTime = _popcornWrapper.currentTime;
-                _this.dispatch( "mediatimeupdate", _this );
-              },
-              pause: function(){
-                clearInterval( _mediaUpdateInterval );
-                _this.dispatch( "mediapause" );
-              },
-              play: function(){
-                _mediaUpdateInterval = setInterval( function(){
-                  _currentTime = _popcornWrapper.currentTime;
-                }, 10 );
-                _this.dispatch( "mediaplay" );
-              },
-              ended: function(){
-                _this.dispatch( "mediaended" );
-              },
-              seeked: function(){
-                _this.dispatch( "mediaseeked" );
-              }
-            },
-            prepare: function(){
-              _this.duration = _popcornWrapper.duration;
-              _ready = true;
-              for( var i = 0, l = _tracks.length; i < l; i++ ) {
-                _tracks[ i ].updateTrackEvents();
-              }
+          _popcornWrapper;
 
-              // If the target element has a `data-butter-media-controls` property,
-              // set the `controls` attribute on the corresponding media element.
-              var targetElement = document.getElementById( _target );
-              if (  targetElement &&
-                    targetElement.getAttribute( "data-butter-media-controls" ) ) {
-                _popcornWrapper.popcorn.controls( true );
-              }
+      function mediaReady() {
+        _this.duration = _popcornWrapper.duration;
+        _ready = true;
+        for( var i = 0, l = _tracks.length; i < l; i++ ) {
+          _tracks[ i ].updateTrackEvents();
+        }
 
-              _this.dispatch( "mediaready" );
-            },
-            timeout: function(){
-              _this.dispatch( "mediatimeout" );
-            },
-            fail: function(){
-              _this.dispatch( "mediafailed", "error" );
-            },
-            setup: {
-              target: _target,
-              url: _url
-            },
-            makeVideoURLsUnique: mediaOptions.makeVideoURLsUnique
-          });
+        // If the target element has a `data-butter-media-controls` property,
+        // set the `controls` attribute on the corresponding media element.
+        var targetElement = document.getElementById( _target );
+        if ( targetElement &&
+             targetElement.getAttribute( "data-butter-media-controls" ) ) {
+          _popcornWrapper.popcorn.controls( true );
+        }
+
+        _this.dispatch( "mediaready" );
+      }
+
+      _popcornWrapper = new PopcornWrapper( _id, {
+        popcornEvents: {
+          muted: function(){
+            _this.dispatch( "mediamuted", _this );
+          },
+          unmuted: function(){
+            _this.dispatch( "mediaunmuted", _this );
+          },
+          volumechange: function(){
+            _this.dispatch( "mediavolumechange", _popcornWrapper.volume );
+          },
+          timeupdate: function(){
+            _currentTime = _popcornWrapper.currentTime;
+            _this.dispatch( "mediatimeupdate", _this );
+          },
+          pause: function(){
+            clearInterval( _mediaUpdateInterval );
+            _this.dispatch( "mediapause" );
+          },
+          play: function(){
+            _mediaUpdateInterval = setInterval( function(){
+              _currentTime = _popcornWrapper.currentTime;
+            }, 10 );
+            _this.dispatch( "mediaplay" );
+          },
+          ended: function(){
+            _this.dispatch( "mediaended" );
+          },
+          seeked: function(){
+            _this.dispatch( "mediaseeked" );
+          }
+        },
+        prepare: mediaReady,
+        timeout: function(){
+          _this.dispatch( "mediatimeout" );
+        },
+        fail: function(){
+          _this.dispatch( "mediafailed", "error" );
+        },
+        setup: {
+          target: _target,
+          url: _url
+        },
+        makeVideoURLsUnique: mediaOptions.makeVideoURLsUnique
+      });
 
       this.popcornCallbacks = null;
       this.popcornScripts = null;
       this.maxPluginZIndex = 0;
-
-      this.destroy = function(){
-        _popcornWrapper.unbind();
-      };
 
       this.clear = function(){
         for ( var i = _tracks.length - 1; i >= 0; i-- ) {
@@ -275,22 +272,27 @@
         if ( _url && _url.indexOf( "#t" ) !== 0 && _url.indexOf( "," ) > -1 ) {
           _url = _url.split( "," );
         }
-        if ( _url && _target ){
-          _popcornWrapper.prepare( _url, _target, _popcornOptions, _this.popcornCallbacks, _this.popcornScripts );
+        if ( _url && _target ) {
+          if ( !_popcornWrapper.popcorn ) {
+            _popcornWrapper.prepare( _url, _target, _popcornOptions, _this.popcornCallbacks, _this.popcornScripts );
+          } else {
+            // We don't need to actually destroy the popcorn instance, simply change it's source.
+            _popcornWrapper.popcorn.media.src = _url;
+            mediaReady();
+          }
         }
       }
 
       this.setupContent = setupContent;
 
       this.onReady = function( callback ){
-        function onReady( e ){
+        function onReady( e ) {
           callback( e );
           _this.unlisten( "mediaready", onReady );
         }
-        if( _ready ){
+        if ( _ready ) {
           callback();
-        }
-        else{
+        } else {
           _this.listen( "mediaready", onReady );
         }
       };
@@ -473,9 +475,7 @@
             if ( _url !== val ) {
               _url = val;
               _ready = false;
-              _popcornWrapper.clear( _target );
               setupContent();
-              _this.dispatch( "mediacontentchanged", _this );
             }
           }
         },
@@ -485,7 +485,6 @@
           },
           set: function( val ) {
             if ( _target !== val ) {
-              _popcornWrapper.clear( _target );
               _target = val;
               setupContent();
               _this.dispatch( "mediatargetchanged", _this );
@@ -735,48 +734,6 @@
           }
         }
       });
-
-      // check to see if we have any child source elements and use them if neccessary
-      function retrieveSrc( targetElement ) {
-        var url = "";
-
-        if ( targetElement.children ) {
-          var children = targetElement.children;
-          url = [];
-          for ( var i = 0, il = children.length; i < il; i++ ) {
-            if ( children[ i ].nodeName === "SOURCE" ) {
-              url.push( children[ i ].src );
-            }
-          }
-        }
-        return !url.length ? targetElement.currentSrc : url;
-      }
-
-      // There is an edge-case where currentSrc isn't set yet, but everything else about the video is valid.
-      // So, here, we wait for it to be set.
-      var targetElement = document.getElementById( _target ),
-          mediaSource = _url,
-          attempts = 0,
-          safetyInterval;
-
-      if ( targetElement && [ "VIDEO", "AUDIO" ].indexOf( targetElement.nodeName ) > -1 ) {
-        mediaSource = mediaSource || retrieveSrc( targetElement );
-        if ( !mediaSource ) {
-          safetyInterval = setInterval(function() {
-            mediaSource = retrieveSrc( targetElement );
-            if ( mediaSource ) {
-              _url = mediaSource ;
-              setupContent();
-              clearInterval( safetyInterval );
-            } else if ( attempts++ === MEDIA_ELEMENT_SAFETY_POLL_ATTEMPTS ) {
-              clearInterval( safetyInterval );
-            }
-          }, MEDIA_ELEMENT_SAFETY_POLL_INTERVAL );
-        // we already have a source, lets make sure we update it
-        } else {
-          _url = mediaSource;
-        }
-      }
 
     }; //Media
 

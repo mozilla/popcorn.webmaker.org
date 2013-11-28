@@ -218,8 +218,7 @@ define( [ "localized", "core/eventmanager", "core/media", "util/sanitizer" ],
       _video.style.background = _background;
 
       // Listen for changes in the project data so we know when to save.
-      [ "mediacontentchanged",
-        "mediaclipadded",
+      [ "mediaclipadded",
         "mediaclipremoved",
         "mediatargetchanged",
         "trackadded",

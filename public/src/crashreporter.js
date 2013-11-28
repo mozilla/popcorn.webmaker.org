@@ -13,7 +13,6 @@ define( [ "dialog/dialog", "util/xhr", "util/uri" ], function( Dialog, xhr, URI 
 
   var __stateEventNames = [
     "ready",
-    "mediacontentchanged",
     "mediaready",
     "trackeventadded",
     "trackeventremoved",
