@@ -80,7 +80,6 @@ define( [ "core/eventmanager", "./header",
           // invisible, and thus not load.  Opera also requires
           // the image be in the DOM before it will load.
           div = document.createElement( "div" );
-          div.setAttribute( "data-butter-exclude", "true" );
           div.className = "butter-image-preload";
 
           div.appendChild( img );

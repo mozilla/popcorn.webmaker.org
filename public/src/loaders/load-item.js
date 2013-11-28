@@ -16,7 +16,7 @@ define( [], function() {
    * @param {BaseLoader} loader: A BaseLoader object which will execute the loading procedure.
    * @param {String} url: The url to pass to the BaseLoader when loading begins.
    * @param {Boolean} exclude: A variable passed to the BaseLoader to specify an exclusion attribute
-   *                           when applicable (e.g. 'data-butter-exclude' on link/script tags).
+   *                           when applicable.
    * @param {Function} checkFunction: A function passed to the BaseLoader to see if loading needs to
    *                                  occur or if the required assets are already present.
    */
