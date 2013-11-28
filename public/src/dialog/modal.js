@@ -10,7 +10,6 @@ define( [], function(){
 
     if( !__container.parentNode ){
       __container.className = "butter-modal-container";
-      __container.setAttribute( "data-butter-exclude", true );
       document.body.appendChild( __container );
     }
 
