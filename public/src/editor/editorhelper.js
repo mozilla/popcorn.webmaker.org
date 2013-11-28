@@ -104,6 +104,12 @@ define( [ "util/xhr", "localized", "jquery" ], function( XHR, Localized, $ ) {
           butter.deselectAllTrackEvents();
         }
         trackEvent.selected = true;
+
+        // If the current open editor isn't a trackevent editor,
+        // open an editor for this event
+        if ( !butter.editor.currentEditor.getTrackEvent ) {
+          butter.editor.editTrackEvent( trackEvent );
+        }
       };
 
       var update = function() {
