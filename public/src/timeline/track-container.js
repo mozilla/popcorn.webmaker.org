@@ -48,36 +48,38 @@ define( [ "core/logger", "util/dragndrop", "./ghost-manager" ],
     });
 
     var _startingPosition = [],
-        _containerRect = {};
+        _containerRect = {},
+        _elementRect = {};
 
     function boundingBoxMouseDown( e ) {
       // Stops selecting while moving.
       e.preventDefault();
       _containerRect = _container.getBoundingClientRect();
-      _startingPosition = [ e.clientX - _containerRect.left, e.clientY - _containerRect.top ];
+      _elementRect = _element.getBoundingClientRect();
+      _startingPosition = [ e.clientX, e.clientY ];
       _element.removeEventListener( "mousedown", boundingBoxMouseDown, false );
       window.addEventListener( "mousemove", boundingBoxMouseMove, false );
       window.addEventListener( "mouseup", boundingBoxMouseUp, false );
     }
     function boundingBoxMouseMove( e ) {
-      var thisPosition = [ e.clientX - _containerRect.left, e.clientY - _containerRect.top ],
+      var thisPosition = [ e.clientX, e.clientY ],
           minLeft = Math.min( thisPosition[ 0 ], _startingPosition[ 0 ] ),
           maxLeft = Math.max( thisPosition[ 0 ], _startingPosition[ 0 ] ),
           minTop = Math.min( thisPosition[ 1 ], _startingPosition[ 1 ] ),
           maxTop = Math.max( thisPosition[ 1 ], _startingPosition[ 1 ] ),
-          start = ( minLeft / _container.clientWidth ) * _media.duration,
-          end = ( maxLeft / _container.clientWidth ) * _media.duration,
-          trackStartIndex = Math.floor( ( minTop ) / TRACK_HEIGHT ),
-          trackEndIndex = Math.floor( ( maxTop ) / TRACK_HEIGHT ),
+          start = ( ( minLeft - _containerRect.left ) / _container.clientWidth ) * _media.duration,
+          end = ( ( maxLeft - _containerRect.left ) / _container.clientWidth ) * _media.duration,
+          trackStartIndex = Math.floor( ( minTop - _containerRect.top ) / TRACK_HEIGHT ),
+          trackEndIndex = Math.floor( ( maxTop - _containerRect.top ) / TRACK_HEIGHT ),
           track = {},
           trackEvents = {},
           trackEvent = {},
           trackEventOptions = {};
 
-      minLeft = Math.max( 0, minLeft );
-      minTop = Math.max( 0, minTop );
-      maxLeft = Math.min( _element.clientWidth, maxLeft );
-      maxTop = Math.min( _element.clientHeight, maxTop );
+      minLeft = Math.max( 0, minLeft - _elementRect.left );
+      minTop = Math.max( 0, minTop - _elementRect.top );
+      maxLeft = Math.min( _element.clientWidth, maxLeft - _elementRect.left );
+      maxTop = Math.min( _element.clientHeight, maxTop - _elementRect.top );
 
       _boundingBoxElement.classList.remove( "hidden" );
 
