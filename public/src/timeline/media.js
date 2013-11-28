@@ -146,12 +146,12 @@ define( [ "core/trackevent", "core/track", "core/eventmanager",
         _media.listen( "trackeventremoved", function( e ){
           var trackEvent = e.data;
           trackEvent.view.unlisten( "trackeventmousedown", onTrackEventMouseDown );
-          trackEvent.view.element.removeEventListener( "click", onTrackEventClicked, false );
+          trackEvent.view.element.removeEventListener( "mousedown", onTrackEventClicked, false );
           trackEvent.unlisten( "trackeventdeselected", onTrackEventDeselected );
         });
 
         trackEvent.view.listen( "trackeventmousedown", onTrackEventMouseDown );
-        trackEvent.view.element.addEventListener( "click", onTrackEventClicked, false );
+        trackEvent.view.element.addEventListener( "mousedown", onTrackEventClicked, false );
         trackEvent.listen( "trackeventdeselected", onTrackEventDeselected );
       }
 
