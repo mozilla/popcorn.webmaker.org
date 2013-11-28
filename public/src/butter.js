@@ -503,7 +503,6 @@ window.Butter = {
         _media.push( media );
 
         _this.chain( media, [
-          "mediacontentchanged",
           "mediadurationchanged",
           "mediatargetchanged",
           "mediatimeupdate",
@@ -545,46 +544,6 @@ window.Butter = {
         media.setupContent();
         return media;
       }; //addMedia
-
-      //removeMedia - forget a media object
-      _this.removeMedia = function ( media ) {
-
-        var idx = _media.indexOf( media );
-        if ( idx > -1 ) {
-          _media.splice( idx, 1 );
-          _this.unchain( media, [
-            "mediacontentchanged",
-            "mediadurationchanged",
-            "mediatargetchanged",
-            "mediatimeupdate",
-            "mediaready",
-            "trackadded",
-            "trackremoved",
-            "tracktargetchanged",
-            "trackeventadded",
-            "trackeventeditorclose",
-            "trackeventremoved",
-            "trackeventupdated",
-            "trackorderchanged"
-          ]);
-          var tracks = media.tracks;
-          for ( var i=0, l=tracks.length; i<l; ++i ) {
-            _this.dispatch( "trackremoved", tracks[ i ] );
-          } //for
-          if ( media === _currentMedia ) {
-            _currentMedia = undefined;
-          } //if
-
-          media.unlisten( "trackeventadded", onTrackEventAdded );
-          media.unlisten( "trackeventremoved", onTrackEventRemoved );
-
-          media.unlisten( "trackeventrequested", mediaTrackEventRequested );
-
-          _this.dispatch( "mediaremoved", media );
-          return media;
-        } //if
-        return undefined;
-      }; //removeMedia
 
       /****************************************************************
        * Trackevents

@@ -240,12 +240,8 @@ define( [ "util/time" ],
       setNodePosition();
     };
 
-    this.enable = function() {
+    this.ready = function() {
       _container.addEventListener( "mousedown", onMouseDown, false );
-    };
-
-    this.disable = function() {
-      _container.removeEventListener( "mousedown", onMouseDown, false );
     };
 
 

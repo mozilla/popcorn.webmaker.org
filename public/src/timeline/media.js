@@ -131,7 +131,7 @@ define( [ "core/trackevent", "core/track", "core/eventmanager",
 
     function onMediaReady(){
       updateUI();
-      _timebar.enable();
+      _timebar.ready();
       _media.currentTime = 0;
     }
 
@@ -205,7 +205,6 @@ define( [ "core/trackevent", "core/track", "core/eventmanager",
 
     butter.editor.listen( "editortoggled", onEditorToggled );
     butter.listen( "editoropened", onEditorOpened );
-    _media.listen( "mediacontentchanged", _timebar.disable );
 
     function onPluginDropped( e ) {
       var type = e.data.type,
@@ -241,14 +240,6 @@ define( [ "core/trackevent", "core/track", "core/eventmanager",
         }, addCallback );
       }
     }
-
-    this.destroy = function() {
-      if ( _rootElement.parentNode ) {
-        _rootElement.parentNode.removeChild( _rootElement );
-      }
-      butter.editor.unlisten( "editortoggled", onEditorToggled );
-      butter.unlisten( "editoropened", onEditorOpened );
-    };
 
     this.hide = function() {
       _rootElement.style.display = "none";

@@ -101,14 +101,9 @@ define( [ "./scrubber" ], function( Scrubber ) {
       drawTicks();
     };
 
-    this.enable = function() {
+    this.ready = function() {
       _canvas.addEventListener( "mousedown", _scrubber.onMouseDown, false );
-      _scrubber.enable();
-    };
-
-    this.disable = function() {
-      _canvas.removeEventListener( "mousedown", _scrubber.onMouseDown, false );
-      _scrubber.disable();
+      _scrubber.ready();
     };
 
     Object.defineProperties( this, {

@@ -215,12 +215,6 @@ define( [ "core/logger", "util/dragndrop", "./ghost-manager" ],
       }
     });
 
-    butter.listen( "mediaremoved", function ( e ) {
-      if ( e.data === _media && _droppable ){
-        _droppable.destroy();
-      }
-    });
-
     function onTrackAdded( e ) {
       var trackView = e.data.view;
 
