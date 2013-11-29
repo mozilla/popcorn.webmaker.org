@@ -119,7 +119,7 @@ app.configure( function() {
       sync_limit: config.SYNC_LIMIT
     },
     supportedLanguages: i18n.getLanguages(),
-    listDropdownLang: config.SUPPORTED_LANGS
+    listDropdownLang: i18n.getSupportLanguages()
   });
 
   app.use( express.json() )
