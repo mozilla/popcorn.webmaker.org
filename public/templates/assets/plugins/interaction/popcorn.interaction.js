@@ -46,10 +46,10 @@
      *  | Returns a human-readable string representing the sequence
      *  | in the passed array
      */
-    var _mousetrapHelper = (function mouseTrapHelperFactory( options ) {
+    var _mousetrapHelper = (function mouseTrapHelperFactory() {
       var _self = this;
 
-      var KEYS = options.keys || {
+      var KEYS = {
         // Non Alphanumeric
         alt: "alt",
         backspace: "backspace",
@@ -115,7 +115,7 @@
         z: "z"
       },
       MAX_KEYS_PER_SEQUENCE = 4,
-      modifiers = options.modifiers || {
+      modifiers = {
         ctrl: "ctrl",
         alt: "alt",
         shift: "shift",
@@ -129,17 +129,25 @@
         backspace: "delete"
       };
 
+      var workingMacSequence = [],
+          workingWinSequence = [];
+
       function keyComboCallback( e ) {
         console.error( "No callback has been specified for the mouseTrapHelper." );
         e.preventDefault();
       }
 
-      options = options || {};
-
       // Removes all elements from the passed array reference
       function cleanArray( array ) {
-        if ( array && array.length ) {
-          array.length = 0;
+        array.length = 0;
+      }
+
+      // Removes all elements from the passed array reference
+      function copyArray( to, from ) {
+        cleanArray( to );
+
+        for ( var i = 0; i < from.length; i++ ) {
+          to[ i ] = from[ i ];
         }
       }
 
@@ -236,15 +244,16 @@
       function sequenceToString( sequence ) {
         var length = sequence.length,
             ret = "";
+
         if ( length ) {
-            for ( var i = 0; i < length - 1; i++ ) {
-                ret += sequence[ i ] + "+";
-            }
-            ret += sequence[ i ];
+          for ( var i = 0; i < length - 1; i++ ) {
+            ret += sequence[ i ] + "+";
+          }
+          ret += sequence[ i ];
         }
 
         // Search & replace for mac keys when appropriate
-        if ( _keyboardHelper.getOS() === "mac" ) {
+        if ( _keyboardHelper.getKeyboardType() === "mac" ) {
           for ( var key in macKeys ) {
             if ( macKeys.hasOwnProperty( key ) ) {
               ret = ret.replace( key, macKeys[ key ], "gi" );
@@ -257,19 +266,29 @@
 
       return {
         bindInputTag: function( tag, sequence, focus, unfocus ) {
-          // On focus, reset array & unbind old listeners
-          // then clear tag value and listen for new keystrokes
+          var workingSequence = [],
+              // This is crazy hacky, but it grabs the correct button
+              // for the passed tag.
+              applyButton = tag.nextSibling;
+
+          applyButton.onclick = function onClick( e ) {
+            copyArray( sequence, workingSequence );
+            tag.value = sequenceToString( sequence );
+          };
+
+          // On focus, clear tag & working array values,
+          // and copy new keystrokes into the working array
           tag.onfocus = function onFocus( e ) {
-            Mousetrap.unbind( sequenceToKeycombo( sequence ) );
-            cleanArray( sequence );
+            cleanArray( workingSequence );
             tag.value = "";
-            listenForAssignment( tag, sequence );
+            listenForAssignment( tag, workingSequence );
             focus();
           };
 
-          // On blur, stop listening for key-combos
-          // and listen for the user defined key-combos
+          // On blur, stop listening for keystrokes
+          // and assign sequence to the tag value
           tag.onblur = function onBlur( e ) {
+            tag.value = sequenceToString( sequence );
             unbindAll();
             unfocus();
           };
@@ -320,10 +339,10 @@
      * setMessage( message )
      *  | Changes the message displayed above the keyboard
      *
-     * getOS()
+     * getKeyboardType()
      *  | Returns a string representing the OS type
      */
-    var _keyboardHelper = (function keyboardHelperFactory( options ){
+    var _keyboardHelper = (function keyboardHelperFactory(){
       var keyboardCode = "",
           messageBoxCode = "<div class=\"messageBox\"><p></p></div>";
 
@@ -629,7 +648,7 @@
           messageBox,
           localContainer,
           keyElement,
-          OS = "win";
+          keyboardType = "win";
 
       // Create & cache keyboard container
       keyboard = {
@@ -669,7 +688,7 @@
 
           // Process OS specific keyboard keys
           if ( window.navigator.userAgent.match( macRegex ) ) {
-            OS = "mac";
+            keyboardType = "mac";
 
             for ( i = 0; i < winKeys.length; i++ ) {
               currentKey = keys.getElementsByClassName( winKeys[ i ] );
@@ -748,10 +767,10 @@
           // TODO - Add fancy css here?
           messageBox.getElementsByTagName( "p" )[ 0 ].innerHTML = message;
         },
-        getOS: function() {
-          return OS;
+        getKeyboardType: function() {
+          return keyboardType;
         }
-      }
+      };
     })();
 
     function keyByValue( obj, value ) {
@@ -777,14 +796,14 @@
      */
     Popcorn.plugin( "interaction", function() {
       var self = this,
-          sequences = [],
+          sequences = {},
           sequencePosition = 0,
           workingSequence,
           rKeyPosition,
           i;
 
       // This configures
-      var playbackDelay = 1500;
+      var playbackDelay = 2000;
 
       // Cache resume playback callback
       var resumePlaybackConstructor = function ( combo ) {
@@ -811,9 +830,8 @@
           // Cache mousetrap helper & sequence arrays
           options._mousetrapHelper = _mousetrapHelper;
           options.sequences = options.sequences || sequences;
-          sequences[ 0 ] = options.sequences[ 0 ] = options.sequences[ 0 ] || [];
-          sequences[ 1 ] = options.sequences[ 1 ] = options.sequences[ 1 ] || [];
-          sequences[ 2 ] = options.sequences[ 2 ] = options.sequences[ 2 ] || [];
+          sequences.winSequence = options.winSequence = options.winSequence || [];
+          sequences.macSequence = options.macSequence = options.macSequence || [];
 
           // Force the duration of the track event
           options.end = options.start + 0.5;
@@ -822,12 +840,14 @@
           options._resumePlaybackConstructor = resumePlaybackConstructor;
 
           var target = Popcorn.dom.find( options.target );
-
           if ( !target ) {
             target = this.media.parentNode;
           }
-
           options._target = target;
+
+          if ( !_mousetrapHelper ) {
+            initializeMousetrap();
+          }
 
           // Insert keyboard
           _keyboardHelper.insertKeyboard( target );
@@ -840,11 +860,16 @@
           this.emit( "interactionStart" );
           _keyboardHelper.showKeyboard();
 
-          // Bind key listeners
-          for ( var i = 0; i < sequences.length; i++ ) {
-            if ( sequences[ i ] && sequences[ i ].length ) {
-              _mousetrapHelper.bindSequence( sequences[ i ], options._resumePlaybackConstructor( sequences[ i ] ) );
-              _keyboardHelper.setMessage( "Press " + _mousetrapHelper.sequenceToString( sequences[ i ] ) );
+          // Bind key listeners based on keyboard type
+          if ( _keyboardHelper.getKeyboardType === "win" ) {
+            if ( sequences.winSequence && sequences.winSequence.length ) {
+              _mousetrapHelper.bindSequence( sequences.winSequence, options._resumePlaybackConstructor( sequences.winSequence ) );
+              _keyboardHelper.setMessage( "Press " + _mousetrapHelper.sequenceToString( sequences.winSequence ).toUpperCase() );
+            }
+          } else {
+            if ( sequences.macSequence && sequences.macSequence.length ) {
+              _mousetrapHelper.bindSequence( sequences.macSequence, options._resumePlaybackConstructor( sequences.macSequence ) );
+              _keyboardHelper.setMessage( "Press " + _mousetrapHelper.sequenceToString( sequences.macSequence ).toUpperCase() );
             }
           }
 
@@ -854,10 +879,11 @@
           this.emit( "interactionEnd" );
           _keyboardHelper.hideKeyboard();
 
-          for ( var i = 0; i < sequences.length; i++ ) {
-            if ( sequences[ i ] ) {
-              _mousetrapHelper.unbindSequence( sequences [ i ] );
-            }
+          // Remove keycombo bindings bindings
+          if ( _keyboardHelper.getKeyboardType === "win" ) {
+            _mousetrapHelper.unbindSequence( sequences.winSequence );
+          } else {
+            _mousetrapHelper.unbindSequence( sequences.macSequence );
           }
         }
       };
@@ -886,20 +912,14 @@
         imgSrc: {
           hidden: true
         },
-        combo1: {
-          label: "combo1",
+        winCombo: {
+          label: "Win Combo",
           elem: "input",
           type: "text",
           readonly: true
         },
-        combo2: {
-          label: "combo2",
-          elem: "input",
-          type: "text",
-          readonly: true
-        },
-        combo3: {
-          label: "combo3",
+        macCombo: {
+          label: "Mac Combo",
           elem: "input",
           type: "text",
           readonly: true
