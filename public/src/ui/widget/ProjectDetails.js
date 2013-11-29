@@ -149,8 +149,6 @@ define( [ "util/keys", "ui/widget/tooltip", "localized", "ui/widget/textbox" ],
       },
 
       thumbnail: function( container, dropArea ) {
-       var source,
-           events;
         _thumbnailInput = container.querySelector( ".thumbnail-input" );
         _thumbnailUl = container.querySelector( ".thumbnail-choices" );
 
@@ -189,26 +187,6 @@ define( [ "util/keys", "ui/widget/tooltip", "localized", "ui/widget/textbox" ],
         }, false );
 
         if ( !_thumbnailUl.childNodes.length ) {
-          events = _butter.getTrackEvents( "type", "image" ).concat( _butter.getTrackEvents( "type", "sequencer" ) );
-
-          for ( var i = 0; i < events.length; i++ ) {
-            source = events[ i ].popcornOptions.src || events[ i ].popcornOptions.thumbnailSrc;
-            if ( source ) {
-              if ( !_butter.project.thumbnail ) {
-                // Default it to something cool, if we can.
-                _butter.project.thumbnail = source;
-              }
-
-              addThumbnail( source, dropArea );
-            }
-          }
-
-          // Still no default,
-          // so default it to something not as cool,
-          // but still pretty cool.
-          if ( !_butter.project.thumbnail ) {
-            _butter.project.thumbnail = location.protocol + "//" + location.host + "/resources/icons/fb-logo.png";
-          }
 
           addThumbnail( _butter.project.thumbnail, dropArea );
           selectThumb( _butter.project.thumbnail );
