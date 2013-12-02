@@ -162,7 +162,7 @@
     "Text Alignment": "การจัดตำแหน่งข้อความ",
     "User": "ผู้ใช้งาน",
     "Are you sure you want to delete": "คุณแน่ใจว่าต้องการลบหรือไม่",
-    "Click to remove warning": "กด<a href=\"#\" class=\"close-button\">ตรงนี้</a>เพื่อลบข้อความการเตือน.",
+    "Click to remove warning": "กด<a class=\"close-button\">ตรงนี้</a>เพื่อลบข้อความการเตือน.",
     "Women": "ผู้หญิง",
     "Trophy": "ถ้วยรางวัล",
     "Please give your project a name before saving": "กรุณากรอกชื่อโปรเจคก่อนทำการบันทึก",

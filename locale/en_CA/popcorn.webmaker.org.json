@@ -162,7 +162,7 @@
     "Text Alignment": "Text Alignment",
     "User": "User",
     "Are you sure you want to delete": "Are you sure you want to delete",
-    "Click to remove warning": "Click <a href=\"#\" class=\"close-button\">here</a> to remove this warning.",
+    "Click to remove warning": "Click <a class=\"close-button\">here</a> to remove this warning.",
     "Women": "Women",
     "Trophy": "Trophy",
     "Please give your project a name before saving": "Please give your project a name before saving",
