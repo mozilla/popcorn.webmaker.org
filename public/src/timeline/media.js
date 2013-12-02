@@ -216,13 +216,20 @@ define( [ "core/trackevent", "core/track", "core/eventmanager",
         }
       }
 
+      function addCallback( trackEvent ) {
+        butter.editor.editTrackEvent( trackEvent );
+      }
+
       if ( _media.ready ) {
         if ( popcornOptions && popcornOptions.end ) {
           popcornOptions.end = popcornOptions.end + start;
         }
         butter.deselectAllTrackEvents();
-        trackEvent = butter.generateSafeTrackEvent( type, popcornOptions, track );
-        butter.editor.editTrackEvent( trackEvent );
+        trackEvent = butter.generateSafeTrackEvent({
+          type: type,
+          popcornOptions: popcornOptions,
+          track: track
+        }, addCallback );
       }
     }
 

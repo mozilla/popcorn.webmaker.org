@@ -53,8 +53,11 @@ define( [ "localized", "util/dragndrop", "util/lang", "editor/editor", "l10n!/la
 
         if ( butter.currentMedia.ready ) {
           butter.deselectAllTrackEvents();
-          trackEvent = butter.generateSafeTrackEvent( e.data.type, {
-            start: butter.currentTime
+          trackEvent = butter.generateSafeTrackEvent({
+            type: e.data.type,
+            popcornOptions: {
+              start: butter.currentTime
+            }
           });
           butter.editor.editTrackEvent( trackEvent );
         }
