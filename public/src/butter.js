@@ -155,6 +155,8 @@ window.Butter = {
           return;
         }
 
+        callback = callback || function(){};
+
         var type = options.type,
             popcornOptions = options.popcornOptions,
             track = options.track,
@@ -203,11 +205,7 @@ window.Butter = {
 
           _defaultTarget.view.blink();
 
-          if ( callback ) {
-            return callback( trackEvent );
-          }
-
-          return trackEvent;
+          callback( trackEvent );
         }
 
         if ( type === "sequencer" ) {
@@ -372,7 +370,11 @@ window.Butter = {
       _this.pasteTrackEvents = function() {
         var popcornOptions,
             offset = 0,
-            trackEvent, trackIndex, track;
+            trackIndex, track;
+
+        function selectEvent( trackEvent ) {
+          trackEvent.selected = true;
+        }
         // get the first events start time to compare with the current time,
         // to find the paste offset.
         if ( _copiedEvents[ 0 ] ) {
@@ -397,12 +399,11 @@ window.Butter = {
             trackIndex = _currentMedia.maxPluginZIndex - popcornOptions.zindex;
             track = _currentMedia.orderedTracks[ trackIndex ];
 
-            trackEvent = _this.generateSafeTrackEvent({
+            _this.generateSafeTrackEvent({
               type: _copiedEvents[ i ].type,
               popcornOptions: popcornOptions,
               track: track
-            });
-            trackEvent.selected = true;
+            }, selectEvent );
           }
         }
       };
