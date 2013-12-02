@@ -29,6 +29,8 @@ nunjucksEnv.addFilter( "instantiate", function( input ) {
 
 nunjucksEnv.express( app );
 
+app.disable( "x-powered-by" );
+
 app.configure( function() {
   var tmpDir = path.normalize( require( "os" ).tmpDir() + "/mozilla.butter/" );
 
