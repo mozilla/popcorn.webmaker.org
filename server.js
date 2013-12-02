@@ -46,6 +46,8 @@ app.configure( function() {
   app.use( "/static/bower", express.static( path.join( __dirname, "/bower_components" ), {
     maxAge: "31556952000" // one year
   }));
+  app.use(helmet.iexss());
+  app.use(helmet.contentTypeOptions());
   if ( !!config.FORCE_SSL ) {
     app.use( helmet.hsts() );
     app.enable( "trust proxy" );
