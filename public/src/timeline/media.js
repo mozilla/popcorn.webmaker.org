@@ -202,8 +202,7 @@ define( [ "core/trackevent", "core/track", "core/eventmanager",
           track = e.data.track,
           start = e.data.start,
           end = e.data.end,
-          popcornOptions = {},
-          trackEvent;
+          popcornOptions = {};
 
       popcornOptions.start = start;
       popcornOptions.end = end;
@@ -225,7 +224,7 @@ define( [ "core/trackevent", "core/track", "core/eventmanager",
           popcornOptions.end = popcornOptions.end + start;
         }
         butter.deselectAllTrackEvents();
-        trackEvent = butter.generateSafeTrackEvent({
+        butter.generateSafeTrackEvent({
           type: type,
           popcornOptions: popcornOptions,
           track: track
