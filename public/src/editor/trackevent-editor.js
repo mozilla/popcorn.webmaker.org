@@ -469,7 +469,7 @@ define([ "localized", "util/lang", "util/keys", "util/time", "./base-editor", "u
             val = validateNumber( val );
           }
 
-          updateOptions[ propertyName ] = val;
+          updateOptions[ propertyName ] = val; console.log( "if blur val: ", val );
           updateTrackEvent( trackEvent, callback, updateOptions );
         }
         if ( tooltip ) {

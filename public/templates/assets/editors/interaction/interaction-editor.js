@@ -67,9 +67,28 @@
             trackEvent;
 
         function processCombo( OS ) {
-          _this.attachInputChangeHandler( element, trackEvent, key, _this.updateTrackEventSafe );
-          _mousetrapHelper.bindInputTag( element, sequences[ OS + "Sequence" ], unblockShortcuts, blockShortcuts );
+          _mousetrapHelper.bindInputTag( element, sequences[ OS + "Sequence" ], unblockShortcuts, blockShortcuts, function( newSequence ) {
+            var newOptions = {};
+
+            newOptions[ OS + "Combo" ] = newSequence;
+
+            trackEvent.update( newOptions );
+          });
         }
+
+        var isMousetrapLoaded = function() {
+          if ( _mousetrapHelper ) {
+            if ( key === "winCombo" ) {
+              processCombo( "win" );
+            } else if ( key === "macCombo" ) {
+              processCombo( "mac" );
+            }
+          } else {
+            setTimeout(function(){
+              isMousetrapLoaded();
+            }, 5 );
+          }
+        };
 
         for ( key in manifestOptions ) {
           if ( manifestOptions.hasOwnProperty( key ) ) {
@@ -92,11 +111,7 @@
               element.setAttribute( "readonly", "readonly" );
               element.classList.add( "mousetrap" );
 
-              if ( key === "winCombo" ) {
-                processCombo( "win" );
-              } else if ( key === "macCombo" ) {
-                processCombo( "mac" );
-              }
+              isMousetrapLoaded();
             }
           }
         }
