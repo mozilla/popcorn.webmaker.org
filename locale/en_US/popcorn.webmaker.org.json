@@ -94,7 +94,7 @@
 	"In": "In",
 	"Info": "Info",
 	"Invalid Color update": "Invalid Color update. Must start with a hex (#) or be one of the following: ",
-	"Invalid Flicker Gallery URL": "Invalid Flicker Gallery URL. e.g.: http://www.flickr.com/photos/etherworks/sets/72157630563520740/",
+	"Invalid Flickr Gallery URL": "Invalid Flickr Gallery URL. e.g.: http://www.flickr.com/photos/etherworks/sets/72157630563520740/",
 	"Invalid Hex Color format": "Invalid Hex Color format. Must be a hash (#) followed by 3 or 6 digits/letters.",
 	"Italics": "Italics",
 	"Language": "Language",
