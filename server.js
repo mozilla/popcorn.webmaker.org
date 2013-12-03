@@ -90,7 +90,7 @@ app.configure( function() {
           "localized": path.resolve( __dirname, "bower_components/webmaker-i18n/localized" ),
           "jquery": path.resolve( __dirname, "bower_components/jquery/jquery.min" ),
           "jquery-ui": path.resolve( __dirname, "bower_components/jquery-ui/ui/jquery-ui" ),
-          "farbtastic": path.resolve( __dirname, "bower_components/farbtastic/src/farbtastic" ),
+          "farbtastic": path.resolve( __dirname, "bower_components/farbtastic/farbtastic" ),
           "WebmakerUI": path.resolve( __dirname, "bower_components/webmaker-ui/ui" ),
           "webmaker-ui-fragments": path.resolve( __dirname, "bower_components/webmaker-ui/webmaker-ui-fragments" )
         },

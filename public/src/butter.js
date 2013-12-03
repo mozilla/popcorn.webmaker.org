@@ -31,7 +31,7 @@ window.Butter = {
       "localized": "/static/bower/webmaker-i18n/localized",
       "jquery": "/static/bower/jquery/jquery.min",
       "jquery-ui": "/static/bower/jquery-ui/ui/jquery-ui",
-      "farbtastic": "/static/bower/farbtastic/src/farbtastic",
+      "farbtastic": "/static/bower/farbtastic/farbtastic",
       "WebmakerUI": "/static/bower/webmaker-ui/ui",
       "webmaker-ui-fragments": "/static/bower/webmaker-ui/webmaker-ui-fragments"
     },
