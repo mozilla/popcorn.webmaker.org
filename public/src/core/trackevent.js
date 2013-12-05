@@ -140,6 +140,15 @@ define( [ "./logger", "./eventmanager", "./observer",
           if ( !popcornOptions.hasOwnProperty( prop ) ) {
             foundMissingOptions = true;
             value = defaultValue( prop, manifestOptions );
+            // The issue here is if we translate that value too soon in trackevent-editor.js
+            // and it won't match any of the select values, thus it doesn't properly find
+            // the select default because type just so happens to have a value in the translation files
+            if ( manifestOptions[ prop ].elem === "select" &&
+                 manifestOptions[ prop ].values &&
+                 manifestOptions[ prop ].values.indexOf( value ) !== -1 ) {
+              newOptions[ prop ] = value;
+              continue;
+            }
             newOptions[ prop ] = Localized.get( value ) ? Localized.get( value ) : value;
           }
         }
