@@ -358,10 +358,11 @@ function init() {
       "ui/resizeHandler",
       "util/mediatypes",
       "text!layouts/attribution.html",
+      "util/accepted-flash",
       "util/accepted-ua",
       "popcorn"
     ],
-    function( URI, LangUtil, Controls, TextboxWrapper, ResizeHandler, MediaUtil, DEFAULT_LAYOUT_SNIPPETS ) {
+    function( URI, LangUtil, Controls, TextboxWrapper, ResizeHandler, MediaUtil, DEFAULT_LAYOUT_SNIPPETS, FLASH ) {
 
       var __defaultLayouts = LangUtil.domFragment( DEFAULT_LAYOUT_SNIPPETS );
       /**
@@ -475,7 +476,8 @@ function init() {
               attributionMedia = document.querySelector( ".attribution-media" ),
               toggler = $( ".attribution-logo" ),
               closeBtn = $( ".attribution-close" ),
-              container = $( ".attribution-info" );
+              container = $( ".attribution-info" ),
+              checkedFlashVersion;
 
           // Backwards compat for old layout. Removes the null media that's shown there.
           if ( attributionMedia ) {
@@ -502,6 +504,11 @@ function init() {
               clipCont = __defaultLayouts.querySelector( ".data-container.media" ).cloneNode( true );
               source = clip.source[ 0 ];
               type = MediaUtil.checkUrl( source );
+
+              if ( type === "YouTube" && !checkedFlashVersion ) {
+                checkedFlashVersion = true;
+                FLASH.warn();
+              }
 
               if ( type === "Archive" ) {
                 source = clip.linkback;
