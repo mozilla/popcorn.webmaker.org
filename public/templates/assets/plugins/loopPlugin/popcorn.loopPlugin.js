@@ -11,12 +11,14 @@
       start: function() {
       },
       end: function( event, options ) {
-          if ( ( this.currentTime() > options.end + 1 || this.currentTime() < options.end - 1 ) || this.seeking() || this.paused() ) {
+          if ( ( this.currentTime() > options.end + 1 || this.currentTime() < options.end - 1 ) ||
+               this.seeking() ||
+               ( this.paused() && !this.ended() ) ) {
             options.count = +options.loop;
             return;
           }
           if ( options.count > 0 || +options.loop === 0 ) {
-            this.currentTime( options.start );
+            this.play( options.start );
             if ( options.loop ) {
               options.count--;
             }
