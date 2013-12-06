@@ -39,6 +39,13 @@
           type: "text",
           label: "Link URL"
         },
+        linkTarget: {
+          elem: "select",
+          options: [ "New Tab", "Current Tab" ],
+          values: [ "new-tab", "current-tab" ],
+          label: "Open Link In:",
+          "default": "new-tab"
+        },
         position: {
           elem: "select",
           options: [ "Custom", "Middle", "Bottom", "Top" ],
@@ -266,7 +273,11 @@
 
           link = document.createElement( "a" );
           link.href = linkUrl;
-          link.target = "_blank";
+          if ( linkTarget == "new-tab" ) {
+            link.target = "_blank";
+          } else if ( linkTarget == "current-tab" ) {
+            link.target = "_parent";
+          }
           link.innerHTML = text;
 
           link.addEventListener( "click", function() {
