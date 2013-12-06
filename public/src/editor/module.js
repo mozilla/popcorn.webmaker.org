@@ -178,14 +178,10 @@ define( [ "localized", "core/eventmanager", "core/trackevent", "./editor",
      * @param {Function} onModuleReady: Callback to signify that module is ready
      */
     this._start = function( onModuleReady ){
+
       _toggler = new Toggler( _editorAreaDOMRoot.querySelector( ".butter-editor-close-btn" ),
         function() {
           var newState = !_editorAreaDOMRoot.classList.contains( "minimized" );
-
-          var onTransitionEnd = function(){
-            LangUtils.removeTransitionEndListener( _editorAreaDOMRoot, onTransitionEnd );
-            _this.dispatch( "editortoggled", newState );
-          };
 
           var _togetherjs = document.querySelector( ".togetherjs-dock-right" );
           _toggler.state = newState;
@@ -203,8 +199,7 @@ define( [ "localized", "core/eventmanager", "core/trackevent", "./editor",
               _togetherjs.classList.remove( "minimized" );
             }
           }
-
-          LangUtils.applyTransitionEndListener( _editorAreaDOMRoot, onTransitionEnd );
+          _this.dispatch( "editortoggled", !newState );
 
         }, Localized.get( "Show/Hide Editor" ), true );
 

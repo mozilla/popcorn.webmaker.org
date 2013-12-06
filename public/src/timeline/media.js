@@ -49,6 +49,16 @@ define( [ "core/trackevent", "core/track", "core/eventmanager",
       _superScrollbar.resize();
     }
 
+    function onEditorOpened() {
+      _tracksContainer.update();
+      _timebar.update();
+    }
+
+    function onVerticalResize() {
+      _vScrollBar.update();
+      _timebar.update();
+    }
+
     function onResize() {
       _vScrollBar.update();
       _timebar.update();
@@ -194,7 +204,7 @@ define( [ "core/trackevent", "core/track", "core/eventmanager",
     _media.listen( "mediaready", onMediaReadyFirst );
 
     butter.editor.listen( "editortoggled", onEditorToggled );
-    butter.listen( "editoropened", onEditorToggled );
+    butter.listen( "editoropened", onEditorOpened );
     _media.listen( "mediacontentchanged", _timebar.disable );
 
     function onPluginDropped( e ) {
@@ -237,7 +247,7 @@ define( [ "core/trackevent", "core/track", "core/eventmanager",
         _rootElement.parentNode.removeChild( _rootElement );
       }
       butter.editor.unlisten( "editortoggled", onEditorToggled );
-      butter.unlisten( "editoropened", onEditorToggled );
+      butter.unlisten( "editoropened", onEditorOpened );
     };
 
     this.hide = function() {
@@ -265,7 +275,7 @@ define( [ "core/trackevent", "core/track", "core/eventmanager",
     this.trackContainer = _tracksContainer;
     this.element = _rootElement;
     this.media = _media;
-    this.resize = onResize;
+    this.verticalResize = onVerticalResize;
   }
 
   return MediaInstance;

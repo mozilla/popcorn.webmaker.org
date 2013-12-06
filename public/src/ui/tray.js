@@ -67,7 +67,7 @@ define( [ "util/lang",  "./logo-spinner", "./resizeHandler", "./toggler", "local
       trayRoot.style.height = height + "px";
       bodyWrapper.style.bottom = height + "px";
       resizeHandler.resize();
-      butter.timeline.media.resize();
+      butter.timeline.media.verticalResize();
     }
     function onTrayHandleMouseup( e ) {
       var height = window.innerHeight - e.pageY;
@@ -88,7 +88,7 @@ define( [ "util/lang",  "./logo-spinner", "./resizeHandler", "./toggler", "local
 
     this.setMediaInstance = function( mediaInstanceRootElement ) {
       var timelineContainer = timelineArea.querySelector( ".butter-timeline" );
-      LangUtils.applyTransitionEndListener( trayRoot, butter.timeline.media.resize );
+      LangUtils.applyTransitionEndListener( trayRoot, butter.timeline.media.verticalResize );
       bodyWrapper.style.bottom = trayHeight + "px";
       timelineContainer.innerHTML = "";
       timelineContainer.appendChild( mediaInstanceRootElement );
