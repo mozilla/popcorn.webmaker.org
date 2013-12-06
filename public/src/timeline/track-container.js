@@ -18,7 +18,8 @@ define( [ "core/logger", "util/dragndrop", "./ghost-manager" ],
 
     var _element = mediaInstanceRootElement.querySelector( ".tracks-container-wrapper" ),
         _container = mediaInstanceRootElement.querySelector( ".tracks-container" ),
-        _boundingBoxElement = _element.querySelector( ".bounding-box-selection" );
+        _boundingBoxElement = _element.querySelector( ".bounding-box-selection" ),
+        _bodyWrapper = document.getElementsByClassName( "body-wrapper" );
 
     var _vScrollbar, _hScrollbar;
 
@@ -121,6 +122,13 @@ define( [ "core/logger", "util/dragndrop", "./ghost-manager" ],
 
     _container.addEventListener( "mousedown", function( e ) {
       if ( !e.shiftKey ) {
+        butter.deselectAllTrackEvents();
+      }
+    }, false );
+
+    _bodyWrapper[0].addEventListener( "mousedown", function( e ) {
+      if( _bodyWrapper[0] === document.elementFromPoint( e.clientX, e.clientY ) ) {
+      console.log("hereiam");
         butter.deselectAllTrackEvents();
       }
     }, false );
