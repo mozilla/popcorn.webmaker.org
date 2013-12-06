@@ -162,7 +162,7 @@
     "Text Alignment": "Выравнивание текста",
     "User": "Пользователь",
     "Are you sure you want to delete": "Вы действительно хотите стереть",
-    "Click to remove warning": "Щёлкните <a href=\"#\" class=\"close-button\">здесь</a>, чтобы удалить это предупреждение.",
+    "Click to remove warning": "Щёлкните <a class=\"close-button\">здесь</a>, чтобы удалить это предупреждение.",
     "Women": "Женщина",
     "Trophy": "Приз",
     "Please give your project a name before saving": "Дайте своему проекту название перед тем, как его сохранить",

@@ -162,7 +162,7 @@
     "Text Alignment": "টেক্সট প্রান্তিককরণ",
     "User": "ব্যবহারকারী",
     "Are you sure you want to delete": "আপনি কি মুছে দেওয়ার বিষয়ে নিশ্চিত?",
-    "Click to remove warning": "এই সতর্কবাণীটি সরিয়ে ফেলতে <a href=\"#\" class=\"close-button\">এখানে</ a> ক্লিক করুন।",
+    "Click to remove warning": "এই সতর্কবাণীটি সরিয়ে ফেলতে <a class=\"close-button\">এখানে</ a> ক্লিক করুন।",
     "Women": "নারী",
     "Trophy": "ট্রফি",
     "Please give your project a name before saving": "সংরক্ষণের আগে অনুগ্রহ করে আপনার প্রোজেক্টের একটি নাম দিন",
