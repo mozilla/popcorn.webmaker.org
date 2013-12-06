@@ -118,7 +118,7 @@ define( [], function(){
     time = roundTime( time, accuracy );
     hours = Math.floor( time / 3600 );
     minutes = Math.floor( ( time % 3600 ) / 60 );
-    seconds = time % 60;
+    seconds = roundTime( time % 60, accuracy );
     timeString = seconds + "";
 
     if ( !minutes && !hours ) {
