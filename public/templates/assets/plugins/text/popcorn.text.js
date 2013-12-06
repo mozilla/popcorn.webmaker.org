@@ -42,9 +42,9 @@
         linkTarget: {
           elem: "select",
           options: [ "New Tab", "Current Tab" ],
-          values: [ "new-tab", "current-tab" ],
+          values: [ "_blank", "_parent" ],
           label: "Open Link In:",
-          "default": "new-tab"
+          "default": "_blank"
         },
         position: {
           elem: "select",
@@ -274,11 +274,7 @@
 
           link = document.createElement( "a" );
           link.href = linkUrl;
-          if ( linkTarget === "new-tab" ) {
-            link.target = "_blank";
-          } else if ( linkTarget === "current-tab" ) {
-            link.target = "_parent";
-          }
+          link.target = linkTarget;
           link.innerHTML = text;
 
           link.addEventListener( "click", function() {
