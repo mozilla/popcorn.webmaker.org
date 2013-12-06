@@ -39,6 +39,13 @@
           type: "text",
           label: "Link URL"
         },
+        linkTarget: {
+          elem: "select",
+          options: [ "New Tab", "Current Tab" ],
+          values: [ "_blank", "_parent" ],
+          label: "Open Link In:",
+          "default": "_blank"
+        },
         position: {
           elem: "select",
           options: [ "Custom", "Middle", "Bottom", "Top" ],
@@ -175,6 +182,7 @@
           transition = options.transition || options._natives.manifest.options.transition[ "default" ],
           link,
           linkUrl = options.linkUrl,
+          linkTarget = options.linkTarget,
           shadowColor = options.shadowColor || DEFAULT_SHADOW_COLOR,
           backgroundColor = options.backgroundColor || DEFAULT_BACKGROUND_COLOR,
           context = this;
@@ -266,7 +274,7 @@
 
           link = document.createElement( "a" );
           link.href = linkUrl;
-          link.target = "_blank";
+          link.target = linkTarget;
           link.innerHTML = text;
 
           link.addEventListener( "click", function() {
