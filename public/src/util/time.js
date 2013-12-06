@@ -115,6 +115,7 @@ define( [], function(){
       time = -time;
     }
 
+    time = roundTime( time, accuracy );
     hours = Math.floor( time / 3600 );
     minutes = Math.floor( ( time % 3600 ) / 60 );
     seconds = roundTime( time % 60, accuracy );
