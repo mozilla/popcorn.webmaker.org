@@ -182,6 +182,7 @@
           transition = options.transition || options._natives.manifest.options.transition[ "default" ],
           link,
           linkUrl = options.linkUrl,
+          linkTarget = options.linkTarget,
           shadowColor = options.shadowColor || DEFAULT_SHADOW_COLOR,
           backgroundColor = options.backgroundColor || DEFAULT_BACKGROUND_COLOR,
           context = this;
@@ -273,9 +274,9 @@
 
           link = document.createElement( "a" );
           link.href = linkUrl;
-          if ( linkTarget == "new-tab" ) {
+          if ( linkTarget === "new-tab" ) {
             link.target = "_blank";
-          } else if ( linkTarget == "current-tab" ) {
+          } else if ( linkTarget === "current-tab" ) {
             link.target = "_parent";
           }
           link.innerHTML = text;
