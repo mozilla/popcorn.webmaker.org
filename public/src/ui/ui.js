@@ -39,6 +39,7 @@ define( [ "core/eventmanager", "./header",
         _uiOptions = _uiConfig.value( "ui" ),
         _unloadDialog,
         _resizeHandler,
+        _bodyWrapper = document.querySelector( ".body-wrapper" ),
         _this = this;
 
     // Top-level way to test our crash reporter.
@@ -61,6 +62,12 @@ define( [ "core/eventmanager", "./header",
       document.body.classList.add( "butter-header-spacing" );
       document.body.classList.add( "butter-tray-spacing" );
     }
+
+    _bodyWrapper.addEventListener( "mousedown", function() {
+      if( butter.selectedEvents.length ) {
+        butter.deselectAllTrackEvents();
+      }
+    }, false );
 
     this.loadIcons = function( plugins ) {
       var path, img, div;

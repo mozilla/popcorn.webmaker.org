@@ -100,6 +100,8 @@ define( [ "util/xhr", "localized", "jquery" ], function( XHR, Localized, $ ) {
       };
 
       var onSelect = function( e ) {
+        e.stopPropagation();
+
         if ( !e.shiftKey ) {
           butter.deselectAllTrackEvents();
         }
