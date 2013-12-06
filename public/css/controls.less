@@ -1,6 +1,8 @@
 /* @override
 http://ocupopdev.com/popcorn-embed/css/controls.css */
 
+@import "globals";
+
 .controls {
   position: absolute;
   bottom: 0;
@@ -223,4 +225,38 @@ http://ocupopdev.com/popcorn-embed/css/controls.css */
   position: absolute;
   right: 0;
   cursor: pointer;
+}
+.controls-time-tooltip {
+  @_tooltipHeight: 30px;
+  @_tooltipWidth: 70px;
+  &.tooltip-no-transition-on {
+    opacity: 1;
+    visibility: visible;
+  }
+  visibility: hidden;
+  opacity: 0;
+  height: @_tooltipHeight;
+  position: absolute;
+  top: -( @_tooltipHeight + 4px );
+  left: 50%;
+  margin-top: -7px;
+  margin-left: -@_tooltipWidth / 2;
+  z-index: @MODAL_Z_INDEX;
+  width: @_tooltipWidth;
+  padding: @_tooltipHeight / 3;
+  background: #FFF;
+  text-shadow: none;
+  color: @baseText;
+  line-height: @_tooltipHeight / 3;
+  font-size: 11px;
+  .box-sizing( border-box );
+  border-radius: 2px;
+  text-align: center;
+  border: 1px solid @baseLightOutline;
+  box-shadow: 0 5px 6px -5px rgba( 0, 0, 0, .3 );
+  pointer-events: none;
+  .transition( opacity 0.3s ease 0 );
+}
+.no-events {
+  pointer-events: none;
 }
