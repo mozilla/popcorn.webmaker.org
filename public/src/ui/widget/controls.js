@@ -398,7 +398,7 @@ define( [ "util/lang", "util/time", "text!layouts/controls.html" ],
             p.play();
           }
 
-          if ( timebar != document.elementFromPoint(e.clientX, e.clientY) ) {
+          if ( timebar !== document.elementFromPoint( e.clientX, e.clientY ) ) {
             timeTooltip.classList.remove( "tooltip-no-transition-on" );
           }
 
@@ -406,6 +406,7 @@ define( [ "util/lang", "util/time", "text!layouts/controls.html" ],
 
           timebar.addEventListener( "mouseover", timeMouseOver, false );
           timebar.addEventListener( "mousemove", tooltipMouseMove, false );
+          timebar.addEventListener( "mousedown", timeMouseDown, false );
           window.removeEventListener( "mouseup", timeMouseUp, false );
           window.removeEventListener( "mousemove", timeMouseMove, false );
         };
@@ -427,7 +428,8 @@ define( [ "util/lang", "util/time", "text!layouts/controls.html" ],
           videoContainer.classList.add( "no-events" );
 
           timebar.removeEventListener( "mouseout", timeMouseOut, false );
-          timebar.removeEventListener( "mousemove", tooltipMouseMove, false);
+          timebar.removeEventListener( "mousemove", tooltipMouseMove, false );
+          timebar.removeEventListener( "mousedown", timeMouseDown, false );
           window.addEventListener( "mousemove", timeMouseMove, false );
           window.addEventListener( "mouseup", timeMouseUp, false );
 
@@ -458,7 +460,7 @@ define( [ "util/lang", "util/time", "text!layouts/controls.html" ],
           }
         };
 
-        timeMouseOver = function( e ) {
+        timeMouseOver = function() {
           timeTooltip.classList.add( "tooltip-no-transition-on" );
 
           timebar.addEventListener( "mousemove", tooltipMouseMove, false );
