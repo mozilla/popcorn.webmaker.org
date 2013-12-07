@@ -66,6 +66,16 @@
           }
           trackEvent.update( updateOptions );
         }
+        function urlCallback( trackEvent, updateOptions ) {
+          if ( updateOptions.linkUrl ) {
+            pickers.linkTarget.classList.remove( "butter-disabled" );
+            pickers.linkTarget.disabled = false;
+          } else {
+            pickers.linkTarget.classList.add( "butter-disabled" );
+            pickers.linkTarget.disabled = true;
+          }
+          trackEvent.update( updateOptions );
+        }
 
         for ( key in pluginOptions ) {
           if ( pluginOptions.hasOwnProperty( key ) ) {
@@ -73,6 +83,13 @@
 
             if ( option.elementType === "select" ) {
               _this.attachSelectChangeHandler( option.element, option.trackEvent, key, _this.updateTrackEventSafe );
+              if ( key === "linkTarget" ) {
+                pickers.linkTarget = option.element;
+                if ( !_popcornOptions.linkUrl ) {
+                  option.element.classList.add( "butter-disabled" );
+                  pickers.linkTarget.disabled = true;
+                }
+              }
             }
             else if ( option.elementType === "input" ) {
               if ( key === "linkUrl" ) {
@@ -107,6 +124,8 @@
                   option.element.onclick = _falseClick;
                 }
                 _this.attachColorChangeHandler( option.element, option.trackEvent, key, colorCallback );
+              } else if ( key === "linkUrl" ) {
+                _this.attachInputChangeHandler( option.element, option.trackEvent, key, urlCallback );
               }
               else {
                 _this.attachInputChangeHandler( option.element, option.trackEvent, key, _this.updateTrackEventSafe );
