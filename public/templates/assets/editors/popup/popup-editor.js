@@ -13,7 +13,13 @@
         _trackEvent,
         _manifestOptions,
         _butter,
-        _popcornOptions;
+        _popcornOptions,
+        _falseClick = function() {
+          return false;
+        },
+        _trueClick = function() {
+          return true;
+        };
 
     /**
      * Member: setup
@@ -29,7 +35,8 @@
 
       var basicContainer = _rootElement.querySelector( ".editor-options" ),
           advancedContainer = _rootElement.querySelector( ".advanced-options" ),
-          pluginOptions = {};
+          pluginOptions = {},
+          pickers = {};
 
       function callback( elementType, element, trackEvent, name ) {
         pluginOptions[ name ] = { element: element, trackEvent: trackEvent, elementType: elementType };
@@ -91,6 +98,18 @@
           }
         }
 
+        function urlCallback( trackEvent, updateOptions) {
+          if ( updateOptions.linkUrl ) {
+            pickers.linkTarget.classList.remove( "butter-disabled" );
+            pickers.linkTarget.onclick = _trueClick;
+          }
+          else {
+            pickers.linkTarget.classList.add( "butter-disabled" );
+            pickers.linkTarget.onclick = _falseClick;
+          }
+          trackEvent.update( updateOptions );
+        }
+
         for ( key in pluginOptions ) {
           if ( pluginOptions[ key ] ) {
             option = pluginOptions[ key ];
@@ -113,6 +132,12 @@
             }
             else if ( option.elementType === "select" && key !== "type" ) {
               _this.attachSelectChangeHandler( option.element, option.trackEvent, key, _this.updateTrackEventSafe );
+              if ( key === "linkTarget" ) {
+                pickers.linkTarget = option.element;
+                if (!_popcornOptions.linkUrl) {
+                  option.element.classList.add( "butter-disabled" );
+                }
+              }
             }
             else if ( option.elementType === "input" ) {
               if ( key === "linkUrl" ) {
@@ -132,6 +157,8 @@
               }
               else if ( key === "fontColor" ) {
                 _this.attachColorChangeHandler( option.element, option.trackEvent, key, colorCallback );
+              } else if ( key === "linkUrl" ) {
+                _this.attachInputChangeHandler( option.element, option.trackEvent, key, urlCallback );
               }
               else {
                 _this.attachInputChangeHandler( option.element, option.trackEvent, key, _this.updateTrackEventSafe );
