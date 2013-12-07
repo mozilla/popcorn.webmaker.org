@@ -66,6 +66,14 @@
           }
           trackEvent.update( updateOptions );
         }
+        function urlCallback( trackEvent, updateOptions, prop ) {
+          if ( updateOptions[ prop ] === "" ) {
+            pluginOptions[ "linkTarget" ].element.parentNode.classList.add( "butter-hidden" );
+          }
+          else {
+            pluginOptions[ "linkTarget" ].element.parentNode.classList.remove( "butter-hidden" );
+          }
+        }
 
         for ( key in pluginOptions ) {
           if ( pluginOptions.hasOwnProperty( key ) ) {
@@ -76,6 +84,10 @@
             }
             else if ( option.elementType === "input" ) {
               if ( key === "linkUrl" ) {
+                if (option.element.value === "") {
+                  pluginOptions[ "linkTarget" ].element.parentNode.classList.add( "butter-hidden" );
+                }
+                _this.attachInputChangeHandler( option.element, option.trackEvent, key, urlCallback );
                 _this.createTooltip( option.element, {
                   name: "text-link-tooltip" + Date.now(),
                   element: option.element.parentElement,
