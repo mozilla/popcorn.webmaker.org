@@ -1,7 +1,6 @@
 @import "globals";
 @import "webfonts";
 
-@controlsHeight: 43px;
 @small: 560px;
 @medium: 640px;
 @large: 853px;
@@ -9,7 +8,7 @@
 
 .height-width( @width ) {
   width: @width;
-  height: (.5625 * @width ) + @controlsHeight;
+  height: (.5625 * @width ) + @EMBED_CONTROLS_HEIGHT;
 }
 
 body {
