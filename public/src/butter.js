@@ -513,6 +513,7 @@ window.Butter = {
           "tracktargetchanged",
           "trackorderchanged",
           "trackeventadded",
+          "trackeventeditorclose",
           "trackeventremoved",
           "trackeventupdated",
           "trackorderchanged"
@@ -561,6 +562,7 @@ window.Butter = {
             "trackremoved",
             "tracktargetchanged",
             "trackeventadded",
+            "trackeventeditorclose",
             "trackeventremoved",
             "trackeventupdated",
             "trackorderchanged"
