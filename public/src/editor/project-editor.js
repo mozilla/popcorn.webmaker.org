@@ -19,6 +19,8 @@ define([ "localized", "editor/editor", "editor/base-editor",
         _projectEmbedURL = _rootElement.querySelector( ".butter-project-embed-url" ),
         _embedSize = _rootElement.querySelector( ".butter-embed-size" ),
         _embedPreload = _rootElement.querySelector( ".butter-embed-preload" ),
+        _embedSizeHeight = _rootElement.querySelector( ".butter-embed-size-height" ),
+        _embedSizeWidth = _rootElement.querySelector( ".butter-embed-size-width" ),
         _previewBtn = _rootElement.querySelector( ".butter-preview-link" ),
         _projectLinkUrl = _rootElement.querySelector( ".butter-project-url" ),
         _projectLinkButton = _rootElement.querySelector( ".butter-preview-link" ),
@@ -42,6 +44,9 @@ define([ "localized", "editor/editor", "editor/base-editor",
         _projectDetails,
         _editorHelper = new EditorHelper( butter ),
         _idx;
+
+    _embedSizeHeight.value = _embedHeight;
+    _embedSizeWidth.value = _embedWidth;
 
     _backgroundInput.value = butter.project.background ? butter.project.background : "#FFFFFF";
 
@@ -83,9 +88,26 @@ define([ "localized", "editor/editor", "editor/base-editor",
     }
 
     _embedSize.addEventListener( "change", function() {
+      if ( _embedSize.value === "custom" ) {
+        return;
+      }
       _embedDimensions = _embedSize.value.split( "x" );
       _embedWidth = _embedDimensions[ 0 ];
       _embedHeight = _embedDimensions[ 1 ];
+      _embedSizeHeight.value = _embedHeight;
+      _embedSizeWidth.value = _embedWidth;
+      updateEmbed( butter.project.iframeUrl );
+    }, false );
+
+    _embedSizeWidth.addEventListener( "change", function() {
+      _embedSize.value = "custom";
+      _embedWidth = _embedDimensions[ 0 ] = _embedSizeWidth.value;
+      updateEmbed( butter.project.iframeUrl );
+    }, false );
+
+    _embedSizeHeight.addEventListener( "change", function() {
+      _embedSize.value = "custom";
+      _embedHeight = _embedDimensions[ 1 ] = _embedSizeHeight.value;
       updateEmbed( butter.project.iframeUrl );
     }, false );
 

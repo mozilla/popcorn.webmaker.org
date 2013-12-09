@@ -57,16 +57,17 @@
 
       <!-- Embed Container -->
       <div class="embed-container editor-container display-off">
-        <div class="butter-form-inline form-single">
-          <label>Size</label>
-          <select class="butter-embed-size">
-            <option value="560x358">560x358</option>
-            <option value="640x403">640x403</option>
-            <option value="853x523">853x523</option>
-            <option value="1280x763">1280x763</option>
-          </select>
-          <label class="butter-embed-preload-label"><input class="butter-embed-preload butter-form-checkbox" type="checkbox" checked>Preload</label>
-        </div>
+        <label>Size</label>
+        <select class="butter-embed-size">
+          <option value="560x358">560x358</option>
+          <option value="640x403">640x403</option>
+          <option value="853x523">853x523</option>
+          <option value="1280x763">1280x763</option>
+          <option value="custom">Custom</option>
+        </select>
+        <div class="butter-embed-height-width">Width<input class="butter-embed-size-width" type="text"></div>
+        <div class="butter-embed-height-width">Height<input class="butter-embed-size-height" type="text"></div>
+        <div class="butter-embed-preload-label"><input class="butter-embed-preload butter-form-checkbox" type="checkbox" checked>Preload</div>
         <textarea class="butter-project-embed-url" readonly="readonly"></textarea>
         <p>{{ gettext("Copy and paste this embed code into any web page") }}</p>
       </div>
