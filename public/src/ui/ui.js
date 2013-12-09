@@ -515,7 +515,6 @@ define( [ "core/eventmanager", "./header",
           // If we have one track event just delete it, otherwise display a warning dialog.
           if ( selectedEvents.length === 1 ) {
             selectedEvent = selectedEvents[ 0 ];
-            butter.editor.closeTrackEventEditor( selectedEvent );
             selectedEvent.track.removeTrackEvent( selectedEvent );
             return;
           }
@@ -527,7 +526,6 @@ define( [ "core/eventmanager", "./header",
               submit: function() {
                 for( i = 0; i < l; i++ ) {
                   selectedEvent = selectedEvents[ i ];
-                  butter.editor.closeTrackEventEditor( selectedEvent );
                   selectedEvent.track.removeTrackEvent( selectedEvent );
                 }
                 dialog.close();

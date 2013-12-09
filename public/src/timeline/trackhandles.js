@@ -101,11 +101,7 @@ define( [ "dialog/dialog", "util/dragndrop", "util/lang", "text!layouts/track-ha
           data: track.name,
           events: {
             submit: function( e ){
-              if( e.data === true ){
-                var trackEvents = track.trackEvents;
-                for ( var i = 0, l = trackEvents.length; i < l; i++ ) {
-                  butter.editor.closeTrackEventEditor( trackEvents[ i ] );
-                }
+              if ( e.data ) {
                 media.removeTrack( track );
               } //if
               dialog.close();

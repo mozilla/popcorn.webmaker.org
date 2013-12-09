@@ -211,6 +211,9 @@ define( [ "localized", "core/eventmanager", "core/trackevent", "./editor",
         // Set up views for plugin list editor
         butter.listen( "mediacontentchanged", _header.views.disablePlugins );
         butter.listen( "mediaready", _header.views.enablePlugins );
+        butter.listen( "trackeventeditorclose", function( e ) {
+          _this.closeTrackEventEditor( e.data );
+        });
         document.body.classList.add( "butter-editor-spacing" );
 
         // Start minimized

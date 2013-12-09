@@ -311,6 +311,11 @@ define( [ "localized", "./eventmanager", "./trackevent", "./views/track-view", "
         trackEvent.unsubscribe( "update", trackEventUpdateNotificationHandler );
         _view.removeTrackEvent( trackEvent );
         trackEvent.unbind( preventRemove );
+
+        if ( !preventRemove ) {
+          _this.dispatch( "trackeventeditorclose", trackEvent );
+        }
+
         _this.dispatch( "trackeventremoved", trackEvent );
         return trackEvent;
       }

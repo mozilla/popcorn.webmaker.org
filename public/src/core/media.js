@@ -127,6 +127,7 @@
         _this.chain( track, [
           "tracktargetchanged",
           "trackeventadded",
+          "trackeventeditorclose",
           "trackeventremoved",
           "trackeventupdated",
           "trackeventselected",
@@ -237,6 +238,7 @@
           _this.unchain( track, [
             "tracktargetchanged",
             "trackeventadded",
+            "trackeventeditorclose",
             "trackeventremoved",
             "trackeventupdated",
             "trackeventselected",
