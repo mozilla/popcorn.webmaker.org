@@ -1,4 +1,7 @@
 module.exports = function( grunt ) {
+
+  var jsHintOptions = grunt.file.readJSON( ".jshintrc" );
+
   grunt.initConfig({
     pkg: grunt.file.readJSON( "package.json" ),
 
@@ -24,31 +27,7 @@ module.exports = function( grunt ) {
       }
     },
     jshint: {
-      options: {
-        globals: {
-          module: true,
-          define: true,
-          requirejs: true,
-          require: true,
-          console: true,
-          Popcorn: true,
-          Buffer: true
-        },
-        browser: true,
-        node: true,
-        curly: true,
-        eqeqeq: true,
-        forin: true,
-        latedef: true,
-        newcap: true,
-        noempty: true,
-        es5: true,
-        nonew: true,
-        quotmark: "double",
-        undef: true,
-        unused: true,
-        trailing: true
-      },
+      options: jsHintOptions,
       files: [
         "Gruntfile.js",
         "server.js",
