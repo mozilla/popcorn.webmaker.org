@@ -138,6 +138,7 @@ define( [ "dialog/dialog", "util/xhr", "util/uri" ], function( Dialog, xhr, URI 
         // Once report is sent, force a reload of the page.
         function attemptRecovery() {
           // Remove the "Are you sure?" navigation check, since we have to reload
+          butter.project.backupData();
           window.onbeforeunload = null;
           window.location.reload( true );
         }

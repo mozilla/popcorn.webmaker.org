@@ -7,6 +7,10 @@ define( [ "localized", "core/eventmanager", "core/media", "util/sanitizer" ],
 
   var __butterStorage = window.localStorage;
 
+  function removeBackup() {
+    __butterStorage.removeItem( "butter-backup-project" );
+  }
+
   function Project( butter ) {
 
     var _this = this,
@@ -35,7 +39,8 @@ define( [ "localized", "core/eventmanager", "core/media", "util/sanitizer" ],
         _backupInterval = -1,
 
         _thumbnail = location.protocol + "//" + location.host + "/resources/icons/fb-logo.png",
-        _background = "#FFFFFF";
+        _background = "#FFFFFF",
+        _isBackup = false;
 
     function invalidate() {
       // Project is dirty, needs save, backup
@@ -203,6 +208,13 @@ define( [ "localized", "core/eventmanager", "core/media", "util/sanitizer" ],
           return _isRemix;
         },
         enumerable: true
+      },
+
+      "isBackup": {
+        get: function() {
+          return _isBackup;
+        },
+        enumerable: true
       }
 
     });
@@ -349,6 +361,8 @@ define( [ "localized", "core/eventmanager", "core/media", "util/sanitizer" ],
       // If this is a restored backup, restart backups now (vs. on first save)
       // since the user indicated they want it.
       if ( json.backupDate ) {
+        _isBackup = true;
+        butter.ui.unloadDialog.turnOnDialog();
         startBackups();
       }
 
@@ -377,7 +391,7 @@ define( [ "localized", "core/eventmanager", "core/media", "util/sanitizer" ],
       data.template = _template;
       data.author = butter.cornfield.username();
       data.description = _description;
-      data.tags = _tags.join( "," );
+      data.tags = _this.tags;
       data.thumbnail = _thumbnail;
       data.background = _background;
       data.backupDate = Date.now();
@@ -392,7 +406,7 @@ define( [ "localized", "core/eventmanager", "core/media", "util/sanitizer" ],
         _backupInterval = -1;
 
         // Purge the saved project, since it won't be complete.
-        __butterStorage.removeItem( "butter-backup-project" );
+        removeBackup();
 
         console.warn( "Warning: Popcorn Maker LocalStorage quota exceeded. Stopping automatic backup. Will be restarted when project changes again." );
       }
@@ -450,10 +464,12 @@ define( [ "localized", "core/eventmanager", "core/media", "util/sanitizer" ],
           if ( e.error === "okay" ) {
             // Since we've now fully saved, blow away autosave backup
             _isDirty = false;
-            __butterStorage.removeItem( "butter-backup-project" );
 
             // Start keeping backups in storage, if not already started
             startBackups();
+
+            // Remove the backup, since it was obviously just saved.
+            removeBackup();
 
             // Keep any URLs generated from store in sync with the project.
             if ( e.project ) {
@@ -477,6 +493,8 @@ define( [ "localized", "core/eventmanager", "core/media", "util/sanitizer" ],
                 _isPublished = true;
                 _publishUrl = e.publishUrl;
                 _iframeUrl = e.iframeUrl;
+              } else {
+                _this.backupData();
               }
 
               // Let consumers know that the project is now saved;
@@ -489,6 +507,7 @@ define( [ "localized", "core/eventmanager", "core/media", "util/sanitizer" ],
               callback( e );
             });
           } else {
+            _this.backupData();
             callback( e );
           }
         });
@@ -506,6 +525,7 @@ define( [ "localized", "core/eventmanager", "core/media", "util/sanitizer" ],
         saveProject();
       }
     };
+
   }
 
   // Check for an existing project that was autosaved but not saved.
@@ -526,7 +546,7 @@ define( [ "localized", "core/eventmanager", "core/media", "util/sanitizer" ],
       projectBackup = JSON.parse( projectBackup );
 
       // Delete since user can save if he/she wants.
-      __butterStorage.removeItem( "butter-backup-project" );
+      removeBackup();
 
       if ( projectBackup ) {
         backupDate = projectBackup.backupDate;

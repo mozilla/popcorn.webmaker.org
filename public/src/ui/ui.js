@@ -58,6 +58,7 @@ define( [ "core/eventmanager", "./header",
     if ( _uiOptions.enabled ) {
       if ( _uiOptions.onLeaveDialog ) {
         _unloadDialog = new UnloadDialog( butter );
+        _this.unloadDialog = _unloadDialog;
       }
       document.body.classList.add( "butter-header-spacing" );
       document.body.classList.add( "butter-tray-spacing" );

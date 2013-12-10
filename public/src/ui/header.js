@@ -361,7 +361,8 @@ define([ "WebmakerUI", "localized", "dialog/dialog", "util/lang", "l10n!/layouts
     });
 
     butter.listen( "ready", function() {
-      if ( butter.project.name && ( butter.project.id || butter.project.isRemix ) ) {
+      if ( butter.project.name &&
+         ( butter.project.id || butter.project.isRemix || butter.project.isBackup ) ) {
         _projectName.textContent = butter.project.name;
       }
 
