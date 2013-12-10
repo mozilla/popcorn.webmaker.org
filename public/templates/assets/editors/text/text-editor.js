@@ -66,13 +66,16 @@
           }
           trackEvent.update( updateOptions );
         }
-        function urlCallback( trackEvent, updateOptions, prop ) {
-          if ( updateOptions[ prop ] === "" ) {
-            pluginOptions.linkTarget.element.parentNode.classList.add( "butter-hidden" );
+        function urlCallback( trackEvent, updateOptions) {
+          if ( updateOptions.linkUrl ) {
+            pickers.linkTarget.classList.remove( "butter-disabled" );
+            pickers.linkTarget.onclick = _trueClick;
           }
           else {
-            pluginOptions.linkTarget.element.parentNode.classList.remove( "butter-hidden" );
+            pickers.linkTarget.classList.add( "butter-disabled" );
+            pickers.linkTarget.onclick = _falseClick;
           }
+          trackEvent.update( updateOptions );
         }
 
         for ( key in pluginOptions ) {
@@ -81,13 +84,15 @@
 
             if ( option.elementType === "select" ) {
               _this.attachSelectChangeHandler( option.element, option.trackEvent, key, _this.updateTrackEventSafe );
+              if ( key === "linkTarget" ) {
+                pickers.linkTarget = option.element;
+                if (!_popcornOptions.linkUrl) {
+                  option.element.classList.add( "butter-disabled" );
+                }
+              }
             }
             else if ( option.elementType === "input" ) {
               if ( key === "linkUrl" ) {
-                if (option.element.value === "") {
-                  pluginOptions.linkTarget.element.parentNode.classList.add( "butter-hidden" );
-                }
-                _this.attachInputChangeHandler( option.element, option.trackEvent, key, urlCallback );
                 _this.createTooltip( option.element, {
                   name: "text-link-tooltip" + Date.now(),
                   element: option.element.parentElement,
@@ -119,6 +124,8 @@
                   option.element.onclick = _falseClick;
                 }
                 _this.attachColorChangeHandler( option.element, option.trackEvent, key, colorCallback );
+              } else if ( key === "linkUrl" ) {
+                _this.attachInputChangeHandler( option.element, option.trackEvent, key, urlCallback );
               }
               else {
                 _this.attachInputChangeHandler( option.element, option.trackEvent, key, _this.updateTrackEventSafe );
