@@ -211,12 +211,12 @@ define( [ "util/lang", "util/time", "text!layouts/controls.html" ],
 
           if ( p.muted() ) {
 
-            muteButton.classList.remove( "controls-unmuted" );
-            muteButton.classList.add( "controls-muted" );
+            muteButton.classList.remove( "icon-volume-up" );
+            muteButton.classList.add( "icon-volume-off" );
           } else {
 
-            muteButton.classList.remove( "controls-muted" );
-            muteButton.classList.add( "controls-unmuted" );
+            muteButton.classList.add( "icon-volume-up" );
+            muteButton.classList.remove( "icon-volume-off" );
           }
         };
 

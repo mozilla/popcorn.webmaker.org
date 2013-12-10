@@ -71,7 +71,7 @@ http://ocupopdev.com/popcorn-embed/css/controls.css */
   border-right: 1px solid #d5d6d5;
   border-left: 1px solid #d5d6d5;
   div {
-    background: #9EAFBA url( "../resources/controls/controls_icons.png" ) no-repeat;
+    background: @midGrey url( "../resources/controls/controls_icons.png" ) no-repeat;
     margin-top: 6px;
     margin-left: 6px;
     width: 28px;
@@ -191,6 +191,7 @@ http://ocupopdev.com/popcorn-embed/css/controls.css */
   padding: 0;
   left: -8px;
   top: 12px;
+  color: @midGrey;
 }
 .controls-btn {
   padding: 10px;
@@ -202,12 +203,6 @@ http://ocupopdev.com/popcorn-embed/css/controls.css */
 }
 .controls-paused {
   background-position: center 10px !important;
-}
-.controls-muted {
-  background-position: -360px -24px;
-}
-.controls-unmuted {
-  background-position: -384px -24px;
 }
 #controls-share {
   background-position: -27px -2px;
