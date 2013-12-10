@@ -497,6 +497,14 @@ define([ "localized", "util/lang", "util/keys", "util/time", "./base-editor", "u
         }
       }, false );
 
+      if ( propertyName === "linkUrl") {
+        element.addEventListener( "keyup", function() {
+          var updateOptions = {};
+          updateOptions[ propertyName ] = element.value;
+          callback( trackEvent, updateOptions, propertyName );
+        }, false);
+      }
+
       if ( element.type === "number" || isNumber ) {
         element.addEventListener( "change", function() {
 
