@@ -140,10 +140,6 @@
             }
             else if ( option.elementType === "input" ) {
               if ( key === "linkUrl" ) {
-                if (option.element.value === "") {
-                  pluginOptions.linkTarget.element.parentNode.classList.add( "butter-hidden" );
-                }
-                _this.attachInputChangeHandler( option.element, option.trackEvent, key, urlCallback );
                 _this.createTooltip( option.element, {
                   name: "text-link-tooltip" + Date.now(),
                   element: option.element.parentElement,
