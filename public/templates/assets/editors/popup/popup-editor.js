@@ -13,7 +13,7 @@
         _trackEvent,
         _manifestOptions,
         _butter,
-        _popcornOptions,
+        _popcornOptions;
 
     /**
      * Member: setup
