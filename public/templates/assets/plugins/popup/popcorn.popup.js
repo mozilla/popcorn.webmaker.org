@@ -102,17 +102,17 @@
           label: "Text",
           "default": "Pop!"
         },
+        linkUrl: {
+          elem: "input",
+          type: "text",
+          label: "Link URL"
+        },
         linkTarget: {
           elem: "select",
           options: [ "New Tab", "Current Tab" ],
           values: [ "_blank", "_parent" ],
           label: "Open Link In",
           "default": "_blank"
-        },
-        linkUrl: {
-          elem: "input",
-          type: "text",
-          label: "Link URL"
         },
         type: {
           elem: "select",

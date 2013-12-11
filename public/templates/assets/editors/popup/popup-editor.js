@@ -14,12 +14,6 @@
         _manifestOptions,
         _butter,
         _popcornOptions,
-        _falseClick = function() {
-          return false;
-        },
-        _trueClick = function() {
-          return true;
-        };
 
     /**
      * Member: setup
@@ -100,11 +94,11 @@
         function urlCallback( trackEvent, updateOptions) {
           if ( updateOptions.linkUrl ) {
             pickers.linkTarget.classList.remove( "butter-disabled" );
-            pickers.linkTarget.onclick = _trueClick;
+            pickers.linkTarget.disabled = false;
           }
           else {
             pickers.linkTarget.classList.add( "butter-disabled" );
-            pickers.linkTarget.onclick = _falseClick;
+            pickers.linkTarget.disabled = true;
           }
           trackEvent.update( updateOptions );
         }
