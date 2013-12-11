@@ -129,6 +129,7 @@
                 pickers.linkTarget = option.element;
                 if (!_popcornOptions.linkUrl) {
                   option.element.classList.add( "butter-disabled" );
+                  pickers.linkTarget.disabled = true;
                 }
               }
             }
