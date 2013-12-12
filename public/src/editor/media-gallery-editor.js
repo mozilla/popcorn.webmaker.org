@@ -135,8 +135,12 @@ define( [ "localized", "util/lang", "util/uri", "util/xhr", "util/keys", "util/m
 
     if ( data.type === "Flickr" ) {
       iconSource += "flickr-black.png";
-    } else {
+    } else if ( data.type === "Giphy" ) {
       iconSource += "giphy.png";
+    } else {
+      data.type = "Image";
+      el.querySelector( ".mg-type > img" ).classList.add( "butter-hidden" );
+      el.querySelector( ".mg-type-text" ).classList.remove( "photo" );
     }
 
     el.querySelector( ".mg-type > img" ).src = iconSource;
@@ -204,6 +208,7 @@ define( [ "localized", "util/lang", "util/uri", "util/xhr", "util/keys", "util/m
       end: data.duration,
       from: data.from || 0,
       title: data.title,
+      type: data.type,
       thumbnailSrc: thumbnailSrc,
       duration: data.duration,
       hidden: data.hidden
@@ -252,6 +257,7 @@ define( [ "localized", "util/lang", "util/uri", "util/xhr", "util/keys", "util/m
             denied: data.denied,
             start: start,
             end: end,
+            type: data.type,
             thumbnailSrc: thumbnailSrc,
             from: data.from || 0,
             title: data.title,
@@ -287,12 +293,21 @@ define( [ "localized", "util/lang", "util/uri", "util/xhr", "util/keys", "util/m
       setTimeout(function() {
         el.classList.remove( "new" );
       }, TRANSITION_TIME );
-
-      addMedia( data, {
-        element: el,
-        container: _galleryList,
-        remove: true
-      });
+      if ( data.type === "image" ) {
+        el = LangUtils.domFragment( EDITOR_LAYOUT, ".media-gallery-item.gallery-photo" );
+        el.classList.remove( "gallery-item-grid" );
+        addPhotos( data, {
+          container: _galleryList,
+          element: el,
+          remove: true
+        });
+      } else {
+        addMedia( data, {
+          element: el,
+          container: _galleryList,
+          remove: true
+        });
+      }
     } else {
       onDenied( Localized.get( "Your gallery already has that media added to it" ) );
     }
