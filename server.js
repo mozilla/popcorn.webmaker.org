@@ -107,7 +107,7 @@ app.configure( function() {
   app.use( i18n.middleware({
     supported_languages: config.SUPPORTED_LANGS,
     default_lang: "en-US",
-    mappings: config.LANG_MAPPINGS,
+    mappings: require("webmaker-locale-mapping"),
     translation_directory: path.resolve( __dirname, "locale" )
   }));
 
