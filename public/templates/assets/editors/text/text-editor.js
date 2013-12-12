@@ -70,8 +70,7 @@
           if ( updateOptions.linkUrl ) {
             pickers.linkTarget.classList.remove( "butter-disabled" );
             pickers.linkTarget.disabled = false;
-          }
-          else {
+          } else {
             pickers.linkTarget.classList.add( "butter-disabled" );
             pickers.linkTarget.disabled = true;
           }
@@ -86,7 +85,7 @@
               _this.attachSelectChangeHandler( option.element, option.trackEvent, key, _this.updateTrackEventSafe );
               if ( key === "linkTarget" ) {
                 pickers.linkTarget = option.element;
-                if (!_popcornOptions.linkUrl) {
+                if ( !_popcornOptions.linkUrl ) {
                   option.element.classList.add( "butter-disabled" );
                   pickers.linkTarget.disabled = true;
                 }
