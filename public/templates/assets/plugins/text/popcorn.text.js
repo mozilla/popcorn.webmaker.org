@@ -43,7 +43,7 @@
           elem: "select",
           options: [ "New Tab", "Current Tab" ],
           values: [ "_blank", "_parent" ],
-          label: "Open Link In:",
+          label: "Open Link In",
           "default": "_blank"
         },
         position: {

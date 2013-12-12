@@ -107,6 +107,13 @@
           type: "text",
           label: "Link URL"
         },
+        linkTarget: {
+          elem: "select",
+          options: [ "New Tab", "Current Tab" ],
+          values: [ "_blank", "_parent" ],
+          label: "Open Link In",
+          "default": "_blank"
+        },
         type: {
           elem: "select",
           options: [ "Popup", "Speech", "Thought Bubble" ],
@@ -244,7 +251,8 @@
           TRIANGLE_HEIGHT = 60,
           text = options.text.replace( /\r?\n/gm, "<br>" ),
           innerSpan = document.createElement( "span" ),
-          linkUrl = options.linkUrl;
+          linkUrl = options.linkUrl,
+          linkTarget = options.linkTarget;
 
       if ( !target ) {
         target = context.media.parentNode;
@@ -374,7 +382,7 @@
 
         link = document.createElement( "a" );
         link.href = linkUrl;
-        link.target = "_blank";
+        link.target = linkTarget;
         link.innerHTML = text;
 
         link.addEventListener( "click", function() {
