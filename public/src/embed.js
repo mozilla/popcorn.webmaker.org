@@ -228,6 +228,9 @@ function init() {
 
     popcorn.on( "ended", function() {
       setStateClass( "embed-dialog-open" );
+      window.parent.postMessage({
+        type: "ended"
+      }, "*" );
     });
 
     popcorn.on( "pause", function() {
