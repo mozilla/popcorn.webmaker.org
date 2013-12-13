@@ -17,3 +17,6 @@
 /node_modules/
 /user_published/
 bower_components/
+locale/
+!locale/en_US/*
+!locale/localeinfo.json
