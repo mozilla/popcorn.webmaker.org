@@ -222,7 +222,7 @@ app.post( "/api/project/:id?",
 
 app.post( "/api/delete/:myproject", filter.isLoggedIn, filter.isStorageAvailable, routes.make.remove, routes.api.remove );
 app.get( "/api/remix/:anyproject", filter.isStorageAvailable, routes.api.remix, routes.api.projectResponse( Project ) );
-app.get( "/api/project/:myproject", filter.isLoggedIn, filter.isStorageAvailable, routes.api.find, routes.api.projectResponse( Project ) );
+app.get( "/api/project/:anyproject", filter.isStorageAvailable, routes.api.find, routes.api.projectResponse( Project ) );
 
 // Firehose Endpoints
 //app.get( "/api/project/:id/remixes", filter.isStorageAvailable, filter.crossOriginAccessible, routes.firehose.remixes );
