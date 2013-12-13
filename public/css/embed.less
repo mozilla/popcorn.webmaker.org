@@ -59,7 +59,7 @@ body {
   top: 0;
   left: 0;
   right: 0;
-  bottom: 41px;
+  bottom: @EMBED_CONTROLS_HEIGHT;
   z-index: @videoZIndex;
 }
 
@@ -102,9 +102,20 @@ body {
     bottom: 0;
     left: 0;
     right: 0;
-    max-height: 100%;
-    max-width: 100%;
+    height: 100%;
+    width: 100%;
     margin: auto;
+  }
+
+  > .background-image {
+    background-size: contain;
+    background-position: center center;
+    background-repeat: no-repeat;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: @EMBED_CONTROLS_HEIGHT;
   }
 
   &.preload {
