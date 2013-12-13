@@ -104,6 +104,7 @@
     "nunjucks": "0.1.10",
     "requirejs-middleware": "0.1.2",
     "sequelize": "1.6.0",
+    "webmaker-download-locales": "0.0.6",
     "webmaker-i18n": "https://github.com/mozilla/node-webmaker-i18n/archive/v0.3.2.tar.gz",
     "webmaker-loginapi": "https://github.com/mozilla/node-webmaker-loginapi/tarball/v0.1.18",
     "webmaker-mediasync": "https://github.com/mozilla/webmaker-mediasync/tarball/v0.1.23",
@@ -125,7 +126,8 @@
   },
   "scripts": {
     "test": "grunt",
-    "postinstall": "bower install"
+    "postinstall": "bower install",
+    "download-locales":  "webmaker-download-locales popcorn"
   },
   "license": "MIT",
   "engines": {
