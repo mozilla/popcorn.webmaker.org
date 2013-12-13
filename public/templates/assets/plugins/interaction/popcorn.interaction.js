@@ -186,7 +186,6 @@
               cleanArray( sequence );
               sequence.push( combo );
             }
-            console.log( "changing value to sequence: ", sequence );
             tag.value = sequenceToString( sequence );
           }
 
@@ -887,7 +886,7 @@
             _keyboardHelper.showKeyboard();
 
             // Bind key listeners based on keyboard type
-            if ( _keyboardHelper.getKeyboardType === "win" ) {
+            if ( _keyboardHelper.getKeyboardType() === "win" ) {
               if ( sequences.winSequence && sequences.winSequence.length ) {
                 _mousetrapHelper.bindSequence( sequences.winSequence, options._resumePlaybackConstructor( sequences.winSequence ) );
                 _keyboardHelper.setMessage( "Press " + _mousetrapHelper.sequenceToString( sequences.winSequence ).toUpperCase() );
