@@ -22,7 +22,7 @@ define( [ "localized", "util/uri", "json!/api/butterconfig" ],
       EMBED_UNPLAYABLE = Localized.get( "This media source is unplayable" ),
       SOUNDCLOUD_EMBED_DISABLED = Localized.get( "Embedding of this SoundCloud audio source is disabled" );
 
-  var nodeHubbleEndpoint = config.node_hubble_endpoint
+  var nodeHubbleEndpoint = config.node_hubble_endpoint;
 
   function jwPlayerFallback( options, successCallback, errorCallback ) {
     // We hit an error trying to load HTML5, try the jwplayer instead
@@ -68,7 +68,7 @@ define( [ "localized", "util/uri", "json!/api/butterconfig" ],
   }
 
   return {
-    checkUrl: function( url, callback ) {
+    checkUrl: function( url ) {
       for ( var type in REGEX_MAP ) {
         if ( REGEX_MAP.hasOwnProperty( type ) ) {
           if ( REGEX_MAP[ type ].test( url ) ) {
