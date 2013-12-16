@@ -5,6 +5,13 @@
 
 /*****
  ** Message-box styling
+ *****
+ * The message box is a <div> containing a <p> tag. The key combinations are UPPER-CASED when
+ * they are inserted into the HTML, and otherwise share the formatting of the rest of the
+ * <p> tag.
+ *
+ * Add custom styling to the <p> tag only. Inline comments indicate where these CSS styles can
+ * be placed.
  */
 .messageBox {
   width: 100%;
@@ -12,26 +19,38 @@
 };
 
 .messageBox p {
+  /* Positioning, best not to touch */
   margin-left: auto;
   margin-right: auto;
   margin-top: 0;
   margin-bottom: 0;
 
-  width: 60%;
-
   text-align: center;
-  font-weight: bold;
 
   -moz-box-sizing: border-box;
   box-sizing: border-box;
+
+  /* Styling */
+  width: 60%;
+
+  font-weight: bold;
 }
 
 /*****
- ** Keyboard Styles
- */
-
-/* Base classes */
+ * Keyboard Styles
+ *****
+ * Initial background colour and font-size can be
+ * specified below. Follow inline comments when modifying CSS.
+ *
+ * Below the initial keyboard styles are the styles that are
+ * applied when a user correctly presses a key combination.
+ * Inline comments will guide you on customizing them.
+ *
+ * If keyboard words are bleeding out of their
+ * containing boxes, the font-size may need to be reduced.
+ **/
 .keyboard {
+  /* Base classes, DO NOT MODIFY */
   width: 70%;
   height: 45%;
   margin: 0 auto;
@@ -39,9 +58,7 @@
   position: absolute;
   bottom: 0;
   left: 15%;
-  background-color: white;
 
-  font-size: 0.8em;
   z-index: 2000;
 
   visibility: visible;
@@ -50,19 +67,55 @@
   /***
    * CSS TRANSITION CONFIG
    **
-   * Ensure that the transition time matches
+   * Ensure that the transition time (in seconds) matches
    * the value (in milliseconds) of the
    * `transitionDelay` variable in the
    * `_keyboardHelper`.
    *
-   * See `interaction-editor.js` for more.
+   * See `popcorn.interaction.js` for more.
    **/
   -moz-transition: opacity 1s, visibility 1s;
   -webkit-transition: opacity 1s, visbility 1s;
   -ms-transition: opacity 1s, visibility 1s;
   -o-transition: opacity 1s, visibility 1s;
   transition: opacity 1s, visibility 1s;
+
+  /***
+   * CUSTOM BASE STYLING
+   **
+   * Initial background colour and font-size should be
+   * specified here. If keyboard words are bleeding out of their
+   * containing boxes, the font-size may need to be reduced.
+   **/
+  background-color: white;
+  font-size: 0.8em;
 }
+
+/* Valid key-styling */
+.valid {
+  background-color: #94EE5B;
+}
+
+/* Valid meta-key styling */
+.key.key_backspace.valid, .key.key_macBackspace.valid, .key.key_shift.valid, .key.key_tab.valid, .key.key_ctrl.valid, .key.key_meta.valid,
+.key.key_macMeta.valid, .key.key_alt.valid, .key.key_macAlt.valid, .key.key_capslock.valid, .key.key_enter.valid, .key.key_macEnter.valid,
+.key.key_space.valid {
+  /**
+   * Make sure to maintain the 2px width of whatever border you create.
+   * To remove the border completely, use:
+   * `border: solid white 2px;`
+   */
+  border: dashed black 2px;
+  background-color: #CFF0BB;
+}
+
+/*****
+ * KEYBOARD SCAFFOLDING - MODIFY WITH CAUTION
+ *****
+ * Everything after this probably shouldnt be modified at all.
+ * The keyboard relies on these values in order to fit properly
+ * onto the screen.
+ **/
 
 .keyboard-row {
   height: 20%;
@@ -140,22 +193,6 @@
 .off {
   opacity: 0;
   visibility: hidden;
-}
-
-/* Colour styling */
-.valid {
-  background-color: #94EE5B;
-}
-
-.invalid {
-  background-color: #FF3121;
-}
-
-.key.key_backspace.valid, .key.key_macBackspace.valid, .key.key_shift.valid, .key.key_tab.valid, .key.key_ctrl.valid, .key.key_meta.valid,
-.key.key_macMeta.valid, .key.key_alt.valid, .key.key_macAlt.valid, .key.key_capslock.valid, .key.key_enter.valid, .key.key_macEnter.valid,
-.key.key_space.valid {
-  border: dashed black 2px;
-  background-color: #CFF0BB;
 }
 
 /* Individual keys */

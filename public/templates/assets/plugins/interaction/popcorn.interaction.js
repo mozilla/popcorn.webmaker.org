@@ -646,8 +646,8 @@
           keyboardCode += "<div class=\"keyboard_row\">";
 
           for ( var q = 0; q < currentDiv.length; q++ ) {
-            subRow = currentDiv[ q ];
-            keyboardCode += "<div class=\"" + subRow.classes + "\">" + "<span>" + subRow.contents + "</span>" + "</div>";
+            subDiv = currentDiv[ q ];
+            keyboardCode += "<div class=\"" + subDiv.classes + "\">" + "<span>" + subDiv.contents + "</span>" + "</div>";
           }
           keyboardCode += "</div>";
         } else {
@@ -678,7 +678,7 @@
     // Cache reference to "styles"
     var styleReference = keyboard.el.style;
 
-    // This should match the length of the css transition
+    // This (in milliseconds) should match the length of the keyboard css transition (in seconds)
     var transitionDelay = 1000;
 
     return {
@@ -778,7 +778,6 @@
         }
       },
       setMessage: function( message ) {
-        // TODO - Add fancy css here?
         messageBox.getElementsByTagName( "p" )[ 0 ].innerHTML = message;
       },
       getKeyboardType: function() {
