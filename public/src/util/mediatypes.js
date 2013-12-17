@@ -281,6 +281,7 @@ define( [ "localized", "util/uri" ],
           };
           jwPlayerFallback( options, successCallback, errorCallback );
         }, false );
+        baseUrl = encodeURI( baseUrl );
         videoElem.src = URI.makeUnique( baseUrl ).toString();
       }
     }
