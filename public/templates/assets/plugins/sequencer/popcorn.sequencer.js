@@ -249,7 +249,12 @@
         }
 
         for ( var i = 0; i < options.source.length; i++ ) {
-          options.source[ i ] = options.source[ i ].trim().split( " " ).join( "" );
+          var value = options.source[ i ],
+              split = value.split( "?" ),
+              querystring = split[ 1 ];
+
+          value = split[ 0 ].trim();
+          options.source[ i ] = querystring ? value + "?" + querystring : value;
         }
 
         options._clip = Popcorn.smart( options._container, options.source, { frameAnimation: true } );
