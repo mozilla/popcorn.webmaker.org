@@ -43,7 +43,6 @@ define( [ "core/logger", "util/dragndrop", "./ghost-manager" ],
     });
 
     DragNDrop.listen( "dropfinished", function() {
-      _media.cleanUpEmptyTracks();
       _vScrollbar.update();
     });
 
