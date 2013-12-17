@@ -9,7 +9,7 @@ define( [ "localized", "util/lang", "util/uri", "util/xhr", "util/keys", "util/m
   var _parentElement =  LangUtils.domFragment( EDITOR_LAYOUT, ".media-editor" ),
       _addMediaPanel = _parentElement.querySelector( ".add-media-panel" ),
 
-      _clipBtnText = Localized.get( "Create clip" ),
+      _clipBtnText = Localized.get( "Create media" ),
       _searchBtnText = Localized.get( "Search" ),
       _resultsText = Localized.get( "Results" ),
       _myMediaText = Localized.get( "My Media Gallery" ),
