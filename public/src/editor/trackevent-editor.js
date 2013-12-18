@@ -432,16 +432,14 @@ define([ "localized", "util/lang", "util/keys", "util/time", "./base-editor", "u
         }
       }
 
-      // ignoreBlur cuts down on unnecessary calls to a track event's update method
-      var ignoreBlur,
-          ignoreChange,
-          tooltipName,
-          tooltip,
+      var ignoreChange,
           manifestType,
+          manifestElem,
           isNumber;
 
       if ( trackEvent.popcornTrackEvent ) {
         manifestType = trackEvent.popcornTrackEvent._natives.manifest.options[ propertyName ].type;
+        manifestElem = trackEvent.popcornTrackEvent._natives.manifest.options[ propertyName ].elem;
       }
 
       isNumber = manifestType === "number" ? true : false;
@@ -456,13 +454,31 @@ define([ "localized", "util/lang", "util/keys", "util/time", "./base-editor", "u
         return val;
       }
 
-      element.addEventListener( "blur", function() {
-        var val = element.value;
+      function onMousedown( e ) {
+        e.stopPropagation();
+        e.preventDefault();
+        var val = element.value,
+            updateOptions = {};
 
-        if ( ignoreBlur ) {
-          ignoreBlur = false;
-        } else {
-          var updateOptions = {};
+        window.removeEventListener( "mousedown", onMousedown, true );
+        if ( isNumber ) {
+          val = validateNumber( val );
+        }
+
+        updateOptions[ propertyName ] = val;
+        updateTrackEvent( trackEvent, callback, updateOptions );
+
+        element.blur();
+      }
+
+      if ( manifestElem === "textarea" ) {
+        element.addEventListener( "input", function( e ) {
+
+          window.addEventListener( "mousedown", onMousedown, true );
+          var updateOptions = {},
+              val = element.value;
+
+          e.preventDefault();
 
           if ( isNumber ) {
             val = validateNumber( val );
@@ -470,18 +486,15 @@ define([ "localized", "util/lang", "util/keys", "util/time", "./base-editor", "u
 
           updateOptions[ propertyName ] = val;
           updateTrackEvent( trackEvent, callback, updateOptions );
-        }
-        if ( tooltip ) {
-          tooltip.hidden = true;
-        }
-      }, false );
+          ignoreChange = true;
+        }, false );
+      } else {
+        element.addEventListener( "keypress", function( e ) {
+          var updateOptions = {},
+              val = element.value;
 
-      element.addEventListener( "keypress", function( e ) {
-        var updateOptions = {},
-            val = element.value;
-
-        if ( e.keyCode === KeysUtils.ENTER ) {
-          if ( !e.shiftKey ) {
+          window.addEventListener( "mousedown", onMousedown, true );
+          if ( e.keyCode === KeysUtils.ENTER ) {
             e.preventDefault();
 
             if ( isNumber ) {
@@ -490,12 +503,10 @@ define([ "localized", "util/lang", "util/keys", "util/time", "./base-editor", "u
 
             updateOptions[ propertyName ] = val;
             updateTrackEvent( trackEvent, callback, updateOptions );
-            ignoreBlur = true;
             ignoreChange = true;
-            element.blur();
           }
-        }
-      }, false );
+        }, false );
+      }
 
       if ( element.type === "number" || isNumber ) {
         element.addEventListener( "change", function() {
@@ -507,28 +518,12 @@ define([ "localized", "util/lang", "util/keys", "util/time", "./base-editor", "u
             ignoreChange = false;
           } else {
 
-            ignoreBlur = true;
-
             val = validateNumber( val );
 
             updateOptions[ propertyName ] = val;
             updateTrackEvent( trackEvent, callback, updateOptions );
           }
         }, false );
-      }
-
-      if ( element.type === "textarea" && manifestType !== "url" ) {
-        tooltipName = "shift-enter-tooltip-" + Date.now();
-
-        extendObject.createTooltip( element, {
-          name: tooltipName,
-          element: element.parentElement,
-          message: Localized.get( "Press Shift+Enter for a new line." ),
-          top: "105%",
-          left: "50%",
-          hidden: true,
-          hover: false
-        });
       }
     };
 
@@ -584,6 +579,7 @@ define([ "localized", "util/lang", "util/keys", "util/time", "./base-editor", "u
           propertyArchetype,
           editorElement,
           option,
+          tooltip,
           manifestEntryOption,
           i, l;
 
@@ -677,8 +673,7 @@ define([ "localized", "util/lang", "util/keys", "util/time", "./base-editor", "u
           editorElement.value = data;
         }
 
-      }
-      else if ( manifestEntry.elem === "checkbox-group" ) {
+      } else if ( manifestEntry.elem === "checkbox-group" ) {
         var item,
             elementParent = propertyArchetype,
             checkbox,
@@ -704,10 +699,9 @@ define([ "localized", "util/lang", "util/keys", "util/time", "./base-editor", "u
             editorElement = propertyArchetype.querySelector( ".checkbox-group" ).cloneNode( true );
           }
         }
-      }
-      else {
+      } else {
         if ( manifestEntry.type === "range" ) {
-          var tooltip = propertyArchetype.querySelector( ".butter-slider-tooltip" );
+          tooltip = propertyArchetype.querySelector( ".butter-slider-tooltip" );
 
           propertyArchetype.querySelector( ".slider-start" ).innerHTML = manifestEntry.min || 0;
           propertyArchetype.querySelector( ".slider-end" ).innerHTML = ( manifestEntry.max || 100 ) + ( manifestEntry.slider_unit || "" );
