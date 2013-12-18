@@ -2,8 +2,8 @@
  * If a copy of the MIT license was not distributed with this file, you can
  * obtain one at https://raw.github.com/mozilla/butter/master/LICENSE */
 
-define( [ "localized", "util/uri" ],
-  function( Localized, URI ) {
+define( [ "localized", "util/uri", "json!/api/butterconfig" ],
+  function( Localized, URI, config ) {
 
   var REGEX_MAP = {
         YouTube: /(?:https?:\/\/www\.|https?:\/\/|www\.|\.|^)youtu/,
@@ -21,6 +21,8 @@ define( [ "localized", "util/uri" ],
       ARCHIVE_EMBED_DISABLED = Localized.get( "Embedding of this Archive item is not available yet" ),
       EMBED_UNPLAYABLE = Localized.get( "This media source is unplayable" ),
       SOUNDCLOUD_EMBED_DISABLED = Localized.get( "Embedding of this SoundCloud audio source is disabled" );
+
+  var nodeHubbleEndpoint = config.node_hubble_endpoint;
 
   function jwPlayerFallback( options, successCallback, errorCallback ) {
     // We hit an error trying to load HTML5, try the jwplayer instead
@@ -74,7 +76,6 @@ define( [ "localized", "util/uri" ],
           }
         }
       }
-      return "HTML5";
     },
     getMetaData: function( baseUrl, successCallback, errorCallback ) {
       var id,
@@ -262,26 +263,42 @@ define( [ "localized", "util/uri" ],
           title: baseUrl,
           duration: +REGEX_MAP[ "null" ].exec( baseUrl )[ 1 ]
         });
-      } else if ( type === "HTML5" ) {
-        videoElem = document.createElement( "video" );
-        videoElem.addEventListener( "loadedmetadata", function() {
-          successCallback ({
-            source: baseUrl,
-            type: type,
-            title: baseUrl.substring( baseUrl.lastIndexOf( "/" ) + 1 ),
-            thumbnail: URI.makeUnique( baseUrl ).toString(),
-            duration: videoElem.duration
-          });
-        }, false );
-        videoElem.addEventListener( "error", function() {
-          var options = {
-            source: baseUrl,
-            type: type,
-            title: baseUrl
-          };
-          jwPlayerFallback( options, successCallback, errorCallback );
-        }, false );
-        videoElem.src = URI.makeUnique( baseUrl ).toString();
+      } else {
+        Popcorn.getJSONP( nodeHubbleEndpoint + "mime/" + baseUrl, function( resp ) {
+          var contentType = resp.contentType;
+
+          if ( contentType.indexOf( "video" ) === 0 ) {
+            type = "HTML5";
+            videoElem = document.createElement( "video" );
+            videoElem.addEventListener( "loadedmetadata", function() {
+              successCallback ({
+                source: baseUrl,
+                type: type,
+                title: baseUrl.substring( baseUrl.lastIndexOf( "/" ) + 1 ),
+                thumbnail: URI.makeUnique( baseUrl ).toString(),
+                duration: videoElem.duration
+              });
+            }, false );
+            videoElem.addEventListener( "error", function() {
+              var options = {
+                source: baseUrl,
+                type: type,
+                title: baseUrl
+              };
+              jwPlayerFallback( options, successCallback, errorCallback );
+            }, false );
+            videoElem.src = URI.makeUnique( baseUrl ).toString();
+          } else if ( contentType.indexOf( "image" ) === 0 ) {
+            type = "image";
+            successCallback({
+              source: baseUrl,
+              type: type,
+              thumbnail: baseUrl,
+              title: baseUrl,
+              duration: 5
+            });
+          }
+        });
       }
     }
   };

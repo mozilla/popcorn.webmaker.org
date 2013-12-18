@@ -119,6 +119,7 @@ app.configure( function() {
       ga_domain: config.GA_DOMAIN,
       jwplayer_key: config.JWPLAYER_KEY,
       make_endpoint: config.MAKE_ENDPOINT,
+      node_hubble_endpoint: config.NODE_HUBBLE_ENDPOINT,
       user_bar: config.USER_BAR,
       sync_limit: config.SYNC_LIMIT
     },
@@ -239,6 +240,7 @@ app.get( "/api/butterconfig", function( req, res ) {
   res.json({
     "audience": app.locals.config.audience,
     "make_endpoint": app.locals.config.make_endpoint,
+    "node_hubble_endpoint": app.locals.config.node_hubble_endpoint,
     "user_bar": app.locals.config.user_bar,
     "sync_limit": app.locals.config.sync_limit
   });
