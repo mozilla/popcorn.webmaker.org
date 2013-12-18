@@ -432,9 +432,7 @@ define([ "localized", "util/lang", "util/keys", "util/time", "./base-editor", "u
         }
       }
 
-      // ignoreBlur cuts down on unnecessary calls to a track event's update method
-      var ignoreBlur,
-          ignoreChange,
+      var ignoreChange,
           tooltipName,
           tooltip,
           manifestType,
@@ -456,25 +454,30 @@ define([ "localized", "util/lang", "util/keys", "util/time", "./base-editor", "u
         return val;
       }
 
-      element.addEventListener( "blur", function() {
-        var val = element.value;
+      function onMousedown( e ) {
+        e.stopPropagation();
+        e.preventDefault();
+        var val = element.value,
+            updateOptions = {};
 
-        if ( ignoreBlur ) {
-          ignoreBlur = false;
-        } else {
-          var updateOptions = {};
-
-          if ( isNumber ) {
-            val = validateNumber( val );
-          }
-
-          updateOptions[ propertyName ] = val;
-          updateTrackEvent( trackEvent, callback, updateOptions );
+        window.removeEventListener( "mousedown", onMousedown, true );
+        if ( isNumber ) {
+          val = validateNumber( val );
         }
+
+        updateOptions[ propertyName ] = val;
+        updateTrackEvent( trackEvent, callback, updateOptions );
+
         if ( tooltip ) {
           tooltip.hidden = true;
         }
-      }, false );
+      }
+
+      function onFocus() {
+        window.addEventListener( "mousedown", onMousedown, true );
+      }
+
+      element.addEventListener( "focus", onFocus, true );
 
       element.addEventListener( "keypress", function( e ) {
         var updateOptions = {},
@@ -490,9 +493,7 @@ define([ "localized", "util/lang", "util/keys", "util/time", "./base-editor", "u
 
             updateOptions[ propertyName ] = val;
             updateTrackEvent( trackEvent, callback, updateOptions );
-            ignoreBlur = true;
             ignoreChange = true;
-            element.blur();
           }
         }
       }, false );
@@ -506,8 +507,6 @@ define([ "localized", "util/lang", "util/keys", "util/time", "./base-editor", "u
           if ( ignoreChange ) {
             ignoreChange = false;
           } else {
-
-            ignoreBlur = true;
 
             val = validateNumber( val );
 
