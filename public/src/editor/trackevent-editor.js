@@ -436,10 +436,12 @@ define([ "localized", "util/lang", "util/keys", "util/time", "./base-editor", "u
           tooltipName,
           tooltip,
           manifestType,
+          manifestElem,
           isNumber;
 
       if ( trackEvent.popcornTrackEvent ) {
         manifestType = trackEvent.popcornTrackEvent._natives.manifest.options[ propertyName ].type;
+        manifestElem = trackEvent.popcornTrackEvent._natives.manifest.options[ propertyName ].elem;
       }
 
       isNumber = manifestType === "number" ? true : false;
@@ -471,20 +473,33 @@ define([ "localized", "util/lang", "util/keys", "util/time", "./base-editor", "u
         if ( tooltip ) {
           tooltip.hidden = true;
         }
+        element.blur();
       }
 
-      function onFocus() {
-        window.addEventListener( "mousedown", onMousedown, true );
-      }
+      if ( manifestElem === "textarea" ) {
+        element.addEventListener( "input", function( e ) {
 
-      element.addEventListener( "focus", onFocus, true );
+          window.addEventListener( "mousedown", onMousedown, true );
+          var updateOptions = {},
+              val = element.value;
 
-      element.addEventListener( "keypress", function( e ) {
-        var updateOptions = {},
-            val = element.value;
+          e.preventDefault();
 
-        if ( e.keyCode === KeysUtils.ENTER ) {
-          if ( !e.shiftKey ) {
+          if ( isNumber ) {
+            val = validateNumber( val );
+          }
+
+          updateOptions[ propertyName ] = val;
+          updateTrackEvent( trackEvent, callback, updateOptions );
+          ignoreChange = true;
+        }, false );
+      } else {
+        element.addEventListener( "keypress", function( e ) {
+          var updateOptions = {},
+              val = element.value;
+
+          window.addEventListener( "mousedown", onMousedown, true );
+          if ( e.keyCode === KeysUtils.ENTER ) {
             e.preventDefault();
 
             if ( isNumber ) {
@@ -495,8 +510,8 @@ define([ "localized", "util/lang", "util/keys", "util/time", "./base-editor", "u
             updateTrackEvent( trackEvent, callback, updateOptions );
             ignoreChange = true;
           }
-        }
-      }, false );
+        }, false );
+      }
 
       if ( element.type === "number" || isNumber ) {
         element.addEventListener( "change", function() {
