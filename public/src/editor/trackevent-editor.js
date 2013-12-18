@@ -530,20 +530,6 @@ define([ "localized", "util/lang", "util/keys", "util/time", "./base-editor", "u
           }
         }, false );
       }
-
-      if ( element.type === "textarea" && manifestType !== "url" ) {
-        tooltipName = "shift-enter-tooltip-" + Date.now();
-
-        extendObject.createTooltip( element, {
-          name: tooltipName,
-          element: element.parentElement,
-          message: Localized.get( "Press Shift+Enter for a new line." ),
-          top: "105%",
-          left: "50%",
-          hidden: true,
-          hover: false
-        });
-      }
     };
 
     extendObject.createStartEndInputs = function( trackEvent, callback ) {
