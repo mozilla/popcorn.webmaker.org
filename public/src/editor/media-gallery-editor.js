@@ -351,7 +351,16 @@ define( [ "localized", "util/lang", "util/uri", "util/xhr", "util/keys", "util/m
   }
 
   function formatSource( value ) {
-    return !value ? "" : value.trim().split( " " ).join( "" );
+    if ( !value ) {
+      return "";
+    }
+
+    var split = value.split( "?" ),
+        querystring = split[ 1 ];
+
+    value = split[ 0 ].trim();
+
+    return querystring ? value + "?" + querystring : value;
   }
 
   function onAddMediaClick() {
