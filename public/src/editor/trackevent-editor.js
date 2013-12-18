@@ -433,7 +433,6 @@ define([ "localized", "util/lang", "util/keys", "util/time", "./base-editor", "u
       }
 
       var ignoreChange,
-          tooltipName,
           tooltip,
           manifestType,
           manifestElem,
