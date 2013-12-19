@@ -174,6 +174,9 @@
       options.sourceToArray = function( object, type ) {
         // If our src is not an array, create an array of one.
         object[ type ] = typeof object[ type ] === "string" ? [ object[ type ] ] : object[ type ];
+        object[ type ] = object[ type ].filter( function( e ){
+          return e;
+        });
       };
 
       // If loading times out, we want to let the media continue to play.
