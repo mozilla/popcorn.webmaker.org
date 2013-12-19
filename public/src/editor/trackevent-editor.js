@@ -583,6 +583,7 @@ define([ "localized", "util/lang", "util/keys", "util/time", "./base-editor", "u
           propertyArchetype,
           editorElement,
           option,
+          tooltip,
           manifestEntryOption,
           i, l;
 
@@ -676,8 +677,7 @@ define([ "localized", "util/lang", "util/keys", "util/time", "./base-editor", "u
           editorElement.value = data;
         }
 
-      }
-      else if ( manifestEntry.elem === "checkbox-group" ) {
+      } else if ( manifestEntry.elem === "checkbox-group" ) {
         var item,
             elementParent = propertyArchetype,
             checkbox,
@@ -703,10 +703,9 @@ define([ "localized", "util/lang", "util/keys", "util/time", "./base-editor", "u
             editorElement = propertyArchetype.querySelector( ".checkbox-group" ).cloneNode( true );
           }
         }
-      }
-      else {
+      } else {
         if ( manifestEntry.type === "range" ) {
-          var tooltip = propertyArchetype.querySelector( ".butter-slider-tooltip" );
+          tooltip = propertyArchetype.querySelector( ".butter-slider-tooltip" );
 
           propertyArchetype.querySelector( ".slider-start" ).innerHTML = manifestEntry.min || 0;
           propertyArchetype.querySelector( ".slider-end" ).innerHTML = ( manifestEntry.max || 100 ) + ( manifestEntry.slider_unit || "" );
