@@ -433,7 +433,6 @@ define([ "localized", "util/lang", "util/keys", "util/time", "./base-editor", "u
       }
 
       var ignoreChange,
-          tooltip,
           manifestType,
           manifestElem,
           isNumber;
@@ -469,9 +468,6 @@ define([ "localized", "util/lang", "util/keys", "util/time", "./base-editor", "u
         updateOptions[ propertyName ] = val;
         updateTrackEvent( trackEvent, callback, updateOptions );
 
-        if ( tooltip ) {
-          tooltip.hidden = true;
-        }
         element.blur();
       }
 
