@@ -260,25 +260,22 @@
       font-weight: 700;
       max-height: 3.6em; // 3 lines
     }
-    .mg-type {
+    .mg-type-text {
       color: #999;
       margin-top: 3px;
-      > .mg-type-text {
-        line-height: 18px;
-        width: 180px;
-        &.media::after {
-          content: " clip";
-        }
-        &.photo::after {
-          content: " image";
-        }
+      line-height: 18px;
+      width: 180px;
+      &.media::after {
+        content: " clip";
+      }
+      &.photo::after {
+        content: " image";
       }
     }
     .mg-duration {
       &:before {
         content: "Duration: "
       }
-      margin-top: 20px;
     }
     .mg-delete-btn {
       position: absolute;
