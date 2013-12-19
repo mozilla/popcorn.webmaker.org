@@ -187,7 +187,7 @@ app.post( "/api/publish/:myproject",
 );
 
 app.get( "/dashboard/:lang", function( req, res ) {
-  res.redirect( config.AUDIENCE + "/" + req.params.lang + "/me?app=popcorn" );
+  res.redirect( config.AUDIENCE + "/" + req.params.lang + "/me" );
 });
 
 app.get( "/", routes.pages.editor );

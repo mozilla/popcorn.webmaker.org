@@ -316,8 +316,6 @@ define([ "WebmakerUI", "localized", "dialog/dialog", "util/lang", "l10n!/layouts
     this.attachToDOM = function() {
       document.body.classList.add( "butter-header-spacing" );
       document.body.insertBefore( _rootElement, document.body.firstChild );
-
-      loadDashboard();
     };
 
     butter.listen( "authenticated", _this.views.login, false );
@@ -334,33 +332,6 @@ define([ "WebmakerUI", "localized", "dialog/dialog", "util/lang", "l10n!/layouts
       // Re-enable "Save" button to indicate things are not saved
       _this.views.dirty();
     });
-
-    function loadDashboard() {
-      var myProjectsButton = document.querySelector( ".my-makes" ),
-          container = document.querySelector( ".my-projects-container" ),
-          iframe = document.querySelector( ".my-projects-iframe" );
-
-      function close() {
-        document.removeEventListener( "click", close, false );
-        myProjectsButton.addEventListener( "click", open, false );
-
-        container.classList.remove( "open" );
-        iframe.style.height = "";
-      }
-
-      function open( e ) {
-        // Prevent this click event from firing close.
-        e.stopPropagation();
-        myProjectsButton.removeEventListener( "click", open, false );
-
-        container.classList.add( "open" );
-        iframe.style.height = "300px";
-        iframe.src = "/dashboard/" + Localized.getCurrentLang();
-        document.addEventListener( "click", close, false );
-      }
-
-      myProjectsButton.addEventListener( "click", open, false );
-    }
 
     butter.listen( "ready", function() {
       if ( butter.project.name && ( butter.project.id || butter.project.isRemix ) ) {
