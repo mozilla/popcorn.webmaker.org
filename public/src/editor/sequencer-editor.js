@@ -427,7 +427,11 @@ define( [ "localized", "util/mediatypes", "editor/editor", "util/time",
 
         if ( _mediaType === "HTML5" ) {
           fallbackContainer.classList.add( "show" );
-        } else if ( _mediaType === "SoundCloud" ) {
+        }
+
+        if ( _mediaType === "SoundCloud" ||
+             _popcornOptions.contentType.indexOf( "audio" ) === 0 ||
+             _popcornOptions.contentType.indexOf( "application/ogg" ) === 0 ) {
           videoToggleContainer.classList.add( "butter-hidden" );
           fallbackContainer.classList.remove( "show" );
         } else {

@@ -211,6 +211,7 @@ define( [ "localized", "util/lang", "util/uri", "util/xhr", "util/keys", "util/m
       type: data.type,
       thumbnailSrc: thumbnailSrc,
       duration: data.duration,
+      contentType: data.contentType,
       hidden: data.hidden
     });
 
@@ -263,6 +264,7 @@ define( [ "localized", "util/lang", "util/uri", "util/xhr", "util/keys", "util/m
             title: data.title,
             duration: data.duration,
             linkback: data.linkback,
+            contentType: data.contentType,
             hidden: data.hidden || false
           };
 

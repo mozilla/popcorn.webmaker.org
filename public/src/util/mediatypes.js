@@ -79,6 +79,9 @@ define( [ "localized", "util/uri", "json!/api/butterconfig" ],
       return "HTML5";
     },
     getMetaData: function( baseUrl, successCallback, errorCallback ) {
+      // Ensure that we don't wind up having strings decoded twice.
+      baseUrl = decodeURI( baseUrl );
+
       var id,
           userId,
           parsedUri,
@@ -265,41 +268,56 @@ define( [ "localized", "util/uri", "json!/api/butterconfig" ],
           duration: +REGEX_MAP[ "null" ].exec( baseUrl )[ 1 ]
         });
       } else {
+        var title = baseUrl.substring( baseUrl.lastIndexOf( "/" ) + 1 ),
+            mediaElem,
+            errorOptions,
+            successOptions;
+
         baseUrl = encodeURI( baseUrl );
+
+        errorOptions = {
+          source: baseUrl,
+          type: type,
+          title: title
+        };
+
+        successOptions = {
+          source: baseUrl,
+          type: type,
+          title: title,
+          thumbnail: URI.makeUnique( baseUrl ).toString()
+        };
+
         Popcorn.getJSONP( nodeHubbleEndpoint + "mime/" + baseUrl, function( resp ) {
           var contentType = resp.contentType;
 
+          successOptions.contentType = errorOptions.contentType = contentType;
+
           if ( contentType.indexOf( "video" ) === 0 ) {
-            type = "HTML5";
-            videoElem = document.createElement( "video" );
-            videoElem.addEventListener( "loadedmetadata", function() {
-              successCallback ({
-                source: baseUrl,
-                type: type,
-                title: baseUrl.substring( baseUrl.lastIndexOf( "/" ) + 1 ),
-                thumbnail: URI.makeUnique( baseUrl ).toString(),
-                duration: videoElem.duration
-              });
-            }, false );
-            videoElem.addEventListener( "error", function() {
-              var options = {
-                source: baseUrl,
-                type: type,
-                title: baseUrl
-              };
-              jwPlayerFallback( options, successCallback, errorCallback );
-            }, false );
-            videoElem.src = URI.makeUnique( baseUrl ).toString();
+            mediaElem = document.createElement( "video" );
+          } else if ( contentType.indexOf( "audio" ) === 0 || contentType.indexOf( "application/ogg" ) === 0 ) {
+            mediaElem = document.createElement( "audio" );
+            successOptions.hidden = errorOptions.hidden = true;
           } else if ( contentType.indexOf( "image" ) === 0 ) {
-            type = "image";
             successCallback({
               source: baseUrl,
-              type: type,
+              type: "image",
               thumbnail: baseUrl,
               title: baseUrl,
+              contentType: contentType,
               duration: 5
             });
+            return;
           }
+
+          mediaElem.addEventListener( "loadedmetadata", function() {
+            successOptions.duration = mediaElem.duration;
+            successCallback( successOptions );
+          }, false );
+          mediaElem.addEventListener( "error", function() {
+            jwPlayerFallback( errorOptions, successCallback, errorCallback );
+          }, false );
+          mediaElem.src = URI.makeUnique( baseUrl ).toString();
         });
       }
     }
