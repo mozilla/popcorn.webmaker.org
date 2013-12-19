@@ -267,6 +267,13 @@ function init() {
       });
     }
 
+    popcorn.on( "durationchange", function() {
+      window.parent.postMessage({
+        duration: popcorn.duration(),
+        type: "durationchange"
+      }, "*" );
+    });
+
     popcorn.on( "timeupdate", function() {
       window.parent.postMessage({
         currentTime: popcorn.currentTime(),
