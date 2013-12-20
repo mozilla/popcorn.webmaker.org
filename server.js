@@ -236,7 +236,11 @@ app.post( "/feedback", routes.api.feedback );
 
 app.get( "/healthcheck", routes.api.healthcheck );
 
-app.get( "/api/butterconfig", function( req, res ) {
+// NOTE:
+// This endpoint is publicly accessible with CORS enabled. Be careful of the information
+// that is attached to it. IE, avoid putting API keys and other more sensitive information
+// here.
+app.get( "/api/butterconfig", middleware.crossOrigin, function( req, res ) {
   res.json({
     "audience": app.locals.config.audience,
     "make_endpoint": app.locals.config.make_endpoint,
