@@ -269,6 +269,10 @@
           return ret;
         }
 
+        function unbindSequence( sequence ) {
+          Mousetrap.unbind( sequenceToKeycombo( sequence ) );
+        }
+
         return {
           bindInputTag: function( tag, sequence, focus, unfocus, cb ) { // focuz = unblockshortcuts, unforcus = blockshortcuts
             var workingSequence = [],
@@ -277,6 +281,9 @@
                 applyButton = tag.nextSibling;
 
             applyButton.onclick = function ( e ) {
+              // Make sure that the previous key combination has been unbound
+              unbindSequence( sequence );
+
               copyArray( sequence, workingSequence );
               tag.value = sequenceToString( sequence );
               cleanArray( workingSequence );
@@ -308,9 +315,7 @@
 
             Mousetrap.bind( sequenceToKeycombo( sequence ), callback );
           },
-          unbindSequence: function( sequence ) {
-            Mousetrap.unbind( sequenceToKeycombo( sequence ) );
-          },
+          unbindSequence: unbindSequence,
           bindKeyup: function( key, callback ) {
             Mousetrap.bind( key, callback, "keyup" );
           },
