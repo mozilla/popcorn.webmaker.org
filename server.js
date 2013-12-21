@@ -144,10 +144,6 @@ app.configure( function() {
     .use( app.router )
     /*jslint unused: false */
     .use( function( err, req, res, next ) {
-      if ( !err.status ) {
-        err.status = 500;
-      }
-
       middleware.errorHandler( err, req, res );
     })
     /*jslint unused: false */
