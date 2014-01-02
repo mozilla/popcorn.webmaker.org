@@ -4,6 +4,7 @@
 (function() {
 
   var ACCEPTED_UA_LIST = {
+    "Chromium": 17,
     "Chrome": 17,
     "Firefox": 10,
     "IE": 9,
