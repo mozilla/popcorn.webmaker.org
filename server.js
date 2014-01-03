@@ -186,10 +186,6 @@ app.post( "/api/publish/:myproject",
   routes.api.publish
 );
 
-app.get( "/dashboard/:lang", function( req, res ) {
-  res.redirect( config.AUDIENCE + "/" + req.params.lang + "/me" );
-});
-
 app.get( "/", routes.pages.editor );
 app.get( "/index.html", routes.pages.editor );
 app.get( "/editor", routes.pages.editor );

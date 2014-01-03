@@ -41,7 +41,7 @@
               {{ gettext("Hi") }} <span id="identity" class="user-name-container"></span> <span class="icon icon-caret-down"></span>
           </div>
           <ul class="menu-container">
-            <li><span class="icon icon-th-large"></span> <a href="/dashboard/{{localeInfo.lang}}" target="_blank">{{ gettext("My makes") }}</a></li>
+            <li><span class="icon icon-th-large"></span> <a href="{{audience}}/{{localeInfo.lang}}/me" target="_blank">{{ gettext("My makes") }}</a></li>
             <li class="login"><span class="icon icon-signout"></span><iframe src="{{audience}}/{{localeInfo.lang}}/sso/include.html" class="include-frame"></iframe>
             {% if togetherjsEnabled %}
               <li><span class="icon icon-comments-alt"></span><button class="together-toggle">{{ gettext("Collaborate") }}</button></li>
