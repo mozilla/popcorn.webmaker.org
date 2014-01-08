@@ -43,17 +43,13 @@ app.configure( function() {
     app.use( express.logger( config.logger ) );
   }
 
-  app.use( "/static/bower/font-awesome/font/:font", middleware.crossOrigin, function( req, res ) {
+  app.get( "/static/bower/font-awesome/font/:font", middleware.crossOrigin, function( req, res ) {
     res.sendfile( path.resolve( __dirname, "bower_components/font-awesome/font/" + req.params.font ) );
   });
   app.use( "/static/bower", express.static( path.join( __dirname, "/bower_components" ), {
     maxAge: "31556952000" // one year
   }));
 
-  app.use(function(req, res, next) {
-    res.header( "Access-Control-Allow-Origin", "*" );
-   next();
-  });
   app.use(helmet.iexss());
   app.use(helmet.contentTypeOptions());
   if ( !!config.FORCE_SSL ) {
