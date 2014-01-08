@@ -14,7 +14,7 @@ var express = require( "express" ),
     config = require( "./lib/config" ),
     Project,
     filter,
-    middleware,
+    middleware = require( "./lib/middleware" ),
     APP_HOSTNAME = config.hostname,
     WWW_ROOT =  __dirname + "/public",
     i18n = require( "webmaker-i18n" ),
@@ -43,9 +43,17 @@ app.configure( function() {
     app.use( express.logger( config.logger ) );
   }
 
+  app.use( "/static/bower/font-awesome/font/:font", middleware.crossOrigin, function( req, res ) {
+    res.sendfile( path.resolve( __dirname, "bower_components/font-awesome/font/" + req.params.font ) );
+  });
   app.use( "/static/bower", express.static( path.join( __dirname, "/bower_components" ), {
     maxAge: "31556952000" // one year
   }));
+
+  app.use(function(req, res, next) {
+    res.header( "Access-Control-Allow-Origin", "*" );
+   next();
+  });
   app.use(helmet.iexss());
   app.use(helmet.contentTypeOptions());
   if ( !!config.FORCE_SSL ) {
@@ -173,8 +181,6 @@ require( "webmaker-mediasync" )( app, {
   },
   limit: config.SYNC_LIMIT
 });
-
-middleware = require( "./lib/middleware" );
 
 var routes = require( "./routes" );
 
