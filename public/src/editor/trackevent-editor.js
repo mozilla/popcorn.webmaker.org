@@ -670,6 +670,7 @@ define([ "localized", "util/lang", "util/keys", "util/time", "./base-editor", "u
           if ( data === undefined || typeof data === "object" ) {
             data = "";
           }
+
           editorElement.value = data;
         }
 

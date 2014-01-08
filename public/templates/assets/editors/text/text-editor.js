@@ -54,6 +54,7 @@
             te.update( newOpts );
           }
         }
+
         function checkboxCallback( trackEvent, updateOptions, prop ) {
           if ( "background shadow".match( prop ) ) {
             if ( updateOptions[ prop ] ) {
@@ -132,7 +133,7 @@
               }
             }
             else if ( option.elementType === "textarea" ) {
-              _this.attachInputChangeHandler( option.element, option.trackEvent, key, _this.updateTrackEventSafe );
+              _this.attachCKEditorChangeHandler( option.element, option.trackEvent, key, _this.updateTrackEventSafe );
             }
           }
         }
