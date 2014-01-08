@@ -43,6 +43,15 @@ app.configure( function() {
     app.use( express.logger( config.logger ) );
   }
 
+  app.use( function( req, res, next ) {
+    var allowed = [ "/static/bower/font-awesome/font/" ];
+    for ( var i = 0; i < allowed.length; i++ ) {
+      if ( req.url.substring( 0, allowed[ i ].length ) === allowed[ i ] ) {
+        res.header( "Access-Control-Allow-Origin", "*" );
+      }
+    }
+    next();
+  });
   app.use( "/static/bower", express.static( path.join( __dirname, "/bower_components" ), {
     maxAge: "31556952000" // one year
   }));
