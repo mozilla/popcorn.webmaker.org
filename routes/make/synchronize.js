@@ -20,7 +20,9 @@ module.exports = function( req, res, next ) {
       thumbnail: project.thumbnail,
       description: project.description,
       remixedFrom: req.remixedMakeId,
-      tags: req.makeTags
+      tags: req.makeTags,
+      remixurl: res.app.locals.config.app_hostname + "/editor/" + project.id + "/remix",
+      editurl: res.app.locals.config.app_hostname + "/editor/" + project.id + "/edit"
     }, function( error, make ) {
       if ( error ) {
         return next( utils.error( 500, error.toString() ) );
@@ -46,7 +48,9 @@ module.exports = function( req, res, next ) {
         thumbnail: project.thumbnail,
         description: project.description,
         email: project.email,
-        tags: req.makeTags
+        tags: req.makeTags,
+        remixurl: res.app.locals.config.app_hostname + "/editor/" + project.id + "/remix",
+        editurl: res.app.locals.config.app_hostname + "/editor/" + project.id + "/edit"
       }
     }, function( error ) {
       if ( error ) {
