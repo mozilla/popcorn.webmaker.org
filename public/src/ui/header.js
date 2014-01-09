@@ -11,16 +11,18 @@ define([ "WebmakerUI", "localized", "dialog/dialog", "util/lang", "l10n!/layouts
 
     var _this = this,
         _rootElement = Lang.domFragment( HEADER_TEMPLATE, ".butter-header" ),
-        _saveButton = _rootElement.querySelector( ".butter-save-btn" ),
+        _saveContainer = _rootElement.querySelector( ".butter-save-container" ),
+        _saveButton = _saveContainer.querySelector( ".butter-save-btn" ),
         _projectTitle = _rootElement.querySelector( ".butter-project-title" ),
         _projectName = _projectTitle.querySelector( ".butter-project-name" ),
         _clearEvents = _rootElement.querySelector( ".butter-clear-events-btn" ),
         _removeProject = _rootElement.querySelector( ".butter-remove-project-btn" ),
-        _previewBtn = _rootElement.querySelector( ".butter-preview-btn" ),
+        _previewContainer = _rootElement.querySelector( ".butter-preview-container" ),
+        _previewBtn = _previewContainer.querySelector( ".butter-preview-btn" ),
         _noProjectNameToolTip,
         _makeDetails = _rootElement.querySelector( "#make-details" ),
         _projectTitlePlaceHolderText = _projectName.innerHTML,
-        _toolTip, _loginTooltip,
+        _toolTip, _loginToSaveTooltip, _loginToNameTooltip, _loginToPreviewTooltip, _saveToPreviewTooltip,
         _projectDetails = new ProjectDetails( butter ),
         _togetherJS,
         _langSelector = _rootElement.querySelector( "#lang-picker" ),
@@ -41,10 +43,31 @@ define([ "WebmakerUI", "localized", "dialog/dialog", "util/lang", "l10n!/layouts
     // Default state
     _toolTip.hidden = true;
 
-    _loginTooltip = ToolTip.create({
-      title: "header-title-tooltip",
+    _loginToSaveTooltip = ToolTip.create({
+      title: "header-login-save-tooltip",
       message: Localized.get( "Login to save your project!" ),
+      element: _saveContainer,
+      top: "60px"
+    });
+
+    _loginToNameTooltip = ToolTip.create({
+      title: "header-login-title-tooltip",
+      message: Localized.get( "Login to name your project!" ),
       element: _projectTitle,
+      top: "60px"
+    });
+
+    _loginToPreviewTooltip = ToolTip.create({
+      title: "header-login-title-tooltip",
+      message: Localized.get( "Login to preview your project!" ),
+      element: _previewContainer,
+      top: "60px"
+    });
+
+    _saveToPreviewTooltip = ToolTip.create({
+      title: "header-login-title-tooltip",
+      message: Localized.get( "Save to preview your project!" ),
+      element: _previewContainer,
       top: "60px"
     });
 
@@ -138,12 +161,14 @@ define([ "WebmakerUI", "localized", "dialog/dialog", "util/lang", "l10n!/layouts
 
     function togglePreviewButton( on ) {
       if ( on ) {
+        _saveToPreviewTooltip.hidden = true;
         _previewBtn.classList.remove( "butter-disabled" );
         _previewBtn.href = butter.project.publishUrl;
         _previewBtn.onclick = function() {
           return true;
         };
       } else {
+        _saveToPreviewTooltip.hidden = !butter.cornfield.authenticated();
         _previewBtn.classList.add( "butter-disabled" );
         _previewBtn.href = "";
         _previewBtn.onclick = function() {
@@ -152,8 +177,8 @@ define([ "WebmakerUI", "localized", "dialog/dialog", "util/lang", "l10n!/layouts
       }
     }
 
-    function toggleProjectNameListeners( state, tooltipIgnore ) {
-      if ( state ) {
+    function toggleProjectNameListeners( saved, tooltipIgnore ) {
+      if ( saved ) {
         _projectTitle.addEventListener( "click", projectNameClick, false );
         _projectName.classList.remove( "butter-disabled" );
         _projectName.addEventListener( "click", projectNameClick, false );
@@ -164,8 +189,10 @@ define([ "WebmakerUI", "localized", "dialog/dialog", "util/lang", "l10n!/layouts
       }
 
       if ( !tooltipIgnore ) {
-        _loginTooltip.hidden = state;
-        _toolTip.hidden = !state;
+        _loginToPreviewTooltip.hidden = saved;
+        _loginToNameTooltip.hidden = saved;
+        _loginToSaveTooltip.hidden = saved;
+        _toolTip.hidden = !saved;
       }
     }
 
