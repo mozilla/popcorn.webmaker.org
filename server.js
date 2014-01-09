@@ -14,7 +14,7 @@ var express = require( "express" ),
     config = require( "./lib/config" ),
     Project,
     filter,
-    middleware = require( "./lib/middleware" ),
+    middleware,
     APP_HOSTNAME = config.hostname,
     WWW_ROOT =  __dirname + "/public",
     i18n = require( "webmaker-i18n" ),
@@ -30,6 +30,8 @@ nunjucksEnv.addFilter( "instantiate", function( input ) {
 nunjucksEnv.express( app );
 
 app.disable( "x-powered-by" );
+
+middleware = require( "./lib/middleware" );
 
 app.configure( function() {
   var tmpDir = path.normalize( require( "os" ).tmpDir() + "/mozilla.butter/" );
