@@ -90,7 +90,6 @@
 
   .track-title {
     display: inline-block;
-    position: absolute;
     left: 5px;
     top: 50%;
   }
@@ -137,13 +136,11 @@
     font-size: 11px;
     font-weight: 700;
     text-align: left;
-    position: absolute;
-    left: 35px;
     line-height: 25px;
     color: @baseText;
   }
   .butter-track-event-icon {
-    position: absolute;
+    float: left;
     height: 25px;
     width: 30px;
     background-size: 20px;
@@ -282,7 +279,6 @@
 .track-handle {
   border: none;
   border-bottom: 1px solid darken( @baseLight, 25% );
-  cursor: pointer;
   width: 100%;
   height: @_trackHeight;
   background: @baseLight;
@@ -291,9 +287,14 @@
   overflow: hidden;
   box-shadow: inset 0 1px #FFF;
   .title {
-    padding-left: 22px;
+    margin-left: 22px;
     font-size: 11px;
     color: @baseText;
+    float: left;
+    display: block;
+    max-width: 60px;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   &:first-of-type {
     box-shadow: none;
@@ -324,11 +325,24 @@
   &:hover .menu {
     width: 16px;
   }
-  &:hover .track-handle-icon {
-    border-color: #000;
-    &:after {
-      border-bottom-color: #000;
+  .track-handle-icon {
+    &:hover {
+      border-color: #000;
+      &:after {
+        border-bottom-color: #000;
+      }
     }
+  }
+  .icon-pencil {
+    opacity: 0.4;
+    margin: 5px;
+    visibility: hidden;
+    color: @green;
+    cursor: pointer;
+    float: left;
+  }
+  &:hover .icon-pencil {
+    visibility: visible;
   }
 }
 
@@ -336,8 +350,9 @@
   border: 0 solid darken( @baseLightOutline, 10% );
   box-shadow: inset 0 1px 0 #FFF, 0 1px 0 #FFF;
   position: absolute;
-  top: 9px;
-  right: 15px;
+  cursor: pointer;
+  right: 0;
+  margin: 9px;
   display: inline-block;
   width: 14px;
   height: 9px;
