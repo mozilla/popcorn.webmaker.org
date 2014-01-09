@@ -12,6 +12,7 @@ var express = require( "express" ),
     lessMiddleware = require( "less-middleware" ),
     requirejsMiddleware = require( "requirejs-middleware" ),
     config = require( "./lib/config" ),
+    crossOrigin = require( "./lib/crossOrigin" ),
     Project,
     filter,
     middleware,
@@ -31,8 +32,6 @@ nunjucksEnv.express( app );
 
 app.disable( "x-powered-by" );
 
-middleware = require( "./lib/middleware" );
-
 app.configure( function() {
   var tmpDir = path.normalize( require( "os" ).tmpDir() + "/mozilla.butter/" );
 
@@ -45,7 +44,7 @@ app.configure( function() {
     app.use( express.logger( config.logger ) );
   }
 
-  app.get( "/static/bower/font-awesome/font/:font", middleware.crossOrigin, function( req, res ) {
+  app.get( "/static/bower/font-awesome/font/:font", crossOrigin(), function( req, res ) {
     res.sendfile( path.resolve( __dirname, "bower_components/font-awesome/font/" + req.params.font ) );
   });
   app.use( "/static/bower", express.static( path.join( __dirname, "/bower_components" ), {
@@ -180,6 +179,8 @@ require( "webmaker-mediasync" )( app, {
   limit: config.SYNC_LIMIT
 });
 
+middleware = require( "./lib/middleware" );
+
 var routes = require( "./routes" );
 
 app.param( "myproject", middleware.loadOwnProject( Project ));
@@ -240,7 +241,7 @@ app.get( "/healthcheck", routes.api.healthcheck );
 // This endpoint is publicly accessible with CORS enabled. Be careful of the information
 // that is attached to it. IE, avoid putting API keys and other more sensitive information
 // here.
-app.get( "/api/butterconfig", middleware.crossOrigin, function( req, res ) {
+app.get( "/api/butterconfig", crossOrigin(), function( req, res ) {
   res.json({
     "audience": app.locals.config.audience,
     "make_endpoint": app.locals.config.make_endpoint,
@@ -286,7 +287,7 @@ app.get( "/templates/assets/editors/wikipedia/wikipedia-editor.html", routes.pat
 app.get( "/templates/assets/editors/sketchfab/sketchfab-editor.html", routes.path( "/plugins/sketchfab-editor.html" ) );
 
 // Localized Strings
-app.get( "/strings/:lang?", middleware.crossOrigin, i18n.stringsRoute( "en-US" ) );
+app.get( "/strings/:lang?", crossOrigin(), i18n.stringsRoute( "en-US" ) );
 
 app.put( "/api/image", middleware.processForm, filter.isImage, routes.api.image );
 
