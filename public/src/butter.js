@@ -511,6 +511,7 @@ window.Butter = {
           "trackremoved",
           "tracktargetchanged",
           "trackorderchanged",
+          "tracknamechanged",
           "trackeventadded",
           "trackeventeditorclose",
           "trackeventremoved",

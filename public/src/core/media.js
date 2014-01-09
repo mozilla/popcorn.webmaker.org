@@ -123,6 +123,7 @@
         _tracks.push( track );
         _this.chain( track, [
           "tracktargetchanged",
+          "tracknamechanged",
           "trackeventadded",
           "trackeventeditorclose",
           "trackeventremoved",
@@ -234,6 +235,7 @@
           } //for
           _this.unchain( track, [
             "tracktargetchanged",
+            "tracknamechanged",
             "trackeventadded",
             "trackeventeditorclose",
             "trackeventremoved",

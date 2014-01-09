@@ -7,6 +7,7 @@ define( [ "localized", "./eventmanager", "./trackevent", "./views/track-view", "
 
   var __guid = 0,
       NAME_PREFIX = Localized.get( "Layer" ) + " ",
+      defaultNameRegex = new RegExp( "^" + NAME_PREFIX + "(\\d)+$" ),
       Track;
 
   Track = function( options ) {
@@ -35,7 +36,7 @@ define( [ "localized", "./eventmanager", "./trackevent", "./views/track-view", "
         _popcornWrapper = null,
         _this = this,
         _order = 0,
-        _name = NAME_PREFIX + _order;
+        _name = "";
 
     _this._media = null;
 
@@ -94,11 +95,16 @@ define( [ "localized", "./eventmanager", "./trackevent", "./views/track-view", "
       name: {
         enumerable: true,
         get: function(){
+          if ( !_name || defaultNameRegex.test( _name ) ) {
+            return NAME_PREFIX + _order;
+          }
           return _name;
         },
         set: function( name ) {
-          _name = name;
-          _this.dispatch( "tracknamechanged", _this );
+          if ( _name !== name ) {
+            _name = name;
+            _this.dispatch( "tracknamechanged", _this );
+          }
         }
       },
       id: {
@@ -121,8 +127,8 @@ define( [ "localized", "./eventmanager", "./trackevent", "./views/track-view", "
             trackEvents: exportJSONTrackEvents
           };
         },
-        set: function( importData ){
-          if( importData.name ){
+        set: function( importData ) {
+          if( importData.name && !defaultNameRegex.test( importData.name ) ){
             _name = importData.name;
           }
           if( importData.trackEvents ){
@@ -151,7 +157,6 @@ define( [ "localized", "./eventmanager", "./trackevent", "./views/track-view", "
         },
         set: function( val ) {
           _order = val;
-          _name = NAME_PREFIX + val;
         }
       }
     });

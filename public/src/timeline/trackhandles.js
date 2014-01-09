@@ -2,8 +2,8 @@
  * If a copy of the MIT license was not distributed with this file, you can
  * obtain one at https://raw.github.com/mozilla/butter/master/LICENSE */
 
-define( [ "dialog/dialog", "util/dragndrop", "util/lang", "text!layouts/track-handle.html" ],
-  function( Dialog, DragNDrop, LangUtils, TRACK_HANDLE_LAYOUT ) {
+define( [ "dialog/dialog", "util/dragndrop", "util/lang", "util/keys", "text!layouts/track-handle.html" ],
+  function( Dialog, DragNDrop, LangUtils, KeysUtils, TRACK_HANDLE_LAYOUT ) {
 
   return function( butter, media, mediaInstanceRootElement, tracksContainer ) {
 
@@ -86,6 +86,7 @@ define( [ "dialog/dialog", "util/dragndrop", "util/lang", "text!layouts/track-ha
         var track = tracks[ i ],
             element = _tracks[ track.id ].element;
         element.querySelector( "span.title" ).textContent = track.name;
+        element.querySelector( "span.title" ).title = track.name;
       }
     });
 
@@ -94,7 +95,54 @@ define( [ "dialog/dialog", "util/dragndrop", "util/lang", "text!layouts/track-ha
           trackId = track.id,
           trackDiv = LangUtils.domFragment( TRACK_HANDLE_LAYOUT, ".track-handle" ),
           menuDiv = trackDiv.querySelector( ".menu" ),
+          titleElement = trackDiv.querySelector( ".title" ),
+          contentContainerElement = trackDiv.querySelector( ".content-container" ),
+          titleInputElement = trackDiv.querySelector( ".title-input" ),
+          editIconElement = trackDiv.querySelector( ".icon-pencil" ),
           deleteButton = menuDiv.querySelector( ".delete" );
+
+      function startTitleEdit() {
+        titleInputElement.value = track.name;
+        contentContainerElement.classList.add( "butter-hidden" );
+        titleInputElement.classList.remove( "butter-hidden" );
+        titleInputElement.focus();
+
+        titleElement.removeEventListener( "click", startTitleEdit, false );
+        editIconElement.removeEventListener( "click", startTitleEdit, false );
+
+        titleInputElement.addEventListener( "change", finishTitleEdit, false );
+        titleInputElement.addEventListener( "blur", finishTitleEdit, false );
+        titleInputElement.select();
+      }
+
+      function onKeypress( e ) {
+        if ( e.keyCode === KeysUtils.ENTER ) {
+          titleInputElement.blur();
+        }
+      }
+
+      titleInputElement.addEventListener( "keypress", onKeypress, false );
+
+      track.listen( "tracknamechanged", function( e ) {
+        titleElement.textContent = track.name;
+        titleElement.title = track.name;
+      });
+
+      function finishTitleEdit() {
+        track.name = titleInputElement.value;
+        contentContainerElement.classList.remove( "butter-hidden" );
+        titleInputElement.classList.add( "butter-hidden" );
+
+        titleElement.addEventListener( "click", startTitleEdit, false );
+        editIconElement.addEventListener( "click", startTitleEdit, false );
+        titleInputElement.removeEventListener( "change", finishTitleEdit, false );
+        titleInputElement.removeEventListener( "blur", finishTitleEdit, false );
+        titleInputElement.value = "";
+      }
+
+      titleInputElement.value = "";
+      titleElement.addEventListener( "click", startTitleEdit, false );
+      editIconElement.addEventListener( "click", startTitleEdit, false );
 
       deleteButton.addEventListener( "click", function() {
         var dialog = Dialog.spawn( "delete-track", {
@@ -130,6 +178,7 @@ define( [ "dialog/dialog", "util/dragndrop", "util/lang", "text!layouts/track-ha
                     l;
 
                 trackDiv.childNodes[ 0 ].textContent = track.name = trackData.name;
+                trackDiv.childNodes[ 0 ].title = track.name = trackData.name;
                 // update every trackevent with it's new data
                 for ( i = 0, l = trackDataEvents.length; i < l; i++ ) {
                   var teData = trackDataEvents[ i ],
@@ -180,7 +229,10 @@ define( [ "dialog/dialog", "util/dragndrop", "util/lang", "text!layouts/track-ha
       trackDiv.querySelector( "span.title" ).setAttribute( "data-butter-track-id", trackId );
       trackDiv.querySelector( "span.title" ).appendChild( document.createTextNode( track.name ) );
 
-      _sortable.addItem( trackDiv );
+      _sortable.addItem( trackId, {
+        item: trackDiv,
+        handle: trackDiv.querySelector( "span.track-handle-icon" )
+      });
 
       _listElement.appendChild( trackDiv );
 
@@ -206,7 +258,7 @@ define( [ "dialog/dialog", "util/dragndrop", "util/lang", "text!layouts/track-ha
     _media.listen( "trackremoved", function( e ){
       var trackId = e.data.id;
       _listElement.removeChild( _tracks[ trackId ].element );
-      _sortable.removeItem( _tracks[ trackId ].element );
+      _sortable.removeItem( trackId );
       _menus.splice( _menus.indexOf( _tracks[ trackId ].menu ), 1 );
       delete _tracks[ trackId ];
     });
