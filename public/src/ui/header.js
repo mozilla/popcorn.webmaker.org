@@ -11,7 +11,8 @@ define([ "WebmakerUI", "localized", "dialog/dialog", "util/lang", "l10n!/layouts
 
     var _this = this,
         _rootElement = Lang.domFragment( HEADER_TEMPLATE, ".butter-header" ),
-        _saveButton = _rootElement.querySelector( ".butter-save-btn" ),
+        _saveContainer = _rootElement.querySelector( ".butter-save-container" ),
+        _saveButton = _saveContainer.querySelector( ".butter-save-btn" ),
         _projectTitle = _rootElement.querySelector( ".butter-project-title" ),
         _projectName = _projectTitle.querySelector( ".butter-project-name" ),
         _clearEvents = _rootElement.querySelector( ".butter-clear-events-btn" ),
@@ -20,7 +21,7 @@ define([ "WebmakerUI", "localized", "dialog/dialog", "util/lang", "l10n!/layouts
         _noProjectNameToolTip,
         _makeDetails = _rootElement.querySelector( "#make-details" ),
         _projectTitlePlaceHolderText = _projectName.innerHTML,
-        _toolTip, _loginTooltip,
+        _toolTip, _loginToSaveTooltip, _loginToNameTooltip,
         _projectDetails = new ProjectDetails( butter ),
         _togetherJS,
         _langSelector = _rootElement.querySelector( "#lang-picker" ),
@@ -41,9 +42,16 @@ define([ "WebmakerUI", "localized", "dialog/dialog", "util/lang", "l10n!/layouts
     // Default state
     _toolTip.hidden = true;
 
-    _loginTooltip = ToolTip.create({
-      title: "header-title-tooltip",
+    _loginToSaveTooltip = ToolTip.create({
+      title: "header-login-save-tooltip",
       message: Localized.get( "Login to save your project!" ),
+      element: _saveContainer,
+      top: "60px"
+    });
+
+    _loginToNameTooltip = ToolTip.create({
+      title: "header-login-title-tooltip",
+      message: Localized.get( "Login to name your project!" ),
       element: _projectTitle,
       top: "60px"
     });
@@ -164,7 +172,8 @@ define([ "WebmakerUI", "localized", "dialog/dialog", "util/lang", "l10n!/layouts
       }
 
       if ( !tooltipIgnore ) {
-        _loginTooltip.hidden = state;
+        _loginToNameTooltip.hidden = state;
+        _loginToSaveTooltip.hidden = state;
         _toolTip.hidden = !state;
       }
     }
