@@ -6,14 +6,14 @@ define( [ "localized", "util/uri", "json!/api/butterconfig" ],
   function( Localized, URI, config ) {
 
   var REGEX_MAP = {
-        YouTube: /(?:https?:\/\/www\.|https?:\/\/|www\.|\.|^)youtu/,
-        Vimeo: /https?:\/\/(www\.)?vimeo.com\/(\d+)($|\/)/,
-        SoundCloud: /(?:https?:\/\/www\.|https?:\/\/|www\.|\.|^)(soundcloud)/,
-        Archive: /(?:https?:\/\/www\.|https?:\/\/|www\.|\.|^)archive\.org\/(details|download|stream)\/((.*)start(\/|=)[\d\.]+(.*)end(\/|=)[\d\.]+)?/,
+        YouTube: /^(?:https?:\/\/www\.|https?:\/\/|www\.|\.|^)youtu/,
+        Vimeo: /^https?:\/\/(www\.)?vimeo.com\/(\d+)/,
+        SoundCloud: /^(?:https?:\/\/www\.|https?:\/\/|www\.|\.|^)(soundcloud)/,
+        Archive: /^(?:https?:\/\/www\.|https?:\/\/|www\.|\.|^)archive\.org\/(details|download|stream)\/((.*)start(\/|=)[\d\.]+(.*)end(\/|=)[\d\.]+)?/,
         // supports #t=<start>,<duration>
         // where start or duration can be: X, X.X or XX:XX
         "null": /^\s*#t=(?:\d*(?:(?:\.|\:)?\d+)?),?(\d+(?:(?:\.|\:)\d+)?)\s*$/,
-        Flickr: /https?:\/\/(www\.)flickr.com/
+        Flickr: /^https?:\/\/(www\.)flickr.com/
       },
       YOUTUBE_EMBED_DISABLED = Localized.get ( "Embedding of this YouTube video is disabled" ),
       YOUTUBE_EMBED_UNPLAYABLE = Localized.get( "This YouTube video is unplayable" ),
