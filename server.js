@@ -245,7 +245,7 @@ app.get( "/healthcheck", routes.api.healthcheck );
 // This endpoint is publicly accessible with CORS enabled. Be careful of the information
 // that is attached to it. IE, avoid putting API keys and other more sensitive information
 // here.
-app.get( "/api/butterconfig", middleware.crossOrigin(), function( req, res ) {
+app.get( "/api/butterconfig", middleware.crossOrigin, function( req, res ) {
   res.json({
     "audience": app.locals.config.audience,
     "make_endpoint": app.locals.config.make_endpoint,
@@ -291,7 +291,7 @@ app.get( "/templates/assets/editors/wikipedia/wikipedia-editor.html", routes.pat
 app.get( "/templates/assets/editors/sketchfab/sketchfab-editor.html", routes.path( "/plugins/sketchfab-editor.html" ) );
 
 // Localized Strings
-app.get( "/strings/:lang?", middleware.crossOrigin(), i18n.stringsRoute( "en-US" ) );
+app.get( "/strings/:lang?", middleware.crossOrigin, i18n.stringsRoute( "en-US" ) );
 
 app.put( "/api/image", middleware.processForm, filter.isImage, routes.api.image );
 
