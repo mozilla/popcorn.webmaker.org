@@ -652,6 +652,10 @@
         linkback: {
           hidden: true,
           "default": ""
+        },
+        contentType: {
+          hidden: true,
+          "default": ""
         }
       }
     }
