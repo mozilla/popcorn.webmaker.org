@@ -76,6 +76,7 @@ define( [ "localized", "util/uri", "json!/api/butterconfig" ],
           }
         }
       }
+      return "HTML5";
     },
     getMetaData: function( baseUrl, successCallback, errorCallback ) {
       var id,
