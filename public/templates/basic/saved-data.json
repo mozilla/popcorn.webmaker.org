@@ -12,7 +12,7 @@
         "duration": 30,
         "controls": false,
         "tracks": [{
-            "name": "Layer 0",
+            "name": "",
             "id": "0",
             "trackEvents": []
             }]

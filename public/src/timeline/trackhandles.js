@@ -123,7 +123,7 @@ define( [ "dialog/dialog", "util/dragndrop", "util/lang", "util/keys", "text!lay
 
       titleInputElement.addEventListener( "keypress", onKeypress, false );
 
-      track.listen( "tracknamechanged", function( e ) {
+      track.listen( "tracknamechanged", function() {
         titleElement.textContent = track.name;
         titleElement.title = track.name;
       });
