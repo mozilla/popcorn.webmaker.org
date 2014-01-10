@@ -7,7 +7,12 @@ define( [ "localized", "./eventmanager", "./trackevent", "./views/track-view", "
 
   var __guid = 0,
       NAME_PREFIX = Localized.get( "Layer" ) + " ",
-      defaultNameRegex = new RegExp( "^" + NAME_PREFIX + "(\\d)+$" ),
+      // Old layer names can be saved as Layer n before l10n existed,
+      // these names are default names and should be translated.
+      // If we are going to start using this,
+      // we should check if it's the translated or english default, and update it.
+      defaultNameRegexTranslated = new RegExp( "^" + NAME_PREFIX + "(\\d)+$" ),
+      defaultNameRegex = new RegExp( "^" + "Layer " + "(\\d)+$" ),
       Track;
 
   Track = function( options ) {
@@ -95,7 +100,7 @@ define( [ "localized", "./eventmanager", "./trackevent", "./views/track-view", "
       name: {
         enumerable: true,
         get: function(){
-          if ( !_name || defaultNameRegex.test( _name ) ) {
+          if ( !_name || defaultNameRegexTranslated.test( _name ) || defaultNameRegex.test( _name ) ) {
             return NAME_PREFIX + _order;
           }
           return _name;
@@ -128,7 +133,7 @@ define( [ "localized", "./eventmanager", "./trackevent", "./views/track-view", "
           };
         },
         set: function( importData ) {
-          if( importData.name && !defaultNameRegex.test( importData.name ) ){
+          if( importData.name && !defaultNameRegexTranslated.test( importData.name ) && !defaultNameRegex.test( importData.name ) ){
             _name = importData.name;
           }
           if( importData.trackEvents ){
