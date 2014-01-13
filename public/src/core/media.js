@@ -604,9 +604,8 @@
                 if( Array.isArray( importTracks ) ) {
                   for ( i = 0, l = importTracks.length; i < l; ++i ) {
                     newTrack = new Track();
-                    newTrack.json = importTracks[ i ];
                     _this.addTrack( newTrack );
-                    newTrack.updateTrackEvents();
+                    newTrack.json = importTracks[ i ];
                   }
                   // Backwards comp for old base media.
                   // Insert previous base media as a sequence event as the last track.
