@@ -296,9 +296,7 @@ define( [ "localized", "./eventmanager", "./trackevent", "./views/track-view", "
       _this.dispatch( "trackeventadded", trackEvent );
 
       // Update the trackevent with defaults (if necessary)
-      if ( _this._media ) {
-        trackEvent.applyDefaults();
-      }
+      trackEvent.applyDefaults();
 
       return trackEvent;
     }; //addTrackEvent

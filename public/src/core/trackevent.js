@@ -137,7 +137,7 @@ define( [ "./logger", "./eventmanager", "./observer",
       manifestOptions = this.manifest.options;
       for ( var prop in manifestOptions ) {
         if ( manifestOptions.hasOwnProperty( prop ) ) {
-          if ( !popcornOptions.hasOwnProperty( prop ) ) {
+          if ( popcornOptions[ prop ] === null || typeof popcornOptions[ prop ] === "undefined" ) {
             foundMissingOptions = true;
             value = defaultValue( prop, manifestOptions );
             // The issue here is if we translate that value too soon in trackevent-editor.js
@@ -174,8 +174,7 @@ define( [ "./logger", "./eventmanager", "./observer",
           manifestOptions,
           media,
           preventUpdate = true,
-          updateNotification,
-          duration;
+          updateNotification;
 
       if ( !updateOptions ) {
         updateOptions = {};
@@ -220,9 +219,8 @@ define( [ "./logger", "./eventmanager", "./observer",
         return;
       }
 
-      if ( _track && _track._media ) {
+      if ( _track ) {
         media = _track._media;
-        duration = media.duration;
 
         if ( this.manifest ) {
           manifestOptions = this.manifest.options;
