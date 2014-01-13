@@ -23,6 +23,8 @@
     return quarantine;
   }
 
+  var MEDIA_TEARDOWN_TIMEOUT = 3000;
+
   var _waiting = 0;
 
   var loadingHandler = {
@@ -172,6 +174,9 @@
       options.sourceToArray = function( object, type ) {
         // If our src is not an array, create an array of one.
         object[ type ] = typeof object[ type ] === "string" ? [ object[ type ] ] : object[ type ];
+        object[ type ] = object[ type ].filter( function( e ){
+          return e;
+        });
       };
 
       // If loading times out, we want to let the media continue to play.
@@ -210,6 +215,8 @@
 
       options.tearDown = function() {
         _this.off( "volumechange", options._volumeEvent );
+        options._cancelLoad = false;
+
         // If we have no options._clip, no source was given to this track event,
         // and it is being torn down.
         if ( options._clip ) {
@@ -508,6 +515,14 @@
       } else {
         // If we're not ready yet, ensure we do the proper teardown once ready.
         options._cancelLoad = true;
+
+        // In the event the original readyEvent from the player doesn't occur,
+        // use a timeout to ensure plugin container is properly removed.
+        setTimeout(function() {
+          if ( options._cancelLoad ) {
+            options.tearDown();
+          }
+        }, MEDIA_TEARDOWN_TIMEOUT );
       }
     },
     start: function( event, options ) {
