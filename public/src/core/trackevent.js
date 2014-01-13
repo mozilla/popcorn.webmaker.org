@@ -137,7 +137,8 @@ define( [ "./logger", "./eventmanager", "./observer",
       manifestOptions = this.manifest.options;
       for ( var prop in manifestOptions ) {
         if ( manifestOptions.hasOwnProperty( prop ) ) {
-          if ( !popcornOptions.hasOwnProperty( prop ) ) {
+          // == null checks for undefined and null values, but passes on false, "" and 0
+          if ( popcornOptions.[ prop ] == null ) {
             foundMissingOptions = true;
             value = defaultValue( prop, manifestOptions );
             // The issue here is if we translate that value too soon in trackevent-editor.js
