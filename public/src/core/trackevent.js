@@ -137,7 +137,6 @@ define( [ "./logger", "./eventmanager", "./observer",
       manifestOptions = this.manifest.options;
       for ( var prop in manifestOptions ) {
         if ( manifestOptions.hasOwnProperty( prop ) ) {
-          // == null checks for undefined and null values, but passes on false, "" and 0
           if ( popcornOptions[ prop ] === null || typeof popcornOptions[ prop ] === "undefined" ) {
             foundMissingOptions = true;
             value = defaultValue( prop, manifestOptions );
