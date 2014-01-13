@@ -1,0 +1,56 @@
+<!--  This Source Code Form is subject to the terms of the MIT license
+      If a copy of the MIT license was not distributed with this file, you can
+      obtain one at https://raw.github.com/mozilla/butter/master/LICENSE -->
+
+<div class="butter-editor default-editor allow-scrollbar">
+  <h1>{{ gettext("Hotspot Editor") }}</h1>
+  <div class="butter-editor-body scrollbar-container">
+    <div class="editor-options-wrapper scrollbar-outer">
+      <div class="editor-options scrollbar-inner">
+        <div class="error-message-container">
+          <div class="error-message"></div>
+        </div>
+        <fieldset class="trackevent-property select">
+          <label class="property-name">Frames</label>
+          <select class="frame-selector" size="4"></select>
+          <ul class="frame-sort-menu">
+            <li><a target="_blank"> <span data-sort-direction="up" class="icon icon-arrow-up"></span></a></li>
+            <li><a target="_blank"> <span data-sort-direction="down" class="icon icon-arrow-down"></span></a></li>
+            <li><a target="_blank"> <span data-sort-direction="remove" class="icon icon-trash"></span></a></li>
+          </ul>
+        </fieldset>
+        <fieldset>
+          <a class="butter-btn btn-green add-frame" >Add a Frame</a>
+          <a class="butter-btn btn-red add-frame-error butter-disabled" >Add an Error Frame</a>
+        </fieldset>
+        <hr>
+        <fieldset class="frames-container"></fieldset>
+
+        <!-- This div is kept inside the editor for quick copy/pasting of layouts -->
+        <div class="hotspot-frame butter-hidden">
+          <div class="default input">
+            <label class="property-name">Frame Name</label>
+            <input class="value frame-name" type="text">
+          </div>
+          <div class="default input">
+            <label class="property-name">Frame Image</label>
+            <input class="value frame-image" type="text">
+          </div>
+          <div class="select-container">
+            <div class="select">
+              <label class="property-name">Hotspots</label>
+              <select class="hotspot-selector" size="4"></select>
+              <ul class="hotspot-sort-menu">
+                <li><a target="_blank"> <span class="icon icon-trash remove-hotspot"></span></a></li>
+              </ul>
+            </div>
+            <div>
+              <a class="butter-btn btn-green add-hotspot" >Add a Hotspot</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

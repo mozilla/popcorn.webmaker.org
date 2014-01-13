@@ -9,7 +9,8 @@
     "image": "{{baseDir}}templates/assets/editors/image/image-editor.js",
     "text": "{{baseDir}}templates/assets/editors/text/text-editor.js",
     "sketchfab": "{{baseDir}}templates/assets/editors/sketchfab/sketchfab-editor.js",
-    "wikipedia": "{{baseDir}}templates/assets/editors/wikipedia/wikipedia-editor.js"
+    "wikipedia": "{{baseDir}}templates/assets/editors/wikipedia/wikipedia-editor.js",
+    "hotspot": "{{baseDir}}templates/assets/editors/hotspot/hotspot-editor.js"
   },
   "maxPluginZIndex": 1000
 }

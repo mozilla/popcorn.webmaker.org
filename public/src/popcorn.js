@@ -31,6 +31,7 @@ requirejs.config({
     "popcorn.skip": "../templates/assets/plugins/skip/popcorn.skip",
     "popcorn.text": "../templates/assets/plugins/text/popcorn.text",
     "popcorn.wikipedia": "../templates/assets/plugins/wikipedia/popcorn.wikipedia",
+    "popcorn.hotspot": "../templates/assets/plugins/hotspot/popcorn.hotspot",
     "popcorn.deprecated": "../src/util/deprecated",
 
     // RequireJS
@@ -73,6 +74,7 @@ requirejs.config({
     "popcorn.skip": [ "popcorn.core" ],
     "popcorn.text": [ "popcorn.core" ],
     "popcorn.wikipedia": [ "popcorn.core" ],
+    "popcorn.hotspot": [ "popcorn.core" ],
     "popcorn.sketchfab": [ "popcorn.core", "sketchfab-iframe" ],
     "popcorn.deprecated": [ "popcorn.core" ]
   }
@@ -94,6 +96,7 @@ define([
   "popcorn.skip",
   "popcorn.text",
   "popcorn.wikipedia",
+  "popcorn.hotspot",
   "popcorn.deprecated",
   "popcorn.HTMLMediaElement",
   "popcorn.HTMLNullVideoElement",
