@@ -20,6 +20,7 @@ module.exports = function( req, res, next ) {
       thumbnail: project.thumbnail,
       description: project.description,
       remixedFrom: req.remixedMakeId,
+      isListed: true,
       tags: req.makeTags
     }, function( error, make ) {
       if ( error ) {
@@ -46,6 +47,7 @@ module.exports = function( req, res, next ) {
         thumbnail: project.thumbnail,
         description: project.description,
         email: project.email,
+        isListed: true,
         tags: req.makeTags
       }
     }, function( error ) {
