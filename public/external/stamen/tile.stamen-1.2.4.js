@@ -4,7 +4,7 @@
 (function(exports) {
 
 /*
- * tile.stamen.js v1.2.0
+ * tile.stamen.js v1.2.4
  */
 
 var SUBDOMAINS = " a. b. c. d.".split(" "),
@@ -15,13 +15,18 @@ var SUBDOMAINS = " a. b. c. d.".split(" "),
             "subdomains":   SUBDOMAINS.slice(),
             "minZoom":      minZoom,
             "maxZoom":      maxZoom,
-            "attribution":  ATTRIBUTION
+            "attribution":  [
+                'Map tiles by <a href="http://stamen.com">Stamen Design</a>, ',
+                'under <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a>. ',
+                'Data by <a href="http://openstreetmap.org">OpenStreetMap</a>, ',
+                'under <a href="http://creativecommons.org/licenses/by-sa/3.0">CC BY SA</a>.'
+            ].join("")
         };
     },
     PROVIDERS =  {
         "toner":        MAKE_PROVIDER("toner", "png", 0, 20),
         "terrain":      MAKE_PROVIDER("terrain", "jpg", 4, 18),
-        "watercolor":   MAKE_PROVIDER("watercolor", "jpg", 3, 16),
+        "watercolor":   MAKE_PROVIDER("watercolor", "jpg", 1, 18),
         "trees-cabs-crime": {
             "url": "http://{S}.tiles.mapbox.com/v3/stamen.trees-cabs-crime/{Z}/{X}/{Y}.png",
             "type": "png",
@@ -39,13 +44,7 @@ var SUBDOMAINS = " a. b. c. d.".split(" "),
                 '&amp; <a href="http://sf-police.org">SFPD</a>.'
             ].join(" ")
         }
-    },
-    ATTRIBUTION = [
-        'Map tiles by <a href="http://stamen.com">Stamen Design</a>, ',
-        'under <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a>. ',
-        'Data by <a href="http://openstreetmap.org">OpenStreetMap</a>, ',
-        'under <a href="http://creativecommons.org/licenses/by-sa/3.0">CC BY SA</a>.'
-    ].join("");
+    };
 
 // set up toner and terrain flavors
 setupFlavors("toner", ["hybrid", "labels", "lines", "background", "lite"]);
@@ -115,7 +114,7 @@ if (typeof MM === "object") {
                 ];
                 return true;
             } else {
-                 return false;
+                return false;
             }
         }
     };
@@ -205,13 +204,11 @@ if (typeof google === "object" && typeof google.maps === "object") {
                     x = (wx < 0) ? wx + numTiles : wx,
                     y = coord.y,
                     index = (zoom + x + y) % subdomains.length;
-                return [
-                    provider.url
-                        .replace("{S}", subdomains[index])
-                        .replace("{Z}", zoom)
-                        .replace("{X}", x)
-                        .replace("{Y}", y)
-                ];
+                return provider.url
+                    .replace("{S}", subdomains[index])
+                    .replace("{Z}", zoom)
+                    .replace("{X}", x)
+                    .replace("{Y}", y);
             },
             "tileSize": new google.maps.Size(256, 256),
             "name":     name,

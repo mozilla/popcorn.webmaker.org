@@ -8,7 +8,7 @@ var googleCallback;
   // At some point the stamen API is going to change, and this will break.
   // We'll need to watch for this. NOTE: if you change the location of this file, the path
   // below needs to reflect that change.
-  var STAMEN_BUTTER_CACHED_URL = "/external/stamen/tile.stamen-1.2.0.js";
+  var STAMEN_BUTTER_CACHED_URL = "/external/stamen/tile.stamen-1.2.4.js";
 
   var _mapFired = false,
       _mapLoaded = false,
