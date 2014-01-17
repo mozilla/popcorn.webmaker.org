@@ -133,9 +133,7 @@ define( [ "localized", "./eventmanager", "./trackevent", "./views/track-view", "
           };
         },
         set: function( importData ) {
-          if( importData.name && !defaultNameRegexTranslated.test( importData.name ) && !defaultNameRegex.test( importData.name ) ){
-            _name = importData.name;
-          }
+          _this.name = importData.name;
           if( importData.trackEvents ){
             var importTrackEvents = importData.trackEvents;
             if ( Array.isArray( importTrackEvents ) ) {
