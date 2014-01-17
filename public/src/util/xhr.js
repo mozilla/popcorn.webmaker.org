@@ -27,7 +27,7 @@
 
         var response = this.responseText;
 
-        if ( this.status === 200 && this.getResponseHeader( "Content-Type" ) &&
+        if ( this.status !== 0 && this.getResponseHeader( "Content-Type" ) &&
              this.getResponseHeader( "Content-Type" ).match( "application/json" ) ) {
           try {
             response = JSON.parse( this.responseText );
