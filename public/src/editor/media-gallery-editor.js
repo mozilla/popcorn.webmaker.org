@@ -467,16 +467,18 @@ define( [ "localized", "util/lang", "util/uri", "util/xhr", "util/keys", "util/m
 
         if ( data.results && data.results.length ) {
           for ( var k = 0; k < data.results.length; k++ ) {
-            if ( search !== "Flickr" && search !== "Giphy" ) {
-              addMedia( data.results[ k ], {
-                container: container,
-                callback: addMediaCallback
-              });
-            } else {
-              addPhotos( data.results[ k ], {
-                container: container,
-                callback: addPhotoCallback
-              });
+            if ( data.results[ k ] ) {
+              if ( search !== "Flickr" && search !== "Giphy" ) {
+                addMedia( data.results[ k ], {
+                  container: container,
+                  callback: addMediaCallback
+                });
+              } else {
+                addPhotos( data.results[ k ], {
+                  container: container,
+                  callback: addPhotoCallback
+                });
+              }
             }
           }
 
