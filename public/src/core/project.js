@@ -39,8 +39,7 @@ define( [ "localized", "core/eventmanager", "core/media", "util/sanitizer" ],
         _backupInterval = -1,
 
         _thumbnail = location.protocol + "//" + location.host + "/resources/icons/fb-logo.png",
-        _background = "#FFFFFF",
-        _isBackup = false;
+        _background = "#FFFFFF";
 
     function invalidate() {
       // Project is dirty, needs save, backup
@@ -208,13 +207,6 @@ define( [ "localized", "core/eventmanager", "core/media", "util/sanitizer" ],
           return _isRemix;
         },
         enumerable: true
-      },
-
-      "isBackup": {
-        get: function() {
-          return _isBackup;
-        },
-        enumerable: true
       }
 
     });
@@ -361,7 +353,6 @@ define( [ "localized", "core/eventmanager", "core/media", "util/sanitizer" ],
       // If this is a restored backup, restart backups now (vs. on first save)
       // since the user indicated they want it.
       if ( json.backupDate ) {
-        _isBackup = true;
         butter.ui.unloadDialog.turnOnDialog();
         startBackups();
       }
