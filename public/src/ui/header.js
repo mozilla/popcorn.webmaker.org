@@ -127,6 +127,7 @@ define([ "WebmakerUI", "localized", "dialog/dialog", "util/lang", "l10n!/layouts
           toggleSaveButton( true );
           togglePreviewButton( false );
           toggleProjectNameListeners( true );
+          butter.project.useBackup();
           showErrorDialog( Localized.get( "There was a problem saving your project" ) );
         }
       });
