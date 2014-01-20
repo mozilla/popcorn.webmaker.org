@@ -5,7 +5,8 @@
 define( [ "localized", "core/eventmanager", "core/media", "util/sanitizer" ],
         function( Localized, EventManager, Media, Sanitizer ) {
 
-  var __butterStorage = window.localStorage;
+  var __butterStorage = window.localStorage,
+      DATA_USAGE_WARNING = "Warning: Popcorn Maker LocalStorage quota exceeded. Stopping automatic backup. Will be restarted when project changes again.";
 
   function removeBackup() {
     __butterStorage.removeItem( "butter-backup-project" );
@@ -369,6 +370,33 @@ define( [ "localized", "core/eventmanager", "core/media", "util/sanitizer" ],
       return JSON.stringify( _this.data );
     };
 
+    function setData( data, callback ) {
+      try {
+        __butterStorage.setItem( "butter-backup-project", JSON.stringify( data ) );
+        _needsBackup = false;
+      } catch ( e ) {
+
+        // Purge the saved project, since it won't be complete.
+        removeBackup();
+        console.warn( DATA_USAGE_WARNING );
+        return callback( e );
+      }
+      return callback();
+    }
+
+    _this.useBackup = function() {
+      var data = JSON.parse( __butterStorage.getItem( "butter-backup-project" ) );
+      data.useBackup = true;
+      setData( data, function() {
+        // Using backup means we have likely crashed, so we cannot trust any new
+        // data, just previous data saved before the crash.
+        clearInterval( _backupInterval );
+        window.onbeforeunload = null;
+        _backupInterval = -1;
+      });
+    };
+
+
     // Expose backupData() to make testing possible
     var backupData = _this.backupData = function() {
       // If the project isn't different from last time, or if it's known
@@ -386,21 +414,16 @@ define( [ "localized", "core/eventmanager", "core/media", "util/sanitizer" ],
       data.thumbnail = _thumbnail;
       data.background = _background;
       data.backupDate = Date.now();
-      try {
-        __butterStorage.setItem( "butter-backup-project", JSON.stringify( data ) );
-        _needsBackup = false;
-      } catch ( e ) {
-        // Deal with QUOTA_EXCEEDED_ERR when localStorage is full.
-        // Stop the backup loop because we know we can't save anymore until the
-        // user changes something about the project.
-        clearInterval( _backupInterval );
-        _backupInterval = -1;
-
-        // Purge the saved project, since it won't be complete.
-        removeBackup();
-
-        console.warn( "Warning: Popcorn Maker LocalStorage quota exceeded. Stopping automatic backup. Will be restarted when project changes again." );
-      }
+      data.useBackup = false;
+      setData( data, function( error ) {
+        if ( error ) {
+          // Deal with QUOTA_EXCEEDED_ERR when localStorage is full.
+          // Stop the backup loop because we know we can't save anymore until the
+          // user changes something about the project.
+          clearInterval( _backupInterval );
+          _backupInterval = -1;
+        }
+      });
     };
 
     _this.remove = function( callback ) {
@@ -484,8 +507,6 @@ define( [ "localized", "core/eventmanager", "core/media", "util/sanitizer" ],
                 _isPublished = true;
                 _publishUrl = e.publishUrl;
                 _iframeUrl = e.iframeUrl;
-              } else {
-                _this.backupData();
               }
 
               // Let consumers know that the project is now saved;
@@ -498,7 +519,6 @@ define( [ "localized", "core/eventmanager", "core/media", "util/sanitizer" ],
               callback( e );
             });
           } else {
-            _this.backupData();
             callback( e );
           }
         });
