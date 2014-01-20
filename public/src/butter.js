@@ -1025,7 +1025,7 @@ window.Butter = {
                     _this.dispatch( "ready", _this );
                   }
 
-                  if( projectBackup ) {
+                  if( projectBackup && projectBackup.useBackup ) {
                     // Found backup, ask user what to do
                     var _dialog = Dialog.spawn( "backup", {
                       data: {

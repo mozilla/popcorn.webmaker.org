@@ -369,6 +369,18 @@ define( [ "localized", "core/eventmanager", "core/media", "util/sanitizer" ],
       return JSON.stringify( _this.data );
     };
 
+    _this.useBackup = function() {
+      var data = JSON.parse( __butterStorage.getItem( "butter-backup-project" ) );
+      data.useBackup = true;
+      __butterStorage.setItem( "butter-backup-project", JSON.stringify( data ) );
+      // Using backup means we have likely crashed, so we cannot trust any new
+      // just previous data saved before the crash.
+      clearInterval( _backupInterval );
+      window.onbeforeunload = null;
+      _backupInterval = -1;
+    };
+
+
     // Expose backupData() to make testing possible
     var backupData = _this.backupData = function() {
       // If the project isn't different from last time, or if it's known
@@ -386,6 +398,7 @@ define( [ "localized", "core/eventmanager", "core/media", "util/sanitizer" ],
       data.thumbnail = _thumbnail;
       data.background = _background;
       data.backupDate = Date.now();
+      data.useBackup = false;
       try {
         __butterStorage.setItem( "butter-backup-project", JSON.stringify( data ) );
         _needsBackup = false;
@@ -484,8 +497,6 @@ define( [ "localized", "core/eventmanager", "core/media", "util/sanitizer" ],
                 _isPublished = true;
                 _publishUrl = e.publishUrl;
                 _iframeUrl = e.iframeUrl;
-              } else {
-                _this.backupData();
               }
 
               // Let consumers know that the project is now saved;
@@ -498,7 +509,6 @@ define( [ "localized", "core/eventmanager", "core/media", "util/sanitizer" ],
               callback( e );
             });
           } else {
-            _this.backupData();
             callback( e );
           }
         });

@@ -137,9 +137,6 @@ define( [ "dialog/dialog", "util/xhr", "util/uri" ], function( Dialog, xhr, URI 
 
         // Once report is sent, force a reload of the page.
         function attemptRecovery() {
-          // Remove the "Are you sure?" navigation check, since we have to reload
-          butter.project.backupData();
-          window.onbeforeunload = null;
           window.location.reload( true );
         }
 
@@ -174,6 +171,7 @@ define( [ "dialog/dialog", "util/xhr", "util/uri" ], function( Dialog, xhr, URI 
             };
 
         try {
+          butter.project.useBackup();
           _dialog = Dialog.spawn( "crash", { data: crashReport } );
           _dialog.listen( "close", function() { _dialog = null; } );
           _dialog.open();
