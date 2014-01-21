@@ -310,14 +310,18 @@ define( [ "localized", "util/uri", "json!/api/butterconfig" ],
             return;
           }
 
-          mediaElem.addEventListener( "loadedmetadata", function() {
-            successOptions.duration = mediaElem.duration;
-            successCallback( successOptions );
-          }, false );
-          mediaElem.addEventListener( "error", function() {
-            jwPlayerFallback( errorOptions, successCallback, errorCallback );
-          }, false );
-          mediaElem.src = URI.makeUnique( baseUrl ).toString();
+          if ( mediaElem ) {
+            mediaElem.addEventListener( "loadedmetadata", function() {
+              successOptions.duration = mediaElem.duration;
+              successCallback( successOptions );
+            }, false );
+            mediaElem.addEventListener( "error", function() {
+              jwPlayerFallback( errorOptions, successCallback, errorCallback );
+            }, false );
+            mediaElem.src = URI.makeUnique( baseUrl ).toString();
+          } else {
+            errorCallback( EMBED_UNPLAYABLE );
+          }
         });
       }
     }
