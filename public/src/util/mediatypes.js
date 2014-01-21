@@ -99,6 +99,8 @@ define( [ "localized", "util/uri", "json!/api/butterconfig" ],
         // http://www.youtube.com/watch?v=p_7Qi3mprKQ
         // Or at the end of the url like this:
         // http://youtu.be/p_7Qi3mprKQ
+        // and:
+        // http://www.youtube.com/embed/p_7Qi3mprKQ
         id = parsedUri.queryKey.v || parsedUri.directory.replace( /\/(embed\/)?/, "" );
         if ( !id ) {
           return;
@@ -190,7 +192,7 @@ define( [ "localized", "util/uri", "json!/api/butterconfig" ],
         // If an embed iframe source is used, which looks like this:
         // https://w.soundcloud.com/player/?url=https://api.soundcloud.com/tracks/11921587
         } else if ( parsedUri.host === "w.soundcloud.com" ) {
-          id = parsedUri.queryKey[ "url" ].split( "api.soundcloud.com/tracks/" )[ 1 ];
+          id = parsedUri.queryKey.url.split( "api.soundcloud.com/tracks/" )[ 1 ];
           xhrURL = "https://api.soundcloud.com/tracks/" + id + ".json?callback=?&client_id=PRaNFlda6Bhf5utPjUsptg";
         }
         Popcorn.getJSONP( xhrURL, function( respData ) {
@@ -203,7 +205,7 @@ define( [ "localized", "util/uri", "json!/api/butterconfig" ],
             return;
           }
           successCallback({
-            source: baseUrl,
+            source: respData.permalink_url || baseUrl,
             type: type,
             thumbnail: respData.artwork_url || "../../resources/icons/soundcloud-small.png",
             duration: respData.duration / 1000,
@@ -217,12 +219,13 @@ define( [ "localized", "util/uri", "json!/api/butterconfig" ],
         id = splitUriDirectory[ splitUriDirectory.length - 1 ];
         xhrURL = "https://vimeo.com/api/v2/video/" + id + ".json?callback=?";
         Popcorn.getJSONP( xhrURL, function( respData ) {
+          var source = "http://vimeo.com/" + id;
           respData = respData && respData[ 0 ];
           if ( !respData ) {
             return;
           }
           successCallback({
-            source: baseUrl,
+            source: source,
             type: type,
             thumbnail: respData.thumbnail_small,
             duration: respData.duration,
