@@ -47,12 +47,9 @@ define( [ "localized", "core/eventmanager", "core/media", "util/sanitizer" ],
       _isDirty = true;
       _needsBackup = true;
 
-      // If the project has an id (if it was saved), start backups again
-      // since they may have been stopped if LocalStorage size limits were
-      // exceeded.
-      if ( _id ) {
-        startBackups();
-      }
+      // Start backups again since they may have been
+      // stopped if LocalStorage size limits were exceeded.
+      startBackups();
 
       // Let consumers know that the project changed
       _this.dispatch( "projectchanged" );
@@ -219,6 +216,7 @@ define( [ "localized", "core/eventmanager", "core/media", "util/sanitizer" ],
     butter.listen( "mediaready", function mediaReady() {
       butter.unlisten( "mediaready", mediaReady );
 
+      startBackups();
       _video = document.getElementById( "video" );
       _video.style.background = _background;
 
@@ -355,7 +353,6 @@ define( [ "localized", "core/eventmanager", "core/media", "util/sanitizer" ],
       // since the user indicated they want it.
       if ( json.backupDate ) {
         butter.ui.unloadDialog.turnOnDialog();
-        startBackups();
       }
 
       // This is an old project. Force it into a dirty state to encourage resaving.
@@ -478,9 +475,6 @@ define( [ "localized", "core/eventmanager", "core/media", "util/sanitizer" ],
           if ( e.error === "okay" ) {
             // Since we've now fully saved, blow away autosave backup
             _isDirty = false;
-
-            // Start keeping backups in storage, if not already started
-            startBackups();
 
             // Remove the backup, since it was obviously just saved.
             removeBackup();
