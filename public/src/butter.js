@@ -211,6 +211,14 @@ window.Butter = {
         if ( type === "sequencer" ) {
           var playWhenReady = false;
 
+          if ( popcornOptions.source ) {
+            popcornOptions.source = URI.makeUnique( popcornOptions.source ).toString();
+          }
+
+          if ( popcornOptions.fallback ) {
+            popcornOptions.fallback = URI.makeUnique( popcornOptions.fallback ).toString();
+          }
+
           if ( end > _currentMedia.duration ) {
             _this.listen( "mediaready", function onMediaReady() {
               _this.unlisten( "mediaready", onMediaReady );
