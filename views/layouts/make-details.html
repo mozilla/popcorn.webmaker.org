@@ -1,5 +1,10 @@
 <div class="make-arrow"></div>
 <form class="makeapi-details">
+  <fieldset name="title">
+    <label>{{ gettext("Title") }}:</label>
+    <input type="text" class="input title-input">
+    <div class="error">{{ gettext("Please give your project a name before saving") }}</div>
+  </fieldset>
   <fieldset name="tags">
     <label>{{ gettext("Tags") }}:</label>
     <div class="tags-wrapper">
@@ -18,8 +23,8 @@
   </fieldset>
   <fieldset name="buttons">
     <div class="confirmation-buttons">
-      <span class="confirmation-button yes-button">Save</span>
-      <span class="confirmation-button no-button">Cancel</span>
+      <span class="yes-button-container"><span class="confirmation-button yes-button butter-disabled">Save</span></span>
+      <span class="no-button-container"><span class="confirmation-button no-button">Cancel</span></span>
     </div>
   </fieldset>
 </form>

@@ -199,9 +199,11 @@ define([ "localized", "editor/editor", "editor/base-editor",
         updateEmbed( _project.iframeUrl );
 
         _projectDetails = new ProjectDetails( butter );
+        _projectDetails.title( _settingsContainer );
         _projectDetails.tags( _settingsContainer );
         _projectDetails.thumbnail( _settingsContainer, _dropArea );
         _projectDetails.description( _settingsContainer );
+        _projectDetails.updateTitle();
 
         _previewBtn.onclick = function() {
           return _project.isSaved && butter.cornfield.authenticated();
