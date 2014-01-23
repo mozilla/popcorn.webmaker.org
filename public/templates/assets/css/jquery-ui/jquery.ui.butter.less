@@ -219,3 +219,72 @@
     opacity: 1;
   }
 }
+
+
+/* Autocomplete
+-------------------------------------------------- */
+
+.ui-autocomplete {
+  position: absolute;
+  top: 0;
+  left: 0;
+  cursor: default;
+  /* Override Autocomplete z-index values which get applied directly to the element */
+  z-index: 200000000 !important;
+}
+
+.ui-menu {
+  list-style: none;
+  padding: 2px;
+  margin: 0;
+  display: block;
+  outline: none;
+
+  .ui-menu-item {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    /* support for IE10 */
+    list-style-image: url(data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7);
+    a {
+      text-decoration: none;
+      display: block;
+      padding: 2px .4em;
+      line-height: 1.5;
+      font-weight: normal;
+      color: #000;
+
+      &.ui-state-focus,
+      &.ui-state-active {
+        font-weight: normal;
+        background: #e3eaee;
+      }
+    }
+  }
+}
+
+.ui-widget {
+  font-size: 1.1em;
+}
+
+.ui-widget-content {
+  border: 1px solid #aaa;
+  background: #fff;
+}
+
+.ui-corner-all {
+  font-family: "Open sans", sans-serif;
+  font-size: 0.9em;
+  border-radius: 4px;
+}
+
+.ui-helper-hidden-accessible {
+  border: 0;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+}
