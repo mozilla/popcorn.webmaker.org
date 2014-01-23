@@ -9,8 +9,36 @@ define( [ "util/keys", "ui/widget/tooltip", "localized", "ui/widget/textbox" ],
 
     var _butter = butter,
         _currentTags = [],
+        _titleInput,
+        _error,
         _thumbnailInput,
-        _thumbnailUl;
+        _thumbnailUl,
+        _noProjectNameToolTip,
+        _saveButton,
+        _cancelButton,
+        _saveCallback;
+
+    function onButtonClick( e ) {
+      var target = e.target;
+
+      if ( target === _saveButton ) {
+        _saveCallback( true );
+      } else {
+        _titleInput.value = butter.project.name || "";
+        _saveCallback();
+      }
+    }
+
+    function enableSave() {
+      _noProjectNameToolTip.hidden = true;
+      _saveButton.addEventListener( "click", onButtonClick, false );
+      _saveButton.classList.remove( "butter-disabled" );
+    }
+    function disableSave() {
+      _noProjectNameToolTip.hidden = false;
+      _saveButton.removeEventListener( "click", onButtonClick, false );
+      _saveButton.classList.add( "butter-disabled" );
+    }
 
     function addThumbnail( url, dropArea ) {
       var li = document.createElement( "li" ),
@@ -58,8 +86,32 @@ define( [ "util/keys", "ui/widget/tooltip", "localized", "ui/widget/textbox" ],
       li.classList.add( "selected" );
     }
 
+    function updateTitle() {
+      if ( butter.project.name ) {
+        _titleInput.value = butter.project.name;
+      }
+    }
+
     return {
       addThumbnail: addThumbnail,
+
+      open: function() {
+        function onInput() {
+          if ( _titleInput.value ) {
+            enableSave();
+            _error.classList.add( "butter-hidden" );
+            return;
+          }
+          disableSave();
+          _error.classList.remove( "butter-hidden" );
+        }
+        updateTitle();
+        onInput();
+        _titleInput.select();
+        _titleInput.addEventListener( "input", onInput, false );
+      },
+
+      updateTitle: updateTitle,
 
       selectThumb: selectThumb,
 
@@ -146,6 +198,16 @@ define( [ "util/keys", "ui/widget/tooltip", "localized", "ui/widget/textbox" ],
 
           addTags( tags, true );
         }
+      },
+
+      title: function( container ) {
+        _error = container.querySelector( ".error" );
+        _titleInput = container.querySelector( ".title-input" );
+        _titleInput.addEventListener( "change", function() {
+          if ( _titleInput.value ) {
+            butter.project.name = _titleInput.value;
+          }
+        }, false );
       },
 
       thumbnail: function( container, dropArea ) {
@@ -248,21 +310,19 @@ define( [ "util/keys", "ui/widget/tooltip", "localized", "ui/widget/textbox" ],
       },
 
       buttons: function( container, callback ) {
-        var yes = container.querySelector( ".yes-button" ),
-            no = container.querySelector( ".no-button" );
+        var yesButtonContainer = container.querySelector( ".yes-button-container" );
+        _saveButton = container.querySelector( ".yes-button" );
+        _cancelButton = container.querySelector( ".no-button" );
+        _saveCallback = callback;
+        _cancelButton.addEventListener( "click", onButtonClick, false );
 
-        function buttonClick( e ) {
-          var target = e.target;
-
-          if ( target === yes ) {
-            callback( true );
-          } else {
-            callback();
-          }
-        }
-
-        yes.addEventListener( "click", buttonClick, false );
-        no.addEventListener( "click", buttonClick, false );
+        _noProjectNameToolTip = ToolTip.create({
+          name: "save-tooltip",
+          message: Localized.get( "Please give your project a name before saving" ),
+          hidden: false,
+          element: yesButtonContainer,
+          top: "40px"
+        });
       }
     };
   }

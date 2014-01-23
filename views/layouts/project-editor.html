@@ -21,6 +21,10 @@
 
       <!-- Settings Container -->
       <div class="settings-container editor-container">
+        <label>{{ gettext("Title") }}</label>
+        <div class="description-wrapper">
+          <input class="butter-project-title title-input" ></input>
+        </div>
         <label>{{ gettext("Description") }}</label>
         <div class="description-wrapper">
           <textarea class="butter-project-description description-input" maxlength="200" placeholder="{{ gettext("A project about...") }}"></textarea>

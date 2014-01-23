@@ -584,26 +584,21 @@
   .transition( opacity 0.3s ease 0 );
 
   &.arrow {
-    &:after,
     &:before {
       content: "";
       position: absolute;
-      top: -5px;
+      top: -6px;
       left: 50%;
       margin-left: -5px;
-      width: 0;
-      height: 0;
-      border-left: 5px solid transparent;
-      border-right: 5px solid transparent;
-      border-bottom: 5px solid #FFF;
+      width: 9px;
+      height: 9px;
+      background-color: rgb(255, 255, 255);
+      border-style: solid;
+      border-color: rgb(192, 192, 192);
+      border-image: none;
+      border-width: 1px 0 0 1px;
+      .transform( rotate( 45deg ) );
     }
-  }
-  &:after {
-    z-index: @MODAL_Z_INDEX + 1;
-  }
-  &:before {
-    top: -6px;
-    border-bottom: 5px solid #CCC;
   }
 }
 

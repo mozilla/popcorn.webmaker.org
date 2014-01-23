@@ -7,22 +7,16 @@ define([ "WebmakerUI", "localized", "dialog/dialog", "util/lang", "l10n!/layouts
 
     options = options || {};
 
-    var TOOLTIP_NAME = "name-error-header-tooltip";
-
     var _this = this,
         _rootElement = Lang.domFragment( HEADER_TEMPLATE, ".butter-header" ),
         _saveContainer = _rootElement.querySelector( ".butter-save-container" ),
         _saveButton = _saveContainer.querySelector( ".butter-save-btn" ),
-        _projectTitle = _rootElement.querySelector( ".butter-project-title" ),
-        _projectName = _projectTitle.querySelector( ".butter-project-name" ),
         _clearEvents = _rootElement.querySelector( ".butter-clear-events-btn" ),
         _removeProject = _rootElement.querySelector( ".butter-remove-project-btn" ),
         _previewContainer = _rootElement.querySelector( ".butter-preview-container" ),
         _previewBtn = _previewContainer.querySelector( ".butter-preview-btn" ),
-        _noProjectNameToolTip,
         _makeDetails = _rootElement.querySelector( "#make-details" ),
-        _projectTitlePlaceHolderText = _projectName.innerHTML,
-        _toolTip, _loginToSaveTooltip, _loginToNameTooltip, _loginToPreviewTooltip, _saveToPreviewTooltip,
+        _loginToSaveTooltip, _loginToPreviewTooltip, _saveToPreviewTooltip,
         _projectDetails = new ProjectDetails( butter ),
         _togetherJS,
         _langSelector = _rootElement.querySelector( "#lang-picker" ),
@@ -32,28 +26,10 @@ define([ "WebmakerUI", "localized", "dialog/dialog", "util/lang", "l10n!/layouts
     // URL redirector for language picker
     WebmakerUI.langPicker( _langSelector );
 
-    // create a tooltip for the plrojectName element
-    _toolTip = ToolTip.create({
-      title: "header-title-tooltip",
-      message: Localized.get( "Change the name of your project" ),
-      element: _projectTitle,
-      top: "60px"
-    });
-
-    // Default state
-    _toolTip.hidden = true;
-
     _loginToSaveTooltip = ToolTip.create({
       title: "header-login-save-tooltip",
       message: Localized.get( "Login to save your project!" ),
       element: _saveContainer,
-      top: "60px"
-    });
-
-    _loginToNameTooltip = ToolTip.create({
-      title: "header-login-title-tooltip",
-      message: Localized.get( "Login to name your project!" ),
-      element: _projectTitle,
       top: "60px"
     });
 
@@ -72,8 +48,6 @@ define([ "WebmakerUI", "localized", "dialog/dialog", "util/lang", "l10n!/layouts
     });
 
     _this.element = _rootElement;
-
-    ToolTip.apply( _projectTitle );
 
     // Feature flag might not be enabled.
     if ( _togetherjsBtn ) {
@@ -112,7 +86,6 @@ define([ "WebmakerUI", "localized", "dialog/dialog", "util/lang", "l10n!/layouts
     function afterSave() {
       openProjectEditor();
       togglePreviewButton( true );
-      toggleProjectNameListeners( true );
       toggleDeleteProject( true );
     }
 
@@ -126,7 +99,6 @@ define([ "WebmakerUI", "localized", "dialog/dialog", "util/lang", "l10n!/layouts
         } else {
           toggleSaveButton( true );
           togglePreviewButton( false );
-          toggleProjectNameListeners( true );
           butter.project.useBackup();
           showErrorDialog( Localized.get( "There was a problem saving your project" ) );
         }
@@ -136,11 +108,10 @@ define([ "WebmakerUI", "localized", "dialog/dialog", "util/lang", "l10n!/layouts
     function saveProject() {
       if ( butter.project.isSaved ) {
         return;
-      } else if ( !checkProjectName( butter.project.name ) ) {
-        nameError();
       } else if ( !butter.project.id ) {
         toggleSaveButton( false );
         _makeDetails.classList.remove( "butter-hidden" );
+        _projectDetails.open();
       } else {
         submitSave();
       }
@@ -178,23 +149,9 @@ define([ "WebmakerUI", "localized", "dialog/dialog", "util/lang", "l10n!/layouts
       }
     }
 
-    function toggleProjectNameListeners( saved, tooltipIgnore ) {
-      if ( saved ) {
-        _projectTitle.addEventListener( "click", projectNameClick, false );
-        _projectName.classList.remove( "butter-disabled" );
-        _projectName.addEventListener( "click", projectNameClick, false );
-      } else {
-        _projectTitle.removeEventListener( "click", projectNameClick, false );
-        _projectName.removeEventListener( "click", projectNameClick, false );
-        _projectName.classList.add( "butter-disabled" );
-      }
-
-      if ( !tooltipIgnore ) {
-        _loginToPreviewTooltip.hidden = saved;
-        _loginToNameTooltip.hidden = saved;
-        _loginToSaveTooltip.hidden = saved;
-        _toolTip.hidden = !saved;
-      }
+    function toggleTooltips( saved ) {
+      _loginToPreviewTooltip.hidden = saved;
+      _loginToSaveTooltip.hidden = saved;
     }
 
     function removeProject() {
@@ -230,22 +187,6 @@ define([ "WebmakerUI", "localized", "dialog/dialog", "util/lang", "l10n!/layouts
       }
     }
 
-    function projectNameClick() {
-      var input = document.createElement( "input" );
-
-      input.type = "text";
-
-      input.placeholder = _projectTitlePlaceHolderText;
-      input.classList.add( "butter-project-name" );
-      input.value = _projectName.textContent !== _projectTitlePlaceHolderText ? _projectName.textContent : "";
-      TextBoxWrapper.applyTo( input );
-      _projectTitle.replaceChild( input, _projectName );
-      toggleProjectNameListeners( false, true );
-      input.focus();
-      input.addEventListener( "blur", onBlur, false );
-      input.addEventListener( "keypress", onKeyPress, false );
-    }
-
     function clearEventsClick() {
       var dialog;
       if ( butter.currentMedia && butter.currentMedia.hasTrackEvents() ) {
@@ -268,7 +209,7 @@ define([ "WebmakerUI", "localized", "dialog/dialog", "util/lang", "l10n!/layouts
       login: function() {
         var isSaved = butter.project.isSaved;
 
-        toggleProjectNameListeners( butter.cornfield.authenticated() );
+        toggleTooltips( butter.cornfield.authenticated() );
         togglePreviewButton( isSaved );
         toggleSaveButton( !isSaved && butter.cornfield.authenticated() );
         toggleDeleteProject( isSaved && butter.cornfield.authenticated() );
@@ -276,70 +217,9 @@ define([ "WebmakerUI", "localized", "dialog/dialog", "util/lang", "l10n!/layouts
       logout: function() {
         togglePreviewButton( false );
         toggleSaveButton( false );
-        toggleProjectNameListeners( false );
+        toggleTooltips( false );
       }
     };
-
-    function destroyToolTip() {
-      if ( _noProjectNameToolTip && !_noProjectNameToolTip.destroyed ) {
-        _projectTitle.removeEventListener( "mouseover", destroyToolTip, false );
-        _noProjectNameToolTip.destroy();
-      }
-    }
-
-    function onKeyPress( e ) {
-      var node = _projectTitle.querySelector( ".butter-project-name" );
-
-      // if this wasn't the 'enter' key, return early
-      if ( e.keyCode !== 13 ) {
-        return;
-      }
-
-      node.blur();
-      node.removeEventListener( "keypress", onKeyPress, false );
-    }
-
-    /*
-     * Function: checkProjectName
-     *
-     * Checks whether the current projects name is a valid one or not.
-     * @returns boolean value representing whether or not the current project name is valid
-     */
-    function checkProjectName( name ) {
-      return !!name && name !== _projectTitlePlaceHolderText;
-    }
-
-    function nameError() {
-      destroyToolTip();
-
-      _projectTitle.addEventListener( "mouseover", destroyToolTip, false );
-
-      _noProjectNameToolTip = ToolTip.create({
-        name: TOOLTIP_NAME,
-        message: Localized.get( "Please give your project a name before saving" ),
-        hidden: false,
-        hover: false,
-        element: _projectTitle,
-        top: "60px",
-        error: true
-      });
-    }
-
-    function onBlur() {
-      var node = _projectTitle.querySelector( ".butter-project-name" );
-      node.removeEventListener( "blur", onBlur, false );
-
-      _projectName.textContent = node.value || _projectTitlePlaceHolderText;
-      if( checkProjectName( _projectName.textContent ) ) {
-        butter.project.name = _projectName.textContent;
-        saveProject();
-      } else {
-        nameError();
-        toggleProjectNameListeners( true );
-      }
-
-      _projectTitle.replaceChild( _projectName, node );
-    }
 
     this.attachToDOM = function() {
       document.body.classList.add( "butter-header-spacing" );
@@ -353,7 +233,6 @@ define([ "WebmakerUI", "localized", "dialog/dialog", "util/lang", "l10n!/layouts
       // Disable "Save" button
       _this.views.clean();
       toggleDeleteProject( true );
-      _projectName.textContent = butter.project.name;
     });
 
     butter.listen( "projectchanged", function() {
@@ -362,17 +241,15 @@ define([ "WebmakerUI", "localized", "dialog/dialog", "util/lang", "l10n!/layouts
     });
 
     butter.listen( "ready", function() {
-      if ( butter.project.name ) {
-        _projectName.textContent = butter.project.name;
-      }
 
       if ( !butter.cornfield.authenticated() ) {
-        toggleProjectNameListeners( false );
+        toggleTooltips( false );
         togglePreviewButton( false );
         toggleSaveButton( false );
         toggleDeleteProject( false );
       }
 
+      _projectDetails.title( _makeDetails.querySelector( "[name='title']" ) );
       _projectDetails.thumbnail( _makeDetails.querySelector( "[name='thumbnail']" ) );
       _projectDetails.tags( _makeDetails.querySelector( "[name='tags']" ) );
       _projectDetails.description( _makeDetails.querySelector( "[name='description']" ) );
@@ -384,7 +261,7 @@ define([ "WebmakerUI", "localized", "dialog/dialog", "util/lang", "l10n!/layouts
         _makeDetails.classList.add( "butter-hidden" );
         toggleSaveButton( true );
         togglePreviewButton( false );
-        toggleProjectNameListeners( true );
+        toggleTooltips( true );
       });
 
       _clearEvents.addEventListener( "click", clearEventsClick, false );
