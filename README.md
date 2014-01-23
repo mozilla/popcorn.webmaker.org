@@ -17,6 +17,7 @@ Prerequisites
 
 * node v0.8 or higher
 * npm (comes with node v0.8 installer)
+* [make-valet](https://github.com/mozilla/make-valet)
 * bower (`npm install -g bower`)
 * A working build environment:
   * Mac OS X - Xcode or Command Line Tools package
