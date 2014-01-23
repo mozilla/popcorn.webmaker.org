@@ -342,9 +342,36 @@ define( [ "localized", "util/mediatypes", "editor/editor", "util/time",
           updateTrackEvent( updateOptions );
         }
 
+        function onWindowMousedownRight( e ) {
+          e.stopPropagation();
+          e.preventDefault();
+          // This triggers a change event.
+          outInput.blur();
+          outInput.addEventListener( "keydown", onRightKeydown, false );
+          window.removeEventListener( "mousedown", onWindowMousedownRight, true );
+        }
+        function onWindowMousedownLeft( e ) {
+          e.stopPropagation();
+          e.preventDefault();
+          // This triggers a change event.
+          inInput.blur();
+          inInput.addEventListener( "keydown", onLeftKeydown, false );
+          window.removeEventListener( "mousedown", onWindowMousedownLeft, true );
+        }
+        function onRightKeydown() {
+          outInput.removeEventListener( "keydown", onRightKeydown, false );
+          window.addEventListener( "mousedown", onWindowMousedownRight, true );
+        }
+        function onLeftKeydown() {
+          inInput.removeEventListener( "keydown", onLeftKeydown, false );
+          window.addEventListener( "mousedown", onWindowMousedownLeft, true );
+        }
+
         // Setup
         outInput.addEventListener( "change", onRightInputChange, false );
         inInput.addEventListener( "change", onLeftInputChange, false );
+        outInput.addEventListener( "keydown", onRightKeydown, false );
+        inInput.addEventListener( "keydown", onLeftKeydown, false );
         rightHandle.addEventListener( "mousedown", onResizeStart, false );
         leftHandle.addEventListener( "mousedown", onResizeStart, false );
         clipSection.addEventListener( "mousedown", onDragStart, false );
