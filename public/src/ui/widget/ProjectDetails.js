@@ -106,7 +106,7 @@ define( [ "util/keys", "ui/widget/tooltip", "localized", "ui/widget/textbox" ],
         }
 
         input.addEventListener( "keydown", function( e ) {
-          if ( e.keyCode === KEYS.ENTER || e.keyCode === KEYS.COMMA ) {
+          if ( e.keyCode === KEYS.ENTER || ( !e.shiftKey && e.keyCode === KEYS.COMMA ) ) {
             e.preventDefault();
             addTags( encodeURIComponent( e.target.value ) );
             input.value = "";
