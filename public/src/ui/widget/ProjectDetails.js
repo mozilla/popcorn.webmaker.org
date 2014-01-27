@@ -311,8 +311,8 @@ define( [ "util/keys", "ui/widget/tooltip", "localized", "ui/widget/textbox" ],
 
       buttons: function( container, callback ) {
         var yesButtonContainer = container.querySelector( ".yes-button-container" );
-        _saveButton = container.querySelector( ".yes-button" ),
-        _cancelButton = container.querySelector( ".no-button" ),
+        _saveButton = container.querySelector( ".yes-button" );
+        _cancelButton = container.querySelector( ".no-button" );
         _saveCallback = callback;
         _cancelButton.addEventListener( "click", onButtonClick, false );
 
