@@ -16,6 +16,7 @@ define( [ "localized", "util/uri", "util/xhr", "json!/api/butterconfig" ],
         Flickr: /^https?:\/\/(www\.)?flickr.com/,
         Audiour: /^https?:\/\/(www\.)?(staging\.)?audiour.com/
       },
+      VIMEO_EMBED_UNPLAYABLE = Localized.get( "This Vimeo video is unplayable" ),
       YOUTUBE_EMBED_DISABLED = Localized.get ( "Embedding of this YouTube video is disabled" ),
       YOUTUBE_EMBED_UNPLAYABLE = Localized.get( "This YouTube video is unplayable" ),
       YOUTUBE_EMBED_PRIVATE = Localized.get( "Private Video" ),
@@ -23,6 +24,7 @@ define( [ "localized", "util/uri", "util/xhr", "json!/api/butterconfig" ],
       EMBED_UNPLAYABLE = Localized.get( "This media source is unplayable" ),
       AUDIOUR_EMBED_UNPLAYABLE = Localized.get( "This Audiour source is unplayable" ),
       AUDIOUR_EMBED_PRIVATE = Localized.get( "This Audiour source is private" ),
+      SOUNDCLOUD_EMBED_UNPLAYABLE = Localized.get( "This SoundCloud source is unplayable" ),
       SOUNDCLOUD_EMBED_DISABLED = Localized.get( "Embedding of this SoundCloud audio source is disabled" );
 
   var nodeHubbleEndpoint = config.node_hubble_endpoint.replace( /\/$/, "" ),
@@ -204,6 +206,10 @@ define( [ "localized", "util/uri", "util/xhr", "json!/api/butterconfig" ],
             return;
           }
 
+          if ( respData.error ) {
+            return errorCallback( SOUNDCLOUD_EMBED_UNPLAYABLE );
+          }
+
           respData = respData[ 0 ];
 
           if ( respData.sharing === "private" || respData.embeddable_by === "none" ) {
@@ -226,10 +232,14 @@ define( [ "localized", "util/uri", "util/xhr", "json!/api/butterconfig" ],
         xhrURL = "https://vimeo.com/api/v2/video/" + id + ".json?callback=?";
         Popcorn.getJSONP( xhrURL, function( respData ) {
           var source = "http://vimeo.com/" + id;
-          respData = respData && respData[ 0 ];
           if ( !respData ) {
             return;
           }
+
+          if ( respData.error ) {
+            return errorCallback( VIMEO_EMBED_UNPLAYABLE );
+          }
+          respData = respData && respData[ 0 ];
           successCallback({
             source: source,
             type: type,
@@ -329,6 +339,9 @@ define( [ "localized", "util/uri", "util/xhr", "json!/api/butterconfig" ],
         Popcorn.getJSONP( nodeHubbleEndpoint + "/mime/" + baseUrl, function( resp ) {
           var contentType = resp.contentType;
 
+          if ( resp.error ) {
+            return errorCallback( EMBED_UNPLAYABLE );
+          }
           successOptions.contentType = errorOptions.contentType = contentType;
 
           if ( contentType.indexOf( "video" ) === 0 ) {
