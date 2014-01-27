@@ -237,6 +237,7 @@
 	"Thumbs Up": "Thumbs Up",
 	"Time": "Time",
 	"time-bar-scrubber-line": "Displays the media's current time. Drag to seek through the media.",
+	"Title": "Title",
 	"To get started, enter a media source here." : "To get started, enter a media source here.",
 	"To support all browsers": "To support all browsers, include both <strong>.mp4</strong> and <strong>.webm</strong> versions of your HTML5 video.",
 	"Toggle volume on/off": "Toggle volume on/off",

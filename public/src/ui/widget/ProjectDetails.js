@@ -321,7 +321,7 @@ define( [ "util/keys", "ui/widget/tooltip", "localized", "ui/widget/textbox" ],
           message: Localized.get( "Please give your project a name before saving" ),
           hidden: false,
           element: yesButtonContainer,
-          top: "60px"
+          top: "40px"
         });
       }
     };
