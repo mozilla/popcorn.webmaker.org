@@ -7,22 +7,21 @@ define( [ "util/keys", "ui/widget/tooltip", "localized", "ui/widget/textbox" ],
 
   function ProjectDetails( butter ) {
 
-    var _this = this,
-        _butter = butter,
+    var _butter = butter,
         _currentTags = [],
         _titleInput,
         _error,
         _thumbnailInput,
         _thumbnailUl,
         _noProjectNameToolTip,
-        _yes,
-        _no,
+        _saveButton,
+        _cancelButton,
         _saveCallback;
 
     function onButtonClick( e ) {
       var target = e.target;
 
-      if ( target === _yes ) {
+      if ( target === _saveButton ) {
         _saveCallback( true );
       } else {
         _titleInput.value = butter.project.name || "";
@@ -32,13 +31,13 @@ define( [ "util/keys", "ui/widget/tooltip", "localized", "ui/widget/textbox" ],
 
     function enableSave() {
       _noProjectNameToolTip.hidden = true;
-      _yes.addEventListener( "click", onButtonClick, false );
-      _yes.classList.remove( "butter-disabled" );
+      _saveButton.addEventListener( "click", onButtonClick, false );
+      _saveButton.classList.remove( "butter-disabled" );
     }
     function disableSave() {
       _noProjectNameToolTip.hidden = false;
-      _yes.removeEventListener( "click", onButtonClick, false );
-      _yes.classList.add( "butter-disabled" );
+      _saveButton.removeEventListener( "click", onButtonClick, false );
+      _saveButton.classList.add( "butter-disabled" );
     }
 
     function addThumbnail( url, dropArea ) {
@@ -312,10 +311,10 @@ define( [ "util/keys", "ui/widget/tooltip", "localized", "ui/widget/textbox" ],
 
       buttons: function( container, callback ) {
         var yesButtonContainer = container.querySelector( ".yes-button-container" );
-        _yes = container.querySelector( ".yes-button" ),
-        _no = container.querySelector( ".no-button" ),
+        _saveButton = container.querySelector( ".yes-button" ),
+        _cancelButton = container.querySelector( ".no-button" ),
         _saveCallback = callback;
-        _no.addEventListener( "click", onButtonClick, false );
+        _cancelButton.addEventListener( "click", onButtonClick, false );
 
         _noProjectNameToolTip = ToolTip.create({
           name: "save-tooltip",
