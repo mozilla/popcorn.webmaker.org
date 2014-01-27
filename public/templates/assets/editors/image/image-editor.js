@@ -47,18 +47,21 @@
 
     function attachDropHandlers() {
       __EditorHelper.droppable( _trackEvent, _dropArea );
+      butter.listen( "droppable-unsupported", unSupported );
+      butter.listen( "droppable-upload-failed", failedUpload );
+      butter.listen( "droppable-succeeded", uploadSuceeded );
+    }
 
-      butter.listen( "droppable-unsupported", function unSupported() {
-        _this.setErrorState( Butter.localized.get( "Sorry, but your browser doesn't support this feature." ) );
-      });
+    function unSupported() {
+      _this.setErrorState( Butter.localized.get( "Sorry, but your browser doesn't support this feature." ) );
+    }
 
-      butter.listen( "droppable-upload-failed", function failedUpload( e ) {
-        _this.setErrorState( e.data );
-      });
+    function failedUpload( e ) {
+      _this.setErrorState( e.data );
+    }
 
-      butter.listen( "droppable-succeeded", function uploadSuceeded( e ) {
-        _dropArea.querySelector( "img" ).src = e.data;
-      });
+    function uploadSuceeded( e ) {
+      _dropArea.querySelector( "img" ).src = e.data.url;
     }
 
     function calcImageTime() {
@@ -441,6 +444,9 @@
       close: function() {
         _imageToggler.removeEventListener( "change", toggleHandler, false );
         _this.removeExtraHeadTags();
+        butter.unlisten( "droppable-unsupported", unSupported );
+        butter.unlisten( "droppable-upload-failed", failedUpload );
+        butter.unlisten( "droppable-succeeded", uploadSuceeded );
         _popcornInstance.off( "invalid-flickr-image" );
         _trackEvent.unlisten( "trackeventupdated", onTrackEventUpdated );
       }
