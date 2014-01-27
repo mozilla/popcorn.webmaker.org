@@ -42,34 +42,6 @@ module.exports = function( req, res ) {
           asyncCallback();
         }).end( sanitized );
       });
-    },
-    function( asyncCallback ) {
-      res.render( "embed-shell.html", {
-         author: res.locals.project.author,
-         projectName: res.locals.project.name,
-         description: description,
-         embedShellSrc: publishUrl,
-         embedSrc: iframeUrl,
-         thumbnail: res.locals.project.thumbnail,
-         projectUrl: projectUrl,
-         makeID: res.locals.project.makeid
-       }, function( err, html ) {
-        var sanitized = sanitizer.compressHTMLEntities( html );
-
-        s3.put( utilities.embedShellPath( req.session.username, res.locals.project.id ), {
-          "x-amz-acl": "public-read",
-          "Content-Length": Buffer.byteLength( sanitized, "utf8" ),
-          "Content-Type": "text/html; charset=UTF-8"
-        }).on( "error",
-          asyncCallback
-        ).on( "response", function( s3res ) {
-          if ( s3res.statusCode !== 200 ) {
-            return asyncCallback( "S3.writeEmbedShell returned HTTP " + s3res.statusCode );
-          }
-
-          asyncCallback();
-        }).end( sanitized );
-      });
     }
   ], function( err ) {
     if ( err ) {
