@@ -140,6 +140,7 @@ define([ "localized", "editor/editor", "editor/base-editor",
     });
 
     function onProjectSaved() {
+      _loginToSaveDialog.classList.add( "hidden" );
       _previewBtn.href = _projectURL.value = _project.publishUrl;
       _viewSourceBtn.href = "view-source:" + _project.iframeUrl;
       updateEmbed( _project.iframeUrl );
@@ -148,7 +149,6 @@ define([ "localized", "editor/editor", "editor/base-editor",
       _embedTabBtn.classList.remove( "butter-disabled" );
       _projectLinkButton.classList.remove( "butter-disabled" );
       _projectLinkUrl.classList.remove( "butter-disabled" );
-      _loginToSaveDialog.classList.add( "hidden" );
     }
 
     function onLogin() {
@@ -188,12 +188,12 @@ define([ "localized", "editor/editor", "editor/base-editor",
 
         _previewBtn.href = _projectURL.value = _project.publishUrl || "";
         if ( !_project.isSaved ) {
+          _loginToSaveDialog.classList.remove( "hidden" );
           _shareTabBtn.classList.add( "butter-disabled" );
           _viewSourceBtn.classList.add( "butter-disabled" );
           _embedTabBtn.classList.add( "butter-disabled" );
           _projectLinkButton.classList.add( "butter-disabled" );
           _projectLinkUrl.classList.add( "butter-disabled" );
-          _loginToSaveDialog.classList.remove( "hidden" );
         }
         _viewSourceBtn.href = "view-source:" + _project.iframeUrl;
         updateEmbed( _project.iframeUrl );

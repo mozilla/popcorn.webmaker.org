@@ -192,7 +192,7 @@ app.param( "anyproject", middleware.loadAnyProject( Project ));
 
 app.post( "/api/publish/:myproject",
   filter.isLoggedIn, filter.isStorageAvailable,
-  routes.api.publish
+  routes.make.publish
 );
 
 app.get( "/", routes.pages.editor );
@@ -219,6 +219,7 @@ app.post( "/api/project/:id?",
   filter.isLoggedIn,
   filter.isStorageAvailable,
   routes.api.synchronize( Project ),
+  routes.api.publish,
   routes.make.synchronize
 );
 

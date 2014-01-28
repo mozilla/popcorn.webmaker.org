@@ -11,6 +11,8 @@ define([ "WebmakerUI", "localized", "dialog/dialog", "util/lang", "l10n!/layouts
         _rootElement = Lang.domFragment( HEADER_TEMPLATE, ".butter-header" ),
         _saveContainer = _rootElement.querySelector( ".butter-save-container" ),
         _saveButton = _saveContainer.querySelector( ".butter-save-btn" ),
+        _publishContainer = _rootElement.querySelector( ".butter-publish-container" ),
+        _publishButton = _publishContainer.querySelector( ".butter-publish-btn" ),
         _clearEvents = _rootElement.querySelector( ".butter-clear-events-btn" ),
         _removeProject = _rootElement.querySelector( ".butter-remove-project-btn" ),
         _previewContainer = _rootElement.querySelector( ".butter-preview-container" ),
@@ -30,6 +32,13 @@ define([ "WebmakerUI", "localized", "dialog/dialog", "util/lang", "l10n!/layouts
       title: "header-login-save-tooltip",
       message: Localized.get( "Login to save your project!" ),
       element: _saveContainer,
+      top: "60px"
+    });
+
+    _loginToPublishTooltip = ToolTip.create({
+      title: "header-login-save-tooltip",
+      message: Localized.get( "Login to publish your project!" ),
+      element: _publishContainer,
       top: "60px"
     });
 
@@ -83,29 +92,29 @@ define([ "WebmakerUI", "localized", "dialog/dialog", "util/lang", "l10n!/layouts
       dialog.open();
     }
 
-    function afterSave() {
-      openProjectEditor();
+    function afterSave( callback ) {
       togglePreviewButton( true );
       toggleDeleteProject( true );
+      togglePublishButton( true );
+      callback && callback();
     }
 
-    function submitSave() {
+    function submitSave( callback ) {
       toggleSaveButton( false );
 
       butter.project.save(function( e ) {
         if ( e.error === "okay" ) {
-          afterSave();
+          afterSave( callback );
           return;
         } else {
           toggleSaveButton( true );
-          togglePreviewButton( false );
           butter.project.useBackup();
           showErrorDialog( Localized.get( "There was a problem saving your project" ) );
         }
       });
     }
 
-    function saveProject() {
+    function saveProject( callback ) {
       if ( butter.project.isSaved ) {
         return;
       } else if ( !butter.project.id ) {
@@ -113,23 +122,65 @@ define([ "WebmakerUI", "localized", "dialog/dialog", "util/lang", "l10n!/layouts
         _makeDetails.classList.remove( "butter-hidden" );
         _projectDetails.open();
       } else {
-        submitSave();
+        submitSave( callback );
       }
     }
 
-    function openProjectEditor() {
-      butter.editor.openEditor( "project-editor" );
+    function publishProject() {
+      function afterPublish() {
+        butter.unlisten( "projectsaved", publishProject );
+        butter.editor.openEditor( "project-editor" );
+      }
+
+      if ( butter.project.isPublished ) {
+        return;
+      }
+      butter.project.publish(function( e ) {
+        if ( e.error === "okay" ) {
+          afterPublish();
+        } else {
+          togglePublishButton( true );
+          togglePreviewButton( false );
+          showErrorDialog( Localized.get( "There was a problem publishing your project" ) );
+        }
+      });
+    }
+
+    function onSaveProject() {
+      saveProject();
+    }
+
+    // onPublish checks to see if we need to save first.
+    function onPublishProject() {
+      if ( butter.project.isSaved ) {
+        publishProject();
+      } else {
+        butter.listen( "projectsaved", publishProject );
+        saveProject( publishProject );
+      }
     }
 
     function toggleSaveButton( on ) {
       if ( on ) {
         _saveButton.classList.remove( "butter-disabled" );
-        _saveButton.addEventListener( "click", saveProject, false );
+        _saveButton.addEventListener( "click", onSaveProject, false );
       } else {
         _saveButton.classList.add( "butter-disabled" );
-        _saveButton.removeEventListener( "click", saveProject, false );
+        _saveButton.removeEventListener( "click", onSaveProject, false );
       }
     }
+
+    function togglePublishButton( on ) {
+      if ( on ) {
+        _publishButton.classList.remove( "butter-disabled" );
+        _publishButton.addEventListener( "click", onPublishProject, false );
+      } else {
+        _publishButton.classList.add( "butter-disabled" );
+        _publishButton.removeEventListener( "click", onPublishProject, false );
+
+       }
+
+     }
 
     function togglePreviewButton( on ) {
       if ( on ) {
@@ -152,6 +203,7 @@ define([ "WebmakerUI", "localized", "dialog/dialog", "util/lang", "l10n!/layouts
     function toggleTooltips( saved ) {
       _loginToPreviewTooltip.hidden = saved;
       _loginToSaveTooltip.hidden = saved;
+      _loginToPublishTooltip.hidden = saved;
     }
 
     function removeProject() {
@@ -212,11 +264,13 @@ define([ "WebmakerUI", "localized", "dialog/dialog", "util/lang", "l10n!/layouts
         toggleTooltips( butter.cornfield.authenticated() );
         togglePreviewButton( isSaved );
         toggleSaveButton( !isSaved && butter.cornfield.authenticated() );
+        togglePublishButton( !butter.project.isPublished && butter.cornfield.authenticated() );
         toggleDeleteProject( isSaved && butter.cornfield.authenticated() );
       },
       logout: function() {
         togglePreviewButton( false );
         toggleSaveButton( false );
+        togglePublishButton( false );
         toggleTooltips( false );
       }
     };
@@ -235,9 +289,16 @@ define([ "WebmakerUI", "localized", "dialog/dialog", "util/lang", "l10n!/layouts
       toggleDeleteProject( true );
     });
 
+    butter.listen( "projectpublished", function() {
+      // Disable "Publish" button
+      togglePublishButton( false );
+    });
+
     butter.listen( "projectchanged", function() {
       // Re-enable "Save" button to indicate things are not saved
       _this.views.dirty();
+      // Re-enable "Publish" button to indicate things are publishable
+      togglePublishButton( butter.cornfield.authenticated() );
     });
 
     butter.listen( "ready", function() {
@@ -246,6 +307,7 @@ define([ "WebmakerUI", "localized", "dialog/dialog", "util/lang", "l10n!/layouts
         toggleTooltips( false );
         togglePreviewButton( false );
         toggleSaveButton( false );
+        togglePublishButton( false );
         toggleDeleteProject( false );
       }
 
