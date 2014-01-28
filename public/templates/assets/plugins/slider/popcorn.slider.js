@@ -2,9 +2,29 @@
 
   var _pluginRoot = "/templates/assets/plugins/popup/";
 
-  function newlineToBreak( string ) {
-    // Deal with both \r\n and \n
-    return string.replace( /\r?\n/gm, "<br>" );
+  function newlineToBreak( string, elem ) {
+    var splitNewlines = string.split( /\r?\n/gm );
+
+    if ( splitNewlines.length > 1 ) {
+      string = document.createTextNode( splitNewlines[ 0 ] );
+      elem.appendChild( string );
+      elem.appendChild( document.createElement( "br" ) );
+
+      for ( var i = 1; i < splitNewlines.length; i++ ) {
+        var breakElem,
+            textNode = document.createTextNode( splitNewlines[ i ] );
+
+        elem.appendChild( textNode );
+
+        if ( splitNewlines[ i + 1 ] ) {
+          breakElem = document.createElement( "br" );
+          elem.appendChild( breakElem );
+        }
+      }
+    } else {
+      string = document.createTextNode( string );
+      elem.appendChild( string );
+    }
   }
 
   var descriptionHelper = (function parseFactory() {
@@ -259,14 +279,14 @@
       if ( finalCode && finalCode.length ) {
         finalCode.forEach(function( result ) {
           if ( typeof( result ) === "string" ) {
-            description.innerHTML += newlineToBreak( result );
+            newlineToBreak( result, description );
           } else {
             var link;
 
             link = document.createElement( "a" );
             link.target = "_blank";
-            link.href = newlineToBreak( result.url );
-            link.innerHTML = newlineToBreak( result.phrase );
+            link.href = result.url;
+            newlineToBreak( result.phrase, link );
 
             link.addEventListener( "click", function(){
               context.media.pause();
@@ -280,7 +300,7 @@
       }
 
       // Basic addition of text.
-      header.innerHTML = newlineToBreak( options.title );
+      newlineToBreak( options.title, header );
       textContainer.appendChild( header );
       textContainer.appendChild( description );
       imgContainer.appendChild( img );
