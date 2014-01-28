@@ -22,6 +22,7 @@ module.exports = function( Project ) {
         remixId = req.projectJSON.remixedFrom;
       } else {
         remixId = res.locals.project.remixedFrom;
+        req.projectJSON.published = make[ 0 ].published;
       }
 
       if ( remixId || remixId === 0 ) {
