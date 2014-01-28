@@ -354,6 +354,7 @@ function init() {
   var require = requirejs.config({
     baseUrl: "/src",
     paths: {
+      "json": "../external/require/json",
       "text": "../external/require/text",
       "localized": "/static/bower/webmaker-i18n/localized"
     }
