@@ -3,7 +3,8 @@
  * obtain one at https://raw.github.com/mozilla/butter/master/LICENSE */
 
 (function() {
-  var __csrfToken = document.querySelector("meta[name=csrf-token]").content;
+  var __csrfToken = document.querySelector("meta[name=csrf-token]") ?
+                    document.querySelector("meta[name=csrf-token]").content : "";
 
   var defaultErrorHandler = function( xhr, statusText, errorThrown ) {
     if ( console && console.error ) {
