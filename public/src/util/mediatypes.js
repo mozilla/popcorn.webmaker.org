@@ -2,8 +2,8 @@
  * If a copy of the MIT license was not distributed with this file, you can
  * obtain one at https://raw.github.com/mozilla/butter/master/LICENSE */
 
-define( [ "localized", "util/uri", "util/xhr", "json!/api/butterconfig" ],
-  function( Localized, URI, xhr, config ) {
+define( [ "localized", "util/uri", "jquery", "json!/api/butterconfig" ],
+  function( Localized, URI, $, config ) {
 
   var REGEX_MAP = {
         YouTube: /^(?:https?:\/\/www\.|https?:\/\/|www\.|\.|^)youtu/,
@@ -282,7 +282,7 @@ define( [ "localized", "util/uri", "util/xhr", "json!/api/butterconfig" ],
         parsedUri = URI.parse( baseUrl );
         id = parsedUri.directory;
 
-        xhr.get( audiourEndpoint + id, function( respData ) {
+        $.getJSON( audiourEndpoint + id, function( respData ) {
           if ( !respData ) {
             return errorCallback( AUDIOUR_EMBED_UNPLAYABLE );
           }
