@@ -121,6 +121,7 @@ define([ "WebmakerUI", "localized", "dialog/dialog", "util/lang", "l10n!/layouts
         return;
       } else if ( !butter.project.id ) {
         toggleSaveButton( false );
+        togglePublishButton( false );
         _makeDetails.classList.remove( "butter-hidden" );
         _projectDetails.open();
       } else {
@@ -132,6 +133,7 @@ define([ "WebmakerUI", "localized", "dialog/dialog", "util/lang", "l10n!/layouts
       if ( butter.project.isPublished ) {
         return;
       }
+      togglePublishButton( false );
       if ( butter.project.isSaved ) {
         butter.project.publish(function( e ) {
           if ( e.error === "okay" ) {
@@ -305,12 +307,14 @@ define([ "WebmakerUI", "localized", "dialog/dialog", "util/lang", "l10n!/layouts
       _projectDetails.buttons( _makeDetails.querySelector( "[name='buttons']" ), function( save ) {
         if ( save ) {
           submitSave();
+        } else {
+          toggleSaveButton( true );
+          togglePublishButton( true );
+          togglePreviewButton( false );
+          toggleTooltips( true );
         }
 
         _makeDetails.classList.add( "butter-hidden" );
-        toggleSaveButton( true );
-        togglePreviewButton( false );
-        toggleTooltips( true );
       });
 
       _clearEvents.addEventListener( "click", clearEventsClick, false );
