@@ -203,8 +203,7 @@ define( [ "localized", "util/lang", "util/uri", "util/xhr", "util/keys", "util/m
     data.duration = ( +data.duration );
 
     dragNDrop( thumbnailBtn, {
-      source: source,
-      fallback: data.fallback,
+      source: data.source,
       denied: data.denied,
       end: data.duration,
       from: data.from || 0,
@@ -212,7 +211,6 @@ define( [ "localized", "util/lang", "util/uri", "util/xhr", "util/keys", "util/m
       type: data.type,
       thumbnailSrc: thumbnailSrc,
       duration: data.duration,
-      linkback: data.linkback,
       contentType: data.contentType,
       hidden: data.hidden
     });
@@ -248,9 +246,7 @@ define( [ "localized", "util/lang", "util/uri", "util/xhr", "util/keys", "util/m
       thumbnailImg = document.createElement( "img" );
     }
     thumbnailBtn.appendChild( thumbnailImg );
-    if ( thumbnailSrc ) {
-      thumbnailImg.src = thumbnailSrc;
-    }
+    thumbnailImg.src = thumbnailSrc;
 
     el.classList.add( "mg-" + data.type.toLowerCase() );
 
@@ -258,8 +254,7 @@ define( [ "localized", "util/lang", "util/uri", "util/xhr", "util/keys", "util/m
       var start = _butter.currentTime,
           end = start + data.duration,
           popcornOptions = {
-            source: data.source,
-            fallback: data.fallback,
+            source: URI.makeUnique( data.source ).toString(),
             denied: data.denied,
             start: start,
             end: end,
