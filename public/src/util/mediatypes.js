@@ -2,8 +2,8 @@
  * If a copy of the MIT license was not distributed with this file, you can
  * obtain one at https://raw.github.com/mozilla/butter/master/LICENSE */
 
-define( [ "localized", "util/uri", "util/xhr", "json!/api/butterconfig" ],
-  function( Localized, URI, xhr, config ) {
+define( [ "localized", "util/uri", "json!/api/butterconfig" ],
+  function( Localized, URI, config ) {
 
   var REGEX_MAP = {
         YouTube: /^(?:https?:\/\/www\.|https?:\/\/|www\.|\.|^)youtu/,
@@ -13,20 +13,16 @@ define( [ "localized", "util/uri", "util/xhr", "json!/api/butterconfig" ],
         // supports #t=<start>,<duration>
         // where start or duration can be: X, X.X or XX:XX
         "null": /^\s*#t=(?:\d*(?:(?:\.|\:)?\d+)?),?(\d+(?:(?:\.|\:)\d+)?)\s*$/,
-        Flickr: /^https?:\/\/(www\.)?flickr.com/,
-        Audiour: /^https?:\/\/(www\.)?(staging\.)?audiour.com/
+        Flickr: /^https?:\/\/(www\.)flickr.com/
       },
       YOUTUBE_EMBED_DISABLED = Localized.get ( "Embedding of this YouTube video is disabled" ),
       YOUTUBE_EMBED_UNPLAYABLE = Localized.get( "This YouTube video is unplayable" ),
       YOUTUBE_EMBED_PRIVATE = Localized.get( "Private Video" ),
       ARCHIVE_EMBED_DISABLED = Localized.get( "Embedding of this Archive item is not available yet" ),
       EMBED_UNPLAYABLE = Localized.get( "This media source is unplayable" ),
-      AUDIOUR_EMBED_UNPLAYABLE = Localized.get( "This Audiour source is unplayable" ),
-      AUDIOUR_EMBED_PRIVATE = Localized.get( "This Audiour source is private" ),
       SOUNDCLOUD_EMBED_DISABLED = Localized.get( "Embedding of this SoundCloud audio source is disabled" );
 
-  var nodeHubbleEndpoint = config.node_hubble_endpoint.replace( /\/$/, "" ),
-      audiourEndpoint = config.audiour_endpoint.replace( /\/$/, "" );
+  var nodeHubbleEndpoint = config.node_hubble_endpoint;
 
   function jwPlayerFallback( options, successCallback, errorCallback ) {
     // We hit an error trying to load HTML5, try the jwplayer instead
@@ -278,26 +274,6 @@ define( [ "localized", "util/uri", "util/xhr", "json!/api/butterconfig" ],
           }, false );
           videoElem.src = URI.makeUnique( respData.media ).toString();
         });
-      } else if ( type === "Audiour" ) {
-        parsedUri = URI.parse( baseUrl );
-        id = parsedUri.directory;
-
-        xhr.get( audiourEndpoint + id, function( respData ) {
-          if ( !respData ) {
-            return errorCallback( AUDIOUR_EMBED_UNPLAYABLE );
-          }
-          if ( respData.Status !== "Public" ) {
-            return errorCallback( AUDIOUR_EMBED_PRIVATE );
-          }
-          successCallback({
-            source: respData.OggUrl,
-            fallback: respData.Mp3Url,
-            type: type,
-            title: respData.Title,
-            linkback: baseUrl,
-            duration: +respData.Duration
-          });
-        });
       } else if ( type === "null" ) {
         successCallback({
           source: baseUrl,
@@ -326,7 +302,7 @@ define( [ "localized", "util/uri", "util/xhr", "json!/api/butterconfig" ],
           thumbnail: URI.makeUnique( baseUrl ).toString()
         };
 
-        Popcorn.getJSONP( nodeHubbleEndpoint + "/mime/" + baseUrl, function( resp ) {
+        Popcorn.getJSONP( nodeHubbleEndpoint + "mime/" + baseUrl, function( resp ) {
           var contentType = resp.contentType;
 
           successOptions.contentType = errorOptions.contentType = contentType;
