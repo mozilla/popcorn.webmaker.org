@@ -134,9 +134,13 @@ define([ "localized", "editor/editor", "editor/base-editor",
     });
 
     butter.listen( "droppable-succeeded", function uploadSuceeded( e ) {
-      _project.thumbnail = _dropArea.querySelector( "img" ).src = e.data;
-      _projectDetails.addThumbnail( _project.thumbnail, _dropArea );
-      _projectDetails.selectThumb( _project.thumbnail );
+      if ( !e.data.trackEvent ) {
+        _project.thumbnail = _dropArea.querySelector( "img" ).src = e.data.url;
+        _projectDetails.addThumbnail( _project.thumbnail, _dropArea );
+        _projectDetails.selectThumb( _project.thumbnail );
+      } else {
+        _projectDetails.addThumbnail( e.data.url );
+      }
     });
 
     function onProjectSaved() {

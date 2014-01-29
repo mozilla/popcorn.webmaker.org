@@ -231,7 +231,7 @@ define( [ "util/keys", "ui/widget/tooltip", "localized", "ui/widget/textbox" ],
               selectThumb( src );
               _butter.project.thumbnail = src;
             } else {
-              addThumbnail( src, dropArea );
+              addThumbnail( src );
             }
             return;
           }

@@ -429,7 +429,10 @@ define( [ "util/xhr", "localized", "jquery" ], function( XHR, Localized, $ ) {
               trackEvent.update( { src: data.url, title: file.name } );
             }
 
-            butter.dispatch( "droppable-succeeded", data.url );
+            butter.dispatch( "droppable-succeeded", {
+              url: data.url,
+              trackEvent: trackEvent
+            });
           } else {
             butter.dispatch( "droppable-upload-failed", data.error );
           }
