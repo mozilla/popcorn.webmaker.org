@@ -89,6 +89,7 @@
     "async": "0.2.9",
     "express": "3.4.5",
     "helmet": "0.1.2",
+    "hood": "0.2.1",
     "jshint": "1.1.0",
     "knox": "0.8.3",
     "less-middleware": "0.1.12",
