@@ -22,7 +22,8 @@ define( [ "util/lang", "util/time", "text!layouts/controls.html" ],
         bigPlayClicked, activate, deactivate, volumechange, onSequencesReady,
         togglePlay, timeMouseMove, timeMouseDown, timeMouseUp, timeMouseOver, timeMouseOut,
         tooltipMouseMove, onPause, onPlay, volumeMouseMove, volumeMouseUp,
-        volumeMouseDown, durationchange, mutechange;
+        volumeMouseDown, durationchange, mutechange,
+        scheduleTooltip, cancelTooltip, removeTooltip, addTooltip;
 
     // Deal with callbacks for various buttons in controls
     options = options || {};
@@ -382,6 +383,14 @@ define( [ "util/lang", "util/time", "text!layouts/controls.html" ],
           p.currentTime( position / timebar.offsetWidth * 100 * p.duration() / 100 );
         };
 
+        removeTooltip = function() {
+          timeTooltip.classList.remove( "tooltip-no-transition-on" );
+        };
+
+        addTooltip = function() {
+          timeTooltip.classList.add( "tooltip-no-transition-on" );
+        };
+
         timeMouseUp = function( e ) {
 
           if ( e.button !== 0 ) {
@@ -398,17 +407,19 @@ define( [ "util/lang", "util/time", "text!layouts/controls.html" ],
             p.play();
           }
 
-          if ( timebar !== document.elementFromPoint( e.clientX, e.clientY ) ) {
-            timeTooltip.classList.remove( "tooltip-no-transition-on" );
-          }
-
-          videoContainer.classList.remove( "no-events" );
-
+          timebar.addEventListener( "mouseout", timeMouseOut, false );
           timebar.addEventListener( "mouseover", timeMouseOver, false );
           timebar.addEventListener( "mousemove", tooltipMouseMove, false );
-          timebar.addEventListener( "mousedown", timeMouseDown, false );
           window.removeEventListener( "mouseup", timeMouseUp, false );
           window.removeEventListener( "mousemove", timeMouseMove, false );
+        };
+
+        scheduleTooltip = function() {
+          window.addEventListener( "mouseup", removeTooltip, false );
+        };
+
+        cancelTooltip = function() {
+          window.removeEventListener( "mouseup", removeTooltip, false );
         };
 
         timeMouseDown = function( e ) {
@@ -425,13 +436,12 @@ define( [ "util/lang", "util/time", "text!layouts/controls.html" ],
           playStateCache = !p.paused();
           p.pause();
 
-          videoContainer.classList.add( "no-events" );
-
           timebar.removeEventListener( "mouseout", timeMouseOut, false );
+          timebar.removeEventListener( "mouseover", timeMouseOver, false );
           timebar.removeEventListener( "mousemove", tooltipMouseMove, false );
-          timebar.removeEventListener( "mousedown", timeMouseDown, false );
           window.addEventListener( "mousemove", timeMouseMove, false );
           window.addEventListener( "mouseup", timeMouseUp, false );
+
 
           if ( progressBar ) {
 
@@ -447,6 +457,7 @@ define( [ "util/lang", "util/time", "text!layouts/controls.html" ],
         };
 
         tooltipMouseMove = function( e ) {
+          addTooltip();
           if ( timeTooltip ) {
             var leftPosition = e.clientX - timebar.getBoundingClientRect().left;
             if ( leftPosition < 0 ) {
@@ -461,21 +472,19 @@ define( [ "util/lang", "util/time", "text!layouts/controls.html" ],
         };
 
         timeMouseOver = function() {
-          timeTooltip.classList.add( "tooltip-no-transition-on" );
+          addTooltip();
 
           timebar.addEventListener( "mousemove", tooltipMouseMove, false );
-          timebar.removeEventListener( "mouseover", timeMouseOver, false );
-          timebar.addEventListener( "mouseout", timeMouseOut, false );
         };
 
         timeMouseOut = function() {
-          timeTooltip.classList.remove( "tooltip-no-transition-on" );
-
+          removeTooltip();
           timebar.removeEventListener( "mousemove", tooltipMouseMove, false );
-          timebar.removeEventListener( "mouseout", timeMouseOut, false );
-          timebar.addEventListener( "mouseover", timeMouseOver, false );
         };
 
+        timebar.addEventListener( "mouseout", scheduleTooltip, false );
+        timebar.addEventListener( "mouseover", cancelTooltip, false );
+        timebar.addEventListener( "mouseout", timeMouseOut, false );
         timebar.addEventListener( "mouseover", timeMouseOver, false );
         timebar.addEventListener( "mousedown", timeMouseDown, false );
 
