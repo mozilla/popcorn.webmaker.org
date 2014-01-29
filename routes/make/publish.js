@@ -1,4 +1,4 @@
-var utils = require( "../../lib/utilities" ),
+var utilities = require( "../../lib/utilities" ),
     metrics = require( "../../lib/metrics" ),
     makeClient = require( "../../lib/makeapi" );
 
@@ -6,7 +6,7 @@ module.exports = function( req, res, next ) {
   var project = res.locals.project;
 
   if ( !project ) {
-    return res.json(404, { error: "No Project Found" });
+    return next( utilities.error( 404, "No Project Found" ) );
   }
 
   makeClient.update( project.makeid, {
@@ -14,9 +14,9 @@ module.exports = function( req, res, next ) {
     make: {
       published: true
     }
-  }, function( err, make ) {
+  }, function( err ) {
     if ( err ) {
-      return res.json(500, { error: err });
+      return next( utilities.error( 500, err.toString() ) );
     }
 
     metrics.increment( "project.publish" );
