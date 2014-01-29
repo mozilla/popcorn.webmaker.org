@@ -18,7 +18,8 @@ define([ "WebmakerUI", "localized", "dialog/dialog", "util/lang", "l10n!/layouts
         _previewContainer = _rootElement.querySelector( ".butter-preview-container" ),
         _previewBtn = _previewContainer.querySelector( ".butter-preview-btn" ),
         _makeDetails = _rootElement.querySelector( "#make-details" ),
-        _loginToSaveTooltip, _loginToPreviewTooltip, _saveToPreviewTooltip,
+        _loginToSaveTooltip, _loginToPreviewTooltip,
+        _saveToPreviewTooltip, _loginToPublishTooltip,
         _projectDetails = new ProjectDetails( butter ),
         _togetherJS,
         _langSelector = _rootElement.querySelector( "#lang-picker" ),
@@ -92,19 +93,20 @@ define([ "WebmakerUI", "localized", "dialog/dialog", "util/lang", "l10n!/layouts
       dialog.open();
     }
 
-    function afterSave( callback ) {
+    function afterSave() {
       togglePreviewButton( true );
       toggleDeleteProject( true );
       togglePublishButton( true );
-      callback && callback();
     }
 
-    function submitSave( callback ) {
+    function submitSave() {
       toggleSaveButton( false );
 
       butter.project.save(function( e ) {
+        // Error or not, we need to remove this.
+        butter.unlisten( "projectsaved", onPublishProject );
         if ( e.error === "okay" ) {
-          afterSave( callback );
+          afterSave();
           return;
         } else {
           toggleSaveButton( true );
@@ -114,7 +116,7 @@ define([ "WebmakerUI", "localized", "dialog/dialog", "util/lang", "l10n!/layouts
       });
     }
 
-    function saveProject( callback ) {
+    function onSaveProject() {
       if ( butter.project.isSaved ) {
         return;
       } else if ( !butter.project.id ) {
@@ -122,41 +124,28 @@ define([ "WebmakerUI", "localized", "dialog/dialog", "util/lang", "l10n!/layouts
         _makeDetails.classList.remove( "butter-hidden" );
         _projectDetails.open();
       } else {
-        submitSave( callback );
+        submitSave();
       }
     }
 
-    function publishProject() {
-      function afterPublish() {
-        butter.unlisten( "projectsaved", publishProject );
-        butter.editor.openEditor( "project-editor" );
-      }
-
+    function onPublishProject() {
       if ( butter.project.isPublished ) {
         return;
       }
-      butter.project.publish(function( e ) {
-        if ( e.error === "okay" ) {
-          afterPublish();
-        } else {
-          togglePublishButton( true );
-          togglePreviewButton( false );
-          showErrorDialog( Localized.get( "There was a problem publishing your project" ) );
-        }
-      });
-    }
-
-    function onSaveProject() {
-      saveProject();
-    }
-
-    // onPublish checks to see if we need to save first.
-    function onPublishProject() {
       if ( butter.project.isSaved ) {
-        publishProject();
+        butter.project.publish(function( e ) {
+          if ( e.error === "okay" ) {
+            butter.editor.openEditor( "project-editor" );
+          } else {
+            togglePublishButton( true );
+            togglePreviewButton( false );
+            showErrorDialog( Localized.get( "There was a problem publishing your project" ) );
+          }
+        });
       } else {
-        butter.listen( "projectsaved", publishProject );
-        saveProject( publishProject );
+        // Save first, then try publishing again.
+        butter.listen( "projectsaved", onPublishProject );
+        onSaveProject();
       }
     }
 
@@ -177,10 +166,8 @@ define([ "WebmakerUI", "localized", "dialog/dialog", "util/lang", "l10n!/layouts
       } else {
         _publishButton.classList.add( "butter-disabled" );
         _publishButton.removeEventListener( "click", onPublishProject, false );
-
-       }
-
-     }
+      }
+    }
 
     function togglePreviewButton( on ) {
       if ( on ) {

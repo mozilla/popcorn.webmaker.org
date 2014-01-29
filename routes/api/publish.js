@@ -5,7 +5,7 @@ var async = require( "async" ),
     utilities = require( "../../lib/utilities" );
 
 module.exports = function( req, res, next ) {
-  var description = req.project.description || "Created with Popcorn Maker - part of the Mozilla Webmaker initiative",
+  var description = req.project.description || req.gettext( "Created with Popcorn Maker - part of the Mozilla Webmaker initiative" ),
       iframeUrl = utilities.embedURL( req.session.username, req.project.id ),
       projectData = JSON.parse( req.project.data, sanitizer.escapeHTMLinJSON ),
       publishUrl = utilities.embedShellURL( req.session.username, req.project.id ),
