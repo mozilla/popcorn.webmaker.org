@@ -156,9 +156,15 @@ define([ "localized", "editor/editor", "editor/base-editor",
     }
 
     function onLogin() {
+      _loginToSaveDialog.textContent = Localized.get( "Save your project to share" );
       if ( butter.project.isSaved ) {
         onProjectSaved();
       }
+    }
+
+    function onLogout() {
+      _loginToSaveDialog.textContent = Localized.get( "Login and Save your project to share" );
+      onProjectChanged();
     }
 
     function onProjectChanged() {
@@ -175,7 +181,7 @@ define([ "localized", "editor/editor", "editor/base-editor",
     butter.listen( "autologinsucceeded", onLogin );
     butter.listen( "authenticated", onLogin );
     butter.listen( "projectchanged", onProjectChanged );
-    butter.listen( "logout", onProjectChanged );
+    butter.listen( "logout", onLogout );
 
     Editor.BaseEditor.extend( this, butter, rootElement, {
       open: function() {
@@ -201,6 +207,12 @@ define([ "localized", "editor/editor", "editor/base-editor",
         }
         _viewSourceBtn.href = "view-source:" + _project.iframeUrl;
         updateEmbed( _project.iframeUrl );
+
+        if ( butter.cornfield.authenticated() ) {
+          onLogin();
+        } else {
+          onLogout();
+        }
 
         _projectDetails = new ProjectDetails( butter );
         _projectDetails.title( _settingsContainer );
