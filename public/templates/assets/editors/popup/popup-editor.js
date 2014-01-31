@@ -232,7 +232,7 @@
     _container = trackEvent.popcornTrackEvent._container;
     target = trackEvent.popcornTrackEvent._target;
 
-    this.contentEditable( trackEvent, _container.querySelectorAll( "span" ) );
+    this.contentEditable( trackEvent, _container, _container.querySelector( ".popup-inner-div > div" ) );
     this.selectable( trackEvent, _container );
     this.draggable( trackEvent, _container, target );
     this.resizable( trackEvent, _container, target, {

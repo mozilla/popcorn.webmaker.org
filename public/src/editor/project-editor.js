@@ -5,8 +5,8 @@
 define([ "localized", "editor/editor", "editor/base-editor",
           "l10n!/layouts/project-editor.html",
           "util/social-media", "ui/widget/textbox",
-          "ui/widget/tooltip", "util/keys", "ui/widget/ProjectDetails", "editor/editorhelper", "analytics" ],
-  function( Localized, Editor, BaseEditor, LAYOUT_SRC, SocialMedia, TextboxWrapper, ToolTip, KEYS, ProjectDetails, EditorHelper, analytics ) {
+          "ui/widget/tooltip", "ui/widget/ProjectDetails", "editor/editorhelper", "analytics" ],
+  function( Localized, Editor, BaseEditor, LAYOUT_SRC, SocialMedia, TextboxWrapper, ToolTip, ProjectDetails, EditorHelper, analytics ) {
 
   Editor.register( "project-editor", LAYOUT_SRC, function( rootElement, butter ) {
 

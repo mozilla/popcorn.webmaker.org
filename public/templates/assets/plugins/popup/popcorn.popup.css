@@ -130,6 +130,10 @@
   word-wrap: break-word;
 }
 
+.popcorn-popup > .popup-inner-div > div > textarea {
+  text-align: center;
+}
+
 .popup-inner-div a {
   text-decoration: none;
 }
@@ -160,6 +164,3 @@
   padding-left: 12px;
 }
 
-[contenteditable="true"]:focus {
-  outline: none;
-}

@@ -1,4 +1,4 @@
-define( [ "util/xhr", "localized", "jquery" ], function( XHR, Localized, $ ) {
+define( [ "util/xhr", "util/keys", "localized", "jquery" ], function( XHR, KEYS, Localized, $ ) {
 
   var __plugins = {};
 
@@ -153,9 +153,7 @@ define( [ "util/xhr", "localized", "jquery" ], function( XHR, Localized, $ ) {
       options = options || {};
 
       var el = document.createElement( "div" ),
-          stopPropagation = false,
           onBlur,
-          onStopPropagation,
           onMouseDown,
           onMouseUp,
           onDblClick,
@@ -171,27 +169,18 @@ define( [ "util/xhr", "localized", "jquery" ], function( XHR, Localized, $ ) {
       }
 
       onBlur = function() {
-        if ( stopPropagation ) {
-          stopPropagation = false;
-          return;
-        }
         if ( tooltipElement ) {
           tooltipElement.classList.remove( "tooltip-off" );
         }
-        dragContainer.removeEventListener( "mousedown", onStopPropagation, false );
         el.addEventListener( "dblclick", onDblClick, false );
         document.removeEventListener( "mousedown", onBlur, false );
         el.style.display = "";
         dragContainer.classList.remove( "track-event-editing" );
       };
-      onStopPropagation = function() {
-        stopPropagation = true;
-      };
       onDblClick = function() {
         if ( tooltipElement ) {
           tooltipElement.classList.add( "tooltip-off" );
         }
-        dragContainer.addEventListener( "mousedown", onStopPropagation, false );
         el.removeEventListener( "dblclick", onDblClick, false );
         document.addEventListener( "mousedown", onBlur, false );
         el.style.display = "none";
@@ -321,63 +310,35 @@ define( [ "util/xhr", "localized", "jquery" ], function( XHR, Localized, $ ) {
      * @param {TrackEvent} trackEvent: The trackEvent to update when content changes
      * @param {DOMElement} contentContainer: the container which to listen for changes and set as editable
      */
-    _this.contentEditable = function( trackEvent, contentContainers ) {
-      var newText = "",
-          contentContainer,
-          updateText,
-          updateTrackEvent,
-          onBlur,
-          onKeyDown,
-          onMouseDown;
+    _this.contentEditable = function( trackEvent, container, contentContainer ) {
+      var textArea = document.createElement( "textArea" );
+      textArea.rows = 1;
+      container.classList.add( "content-editable" );
+      contentContainer.appendChild( textArea );
 
-      updateText = function() {
-        newText = "";
-        for ( var i = 0, l = contentContainers.length; i < l; i++ ) {
-          contentContainer = contentContainers[ i ];
-          contentContainer.innerHTML = contentContainer.innerHTML.replace( /<br>/g, "\n" );
-          newText += contentContainer.textContent;
-          if ( i < l - 1 ) {
-            newText += "\n";
-          }
+      container.addEventListener( "dblclick", function() {
+        textArea.value = trackEvent.popcornOptions.text;
+        textArea.style.height = "auto";
+        textArea.style.height = textArea.scrollHeight + "px";
+        textArea.select();
+      }, false );
+
+      textArea.addEventListener( "input", function() {
+        textArea.style.height = "auto";
+        textArea.style.height = textArea.scrollHeight + "px";
+      }, false );
+
+      textArea.addEventListener( "keydown", function( e ) {
+        if ( e.keyCode === KEYS.ENTER && !e.shiftKey ) {
+          textArea.blur();
         }
-      };
-      updateTrackEvent = function() {
-        blurActiveEl();
+      }, false );
+
+      textArea.addEventListener( "change", function() {
         trackEvent.update({
-          text: newText
+          text: textArea.value
         });
-      };
-      onBlur = function() {
-        // store the new text.
-        updateText();
-        // update the text after any existing events are done.
-        // this way we do not revert any other event's changes.
-        setTimeout( updateTrackEvent, 0 );
-      };
-      onKeyDown = function( e ) {
-        // enter key for an update.
-        // shift + enter for newline.
-        if ( !e.shiftKey && e.keyCode === 13 ) {
-          updateText();
-          updateTrackEvent();
-        }
-      };
-      onMouseDown = function( e ) {
-        e.stopPropagation();
-
-        // Open the editor
-        butter.editor.editTrackEvent( trackEvent );
-      };
-
-      for ( var i = 0, l = contentContainers.length; i < l; i++ ) {
-        contentContainer = contentContainers[ i ];
-        if ( contentContainer ) {
-          contentContainer.addEventListener( "blur", onBlur, false );
-          contentContainer.addEventListener( "keydown", onKeyDown, false );
-          contentContainer.addEventListener( "mousedown", onMouseDown, false );
-          contentContainer.setAttribute( "contenteditable", "true" );
-        }
-      }
+      }, false );
     };
 
     /**

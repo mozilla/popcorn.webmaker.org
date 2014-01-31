@@ -223,7 +223,7 @@
     });
 
     this.selectable( trackEvent, _container );
-    this.contentEditable( trackEvent, _container.querySelectorAll( ".text-inner-div > span" ) );
+    this.contentEditable( trackEvent, _container, _container.querySelector( ".text-inner-div" ) );
 
   });
 }( window.Butter ));

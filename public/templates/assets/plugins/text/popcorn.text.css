@@ -28,15 +28,18 @@
   opacity: 1;
 }
 
-.center > span {
+.center > span,
+.center > textarea {
   text-align: center;
 }
 
-.right > span {
+.right > span,
+.right > textarea {
   text-align: right;
 }
 
-.left > span {
+.left > span,
+.left > textarea {
   text-align: left;
 }
 
@@ -50,9 +53,5 @@
   display: block;
   width: 100%;
   line-height: 1;
-}
-
-[contenteditable="true"]:focus {
-  outline: none;
 }
 
