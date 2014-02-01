@@ -109,6 +109,15 @@ app.configure( function() {
         }
       }
     }))
+    .use( function( req, res, next ) {
+      if ( req.url === "/src/layouts/controls.html" ||
+           req.url === "/src/layouts/attribution.html" ||
+           req.url === "/src/layouts/warn.html") {
+        res.set( "Access-Control-Allow-Origin", "*" );
+      }
+
+      process.nextTick( next );
+    })
     .use( express.static( tmpDir, JSON.parse( JSON.stringify( config.staticMiddleware ) ) ) )
     .use( express.static( WWW_ROOT, JSON.parse( JSON.stringify( config.staticMiddleware ) ) ) );
 
@@ -192,7 +201,7 @@ app.param( "anyproject", middleware.loadAnyProject( Project ));
 
 app.post( "/api/publish/:myproject",
   filter.isLoggedIn, filter.isStorageAvailable,
-  routes.api.publish
+  routes.make.publish
 );
 
 app.get( "/", routes.pages.editor );
@@ -219,6 +228,7 @@ app.post( "/api/project/:id?",
   filter.isLoggedIn,
   filter.isStorageAvailable,
   routes.api.synchronize( Project ),
+  routes.api.publish,
   routes.make.synchronize
 );
 
@@ -262,7 +272,6 @@ app.get( "/layouts/header.html", function( req, res ) {
 
 app.get( "/layouts/status-area.html", routes.path( "/layouts/status-area.html" ) );
 app.get( "/layouts/media-editor.html", routes.path( "/layouts/media-editor.html" ) );
-app.get( "/layouts/controls.html", routes.path( "/layouts/controls.html" ) );
 app.get( "/layouts/media-instance.html", routes.path( "/layouts/media-instance.html" ) );
 app.get( "/layouts/project-editor.html", routes.path( "/layouts/project-editor.html" ) );
 app.get( "/layouts/editor-area.html", routes.path( "/layouts/editor-area.html" ) );
