@@ -5,7 +5,7 @@
 (function ( Popcorn ) {
 
   var APIKEY = "&api_key=b939e5bd8aa696db965888a31b2f1964",
-      flickrUrl = window.location.protocol === "https:" ? "https://secure.flickr.com/services/" : "http://api.flickr.com/services/",
+      flickrUrl = "https://secure.flickr.com/services/",
       searchPhotosCmd = flickrUrl + "rest/?method=flickr.photos.search&extras=url_m&media=photos&safe_search=1",
       getPhotosetCmd = flickrUrl + "rest/?method=flickr.photosets.getPhotos&extras=url_m&media=photos",
       getPhotoSizesCmd = flickrUrl + "rest/?method=flickr.photos.getSizes",
