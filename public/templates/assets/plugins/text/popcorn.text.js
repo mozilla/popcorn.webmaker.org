@@ -288,7 +288,7 @@
           innerDiv.innerHTML = text;
         }
       };
-      fontSheet.href = "//fonts.googleapis.com/css?family=" + options.fontFamily.replace( /\s/g, "+" ) + ":400,700";
+      fontSheet.href = "https://fonts.googleapis.com/css?family=" + options.fontFamily.replace( /\s/g, "+" ) + ":400,700";
 
       options.toString = function() {
         // use the default option if it doesn't exist
