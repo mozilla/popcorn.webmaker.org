@@ -385,7 +385,7 @@ define('api/sketchfab-iframe',[ "vendors/q/q.min"], function( Q ) {
 
         this._uid = undefined;
         if (window.location.href.search("sketchfab") === -1) {
-            this._domain = window.location.protocol + "//sketchfab.com";
+            this._domain = "https://sketchfab.com";
         } else {
             this._domain = "///" + window.location.hostname;
         }
