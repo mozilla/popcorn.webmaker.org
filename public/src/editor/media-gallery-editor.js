@@ -54,7 +54,8 @@ define( [ "localized", "util/lang", "util/uri", "util/xhr", "util/keys", "util/m
       TRANSITION_TIME = 2000,
       _photoTypes = [
         "Giphy",
-        "Flickr"
+        "Flickr",
+        "Image"
       ];
 
   function resetInput() {
