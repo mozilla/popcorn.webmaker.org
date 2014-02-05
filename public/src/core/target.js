@@ -3,8 +3,8 @@
  * obtain one at https://raw.github.com/mozilla/butter/master/LICENSE */
 
 (function() {
-  define( [ "core/logger", "core/eventmanager", "ui/page-element" ],
-          function( Logger, EventManager, PageElement ) {
+  define( [ "core/logger", "core/eventmanager", "ui/page-element", "analytics" ],
+          function( Logger, EventManager, PageElement, analytics ) {
 
     var __guid = 0;
 
@@ -32,7 +32,10 @@
       }
       else {
         _pageElement = new PageElement( _element, {
-          drop: function( element, position, popcornOptions ){
+          drop: function( element, position, popcornOptions ) {
+            analytics.event( "Track Event Added", {
+              label: "dropped"
+            });
             _this.dispatch( "trackeventrequested", {
               element: element,
               iframeDiv: _iframeCover,

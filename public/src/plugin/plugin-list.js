@@ -2,8 +2,8 @@
  * If a copy of the MIT license was not distributed with this file, you can
  * obtain one at https://raw.github.com/mozilla/butter/master/LICENSE */
 
-define( [ "localized", "util/dragndrop", "util/lang", "editor/editor", "l10n!/layouts/plugin-list-editor.html" ],
-  function( Localized, DragNDrop, LangUtils, Editor, EDITOR_LAYOUT ) {
+define( [ "localized", "util/dragndrop", "util/lang", "editor/editor", "analytics", "l10n!/layouts/plugin-list-editor.html" ],
+  function( Localized, DragNDrop, LangUtils, Editor, analytics, EDITOR_LAYOUT ) {
 
   return function( butter ) {
 
@@ -57,6 +57,9 @@ define( [ "localized", "util/dragndrop", "util/lang", "editor/editor", "l10n!/la
               start: butter.currentTime
             }
           }, function( trackEvent ) {
+            analytics.event( "Track Event Added", {
+              label: "clicked"
+            });
             butter.editor.editTrackEvent( trackEvent );
           });
         }

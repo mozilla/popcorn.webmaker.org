@@ -28,6 +28,7 @@ window.Butter = {
   var require = requirejs.config({
     baseUrl: "/src",
     paths: {
+      "analytics": "/static/bower/webmaker-analytics/analytics",
       "localized": "/static/bower/webmaker-i18n/localized",
       "jquery": "/static/bower/jquery/jquery.min",
       "jquery-ui": "/static/bower/jquery-ui/ui/jquery-ui",

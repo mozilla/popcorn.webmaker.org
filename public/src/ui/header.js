@@ -1,7 +1,7 @@
 /*globals TogetherJS*/
 define([ "WebmakerUI", "localized", "dialog/dialog", "util/lang", "l10n!/layouts/header.html", "ui/widget/textbox", "ui/widget/tooltip",
-         "ui/widget/ProjectDetails", "util/togetherjs-syncer" ],
-  function( WebmakerUI, Localized, Dialog, Lang, HEADER_TEMPLATE, TextBoxWrapper, ToolTip, ProjectDetails, TogetherJSSyncer ) {
+         "ui/widget/ProjectDetails", "util/togetherjs-syncer", "analytics" ],
+  function( WebmakerUI, Localized, Dialog, Lang, HEADER_TEMPLATE, TextBoxWrapper, ToolTip, ProjectDetails, TogetherJSSyncer, analytics ) {
 
   return function( butter, options ){
 
@@ -87,6 +87,7 @@ define([ "WebmakerUI", "localized", "dialog/dialog", "util/lang", "l10n!/layouts
       openProjectEditor();
       togglePreviewButton( true );
       toggleDeleteProject( true );
+      analytics.event( "Project Saved" );
     }
 
     function submitSave() {
@@ -137,6 +138,9 @@ define([ "WebmakerUI", "localized", "dialog/dialog", "util/lang", "l10n!/layouts
         _previewBtn.classList.remove( "butter-disabled" );
         _previewBtn.href = butter.project.publishUrl;
         _previewBtn.onclick = function() {
+          analytics.event( "Preview", {
+            label: "header"
+          });
           return true;
         };
       } else {
