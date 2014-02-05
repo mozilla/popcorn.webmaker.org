@@ -1,7 +1,7 @@
 /*globals TogetherJS*/
 define([ "WebmakerUI", "localized", "dialog/dialog", "util/lang", "l10n!/layouts/header.html", "ui/widget/textbox", "ui/widget/tooltip",
-         "ui/widget/ProjectDetails", "util/togetherjs-syncer" ],
-  function( WebmakerUI, Localized, Dialog, Lang, HEADER_TEMPLATE, TextBoxWrapper, ToolTip, ProjectDetails, TogetherJSSyncer ) {
+         "ui/widget/ProjectDetails", "util/togetherjs-syncer", "analytics" ],
+  function( WebmakerUI, Localized, Dialog, Lang, HEADER_TEMPLATE, TextBoxWrapper, ToolTip, ProjectDetails, TogetherJSSyncer, analytics ) {
 
   return function( butter, options ){
 
