@@ -1,33 +1,34 @@
 var async = require( "async" ),
+    metrics = require( "../../lib/metrics" ),
     s3 = require( "../../lib/s3" ),
     config = require( "../../lib/config" ),
     sanitizer = require( "../../lib/sanitizer" ),
     utilities = require( "../../lib/utilities" );
 
-module.exports = function( req, res, next ) {
-  var description = req.project.description || req.gettext( "Created with Popcorn Maker - part of the Mozilla Webmaker initiative" ),
-      iframeUrl = utilities.embedURL( req.session.username, req.project.id ),
-      projectData = JSON.parse( req.project.data, sanitizer.escapeHTMLinJSON ),
-      publishUrl = utilities.embedShellURL( req.session.username, req.project.id ),
-      projectUrl = "/editor/" + req.project.id;
+module.exports = function( req, res ) {
+  var description = res.locals.project.description || "Created with Popcorn Maker - part of the Mozilla Webmaker initiative",
+      iframeUrl = utilities.embedURL( req.session.username, res.locals.project.id ),
+      projectData = JSON.parse( res.locals.project.data, sanitizer.escapeHTMLinJSON ),
+      publishUrl = utilities.embedShellURL( req.session.username, res.locals.project.id ),
+      projectUrl = "/editor/" + res.locals.project.id;
 
   async.parallel([
     function( asyncCallback ) {
       res.render( "embed.html", {
-        id: req.project.id,
-        author: req.project.author,
-        title: req.project.name,
+        id: res.locals.project.id,
+        author: res.locals.project.author,
+        title: res.locals.project.name,
         webmakerURL: config.AUDIENCE,
         description: description,
         embedShellSrc: publishUrl,
         projectUrl: projectUrl,
         popcorn: utilities.generatePopcornString( projectData ),
-        thumbnail: req.project.thumbnail,
-        background: req.project.background
+        thumbnail: res.locals.project.thumbnail,
+        background: res.locals.project.background
       }, function( err, html ) {
         var sanitized = sanitizer.compressHTMLEntities( html );
 
-        s3.put( utilities.embedPath( req.session.username, req.project.id ), {
+        s3.put( utilities.embedPath( req.session.username, res.locals.project.id ), {
           "x-amz-acl": "public-read",
           "Content-Length": Buffer.byteLength( sanitized, "utf8" ),
           "Content-Type": "text/html; charset=UTF-8"
@@ -44,10 +45,15 @@ module.exports = function( req, res, next ) {
     }
   ], function( err ) {
     if ( err ) {
-      return next( utilities.error( 500, err.toString() ) );
+      metrics.increment( "project.publish.error" );
+      return res.json(500, { error: err });
     }
-    req.publishUrl = publishUrl;
-    req.iframeUrl = iframeUrl;
-    next();
+
+    res.json({
+      error: "okay",
+      publishUrl: publishUrl,
+      iframeUrl: iframeUrl
+    });
+    metrics.increment( "project.publish.success" );
   });
 };

@@ -20,10 +20,17 @@ define( [ "localized", "core/eventmanager", "core/media", "util/sanitizer" ],
 
         _tags = [],
 
+        // Whether or not a save to server is required (project data has changed)
+        _isDirty = false,
+
         // Whether or not a backup to storage is required (project data has changed)
         _needsBackup = false,
 
-        _isSaved = false,
+        // Whether or not the project is saved to the db and published.
+        // The notion of "saving" to consumers of this code is unware of
+        // the save vs. publish distinction. As such, we use isSaved externally
+        // and isPublished internally, where Publish follows Save and is
+        // more correct.
         _isPublished = false,
 
         // How often to backup data in ms. If 0, no backups are done.
@@ -37,8 +44,7 @@ define( [ "localized", "core/eventmanager", "core/media", "util/sanitizer" ],
 
     function invalidate() {
       // Project is dirty, needs save, backup
-      _isSaved = false;
-      _isPublished = false;
+      _isDirty = true;
       _needsBackup = true;
 
       // Start backups again since they may have been
@@ -150,7 +156,7 @@ define( [ "localized", "core/eventmanager", "core/media", "util/sanitizer" ],
       "data": {
         get: function() {
           // Memoize value, since it doesn't always change
-          if ( !_dataObject || !_isSaved ) {
+          if ( !_dataObject || _isDirty ) {
             var exportJSONMedia = [];
             for ( var i = 0; i < butter.media.length; ++i ) {
               exportJSONMedia.push( butter.media[ i ].json );
@@ -186,17 +192,10 @@ define( [ "localized", "core/eventmanager", "core/media", "util/sanitizer" ],
         enumerable: true
       },
 
-      // Have changes made it to the db?
+      // Have changes made it to the db and been published?
       "isSaved": {
         get: function() {
-          return _isSaved;
-        },
-        enumerable: true
-      },
-
-      "isPublished": {
-        get: function() {
-          return _isPublished;
+          return _isPublished && !_isDirty;
         },
         enumerable: true
       },
@@ -262,10 +261,6 @@ define( [ "localized", "core/eventmanager", "core/media", "util/sanitizer" ],
 
       if ( json.projectID ) {
         _id = json.projectID;
-        _isSaved = true;
-      }
-
-      if ( json.published ) {
         _isPublished = true;
       }
 
@@ -362,8 +357,7 @@ define( [ "localized", "core/eventmanager", "core/media", "util/sanitizer" ],
 
       // This is an old project. Force it into a dirty state to encourage resaving.
       if ( _isPublished && !_makeid ) {
-        _isSaved = false;
-        _isPublished = false;
+        _isDirty = true;
       }
 
     };
@@ -443,7 +437,7 @@ define( [ "localized", "core/eventmanager", "core/media", "util/sanitizer" ],
       butter.cornfield.remove( _id, callback );
     };
 
-    // Save a project.  Saving only happens if project data needs
+    // Save and Publish a project.  Saving only happens if project data needs
     // to be saved (i.e., it has been changed since last save, or was never
     // saved before).
     _this.save = function( callback ) {
@@ -476,11 +470,11 @@ define( [ "localized", "core/eventmanager", "core/media", "util/sanitizer" ],
         // Save to local storage first in case network is down.
         backupData();
 
-        // Save to db
+        // Save to db, then publish
         butter.cornfield.save( _id, projectData, function( e ) {
           if ( e.error === "okay" ) {
             // Since we've now fully saved, blow away autosave backup
-            _isSaved = true;
+            _isDirty = false;
 
             // Remove the backup, since it was obviously just saved.
             removeBackup();
@@ -500,16 +494,24 @@ define( [ "localized", "core/eventmanager", "core/media", "util/sanitizer" ],
               _id = e.project.id;
             }
 
-            // Let consumers know that the project is now saved;
-            _this.dispatch( "projectsaved" );
+            // Now Publish and get URLs for embed
+            butter.cornfield.publish( _id, function( e ) {
+              if ( e.error === "okay" ) {
+                // Save + Publish is OK
+                _isPublished = true;
+                _publishUrl = e.publishUrl;
+                _iframeUrl = e.iframeUrl;
+              }
 
-            if ( window.history.replaceState ) {
-              window.history.replaceState({}, "", "/" + Localized.getCurrentLang() + "/editor/" + _id + "/edit" );
-            }
-            _publishUrl = e.publishUrl;
-            _iframeUrl = e.iframeUrl;
+              // Let consumers know that the project is now saved;
+              _this.dispatch( "projectsaved" );
 
-            callback( e );
+              if ( window.history.replaceState ) {
+                window.history.replaceState({}, "", "/" + Localized.getCurrentLang() + "/editor/" + _id + "/edit" );
+              }
+
+              callback( e );
+            });
           } else {
             callback( e );
           }
@@ -529,28 +531,6 @@ define( [ "localized", "core/eventmanager", "core/media", "util/sanitizer" ],
       }
     };
 
-    _this.publish = function( callback ) {
-      if ( !callback ) {
-        callback = function() {};
-      }
-
-      // Don't save if there is nothing new to save.
-      if ( _this.isPublished ) {
-        callback({ error: "okay" });
-        return;
-      }
-
-      // Now Publish and get URLs for embed
-      butter.cornfield.publish( _id, function( e ) {
-        if ( e.error === "okay" ) {
-          // Save + Publish is OK
-          _isPublished = true;
-          _this.dispatch( "projectpublished" );
-        }
-
-        callback( e );
-      });
-    };
   }
 
   // Check for an existing project that was autosaved but not saved.
