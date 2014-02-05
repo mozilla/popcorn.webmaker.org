@@ -125,6 +125,75 @@ define( [ "localized", "core/eventmanager", "util/scrollbars", "ui/widget/toolti
       }
     };
 
+    extendObject.attachCKEditorChangeHandler = function( element, trackEvent, propertyName, callback ) {
+
+      element.id = Popcorn.guid( "ckeditor" );
+      element.setAttribute( "name", element.id );
+
+      CKEDITOR.replace( element, {
+        enterMode: CKEDITOR.ENTER_BR,
+        on: {
+          instanceReady: function( e ) {
+
+            var ckeditor = e.editor,
+                destroyed = false,
+                ignoreCKEditorChange = false,
+                ignoreTrackEventUpdate = false;
+
+            ckeditor.setData( trackEvent.popcornOptions[ propertyName ].replace( /\r?\n/gm, "<br />" ) );
+
+            extendObject.listen( "closed", function() {
+              destroyed = true;
+              trackEvent.unlisten( "trackeventupdated", onTrackEventUpdated );
+            });
+
+            function onTrackEventUpdated( e ) {
+              var data = e.data.popcornOptions[ propertyName ];
+              if ( ignoreTrackEventUpdate ) {
+                ignoreTrackEventUpdate = false;
+                return;
+              }
+              if ( destroyed ) {
+                return;
+              }
+              if ( data || data === "" ) {
+                ignoreCKEditorChange = true;
+                ckeditor.setData( data.replace( /\r?\n/gm, "<br />" ) );
+              }
+            }
+
+            trackEvent.listen( "trackeventupdated", onTrackEventUpdated );
+
+            ckeditor.on( "change", function( e ) {
+              var updateOptions = {};
+              if ( ignoreCKEditorChange ) {
+                ignoreCKEditorChange = false;
+                return;
+              }
+              if ( destroyed ) {
+                return;
+              }
+
+              updateOptions[ propertyName ] = e.editor.getData().replace( /\r?\n/gm, "" ).replace( /<br \/>/gm, "\n" );
+              ignoreTrackEventUpdate = true;
+
+              if ( callback ) {
+                callback( trackEvent, updateOptions );
+              } else {
+                trackEvent.update( updateOptions );
+              }
+            });
+          }
+        },
+        toolbar: [
+          { name: 'basicstyles', items: [ 'Bold', 'Italic', 'Underline', 'Strike' ] },
+          { name: 'paragraph',   items : [ 'NumberedList','BulletedList' ] },
+          { name: 'insert',      items : [ 'Table','HorizontalRule','Smiley','SpecialChar' ] },
+          { name: 'tools',       items : [ 'About' ] }
+        ]
+      });
+    }
+
     extendObject.attachColorChangeHandler = function( element, trackEvent, propertyName, callback ) {
 
       var colorPickerElement = element.querySelector( ".color-picker" ),

@@ -1,6 +1,7 @@
 {
   "name": "popcorn.webmaker.org",
   "dependencies": {
+    "ckeditor": "#stable/full",
     "farbtastic": "1.3u",
     "jquery": "1.8.3",
     "jquery-ui": "1.9.1",

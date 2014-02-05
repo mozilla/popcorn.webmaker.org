@@ -159,7 +159,7 @@
               }
             }
             else if ( option.elementType === "textarea" ) {
-              _this.attachInputChangeHandler( option.element, option.trackEvent, key, _this.updateTrackEventSafe );
+              _this.attachCKEditorChangeHandler( option.element, option.trackEvent, key, _this.updateTrackEventSafe );
             }
           }
         }
