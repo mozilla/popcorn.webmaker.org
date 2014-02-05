@@ -1018,7 +1018,7 @@ window.Butter = {
                   function useProject( project ) {
                     project.template = project.template || _config.value( "name" );
                     _this.project = project;
-                    _this.chain( project, [ "projectchanged", "projectsaved", "projectpublished" ] );
+                    _this.chain( project, [ "projectchanged", "projectsaved" ] );
 
                     // Fire the ready event
                     _isReady = true;
