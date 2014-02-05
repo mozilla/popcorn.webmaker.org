@@ -187,7 +187,9 @@
 
       options.attemptJWPlayer = function() {
         options._clip.off( "error", options.attemptJWPlayer );
-        if ( !options._clip.error ) {
+        // options.linkback is exclusive to archive.org, which is always going to be jwplayer,
+        // it also happens to not have an error object, but still fires an error event.
+        if ( !options._clip.error && !options.linkback ) {
           // For some reason html5 media clips are throwing error events,
           // with no actual error, only in the embed...
           return;
