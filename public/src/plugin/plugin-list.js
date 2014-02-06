@@ -2,8 +2,8 @@
  * If a copy of the MIT license was not distributed with this file, you can
  * obtain one at https://raw.github.com/mozilla/butter/master/LICENSE */
 
-define( [ "localized", "util/dragndrop", "util/lang", "editor/editor", "l10n!/layouts/plugin-list-editor.html" ],
-  function( Localized, DragNDrop, LangUtils, Editor, EDITOR_LAYOUT ) {
+define( [ "localized", "util/dragndrop", "util/lang", "editor/editor", "analytics", "l10n!/layouts/plugin-list-editor.html" ],
+  function( Localized, DragNDrop, LangUtils, Editor, analytics, EDITOR_LAYOUT ) {
 
   return function( butter ) {
 
@@ -35,6 +35,9 @@ define( [ "localized", "util/dragndrop", "util/lang", "editor/editor", "l10n!/la
 
       DragNDrop.helper( element, {
         start: function() {
+          analytics.event( "Track Event Added", {
+            label: "dragged"
+          });
           for ( var i = 0, l = _targets.length; i < l; ++i ) {
             _targets[ i ].view.blink();
             _iframeCovers[ i ].style.display = "block";
@@ -50,6 +53,9 @@ define( [ "localized", "util/dragndrop", "util/lang", "editor/editor", "l10n!/la
 
       function onClick() {
         if ( butter.currentMedia.ready ) {
+          analytics.event( "Track Event Added", {
+            label: "clicked"
+          });
           butter.deselectAllTrackEvents();
           butter.generateSafeTrackEvent({
             type: e.data.type,

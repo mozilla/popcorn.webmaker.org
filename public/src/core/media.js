@@ -9,9 +9,10 @@
             "core/track",
             "core/popcorn-wrapper",
             "util/uri",
-            "util/mediatypes"
+            "util/mediatypes",
+            "analytics"
           ],
-          function( Logger, EventManager, Track, PopcornWrapper, URI, MediaTypes ) {
+          function( Logger, EventManager, Track, PopcornWrapper, URI, MediaTypes, analytics ) {
 
     var __guid = 0;
 
@@ -78,9 +79,11 @@
             _mediaUpdateInterval = setInterval( function(){
               _currentTime = _popcornWrapper.currentTime;
             }, 10 );
+            analytics.event( "Media Play" );
             _this.dispatch( "mediaplay" );
           },
           ended: function(){
+            analytics.event( "Media Ended" );
             _this.dispatch( "mediaended" );
           },
           seeked: function(){

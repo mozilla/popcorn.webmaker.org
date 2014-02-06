@@ -138,6 +138,9 @@ define([ "WebmakerUI", "localized", "dialog/dialog", "util/lang", "l10n!/layouts
         _previewBtn.classList.remove( "butter-disabled" );
         _previewBtn.href = butter.project.publishUrl;
         _previewBtn.onclick = function() {
+          analytics.event( "Preview", {
+            label: "header"
+          });
           return true;
         };
       } else {

@@ -3,8 +3,8 @@
  * obtain one at https://raw.github.com/mozilla/butter/master/LICENSE */
 
 define( [ "localized", "util/lang", "util/uri", "util/xhr", "util/keys", "util/mediatypes", "editor/editor",
- "util/time", "util/dragndrop", "l10n!/layouts/media-editor.html", "json!/api/butterconfig" ],
-  function( Localized, LangUtils, URI, XHR, KeysUtils, MediaUtils, Editor, Time, DragNDrop, EDITOR_LAYOUT, CONFIG ) {
+ "util/time", "util/dragndrop", "analytics", "l10n!/layouts/media-editor.html", "json!/api/butterconfig" ],
+  function( Localized, LangUtils, URI, XHR, KeysUtils, MediaUtils, Editor, Time, DragNDrop, analytics, EDITOR_LAYOUT, CONFIG ) {
 
   var _parentElement =  LangUtils.domFragment( EDITOR_LAYOUT, ".media-editor" ),
       _addMediaPanel = _parentElement.querySelector( ".add-media-panel" ),
@@ -89,6 +89,9 @@ define( [ "localized", "util/lang", "util/uri", "util/xhr", "util/keys", "util/m
     DragNDrop.helper( element, {
       pluginOptions: popcornOptions,
       start: function() {
+        analytics.event( "Track Event Added", {
+          label: "dragged"
+        });
         for ( var i = 0, l = _butter.targets.length; i < l; ++i ) {
           _butter.targets[ i ].iframeDiv.style.display = "block";
         }
@@ -165,6 +168,9 @@ define( [ "localized", "util/lang", "util/uri", "util/xhr", "util/keys", "util/m
     options.callback = options.callback || addPhotoEvent;
 
     function addEvent() {
+      analytics.event( "Track Event Added", {
+        label: "clicked"
+      });
       var popcornOptions = {
             src: source,
             start: _butter.currentTime,
@@ -252,6 +258,9 @@ define( [ "localized", "util/lang", "util/uri", "util/xhr", "util/keys", "util/m
     el.classList.add( "mg-" + data.type.toLowerCase() );
 
     function addEvent() {
+      analytics.event( "Track Event Added", {
+        label: "clicked"
+      });
       var start = _butter.currentTime,
           end = start + data.duration,
           popcornOptions = {

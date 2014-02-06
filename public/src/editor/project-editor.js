@@ -5,8 +5,8 @@
 define([ "localized", "editor/editor", "editor/base-editor",
           "l10n!/layouts/project-editor.html",
           "util/social-media", "ui/widget/textbox",
-          "ui/widget/tooltip", "util/keys", "ui/widget/ProjectDetails", "editor/editorhelper" ],
-  function( Localized, Editor, BaseEditor, LAYOUT_SRC, SocialMedia, TextboxWrapper, ToolTip, KEYS, ProjectDetails, EditorHelper ) {
+          "ui/widget/tooltip", "util/keys", "ui/widget/ProjectDetails", "editor/editorhelper", "analytics" ],
+  function( Localized, Editor, BaseEditor, LAYOUT_SRC, SocialMedia, TextboxWrapper, ToolTip, KEYS, ProjectDetails, EditorHelper, analytics ) {
 
   Editor.register( "project-editor", LAYOUT_SRC, function( rootElement, butter ) {
 
@@ -222,7 +222,13 @@ define([ "localized", "editor/editor", "editor/base-editor",
         _projectDetails.updateTitle();
 
         _previewBtn.onclick = function() {
-          return _project.isSaved && butter.cornfield.authenticated();
+          if ( _project.isSaved && butter.cornfield.authenticated() ) {
+            analytics.event( "Preview", {
+              label: "editor"
+            });
+            return true;
+          }
+          return false;
         };
         _viewSourceBtn.onclick = function() {
           return _project.isSaved && butter.cornfield.authenticated();
