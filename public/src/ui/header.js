@@ -87,6 +87,7 @@ define([ "WebmakerUI", "localized", "dialog/dialog", "util/lang", "l10n!/layouts
       openProjectEditor();
       togglePreviewButton( true );
       toggleDeleteProject( true );
+      analytics.event( "Project Saved" );
     }
 
     function submitSave() {
