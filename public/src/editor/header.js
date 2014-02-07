@@ -11,6 +11,14 @@ define([ "localized", "ui/widget/tooltip" ], function( Localized, Tooltip ) {
         _tutorialButton = editorAreaDOMRoot.querySelector( ".butter-editor-tutorial" ),
         _waitForMediaTooltip;
 
+    var optimizelyAll = optimizely.data.state.variationNamesMap,
+        optimizelyActive = optimizely.data.state.activeExperiments,
+        optimizelyTest = optimizelyAll[ optimizelyActive[ 0 ] ];
+
+    if ( optimizelyTest ) {
+      _popcornButton.querySelector( "span" ).textContent = " " + optimizelyTest;
+    }
+
     var _focusMap = {
       "media-editor": _mediaButton,
       "plugin-list": _popcornButton,
