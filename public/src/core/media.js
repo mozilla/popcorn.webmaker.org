@@ -83,7 +83,9 @@
             _this.dispatch( "mediaplay" );
           },
           ended: function(){
-            analytics.event( "Media Ended" );
+            analytics.event( "Media Ended", {
+              nonInteraction: true
+            });
             _this.dispatch( "mediaended" );
           },
           seeked: function(){
