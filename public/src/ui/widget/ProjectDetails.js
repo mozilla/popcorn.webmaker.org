@@ -2,8 +2,9 @@
  * If a copy of the MIT license was not distributed with this file, you can
  * obtain one at https://raw.github.com/mozilla/popcorn.webmaker.org/master/LICENSE */
 
-define( [ "util/keys", "ui/widget/tooltip", "localized", "ui/widget/textbox" ],
-  function( KEYS, ToolTip, Localized, TextboxWrapper ) {
+define( [ "util/keys", "ui/widget/tooltip", "localized", "ui/widget/textbox",
+          "json!/api/butterconfig", "jquery" ],
+  function( KEYS, ToolTip, Localized, TextboxWrapper, config, $ ) {
 
   function ProjectDetails( butter ) {
 
@@ -157,18 +158,44 @@ define( [ "util/keys", "ui/widget/tooltip", "localized", "ui/widget/textbox" ],
           }
         }
 
+        function blurCallback( e ) {
+          addTags( encodeURIComponent( e.target.value ) );
+        }
+
+        $( input ).autocomplete({
+          source: function( request, response ) {
+            var term = request.term;
+            $.getJSON( config.make_endpoint + "/api/20130724/make/tags?t=" + term, function( data ) {
+              response( data.tags.map(function( item ) {
+                return item.term;
+              }));
+            });
+          },
+          minLength: 1,
+          delay: 200,
+          focus: function () {
+            input.removeEventListener( "blur", blurCallback, false );
+          },
+          close: function () {
+            input.addEventListener( "blur", blurCallback, false );
+          },
+          select: function( e, ui) {
+            addTags( encodeURIComponent( ui.item.value ) );
+            input.value = "";
+            e.preventDefault();
+          }
+        });
+
         input.addEventListener( "keydown", function( e ) {
           if ( e.keyCode === KEYS.ENTER || ( !e.shiftKey && e.keyCode === KEYS.COMMA ) ) {
             e.preventDefault();
             addTags( encodeURIComponent( e.target.value ) );
+            $( input ).autocomplete( "close" );
             input.value = "";
           }
         }, false );
 
-        input.addEventListener( "blur", function( e ) {
-          addTags( encodeURIComponent( e.target.value ) );
-          input.value = "";
-        }, false );
+        input.addEventListener( "blur", blurCallback, false );
 
         // Removal of Tags from project
         ul.addEventListener( "click", function( e ) {
