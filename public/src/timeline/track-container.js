@@ -2,8 +2,8 @@
  * If a copy of the MIT license was not distributed with this file, you can
  * obtain one at https://raw.github.com/mozilla/butter/master/LICENSE */
 
-define( [ "core/logger", "util/dragndrop", "./ghost-manager" ],
-  function( Logger, DragNDrop, GhostManager ) {
+define( [ "core/logger", "util/dragndrop", "./ghost-manager", "analytics" ],
+  function( Logger, DragNDrop, GhostManager, analytics ) {
 
   var TWEEN_PERCENTAGE = 0.35,      // diminishing factor for tweening (see followCurrentTime)
       TWEEN_THRESHOLD = 10,         // threshold beyond which tweening occurs (see followCurrentTime)
@@ -147,6 +147,9 @@ define( [ "core/logger", "util/dragndrop", "./ghost-manager" ],
         draggableType = ( dropped.element || dropped ).getAttribute( "data-butter-draggable-type" );
 
         if ( draggableType === "plugin" ) {
+          analytics.event( "Track Event Added", {
+            label: "dropped"
+          });
           newTrack = butter.currentMedia.addTrack();
           newTrack.view.dispatch( "plugindropped", {
             start: ( mousePosition[ 0 ] - containerRect.left ) / _container.clientWidth * newTrack.view.duration,

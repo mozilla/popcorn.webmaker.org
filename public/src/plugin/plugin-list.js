@@ -35,9 +35,6 @@ define( [ "localized", "util/dragndrop", "util/lang", "editor/editor", "analytic
 
       DragNDrop.helper( element, {
         start: function() {
-          analytics.event( "Track Event Added", {
-            label: "dragged"
-          });
           for ( var i = 0, l = _targets.length; i < l; ++i ) {
             _targets[ i ].view.blink();
             _iframeCovers[ i ].style.display = "block";
@@ -53,9 +50,6 @@ define( [ "localized", "util/dragndrop", "util/lang", "editor/editor", "analytic
 
       function onClick() {
         if ( butter.currentMedia.ready ) {
-          analytics.event( "Track Event Added", {
-            label: "clicked"
-          });
           butter.deselectAllTrackEvents();
           butter.generateSafeTrackEvent({
             type: e.data.type,
@@ -63,6 +57,9 @@ define( [ "localized", "util/dragndrop", "util/lang", "editor/editor", "analytic
               start: butter.currentTime
             }
           }, function( trackEvent ) {
+            analytics.event( "Track Event Added", {
+              label: "clicked"
+            });
             butter.editor.editTrackEvent( trackEvent );
           });
         }
