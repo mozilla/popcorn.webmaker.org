@@ -89,9 +89,6 @@ define( [ "localized", "util/lang", "util/uri", "util/xhr", "util/keys", "util/m
     DragNDrop.helper( element, {
       pluginOptions: popcornOptions,
       start: function() {
-        analytics.event( "Track Event Added", {
-          label: "dragged"
-        });
         for ( var i = 0, l = _butter.targets.length; i < l; ++i ) {
           _butter.targets[ i ].iframeDiv.style.display = "block";
         }
