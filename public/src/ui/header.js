@@ -85,13 +85,25 @@ define([ "WebmakerUI", "localized", "dialog/dialog", "util/lang", "l10n!/layouts
 
     function afterSave() {
       openProjectEditor();
+      toggleSaving( true );
       togglePreviewButton( true );
       toggleDeleteProject( true );
+
+      butter.project.publish(function( e ) {
+        if ( e.error === "okay" ) {
+          return;
+        } else {
+          showErrorDialog( Localized.get( "There was a problem publishing your project" ) );
+        }
+      });
+      
     }
 
     function submitSave() {
-      toggleSaveButton( false );
+      toggleSaving( false );
 
+      
+      // Check box decides save or publish, for now, save then publish in afterSave...
       butter.project.save(function( e ) {
         if ( e.error === "okay" ) {
           afterSave();
@@ -106,10 +118,11 @@ define([ "WebmakerUI", "localized", "dialog/dialog", "util/lang", "l10n!/layouts
     }
 
     function saveProject() {
-      if ( butter.project.isSaved ) {
+      if ( butter.project.isSaved || !butter.cornfield.authenticated() ) {
         return;
       } else if ( !butter.project.id ) {
-        toggleSaveButton( false );
+// set this back if canceled...
+        toggleSaving( false );
         _makeDetails.classList.remove( "butter-hidden" );
         _projectDetails.open();
       } else {
@@ -124,9 +137,17 @@ define([ "WebmakerUI", "localized", "dialog/dialog", "util/lang", "l10n!/layouts
     function toggleSaveButton( on ) {
       if ( on ) {
         _saveButton.classList.remove( "butter-disabled" );
-        _saveButton.addEventListener( "click", saveProject, false );
       } else {
         _saveButton.classList.add( "butter-disabled" );
+      }
+    }
+
+    function toggleSaving( on ) {
+      if ( on ) {
+        _saveButton.classList.remove( "butter-button-waiting" );
+        _saveButton.addEventListener( "click", saveProject, false );
+      } else {
+        _saveButton.classList.add( "butter-button-waiting" );
         _saveButton.removeEventListener( "click", saveProject, false );
       }
     }
@@ -242,6 +263,7 @@ define([ "WebmakerUI", "localized", "dialog/dialog", "util/lang", "l10n!/layouts
 
     butter.listen( "ready", function() {
 
+      _saveButton.addEventListener( "click", saveProject, false );
       if ( !butter.cornfield.authenticated() ) {
         toggleTooltips( false );
         togglePreviewButton( false );
@@ -256,12 +278,13 @@ define([ "WebmakerUI", "localized", "dialog/dialog", "util/lang", "l10n!/layouts
       _projectDetails.buttons( _makeDetails.querySelector( "[name='buttons']" ), function( save ) {
         if ( save ) {
           submitSave();
+        } else {
+          toggleSaving( true );
+          togglePreviewButton( false );
+          toggleTooltips( true );
         }
 
         _makeDetails.classList.add( "butter-hidden" );
-        toggleSaveButton( true );
-        togglePreviewButton( false );
-        toggleTooltips( true );
       });
 
       _clearEvents.addEventListener( "click", clearEventsClick, false );

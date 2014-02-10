@@ -92,7 +92,7 @@
     "jshint": "1.1.0",
     "knox": "0.8.3",
     "less-middleware": "0.1.12",
-    "makeapi-client": "https://github.com/mozilla/makeapi-client/tarball/v0.5.16",
+    "makeapi-client": "https://github.com/mozilla/makeapi-client/tarball/v0.5.17",
     "messina": "0.1.1",
     "mox-server": "https://github.com/Pomax/mox-server/archive/master.tar.gz",
     "multiparty": "2.1.8",
