@@ -16,7 +16,7 @@ define([ "localized", "ui/widget/tooltip" ], function( Localized, Tooltip ) {
         optimizelyTest = optimizelyAll[ optimizelyActive[ 0 ] ];
 
     if ( optimizelyTest ) {
-      _popcornButton.querySelector( "span" ).textContent = " " + optimizelyTest;
+      _popcornButton.querySelector( ".editor-header-label" ).textContent = " " + optimizelyTest;
     }
 
     var _focusMap = {
