@@ -283,7 +283,9 @@ define( [ "localized", "core/eventmanager", "core/media", "util/sanitizer" ],
 
       if ( json.published ) {
         _isPublished = true;
-      } else {
+      }
+
+      if ( json.projectID && !json.published ) {
         _public = false;
       }
 

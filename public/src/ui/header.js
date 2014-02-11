@@ -264,6 +264,7 @@ define([ "WebmakerUI", "localized", "dialog/dialog", "util/lang", "l10n!/layouts
       _projectDetails.thumbnail( _makeDetails.querySelector( "[name='thumbnail']" ) );
       _projectDetails.tags( _makeDetails.querySelector( "[name='tags']" ) );
       _projectDetails.description( _makeDetails.querySelector( "[name='description']" ) );
+      _projectDetails.privateCheckbox( _makeDetails.querySelector( "[name='private']" ) );
       _projectDetails.buttons( _makeDetails.querySelector( "[name='buttons']" ), function( save ) {
         if ( save ) {
           submitSave();

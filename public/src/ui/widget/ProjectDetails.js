@@ -309,6 +309,16 @@ define( [ "util/keys", "ui/widget/tooltip", "localized", "ui/widget/textbox" ],
         input.value = _butter.project.description || "";
       },
 
+      privateCheckbox: function( container ) {
+        var input = container.querySelector( ".private-checkbox" );
+console.log(butter.project.public);
+        input.checked = !butter.project.public;
+
+        input.addEventListener( "change", function() {
+          butter.project.public = !input.checked;
+        }, false );
+      },
+
       buttons: function( container, callback ) {
         var yesButtonContainer = container.querySelector( ".yes-button-container" );
         _saveButton = container.querySelector( ".yes-button" );
