@@ -26,6 +26,9 @@ define( [ "localized", "core/eventmanager", "core/media", "util/sanitizer" ],
         _isSaved = false,
         _isPublished = false,
 
+        // A project starts as empty, and there is nothing private about that.
+        _public = true,
+
         // How often to backup data in ms. If 0, no backups are done.
         _backupIntervalMS = butter.config.value( "backupInterval" )|0,
 
@@ -201,6 +204,19 @@ define( [ "localized", "core/eventmanager", "core/media", "util/sanitizer" ],
         enumerable: true
       },
 
+      "public": {
+        set: function( val ) {
+          if ( val !== _public ) {
+            _public = val;
+            invalidate();
+          }
+        },
+        get: function() {
+          return _public;
+        },
+        enumerable: true
+      },
+
       "isRemix": {
         get: function () {
           return _isRemix;
@@ -267,6 +283,8 @@ define( [ "localized", "core/eventmanager", "core/media", "util/sanitizer" ],
 
       if ( json.published ) {
         _isPublished = true;
+      } else {
+        _public = false;
       }
 
       if ( json.name ) {
@@ -509,7 +527,12 @@ define( [ "localized", "core/eventmanager", "core/media", "util/sanitizer" ],
             _publishUrl = e.publishUrl;
             _iframeUrl = e.iframeUrl;
 
-            callback( e );
+            // If we want our project to be public, we publish it to webmaker.org.
+            if ( _public ) {
+              _this.publish( callback );
+            } else {
+              callback( e );
+            }
           } else {
             callback( e );
           }
@@ -534,7 +557,7 @@ define( [ "localized", "core/eventmanager", "core/media", "util/sanitizer" ],
         callback = function() {};
       }
 
-      // Don't save if there is nothing new to save.
+      // Don't publish if already published.
       if ( _this.isPublished ) {
         callback({ error: "okay" });
         return;
@@ -545,7 +568,6 @@ define( [ "localized", "core/eventmanager", "core/media", "util/sanitizer" ],
         if ( e.error === "okay" ) {
           // Save + Publish is OK
           _isPublished = true;
-          _this.dispatch( "projectpublished" );
         }
 
         callback( e );

@@ -88,21 +88,11 @@ define([ "WebmakerUI", "localized", "dialog/dialog", "util/lang", "l10n!/layouts
       toggleSaving( true );
       togglePreviewButton( true );
       toggleDeleteProject( true );
-
-      butter.project.publish(function( e ) {
-        if ( e.error === "okay" ) {
-          return;
-        } else {
-          showErrorDialog( Localized.get( "There was a problem publishing your project" ) );
-        }
-      });
-      
     }
 
     function submitSave() {
       toggleSaving( false );
 
-      
       // Check box decides save or publish, for now, save then publish in afterSave...
       butter.project.save(function( e ) {
         if ( e.error === "okay" ) {
@@ -121,7 +111,6 @@ define([ "WebmakerUI", "localized", "dialog/dialog", "util/lang", "l10n!/layouts
       if ( butter.project.isSaved || !butter.cornfield.authenticated() ) {
         return;
       } else if ( !butter.project.id ) {
-// set this back if canceled...
         toggleSaving( false );
         _makeDetails.classList.remove( "butter-hidden" );
         _projectDetails.open();
