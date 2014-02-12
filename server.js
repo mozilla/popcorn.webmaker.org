@@ -96,6 +96,7 @@ app.configure( function() {
         optimize: "none",
         preserveLicenseComments: false,
         paths: {
+          "analytics": path.resolve( __dirname, "bower_components/webmaker-analytics/analytics" ),
           "localized": path.resolve( __dirname, "bower_components/webmaker-i18n/localized" ),
           "jquery": path.resolve( __dirname, "bower_components/jquery/jquery.min" ),
           "jquery-ui": path.resolve( __dirname, "bower_components/jquery-ui/ui/jquery-ui" ),

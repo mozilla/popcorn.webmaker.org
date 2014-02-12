@@ -2,8 +2,8 @@
  * If a copy of the MIT license was not distributed with this file, you can
  * obtain one at https://raw.github.com/mozilla/butter/master/LICENSE */
 
-define( [ "core/logger", "core/eventmanager", "util/dragndrop" ],
-  function( Logger, EventManager, DragNDrop ) {
+define( [ "core/logger", "core/eventmanager", "util/dragndrop", "analytics" ],
+  function( Logger, EventManager, DragNDrop, analytics ) {
 
   var TRACKEVENT_BORDER_OFFSET = 2;
 
@@ -22,7 +22,7 @@ define( [ "core/logger", "core/eventmanager", "util/dragndrop" ],
 
     _element.className = "butter-track";
 
-    function setupDroppable(){
+    function setupDroppable() {
       _droppable = DragNDrop.droppable( _element, {
         hoverClass: "draggable-hover",
         data: _this,
@@ -34,6 +34,9 @@ define( [ "core/logger", "core/eventmanager", "util/dragndrop" ],
               trackEvent, trackEventView, trackEventRect;
 
           if ( draggableType === "plugin" ) {
+            analytics.event( "Track Event Added", {
+              label: "dropped"
+            });
             left = mousePosition[ 0 ] - trackRect.left;
             start = left / trackRect.width * _duration;
             _this.dispatch( "plugindropped", {
