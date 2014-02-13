@@ -202,7 +202,7 @@ function init() {
     }
   }
 
-  function setupEventHandlers( popcorn, config ) {
+  function setupEventHandlers( popcorn, config, analytics ) {
     var sizeOptions = document.querySelectorAll( ".option" ),
         i, l, messages;
 
@@ -227,6 +227,10 @@ function init() {
     }
 
     popcorn.on( "ended", function() {
+      analytics.event( "Media Ended", {
+        nonInteraction: true,
+        label: "Embed"
+      });
       setStateClass( "embed-dialog-open" );
       window.parent.postMessage({
         type: "ended"
@@ -356,7 +360,8 @@ function init() {
     paths: {
       "json": "../external/require/json",
       "text": "../external/require/text",
-      "localized": "/static/bower/webmaker-i18n/localized"
+      "localized": "/static/bower/webmaker-i18n/localized",
+      "analytics": "/static/bower/webmaker-analytics/analytics"
     }
   });
 
@@ -368,12 +373,13 @@ function init() {
       "ui/widget/textbox",
       "ui/resizeHandler",
       "util/mediatypes",
+      "analytics",
       "text!layouts/attribution.html",
       "util/accepted-flash",
       "util/accepted-ua",
       "popcorn"
     ],
-    function( URI, LangUtil, Controls, TextboxWrapper, ResizeHandler, MediaUtil, DEFAULT_LAYOUT_SNIPPETS, FLASH ) {
+    function( URI, LangUtil, Controls, TextboxWrapper, ResizeHandler, MediaUtil, analytics, DEFAULT_LAYOUT_SNIPPETS, FLASH ) {
 
       var __defaultLayouts = LangUtil.domFragment( DEFAULT_LAYOUT_SNIPPETS );
       /**
@@ -467,7 +473,7 @@ function init() {
 
           if ( config.branding ) {
             setupClickHandlers( popcorn, config );
-            setupEventHandlers( popcorn, config );
+            setupEventHandlers( popcorn, config, analytics );
 
             // Wrap textboxes so they click-to-highlight and are readonly
             TextboxWrapper.applyTo( $( "#share-url" ), { readOnly: true } );

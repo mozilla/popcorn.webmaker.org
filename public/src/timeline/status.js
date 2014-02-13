@@ -2,7 +2,7 @@
  * If a copy of the MIT license was not distributed with this file, you can
  * obtain one at https://raw.github.com/mozilla/butter/master/LICENSE */
 
-define( [ "util/time", "util/keys" ], function( util, Keys ){
+define( [ "util/time", "util/keys", "analytics" ], function( util, Keys, analytics ){
 
   function Button( parentNode, className, onClick ) {
     var _container = parentNode.querySelector( className ),
@@ -131,11 +131,16 @@ define( [ "util/time", "util/keys" ], function( util, Keys ){
     });
 
     _playButton = new Button( statusArea, ".play-button-container", function() {
-      if ( _media.ended ) {
+      if ( _media.paused || _media.ended ) {
         _media.paused = false;
-      }
-      else {
-        _media.paused = !_media.paused;
+        analytics.event( "Play Clicked", {
+          label: "Editor"
+        });
+      } else {
+        _media.paused = true;
+        analytics.event( "Pause Clicked", {
+          label: "Editor"
+        });
       }
     });
 
