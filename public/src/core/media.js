@@ -79,12 +79,12 @@
             _mediaUpdateInterval = setInterval( function(){
               _currentTime = _popcornWrapper.currentTime;
             }, 10 );
-            analytics.event( "Media Play" );
             _this.dispatch( "mediaplay" );
           },
           ended: function(){
             analytics.event( "Media Ended", {
-              nonInteraction: true
+              nonInteraction: true,
+              label: "Editor"
             });
             _this.dispatch( "mediaended" );
           },
