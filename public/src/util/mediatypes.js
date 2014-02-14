@@ -7,7 +7,7 @@ define( [ "localized", "util/uri", "util/xhr", "json!/api/butterconfig", "jquery
 
   var REGEX_MAP = {
         YouTube: /^(?:https?:\/\/www\.|https?:\/\/|www\.|\.|^)youtu/,
-        Vimeo: /^https?:\/\/(www\.)?(player\.)?vimeo\.com\/(video\/)?(\d+)/,
+        Vimeo: /^https?:\/\/(www\.)?(player\.)?vimeo\.com\/(\w+\/)*(\d+)/,
         SoundCloud: /^(?:https?:\/\/www\.|https?:\/\/|www\.|\.|^)(w\.)?(soundcloud)/,
         Archive: /^(?:https?:\/\/www\.|https?:\/\/|www\.|\.|^)archive\.org\/(details|download|stream)\/((.*)start(\/|=)[\d\.]+(.*)end(\/|=)[\d\.]+)?/,
         // supports #t=<start>,<duration>
