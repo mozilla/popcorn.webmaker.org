@@ -106,6 +106,7 @@ define([ "WebmakerUI", "localized", "dialog/dialog", "util/lang", "l10n!/layouts
 
     function submitSave() {
       toggleSaving( false );
+      _saveButton.textContent = Localized.get( "Saving" );
 
       // Check box decides save or publish, for now, save then publish in afterSave...
       butter.project.save(function( e ) {
@@ -138,6 +139,11 @@ define([ "WebmakerUI", "localized", "dialog/dialog", "util/lang", "l10n!/layouts
     }
 
     function toggleSaveButton( on ) {
+      if ( butter.project.isSaved ) {
+        _saveButton.textContent = Localized.get( "Saved" );
+      } else {
+        _saveButton.textContent = Localized.get( "Save" );
+      }
       if ( on ) {
         _saveButton.classList.remove( "butter-disabled" );
       } else {
