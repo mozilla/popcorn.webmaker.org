@@ -2,8 +2,8 @@
  * If a copy of the MIT license was not distributed with this file, you can
  * obtain one at https://raw.github.com/mozilla/butter/master/LICENSE */
 
-define( [ "util/lang", "util/time", "text!layouts/controls.html" ],
-  function( LangUtils, Time, CONTROLS_LAYOUT ) {
+define( [ "util/lang", "util/time", "analytics", "text!layouts/controls.html" ],
+  function( LangUtils, Time, analytics, CONTROLS_LAYOUT ) {
 
   function Controls( container, options ) {
 
@@ -191,6 +191,18 @@ define( [ "util/lang", "util/time", "text!layouts/controls.html" ],
       if ( playButton ) {
 
         playButton.addEventListener( "click", togglePlay, false );
+        playButton.addEventListener( "click", function() {
+          // State has already been toggled here, so we check the current state.
+          if ( !p.paused() ) {
+            analytics.event( "Play Clicked", {
+              label: "Embed"
+            });
+          } else {
+            analytics.event( "Pause Clicked", {
+              label: "Embed"
+            });
+          }
+        }, false );
 
         p.on( "play", onPlay );
         p.on( "pause", onPause );
@@ -523,6 +535,11 @@ define( [ "util/lang", "util/time", "text!layouts/controls.html" ],
       onInit();
       bigPlayButton.addEventListener( "click", bigPlayClicked, false );
     }
+    bigPlayButton.addEventListener( "click", function() {
+      analytics.event( "Big Play Clicked", {
+        label: "Embed"
+      });
+    }, false );
 
     if ( !_container ) {
 
