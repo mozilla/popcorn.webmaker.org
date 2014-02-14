@@ -131,7 +131,7 @@ define( [ "util/time", "util/keys", "analytics" ], function( util, Keys, analyti
     });
 
     _playButton = new Button( statusArea, ".play-button-container", function() {
-      if ( _media.paused || _media.ended ) {
+      if ( _media.paused ) {
         _media.paused = false;
         analytics.event( "Play Clicked", {
           label: "Editor"
