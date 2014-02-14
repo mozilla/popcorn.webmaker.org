@@ -138,6 +138,11 @@ define([ "WebmakerUI", "localized", "dialog/dialog", "util/lang", "l10n!/layouts
     }
 
     function toggleSaveButton( on ) {
+      if ( butter.project.isSaved ) {
+        _saveButton.textContent = Localized.get( "Saved" );
+      } else {
+        _saveButton.textContent = Localized.get( "Save" );
+      }
       if ( on ) {
         _saveButton.classList.remove( "butter-disabled" );
       } else {
