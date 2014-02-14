@@ -432,12 +432,11 @@ define( [ "localized", "util/mediatypes", "editor/editor", "util/time",
             updateOptions.hidden = false;
           }
 
-          if ( _mediaType === "Archive" ) {
+          if ( _mediaType === "Archive" || _mediaType === "Audiour" ) {
             updateOptions.source[ 0 ] = data.source;
             updateOptions.linkback = data.linkback;
           }
 
-          updateOptions.source[ 0 ] = URI.makeUnique( updateOptions.source[ 0 ] ).toString();
           trackEvent.update( updateOptions );
         });
       },
@@ -448,7 +447,7 @@ define( [ "localized", "util/mediatypes", "editor/editor", "util/time",
           _popcornOptions.source = [ _popcornOptions.source ];
         }
 
-        source = _popcornOptions.source[ 0 ];
+        source = _popcornOptions.linkback || _popcornOptions.source[ 0 ];
 
         _mediaType = MediaUtils.checkUrl( source );
 
@@ -466,7 +465,7 @@ define( [ "localized", "util/mediatypes", "editor/editor", "util/time",
           fallbackContainer.classList.remove( "show" );
         }
 
-        if ( _mediaType === "Archive" ) {
+        if ( _mediaType === "Archive" || _mediaType === "Audiour" ) {
           el.value = _popcornOptions.linkback;
         } else {
           el.value = URI.stripUnique( source ).toString();
