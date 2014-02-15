@@ -39,9 +39,16 @@ requirejs.config({
     "l10n": "../external/require/l10n",
 
     // Our other APIs
+    "analytics": "../static/bower/webmaker-analytics/analytics",
+    "farbtastic": "../static/bower/farbtastic/farbtastic",
+    "jquery": "../static/bower/jquery/jquery.min",
+    "jquery-ui": "../static/bower/jquery-ui/ui/jquery-ui",
+    "localized": "../static/bower/webmaker-i18n/localized",
     "make-api": "../external/make-api",
     "sketchfab-iframe": "../external/sketchfab/sketchfab-iframe",
-    "sso-include": "../external/sso-include"
+    "sso-include": "../external/sso-include",
+    "WebmakerUI": "../static/bower/webmaker-ui/ui",
+    "webmaker-ui-fragments": "../static/bower/webmaker-ui/webmaker-ui-fragments"
   },
   // shim config defines dependencies between non-AMD modules, which is all of the Popcorn code
   shim: {
@@ -74,7 +81,11 @@ requirejs.config({
     "popcorn.text": [ "popcorn.core" ],
     "popcorn.wikipedia": [ "popcorn.core" ],
     "popcorn.sketchfab": [ "popcorn.core", "sketchfab-iframe" ],
-    "popcorn.deprecated": [ "popcorn.core" ]
+    "popcorn.deprecated": [ "popcorn.core" ],
+
+    // Our other APIs
+    "jquery-ui": [ "jquery" ],
+    "farbtastic": [ "jquery" ]
   }
 });
 

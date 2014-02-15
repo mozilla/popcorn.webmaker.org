@@ -52,9 +52,6 @@ app.configure( function() {
     }
     next();
   });
-  app.use( "/static/bower", express.static( path.join( __dirname, "/bower_components" ), {
-    maxAge: "31556952000" // one year
-  }));
   app.use(helmet.iexss());
   app.use(helmet.contentTypeOptions());
   if ( !!config.FORCE_SSL ) {
@@ -95,15 +92,6 @@ app.configure( function() {
         findNestedDependencies: true,
         optimize: "none",
         preserveLicenseComments: false,
-        paths: {
-          "analytics": path.resolve( __dirname, "bower_components/webmaker-analytics/analytics" ),
-          "localized": path.resolve( __dirname, "bower_components/webmaker-i18n/localized" ),
-          "jquery": path.resolve( __dirname, "bower_components/jquery/jquery.min" ),
-          "jquery-ui": path.resolve( __dirname, "bower_components/jquery-ui/ui/jquery-ui" ),
-          "farbtastic": path.resolve( __dirname, "bower_components/farbtastic/farbtastic" ),
-          "WebmakerUI": path.resolve( __dirname, "bower_components/webmaker-ui/ui" ),
-          "webmaker-ui-fragments": path.resolve( __dirname, "bower_components/webmaker-ui/webmaker-ui-fragments" )
-        },
         wrap: {
           startFile: __dirname + "/tools/wrap.start",
           endFile: __dirname + "/tools/wrap.end"
