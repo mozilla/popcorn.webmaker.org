@@ -1,4 +1,3 @@
-/public/external/popcorn-js/modules/sequence
-/public/external/popcorn-js/.git
-/public/external/popcorn-js/test
-/public/external/popcorn-js/tools
+/public/static/bower/popcorn-js/.git
+/public/static/bower/popcorn-js/test
+/public/static/bower/popcorn-js/tools
