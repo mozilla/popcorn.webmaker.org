@@ -22,11 +22,8 @@ define( [ "localized", "core/eventmanager", "core/media", "util/sanitizer" ],
 
         // Whether or not a backup to storage is required (project data has changed)
         _needsBackup = false,
-
         _isSaved = false,
         _isPublished = false,
-
-        // A project starts as empty, and there is nothing private about that.
         _public = true,
 
         // How often to backup data in ms. If 0, no backups are done.

@@ -219,7 +219,7 @@ define([ "localized", "editor/editor", "editor/base-editor",
         _projectDetails.tags( _settingsContainer );
         _projectDetails.thumbnail( _settingsContainer, _dropArea );
         _projectDetails.description( _settingsContainer );
-        _projectDetails.privateCheckbox( _settingsContainer );
+        _projectDetails.unpublishedCheckbox( _settingsContainer );
         _projectDetails.updateTitle();
 
         _previewBtn.onclick = function() {

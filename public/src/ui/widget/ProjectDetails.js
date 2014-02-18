@@ -309,8 +309,8 @@ define( [ "util/keys", "ui/widget/tooltip", "localized", "ui/widget/textbox" ],
         input.value = _butter.project.description || "";
       },
 
-      privateCheckbox: function( container ) {
-        var input = container.querySelector( ".private-checkbox" );
+      unpublishedCheckbox: function( container ) {
+        var input = container.querySelector( ".unpublished-checkbox" );
         input.checked = !butter.project.public;
 
         input.addEventListener( "change", function() {
