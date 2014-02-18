@@ -1,3 +1,0 @@
-[submodule "public/external/popcorn-js"]
-	path = public/external/popcorn-js
-	url = git://github.com/mozilla/popcorn-js.git

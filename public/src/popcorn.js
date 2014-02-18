@@ -2,23 +2,23 @@ requirejs.config({
   // Paths are aliases to other modules
   paths: {
     // Core
-    "popcorn.core": "../external/popcorn-js/popcorn",
-    "popcorn.ie8": "../external/popcorn-js/ie8/popcorn.ie8",
+    "popcorn.core": "../static/bower/popcorn-js/popcorn",
+    "popcorn.ie8": "../static/bower/popcorn-js/ie8/popcorn.ie8",
 
     // Wrappers
-    "popcorn._MediaElementProto": "../external/popcorn-js/wrappers/common/popcorn._MediaElementProto",
-    "popcorn.HTMLMediaElement": "../external/popcorn-js/wrappers/html5/popcorn.HTMLMediaElement",
-    "popcorn.HTMLNullVideoElement": "../external/popcorn-js/wrappers/null/popcorn.HTMLNullVideoElement",
-    "popcorn.HTMLSoundCloudAudioElement": "../external/popcorn-js/wrappers/soundcloud/popcorn.HTMLSoundCloudAudioElement",
-    "popcorn.HTMLVimeoVideoElement": "../external/popcorn-js/wrappers/vimeo/popcorn.HTMLVimeoVideoElement",
-    "popcorn.HTMLYouTubeVideoElement": "../external/popcorn-js/wrappers/youtube/popcorn.HTMLYouTubeVideoElement",
-    "popcorn.HTMLJWPlayerVideoElement": "../external/popcorn-js/wrappers/jwplayer/popcorn.HTMLJWPlayerVideoElement",
+    "popcorn._MediaElementProto": "../static/bower/popcorn-js/wrappers/common/popcorn._MediaElementProto",
+    "popcorn.HTMLMediaElement": "../static/bower/popcorn-js/wrappers/html5/popcorn.HTMLMediaElement",
+    "popcorn.HTMLNullVideoElement": "../static/bower/popcorn-js/wrappers/null/popcorn.HTMLNullVideoElement",
+    "popcorn.HTMLSoundCloudAudioElement": "../static/bower/popcorn-js/wrappers/soundcloud/popcorn.HTMLSoundCloudAudioElement",
+    "popcorn.HTMLVimeoVideoElement": "../static/bower/popcorn-js/wrappers/vimeo/popcorn.HTMLVimeoVideoElement",
+    "popcorn.HTMLYouTubeVideoElement": "../static/bower/popcorn-js/wrappers/youtube/popcorn.HTMLYouTubeVideoElement",
+    "popcorn.HTMLJWPlayerVideoElement": "../static/bower/popcorn-js/wrappers/jwplayer/popcorn.HTMLJWPlayerVideoElement",
 
     // Players
-    "popcorn.player": "../external/popcorn-js/modules/player/popcorn.player",
-    "popcorn.youtube": "../external/popcorn-js/players/youtube/popcorn.youtube",
-    "popcorn.vimeo": "../external/popcorn-js/players/vimeo/popcorn.vimeo",
-    "popcorn.soundcloud": "../external/popcorn-js/players/soundcloud/popcorn.soundcloud",
+    "popcorn.player": "../static/bower/popcorn-js/modules/player/popcorn.player",
+    "popcorn.youtube": "../static/bower/popcorn-js/players/youtube/popcorn.youtube",
+    "popcorn.vimeo": "../static/bower/popcorn-js/players/vimeo/popcorn.vimeo",
+    "popcorn.soundcloud": "../static/bower/popcorn-js/players/soundcloud/popcorn.soundcloud",
 
     // Plugins
     "popcorn.googlemap": "../templates/assets/plugins/googlemap/popcorn.googlemap",
@@ -39,9 +39,16 @@ requirejs.config({
     "l10n": "../external/require/l10n",
 
     // Our other APIs
+    "analytics": "../static/bower/webmaker-analytics/analytics",
+    "farbtastic": "../static/bower/farbtastic/farbtastic",
+    "jquery": "../static/bower/jquery/jquery.min",
+    "jquery-ui": "../static/bower/jquery-ui/ui/jquery-ui",
+    "localized": "../static/bower/webmaker-i18n/localized",
     "make-api": "../external/make-api",
     "sketchfab-iframe": "../external/sketchfab/sketchfab-iframe",
-    "sso-include": "../external/sso-include"
+    "sso-include": "../external/sso-include",
+    "WebmakerUI": "../static/bower/webmaker-ui/ui",
+    "webmaker-ui-fragments": "../static/bower/webmaker-ui/webmaker-ui-fragments"
   },
   // shim config defines dependencies between non-AMD modules, which is all of the Popcorn code
   shim: {
@@ -74,7 +81,11 @@ requirejs.config({
     "popcorn.text": [ "popcorn.core" ],
     "popcorn.wikipedia": [ "popcorn.core" ],
     "popcorn.sketchfab": [ "popcorn.core", "sketchfab-iframe" ],
-    "popcorn.deprecated": [ "popcorn.core" ]
+    "popcorn.deprecated": [ "popcorn.core" ],
+
+    // Our other APIs
+    "jquery-ui": [ "jquery" ],
+    "farbtastic": [ "jquery" ]
   }
 });
 

@@ -26,20 +26,7 @@ window.Butter = {
   }
 
   var require = requirejs.config({
-    baseUrl: "/src",
-    paths: {
-      "analytics": "/static/bower/webmaker-analytics/analytics",
-      "localized": "/static/bower/webmaker-i18n/localized",
-      "jquery": "/static/bower/jquery/jquery.min",
-      "jquery-ui": "/static/bower/jquery-ui/ui/jquery-ui",
-      "farbtastic": "/static/bower/farbtastic/farbtastic",
-      "WebmakerUI": "/static/bower/webmaker-ui/ui",
-      "webmaker-ui-fragments": "/static/bower/webmaker-ui/webmaker-ui-fragments"
-    },
-    shim: {
-      "jquery-ui": [ "jquery" ],
-      "farbtastic": [ "jquery" ]
-    }
+    baseUrl: "/src"
   });
 
   define( "butter-main",
@@ -1101,10 +1088,12 @@ window.Butter = {
   });
 
   // butter depends on popcorn, so don't change this unless you know what you're doing
-  require([ "localized", "util/shims" ], function( Localized ) {
+  require([ "util/shims" ], function() {
     require([ "popcorn" ], function() {
-      Localized.ready( function(){
-        require([ "butter-main" ]);
+      require([ "localized" ], function( Localized ) {
+        Localized.ready( function(){
+          require([ "butter-main" ]);
+        });
       });
     });
   });
