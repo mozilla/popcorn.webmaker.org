@@ -37,23 +37,13 @@ module.exports = function( Project ) {
           }
 
           req.projectJSON.remixedFrom = doc.id;
+          req.projectJSON.remixedFromUrl = utils.embedShellURL( doc.author, doc.id );
 
-          loginClient.getUserByEmail( doc.email, function( err, user ) {
-            if ( err || !user ) {
-              // If there's an error, user doesn't exist on loginapi so we use popcorn.wmc.o
-              // Or there could actually be an error of some sort.
-              // TODO FIX THIS API
-              req.projectJSON.remixedFromUrl = "http://popcorn.webmadecontent.org/" + doc.id.toString( 36 );
-            } else {
-              req.projectJSON.remixedFromUrl = utils.embedShellURL( doc.author, doc.id );
-            }
+          if ( req.isRemix ) {
+            metrics.increment( "user.remix" );
+          }
 
-            if ( req.isRemix ) {
-              metrics.increment( "user.remix" );
-            }
-
-            res.json( req.projectJSON );
-          });
+          res.json( req.projectJSON );
         });
         return;
       }

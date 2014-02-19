@@ -12,10 +12,10 @@ define( [ "util/xhr", "localized", "webmaker-auth-client/webmaker-auth-client" ]
         self = this;
 // look through the rest of the app to see if we need to remove more of this.
     //navigator.idSSO.app = {
-    function onLogin( webmakerEmail, webmakerUserName ) {
+    function onLogin( user ) {
       function finishCallback() {
         authenticated = true;
-        username = webmakerUserName;
+        username = user.fullName;
 
         if ( butter.isReady ) {
           return butter.dispatch( "authenticated" );
@@ -53,7 +53,7 @@ define( [ "util/xhr", "localized", "webmaker-auth-client/webmaker-auth-client" ]
     webmakerAuth.on( "logout", onLogout );
     webmakerAuth.on( "verified", function( user ) {
       if ( user ) {
-          return onLogin();
+          return onLogin( user );
       }
       onLogout();
     });
@@ -134,7 +134,8 @@ define( [ "util/xhr", "localized", "webmaker-auth-client/webmaker-auth-client" ]
       });
     }
 
-    this.webmakerAuth = webmakerAuth;
+    this.login = webmakerAuth.login;
+    this.logout = webmakerAuth.logout;
     this.remove = removeFunction;
     this.save = saveFunction;
     this.publish = publishFunction;

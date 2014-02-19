@@ -52,30 +52,8 @@ define([ "WebmakerUI", "localized", "dialog/dialog", "util/lang", "l10n!/layouts
 
     _this.element = _rootElement;
 
-    _webmakerAuth = butter.cornfield.webmakerAuth;
-
-    function onLogin() {
-      _logoutButton.classList.remove( "butter-hidden" );
-      _personaButton.classList.add( "butter-hidden" );
-    }
-    function onLogout() {
-      _personaButton.classList.remove( "butter-hidden" );
-      _logoutButton.classList.add( "butter-hidden" );
-    }
-
-    _webmakerAuth.on( "login", onLogin);
-    _webmakerAuth.on( "logout", onLogout);
-    _webmakerAuth.on( "verified", function( user ) {
-      if ( user ) {
-          return onLogin();
-      }
-      onLogout();
-    });
-
-    _webmakerAuth.verify();
-
-    _personaButton.addEventListener( "click", _webmakerAuth.login, false );
-    _logoutButton.addEventListener( "click", _webmakerAuth.logout, false );
+    _personaButton.addEventListener( "click", butter.cornfield.login, false );
+    _logoutButton.addEventListener( "click", butter.cornfield.logout, false );
 
     // Feature flag might not be enabled.
     if ( _togetherjsBtn ) {
@@ -245,11 +223,15 @@ define([ "WebmakerUI", "localized", "dialog/dialog", "util/lang", "l10n!/layouts
         togglePreviewButton( isSaved );
         toggleSaveButton( !isSaved && butter.cornfield.authenticated() );
         toggleDeleteProject( isSaved && butter.cornfield.authenticated() );
+        _logoutButton.classList.remove( "butter-hidden" );
+        _personaButton.classList.add( "butter-hidden" );
       },
       logout: function() {
         togglePreviewButton( false );
         toggleSaveButton( false );
         toggleTooltips( false );
+        _personaButton.classList.remove( "butter-hidden" );
+        _logoutButton.classList.add( "butter-hidden" );
       }
     };
 
