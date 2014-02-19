@@ -16,6 +16,7 @@ define( [ "util/xhr", "localized", "webmaker-auth-client/webmaker-auth-client" ]
       function finishCallback() {
         authenticated = true;
         username = user.fullName;
+        avatar = user.avatar;
 
         if ( butter.isReady ) {
           return butter.dispatch( "authenticated" );
@@ -62,6 +63,10 @@ define( [ "util/xhr", "localized", "webmaker-auth-client/webmaker-auth-client" ]
 
     this.username = function() {
       return username;
+    };
+
+    this.avatar = function() {
+      return avatar;
     };
 
     this.authenticated = function() {

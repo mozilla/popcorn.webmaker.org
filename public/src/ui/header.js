@@ -12,8 +12,11 @@ define([ "WebmakerUI", "localized", "dialog/dialog", "util/lang", "l10n!/layouts
         _saveContainer = _rootElement.querySelector( ".butter-save-container" ),
         _saveButton = _saveContainer.querySelector( ".butter-save-btn" ),
         _clearEvents = _rootElement.querySelector( ".butter-clear-events-btn" ),
+        _webmakerNav = _rootElement.querySelector( "#webmaker-nav" ),
         _personaButton = _rootElement.querySelector( ".webmaker-login" ),
         _logoutButton = _rootElement.querySelector( ".webmaker-logout" ),
+        _userName = _rootElement.querySelector( ".user-name-container a" ),
+        _userImage = _rootElement.querySelector( ".user-image" ),
         _removeProject = _rootElement.querySelector( ".butter-remove-project-btn" ),
         _previewContainer = _rootElement.querySelector( ".butter-preview-container" ),
         _previewBtn = _previewContainer.querySelector( ".butter-preview-btn" ),
@@ -225,6 +228,9 @@ define([ "WebmakerUI", "localized", "dialog/dialog", "util/lang", "l10n!/layouts
         toggleDeleteProject( isSaved && butter.cornfield.authenticated() );
         _logoutButton.classList.remove( "butter-hidden" );
         _personaButton.classList.add( "butter-hidden" );
+        _webmakerNav.classList.add( "loggedin" );
+        _userName.textContent = butter.cornfield.username();
+        _userImage.src = butter.cornfield.avatar();
       },
       logout: function() {
         togglePreviewButton( false );
@@ -232,6 +238,9 @@ define([ "WebmakerUI", "localized", "dialog/dialog", "util/lang", "l10n!/layouts
         toggleTooltips( false );
         _personaButton.classList.remove( "butter-hidden" );
         _logoutButton.classList.add( "butter-hidden" );
+        _webmakerNav.classList.remove( "loggedin" );
+        _userName.textContent = "";
+        _userImage.src = "";
       }
     };
 
