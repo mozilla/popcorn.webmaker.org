@@ -14,7 +14,6 @@ module.exports = function( Project ) {
     function onUpdate( err, doc ) {
       if ( err ) {
         metrics.increment( "project.update.error" );
-console.log("1");
         res.json( 500, { error: err } );
         return;
       }
@@ -26,7 +25,6 @@ console.log("1");
     }
     function onCreate( err, doc ) {
       if ( err ) {
-console.log("2");
         res.json( 500, { error: err } );
         metrics.increment( "project.create.error" );
         return;
@@ -50,7 +48,6 @@ console.log("2");
       Project.find( { email: req.session.email, id: req.body.id }, function( err, doc ) {
         if ( err ) {
           metrics.increment( "project.find.error" );
-console.log("3");
           res.json( 500, { error: err } );
           return;
         }

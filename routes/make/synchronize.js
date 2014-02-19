@@ -25,13 +25,11 @@ module.exports = function( req, res, next ) {
       editurl: res.app.locals.config.app_hostname + "/editor/" + project.id + "/edit"
     }, function( error, make ) {
       if ( error ) {
-console.log("4", error);
         return next( utils.error( 500, error.toString() ) );
       }
 
       project.updateAttributes({ makeid: make._id })
       .error( function() {
-console.log("5");
         return next( utils.error( 500, "Failed to add Make ID" ) );
       })
       .success( function( projectUpdateResult ) {
@@ -56,7 +54,6 @@ console.log("5");
       }
     }, function( error ) {
       if ( error ) {
-console.log("6");
         return next( utils.error( 500, error.toString() ) );
       }
 
