@@ -1,7 +1,7 @@
 /*globals TogetherJS*/
 define([ "WebmakerUI", "localized", "dialog/dialog", "util/lang", "l10n!/layouts/header.html", "ui/widget/textbox", "ui/widget/tooltip",
-         "ui/widget/ProjectDetails", "util/togetherjs-syncer", "analytics", "webmaker-auth-client/webmaker-auth-client" ],
-  function( WebmakerUI, Localized, Dialog, Lang, HEADER_TEMPLATE, TextBoxWrapper, ToolTip, ProjectDetails, TogetherJSSyncer, analytics, WebmakerAuth ) {
+         "ui/widget/ProjectDetails", "util/togetherjs-syncer", "analytics" ],
+  function( WebmakerUI, Localized, Dialog, Lang, HEADER_TEMPLATE, TextBoxWrapper, ToolTip, ProjectDetails, TogetherJSSyncer, analytics ) {
 
   return function( butter, options ){
 
@@ -24,7 +24,6 @@ define([ "WebmakerUI", "localized", "dialog/dialog", "util/lang", "l10n!/layouts
         _loginToSaveTooltip, _loginToPreviewTooltip, _saveToPreviewTooltip,
         _projectDetails = new ProjectDetails( butter ),
         _togetherJS,
-        _webmakerAuth,
         _langSelector = _rootElement.querySelector( "#lang-picker" ),
         _togetherjsBtn = _rootElement.querySelector( ".together-toggle" ),
         _togetherJSSyncer;

@@ -1,5 +1,4 @@
 var utils = require( "../../lib/utilities" ),
-    loginClient = require( "../../lib/loginapi" ),
     makeClient = require( "../../lib/makeapi" ),
     metrics = require( "../../lib/metrics" );
 

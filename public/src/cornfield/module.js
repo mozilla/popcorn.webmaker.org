@@ -7,6 +7,7 @@ define( [ "util/xhr", "localized", "webmaker-auth-client/webmaker-auth-client" ]
   var Cornfield = function( butter ) {
 
     var authenticated = false,
+        avatar = "",
         username = "",
         webmakerAuth,
         self = this;
