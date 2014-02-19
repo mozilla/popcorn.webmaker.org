@@ -1,7 +1,7 @@
 /*globals TogetherJS*/
 define([ "WebmakerUI", "localized", "dialog/dialog", "util/lang", "l10n!/layouts/header.html", "ui/widget/textbox", "ui/widget/tooltip",
-         "ui/widget/ProjectDetails", "util/togetherjs-syncer", "analytics" ],
-  function( WebmakerUI, Localized, Dialog, Lang, HEADER_TEMPLATE, TextBoxWrapper, ToolTip, ProjectDetails, TogetherJSSyncer, analytics ) {
+         "ui/widget/ProjectDetails", "util/togetherjs-syncer", "analytics", "webmaker-auth-client/webmaker-auth-client" ],
+  function( WebmakerUI, Localized, Dialog, Lang, HEADER_TEMPLATE, TextBoxWrapper, ToolTip, ProjectDetails, TogetherJSSyncer, analytics, WebmakerAuth ) {
 
   return function( butter, options ){
 
@@ -12,6 +12,8 @@ define([ "WebmakerUI", "localized", "dialog/dialog", "util/lang", "l10n!/layouts
         _saveContainer = _rootElement.querySelector( ".butter-save-container" ),
         _saveButton = _saveContainer.querySelector( ".butter-save-btn" ),
         _clearEvents = _rootElement.querySelector( ".butter-clear-events-btn" ),
+        _personaButton = _rootElement.querySelector( ".webmaker-login" ),
+        _logoutButton = _rootElement.querySelector( ".webmaker-logout" ),
         _removeProject = _rootElement.querySelector( ".butter-remove-project-btn" ),
         _previewContainer = _rootElement.querySelector( ".butter-preview-container" ),
         _previewBtn = _previewContainer.querySelector( ".butter-preview-btn" ),
@@ -19,6 +21,7 @@ define([ "WebmakerUI", "localized", "dialog/dialog", "util/lang", "l10n!/layouts
         _loginToSaveTooltip, _loginToPreviewTooltip, _saveToPreviewTooltip,
         _projectDetails = new ProjectDetails( butter ),
         _togetherJS,
+        _webmakerAuth,
         _langSelector = _rootElement.querySelector( "#lang-picker" ),
         _togetherjsBtn = _rootElement.querySelector( ".together-toggle" ),
         _togetherJSSyncer;
@@ -48,6 +51,31 @@ define([ "WebmakerUI", "localized", "dialog/dialog", "util/lang", "l10n!/layouts
     });
 
     _this.element = _rootElement;
+
+    _webmakerAuth = butter.cornfield.webmakerAuth;
+
+    function onLogin() {
+      _logoutButton.classList.remove( "butter-hidden" );
+      _personaButton.classList.add( "butter-hidden" );
+    }
+    function onLogout() {
+      _personaButton.classList.remove( "butter-hidden" );
+      _logoutButton.classList.add( "butter-hidden" );
+    }
+
+    _webmakerAuth.on( "login", onLogin);
+    _webmakerAuth.on( "logout", onLogout);
+    _webmakerAuth.on( "verified", function( user ) {
+      if ( user ) {
+          return onLogin();
+      }
+      onLogout();
+    });
+
+    _webmakerAuth.verify();
+
+    _personaButton.addEventListener( "click", _webmakerAuth.login, false );
+    _logoutButton.addEventListener( "click", _webmakerAuth.logout, false );
 
     // Feature flag might not be enabled.
     if ( _togetherjsBtn ) {

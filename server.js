@@ -18,6 +18,7 @@ var express = require( "express" ),
     APP_HOSTNAME = config.hostname,
     WWW_ROOT =  __dirname + "/public",
     i18n = require( "webmaker-i18n" ),
+    WebmakerAuth = require("webmaker-auth"),
     emulate_s3 = config.S3_EMULATION || !config.S3_KEY,
     messina,
     logger;
@@ -30,6 +31,13 @@ nunjucksEnv.addFilter( "instantiate", function( input ) {
 nunjucksEnv.express( app );
 
 app.disable( "x-powered-by" );
+
+var webmakerAuth = new WebmakerAuth({
+  loginURL: config.LOGIN_SERVER_URL_WITH_AUTH,
+  secretKey: config.session.secret,
+  forceSSL: config.FORCE_SSL,
+  domain: config.COOKIE_DOMAIN
+});
 
 app.configure( function() {
   var tmpDir = path.normalize( require( "os" ).tmpDir() + "/mozilla.butter/" );
@@ -161,16 +169,19 @@ app.configure( function() {
       };
 
       middleware.errorHandler( err, req, res );
-    });
+    })
+    .use( webmakerAuth.cookieParser() )
+    .use( webmakerAuth.cookieSession() );
 
   Project = require( "./lib/project" )( config.database );
   filter = require( "./lib/filter" )( Project.isDBOnline );
 });
 
-require( "./lib/loginapi" )( app, {
+// what is this and can we nuke it...
+/*require( "./lib/loginapi" )( app, {
   audience: config.AUDIENCE,
   loginURL: config.LOGIN_SERVER_URL_WITH_AUTH
-});
+});*/
 
 require( "webmaker-mediasync" )( app, {
   serviceKeys: {
@@ -192,6 +203,12 @@ app.post( "/api/publish/:myproject",
   filter.isLoggedIn, filter.isStorageAvailable,
   routes.api.publish
 );
+
+app.post( "/verify", webmakerAuth.handlers.verify );
+app.post( "/authenticate", webmakerAuth.handlers.authenticate );
+app.post( "/create", webmakerAuth.handlers.create );
+app.post( "/logout", webmakerAuth.handlers.logout );
+app.post( "/check-username", webmakerAuth.handlers.exists );
 
 app.get( "/", routes.pages.editor );
 app.get( "/index.html", routes.pages.editor );
