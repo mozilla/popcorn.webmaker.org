@@ -2,51 +2,71 @@
  * If a copy of the MIT license was not distributed with this file, you can
  * obtain one at https://raw.github.com/mozilla/butter/master/LICENSE */
 
-define( [ "util/xhr", "localized", "sso-include" ], function( xhr, Localized ) {
+define( [ "util/xhr", "localized", "webmaker-auth-client" ], function( xhr, Localized, WebmakerAuth ) {
 
   var Cornfield = function( butter ) {
 
     var authenticated = false,
+        avatar = "",
         username = "",
+        webmakerAuth,
         self = this;
 
-    navigator.idSSO.app = {
-      onlogin: function( webmakerEmail, webmakerUserName ) {
-        function finishCallback() {
-          authenticated = true;
-          username = webmakerUserName;
+    function onLogin( user ) {
+      function finishCallback() {
+        authenticated = true;
+        username = user.fullName;
+        avatar = user.avatar;
 
-          if ( butter.isReady ) {
-            return butter.dispatch( "authenticated" );
+        if ( butter.isReady ) {
+          return butter.dispatch( "authenticated" );
+        }
+
+        butter.listen( "ready", function onReady() {
+          butter.unlisten( "ready", onReady );
+
+          butter.dispatch( "authenticated" );
+        });
+      }
+      if ( butter.project && butter.project.id ) {
+        xhr.get( "/api/project/" + butter.project.id, function( res ) {
+          if ( res.status !== 404 ) {
+            return finishCallback();
           }
 
-          butter.listen( "ready", function onReady() {
-            butter.unlisten( "ready", onReady );
-
-            butter.dispatch( "authenticated" );
-          });
-        }
-        if ( butter.project && butter.project.id ) {
-          xhr.get( "/api/project/" + butter.project.id, function( res ) {
-            if ( res.status !== 404 ) {
-              return finishCallback();
-            }
-
-            // They didn't own the project. Use the logic we have to force remixes on butter load.
-            window.location.reload();
-          });
-        } else {
-          finishCallback();
-        }
-      },
-      onlogout: function() {
-        authenticated = false;
-        butter.dispatch( "logout" );
+          // They didn't own the project. Use the logic we have to force remixes on butter load.
+          window.location.reload();
+        });
+      } else {
+        finishCallback();
       }
-    };
+    }
+    function onLogout() {
+      authenticated = false;
+      butter.dispatch( "logout" );
+    }
+
+    webmakerAuth = new WebmakerAuth({
+      csrfToken: document.querySelector( "meta[name=csrf-token]" ).content
+    });
+
+    webmakerAuth.on( "login", onLogin );
+    webmakerAuth.on( "logout", onLogout );
+    webmakerAuth.on( "verified", function( user ) {
+      if ( user ) {
+          return onLogin( user );
+      }
+      onLogout();
+    });
+
+    webmakerAuth.verify();
 
     this.username = function() {
       return username;
+    };
+
+    this.avatar = function() {
+      return avatar;
     };
 
     this.authenticated = function() {
@@ -119,6 +139,8 @@ define( [ "util/xhr", "localized", "sso-include" ], function( xhr, Localized ) {
       });
     }
 
+    this.login = webmakerAuth.login;
+    this.logout = webmakerAuth.logout;
     this.remove = removeFunction;
     this.save = saveFunction;
     this.publish = publishFunction;

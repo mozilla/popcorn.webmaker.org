@@ -15,6 +15,7 @@
 
   <script src="https://cdn.optimizely.com/js/206878104.js"></script>
   <script src="/external/jwplayer.js"></script>
+  <script src="https://login.persona.org/include.js"></script>
   <link rel="stylesheet" href="/css/transitions.css">
   <link rel="stylesheet" href="/templates/assets/plugins/popup/popcorn.popup.css">
   <link rel="stylesheet" href="/templates/assets/plugins/image/popcorn.image.css">
@@ -34,6 +35,8 @@
   {% include "googleanalytics.html" %}
 </head>
 <body>
+
+  {% include "public/static/bower/webmaker-auth-client/create-user/create-user-form.html" %}
   <div class="body-wrapper">
     <div id="embed-wrapper" class="wrapper cf faded embed">
       <div id="video-container" class="video-container" data-butter="target">

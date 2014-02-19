@@ -8,8 +8,8 @@ module.exports = function( req, res, next ) {
   projectJSON.description = res.locals.project.description;
   projectJSON.template = res.locals.project.template;
   projectJSON.thumbnail = res.locals.project.thumbnail;
-  projectJSON.publishUrl = utils.embedShellURL( req.session.username, res.locals.project.id );
-  projectJSON.iframeUrl = utils.embedURL( req.session.username, res.locals.project.id );
+  projectJSON.publishUrl = utils.embedShellURL( req.session.user.username, res.locals.project.id );
+  projectJSON.iframeUrl = utils.embedURL( req.session.user.username, res.locals.project.id );
   projectJSON.makeid = res.locals.project.makeid;
   projectJSON.background = res.locals.project.background;
 
