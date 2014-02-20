@@ -46,7 +46,6 @@ requirejs.config({
     "localized": "../static/bower/webmaker-i18n/localized",
     "make-api": "../external/make-api",
     "sketchfab-iframe": "../external/sketchfab/sketchfab-iframe",
-    "sso-include": "../external/sso-include",
     "WebmakerUI": "../static/bower/webmaker-ui/ui",
     "webmaker-ui-fragments": "../static/bower/webmaker-ui/webmaker-ui-fragments",
     "eventEmitter": "../static/bower/eventEmitter",

@@ -57,6 +57,11 @@ define([ "WebmakerUI", "localized", "dialog/dialog", "util/lang", "l10n!/layouts
     _personaButton.addEventListener( "click", butter.cornfield.login, false );
     _logoutButton.addEventListener( "click", butter.cornfield.logout, false );
 
+    // Display the img after the src has loaded.
+    function userImageLoaded() {
+      _userImage.classList.remove( "butter-hidden" );
+    }
+
     // Feature flag might not be enabled.
     if ( _togetherjsBtn ) {
       _togetherJSSyncer = new TogetherJSSyncer( butter );
@@ -229,6 +234,7 @@ define([ "WebmakerUI", "localized", "dialog/dialog", "util/lang", "l10n!/layouts
         _personaButton.classList.add( "butter-hidden" );
         _webmakerNav.classList.add( "loggedin" );
         _userName.textContent = butter.cornfield.username();
+        _userImage.addEventListener( "load", userImageLoaded, false );
         _userImage.src = butter.cornfield.avatar();
       },
       logout: function() {
@@ -239,6 +245,8 @@ define([ "WebmakerUI", "localized", "dialog/dialog", "util/lang", "l10n!/layouts
         _logoutButton.classList.add( "butter-hidden" );
         _webmakerNav.classList.remove( "loggedin" );
         _userName.textContent = "";
+        _userImage.removeEventListener( "load", userImageLoaded, false );
+        _userImage.classList.add( ".butter-hidden" );
         _userImage.src = "";
       }
     };

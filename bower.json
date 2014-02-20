@@ -5,6 +5,7 @@
     "jquery": "1.8.3",
     "jquery-ui": "1.9.1",
     "nav-global": "https://github.com/mozilla/nav-global/archive/v0.1.4.tar.gz",
+    "persona-btn": "0.0.6",
     "popcorn-js": "1.5.3",
     "webmaker-analytics": "0.0.4",
     "webmaker-i18n": "https://github.com/mozilla/node-webmaker-i18n/archive/v0.3.8.tar.gz",
