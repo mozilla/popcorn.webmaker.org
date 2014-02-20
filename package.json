@@ -120,7 +120,6 @@
     "grunt": "0.4.1",
     "grunt-contrib-jshint": "0.4.3",
     "grunt-lint5": "0.1.4",
-    "grunt-recess": "0.3.3",
     "supertest": "0.5.1",
     "tap": "0.4.0"
   },
