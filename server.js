@@ -18,7 +18,7 @@ var express = require( "express" ),
     APP_HOSTNAME = config.hostname,
     WWW_ROOT =  __dirname + "/public",
     i18n = require( "webmaker-i18n" ),
-    WebmakerAuth = require("webmaker-auth"),
+    WebmakerAuth = require( "webmaker-auth" ),
     emulate_s3 = config.S3_EMULATION || !config.S3_KEY,
     messina,
     logger;
