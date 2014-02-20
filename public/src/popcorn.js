@@ -46,9 +46,10 @@ requirejs.config({
     "localized": "../static/bower/webmaker-i18n/localized",
     "make-api": "../external/make-api",
     "sketchfab-iframe": "../external/sketchfab/sketchfab-iframe",
-    "sso-include": "../external/sso-include",
     "WebmakerUI": "../static/bower/webmaker-ui/ui",
-    "webmaker-ui-fragments": "../static/bower/webmaker-ui/webmaker-ui-fragments"
+    "webmaker-ui-fragments": "../static/bower/webmaker-ui/webmaker-ui-fragments",
+    "eventEmitter": "../static/bower/eventEmitter",
+    "webmaker-auth-client": "../static/bower/webmaker-auth-client/webmaker-auth-client"
   },
   // shim config defines dependencies between non-AMD modules, which is all of the Popcorn code
   shim: {

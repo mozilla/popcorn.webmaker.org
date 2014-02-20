@@ -1,3 +1,6 @@
+@import (less) "../static/bower/webmaker-auth-client/create-user/create-user-form.css";
+@import "../static/bower/persona-btn/persona-btn.css";
+
 /*********************************************************
 * HEADER
 */
@@ -104,8 +107,10 @@
 .user-info {
   float: right;
   z-index: 10;
-  padding: 0;
+  padding: 0 10px;
+  margin-right: 1.4142em;
   position: relative;
+  cursor: pointer;
   .user {
     min-width: 80px;
     text-align: left;
@@ -114,6 +119,7 @@
     height: 30px;
     line-height: 30px;
     border: 1px solid #CCC;
+    cursor: pointer;
     img {
       top: auto;
       left: 10px;
@@ -178,14 +184,6 @@
     }
   }
 
-}
-
-#webmaker-nav iframe.include-frame {
-  top: 0;
-  display: inline-block;
-  vertical-align: middle;
-  margin-right: 10px;
-  margin-left: 10px;
 }
 
 .loggedin {
@@ -350,3 +348,4 @@ div.togetherjs-arrow, div.togetherjs-cursor, div.togetherjs-click {
 #togetherjs-menu.togetherjs-menu, #togetherjs-pick-color.togetherjs-menu {
   z-index: @TOGETHERJS_Z_INDEX + 1;
 }
+

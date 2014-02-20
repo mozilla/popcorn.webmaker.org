@@ -1,5 +1,4 @@
 <div class="butter-header">
-  <script src="{{user_bar}}/js/sso-ux.js"></script>
   <header class="butter-header-primary">
     <div class="butter-logo"></div>
     <ul class="butter-nav">
@@ -39,11 +38,20 @@
 
         <div class="webmaker-nav user-info">
           <div class="user">
-              {{ gettext("Hi") }} <span id="identity" class="user-name-container"></span> <span class="icon icon-caret-down"></span>
+            <img class="user-image butter-hidden"></img>
+            {{ gettext("Hi") }}
+            <span id="identity" class="user-name-container">
+              <a href="https://login.webmaker.org/en-US/account"></a>
+            </span>
+            <span class="icon icon-caret-down"></span>
           </div>
           <ul class="menu-container">
             <li><span class="icon icon-th-large"></span> <a href="{{audience}}/{{localeInfo.lang}}/me" target="_blank">{{ gettext("My makes") }}</a></li>
-            <li class="login"><span class="icon icon-signout"></span><iframe src="{{audience}}/{{localeInfo.lang}}/sso/include.html" class="include-frame"></iframe>
+            <li class="login"><span class="icon icon-signout"></span>
+              <div class="webmaker-login persona-button butter-hidden">
+                <span class="text">{{ gettext("Sign in") }}</span><span class="tip"></span>
+              </div>
+              <button class="webmaker-logout butter-hidden">{{ gettext("Sign out") }}</button>
             {% if togetherjsEnabled %}
               <li><span class="icon icon-comments-alt"></span><button class="together-toggle">{{ gettext("Collaborate") }}</button></li>
             {% endif %}

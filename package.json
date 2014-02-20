@@ -104,12 +104,11 @@
     "nunjucks": "0.1.10",
     "requirejs-middleware": "0.1.2",
     "sequelize": "1.6.0",
+    "webmaker-auth": "0.0.9",
     "webmaker-download-locales": "0.1.0",
     "webmaker-locale-mapping": "latest",
     "webmaker-i18n": "https://github.com/mozilla/node-webmaker-i18n/archive/v0.3.8.tar.gz",
-    "webmaker-loginapi": "https://github.com/mozilla/node-webmaker-loginapi/tarball/v0.1.18",
-    "webmaker-mediasync": "https://github.com/mozilla/webmaker-mediasync/tarball/v0.1.26",
-    "webmaker-sso": "https://github.com/jbuck/node-webmaker-sso/tarball/v0.0.4"
+    "webmaker-mediasync": "https://github.com/mozilla/webmaker-mediasync/tarball/v0.1.26"
   },
   "optionalDependencies": {
     "node-statsd": "git://github.com/sivy/node-statsd.git#d6997fff",
@@ -121,7 +120,6 @@
     "grunt": "0.4.1",
     "grunt-contrib-jshint": "0.4.3",
     "grunt-lint5": "0.1.4",
-    "grunt-recess": "0.3.3",
     "supertest": "0.5.1",
     "tap": "0.4.0"
   },

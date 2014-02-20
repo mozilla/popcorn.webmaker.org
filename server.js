@@ -18,6 +18,7 @@ var express = require( "express" ),
     APP_HOSTNAME = config.hostname,
     WWW_ROOT =  __dirname + "/public",
     i18n = require( "webmaker-i18n" ),
+    WebmakerAuth = require( "webmaker-auth" ),
     emulate_s3 = config.S3_EMULATION || !config.S3_KEY,
     messina,
     logger;
@@ -31,8 +32,16 @@ nunjucksEnv.express( app );
 
 app.disable( "x-powered-by" );
 
+var webmakerAuth = new WebmakerAuth({
+  loginURL: config.LOGIN_SERVER_URL_WITH_AUTH,
+  secretKey: config.SECRET,
+  forceSSL: config.FORCE_SSL,
+  domain: config.COOKIE_DOMAIN
+});
+
 app.configure( function() {
-  var tmpDir = path.normalize( require( "os" ).tmpDir() + "/mozilla.butter/" );
+  var tmpDir = path.normalize( require( "os" ).tmpDir() + "/mozilla.butter/" ),
+      authLocaleJSON;
 
   if ( config.ENABLE_GELF_LOGS ) {
     messina = require( "messina" );
@@ -77,8 +86,7 @@ app.configure( function() {
           include: [ "butter" ],
           mainConfigFile: WWW_ROOT + "/src/popcorn.js",
           paths: {
-            "make-api": path.resolve( __dirname, "node_modules/makeapi-client/src/make-api" ),
-            "sso-include": path.resolve( __dirname, "node_modules/webmaker-sso/include" )
+            "make-api": path.resolve( __dirname, "node_modules/makeapi-client/src/make-api" )
           }
         },
         "/src/embed.js": {
@@ -118,6 +126,12 @@ app.configure( function() {
     translation_directory: path.resolve( __dirname, "locale" )
   }));
 
+  // Adding an external JSON file to our existing one for the specified locale
+  authLocaleJSON = require( "./public/static/bower/webmaker-auth-client/locale/en_US/create-user-form.json" );
+  i18n.addLocaleObject({
+    "en-US": authLocaleJSON
+  }, function () {});
+
   app.locals({
     config: {
       app_hostname: APP_HOSTNAME,
@@ -136,8 +150,8 @@ app.configure( function() {
 
   app.use( express.json() )
     .use( express.urlencoded() )
-    .use( express.cookieParser() )
-    .use( express.cookieSession( config.session ) )
+    .use( webmakerAuth.cookieParser() )
+    .use( webmakerAuth.cookieSession() )
     .use( express.csrf() )
     .use( helmet.xframe() )
     /* Show Zeus who's boss
@@ -167,11 +181,6 @@ app.configure( function() {
   filter = require( "./lib/filter" )( Project.isDBOnline );
 });
 
-require( "./lib/loginapi" )( app, {
-  audience: config.AUDIENCE,
-  loginURL: config.LOGIN_SERVER_URL_WITH_AUTH
-});
-
 require( "webmaker-mediasync" )( app, {
   serviceKeys: {
     soundcloud: config.SYNC_SOUNDCLOUD,
@@ -193,6 +202,12 @@ app.post( "/api/publish/:myproject",
   routes.make.publish
 );
 
+app.post( "/verify", webmakerAuth.handlers.verify );
+app.post( "/authenticate", webmakerAuth.handlers.authenticate );
+app.post( "/create", webmakerAuth.handlers.create );
+app.post( "/logout", webmakerAuth.handlers.logout );
+app.post( "/check-username", webmakerAuth.handlers.exists );
+
 app.get( "/", routes.pages.editor );
 app.get( "/index.html", routes.pages.editor );
 app.get( "/editor", routes.pages.editor );
@@ -204,9 +219,6 @@ app.get( "/templates/basic/index.html", routes.pages.editor );
 
 app.get( "/external/make-api.js", function( req, res ) {
   res.sendfile( path.resolve( __dirname, "node_modules/makeapi-client/src/make-api.js" ) );
-});
-app.get( "/external/sso-include.js", function( req, res ) {
-  res.sendfile( path.resolve( __dirname, "node_modules/webmaker-sso/include.js" ) );
 });
 app.get( "/external/jwplayer.js", function( req, res ) {
   res.redirect( "//jwpsrv.com/library/" + app.locals.config.jwplayer_key + ".js" );
