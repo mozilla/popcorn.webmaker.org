@@ -40,7 +40,8 @@ var webmakerAuth = new WebmakerAuth({
 });
 
 app.configure( function() {
-  var tmpDir = path.normalize( require( "os" ).tmpDir() + "/mozilla.butter/" );
+  var tmpDir = path.normalize( require( "os" ).tmpDir() + "/mozilla.butter/" ),
+      authLocaleJSON;
 
   if ( config.ENABLE_GELF_LOGS ) {
     messina = require( "messina" );
@@ -125,6 +126,12 @@ app.configure( function() {
     mappings: require("webmaker-locale-mapping"),
     translation_directory: path.resolve( __dirname, "locale" )
   }));
+
+  // Adding an external JSON file to our existing one for the specified locale
+  authLocaleJSON = require("./public/static/bower/webmaker-auth-client/locale/en_US/create-user-form.json");
+  i18n.addLocaleObject({
+    "en-US": authLocaleJSON
+  }, function (result) {});
 
   app.locals({
     config: {

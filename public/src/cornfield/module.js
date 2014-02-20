@@ -2,7 +2,7 @@
  * If a copy of the MIT license was not distributed with this file, you can
  * obtain one at https://raw.github.com/mozilla/butter/master/LICENSE */
 
-define( [ "util/xhr", "localized", "webmaker-auth-client/webmaker-auth-client" ], function( xhr, Localized, WebmakerAuth ) {
+define( [ "util/xhr", "localized", "webmaker-auth-client" ], function( xhr, Localized, WebmakerAuth ) {
 
   var Cornfield = function( butter ) {
 
@@ -11,8 +11,7 @@ define( [ "util/xhr", "localized", "webmaker-auth-client/webmaker-auth-client" ]
         username = "",
         webmakerAuth,
         self = this;
-// look through the rest of the app to see if we need to remove more of this.
-    //navigator.idSSO.app = {
+
     function onLogin( user ) {
       function finishCallback() {
         authenticated = true;
