@@ -127,7 +127,7 @@ app.configure( function() {
   }));
 
   // Adding an external JSON file to our existing one for the specified locale
-  authLocaleJSON = require("./public/static/bower/webmaker-auth-client/locale/en_US/create-user-form.json");
+  authLocaleJSON = require( "./public/static/bower/webmaker-auth-client/locale/en_US/create-user-form.json" );
   i18n.addLocaleObject({
     "en-US": authLocaleJSON
   }, function () {});
