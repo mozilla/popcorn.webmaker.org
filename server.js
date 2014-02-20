@@ -34,7 +34,7 @@ app.disable( "x-powered-by" );
 
 var webmakerAuth = new WebmakerAuth({
   loginURL: config.LOGIN_SERVER_URL_WITH_AUTH,
-  secretKey: config.session.secret,
+  secretKey: config.SECRET,
   forceSSL: config.FORCE_SSL,
   domain: config.COOKIE_DOMAIN
 });
@@ -150,8 +150,8 @@ app.configure( function() {
 
   app.use( express.json() )
     .use( express.urlencoded() )
-    .use( express.cookieParser() )
-    .use( express.cookieSession( config.session ) )
+    .use( webmakerAuth.cookieParser() )
+    .use( webmakerAuth.cookieSession() )
     .use( express.csrf() )
     .use( helmet.xframe() )
     /* Show Zeus who's boss
@@ -175,9 +175,7 @@ app.configure( function() {
       };
 
       middleware.errorHandler( err, req, res );
-    })
-    .use( webmakerAuth.cookieParser() )
-    .use( webmakerAuth.cookieSession() );
+    });
 
   Project = require( "./lib/project" )( config.database );
   filter = require( "./lib/filter" )( Project.isDBOnline );
