@@ -184,12 +184,6 @@ app.configure( function() {
   filter = require( "./lib/filter" )( Project.isDBOnline );
 });
 
-// what is this and can we nuke it...
-/*require( "./lib/loginapi" )( app, {
-  audience: config.AUDIENCE,
-  loginURL: config.LOGIN_SERVER_URL_WITH_AUTH
-});*/
-
 require( "webmaker-mediasync" )( app, {
   serviceKeys: {
     soundcloud: config.SYNC_SOUNDCLOUD,
