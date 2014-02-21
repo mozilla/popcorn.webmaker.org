@@ -7,7 +7,10 @@ var express = require( "express" ),
     path = require( "path" ),
     helmet = require( "helmet" ),
     nunjucks = require( "nunjucks" ),
-    nunjucksEnv = new nunjucks.Environment( new nunjucks.FileSystemLoader( __dirname + "/views" ) ),
+    nunjucksEnv = new nunjucks.Environment([
+      new nunjucks.FileSystemLoader( __dirname + "/views" ),
+      new nunjucks.FileSystemLoader( __dirname + "/public" )
+    ]),
     app = express(),
     lessMiddleware = require( "less-middleware" ),
     requirejsMiddleware = require( "requirejs-middleware" ),
