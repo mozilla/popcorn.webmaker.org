@@ -33,7 +33,8 @@ define( [ "localized", "core/logger", "core/eventmanager", "util/uri", "util/acc
         _interruptLoad = false,
         _this = this,
         _makeVideoURLsUnique = options.makeVideoURLsUnique,
-        _checkedFlashVersion = false;
+        _checkedFlashVersion = false,
+        _checkedClip = false;
 
     /* Destroy popcorn bindings specfically without touching other discovered
      * settings
@@ -234,6 +235,13 @@ define( [ "localized", "core/logger", "core/eventmanager", "util/uri", "util/acc
         if ( !_checkedFlashVersion ) {
           _checkedFlashVersion = true;
           FLASH.warn();
+        }
+
+        if ( !_checkedClip ) {
+          _checkedClip = true;
+          Warn.showWarning( "If you add a large number of clips to your timeline, this could reduce playback " +
+                            "quality for people with slower internet connections. " +
+                            "Click <a href=\"#\" class=\"close-button\">here</a> to remove this warning." );
         }
       }
       return mediaType;
