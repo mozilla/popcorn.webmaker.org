@@ -88,6 +88,28 @@
         container.style.top = 0;
         container.style.left = 0;
 
+        function surpressClick() {
+          if ( options._clip.paused() ) {
+            _this.pause();
+          } else {
+            _this.play();
+          }
+        }
+
+        container.addEventListener( "mouseover", function() {
+          _this.off( "pause", options._playEvent );
+          _this.off( "play", options._playEvent );
+          options._clip.on( "play", surpressClick );
+          options._clip.on( "pause", surpressClick );
+        }, false );
+
+        container.addEventListener( "mouseout", function() {
+          options._clip.off( "play", surpressClick );
+          options._clip.off( "pause", surpressClick );
+          _this.on( "play", options._playEvent );
+          _this.on( "pause", options._pauseEvent );
+        }, false );
+
         target.appendChild( container );
       };
       options.displayLoading = function() {
@@ -654,6 +676,10 @@
           "default": ""
         },
         contentType: {
+          hidden: true,
+          "default": ""
+        },
+        type: {
           hidden: true,
           "default": ""
         }
