@@ -104,7 +104,7 @@
     "nunjucks": "0.1.10",
     "requirejs-middleware": "0.1.2",
     "sequelize": "1.6.0",
-    "webmaker-auth": "0.0.9",
+    "webmaker-auth": "0.0.11",
     "webmaker-download-locales": "0.1.0",
     "webmaker-locale-mapping": "latest",
     "webmaker-i18n": "https://github.com/mozilla/node-webmaker-i18n/archive/v0.3.8.tar.gz",
