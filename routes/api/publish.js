@@ -7,9 +7,9 @@ var async = require( "async" ),
 
 module.exports = function( req, res ) {
   var description = res.locals.project.description || "Created with Popcorn Maker - part of the Mozilla Webmaker initiative",
-      iframeUrl = utilities.embedURL( req.session.username, res.locals.project.id ),
+      iframeUrl = utilities.embedURL( req.session.user.username, res.locals.project.id ),
       projectData = JSON.parse( res.locals.project.data, sanitizer.escapeHTMLinJSON ),
-      publishUrl = utilities.embedShellURL( req.session.username, res.locals.project.id ),
+      publishUrl = utilities.embedShellURL( req.session.user.username, res.locals.project.id ),
       projectUrl = "/editor/" + res.locals.project.id;
 
   async.parallel([
@@ -28,7 +28,7 @@ module.exports = function( req, res ) {
       }, function( err, html ) {
         var sanitized = sanitizer.compressHTMLEntities( html );
 
-        s3.put( utilities.embedPath( req.session.username, res.locals.project.id ), {
+        s3.put( utilities.embedPath( req.session.user.username, res.locals.project.id ), {
           "x-amz-acl": "public-read",
           "Content-Length": Buffer.byteLength( sanitized, "utf8" ),
           "Content-Type": "text/html; charset=UTF-8"
