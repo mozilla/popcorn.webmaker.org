@@ -16,7 +16,8 @@ define( [ "core/eventmanager", "./header",
             ResizeHandler, config ){
 
   var TRANSITION_DURATION = 500,
-      BUTTER_CSS_FILE = "{css}/butter.ui.css";
+      direction = document.querySelector("html").getAttribute("dir") || "ltr",
+      BUTTER_CSS_FILE = "{css}/butter.ui." + direction + ".css";
 
   var __unwantedKeyPressElements = [
         "TEXTAREA",

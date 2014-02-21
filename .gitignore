@@ -20,3 +20,4 @@
 locale/
 !locale/en_US/*
 !locale/localeinfo.json
+bower_components

@@ -13,6 +13,7 @@ var express = require( "express" ),
     ]),
     app = express(),
     lessMiddleware = require( "less-middleware" ),
+    rtltrForLess = require("rtltr-for-less"),
     requirejsMiddleware = require( "requirejs-middleware" ),
     config = require( "./lib/config" ),
     Project,
@@ -71,14 +72,14 @@ app.configure( function() {
     app.enable( "trust proxy" );
   }
   app.use( express.compress() )
-    .use( lessMiddleware({
+    .use( lessMiddleware(rtltrForLess({
       once: config.OPTIMIZE_CSS,
       dest: tmpDir,
       src: WWW_ROOT,
       compress: config.OPTIMIZE_CSS,
       yuicompress: config.OPTIMIZE_CSS,
       optimization: config.OPTIMIZE_CSS ? 0 : 2
-    }))
+    })))
     .use( requirejsMiddleware({
       src: WWW_ROOT,
       dest: tmpDir,
