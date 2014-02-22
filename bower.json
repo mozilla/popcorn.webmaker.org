@@ -10,6 +10,6 @@
     "webmaker-analytics": "0.0.5",
     "webmaker-i18n": "https://github.com/mozilla/node-webmaker-i18n/archive/v0.3.11.tar.gz",
     "webmaker-ui": "0.0.12",
-    "webmaker-auth-client": "0.0.13"
+    "webmaker-auth-client": "0.0.18"
   }
 }

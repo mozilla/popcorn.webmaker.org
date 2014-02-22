@@ -52,12 +52,6 @@ define( [ "util/xhr", "localized", "webmaker-auth-client" ], function( xhr, Loca
 
     webmakerAuth.on( "login", onLogin );
     webmakerAuth.on( "logout", onLogout );
-    webmakerAuth.on( "verified", function( user ) {
-      if ( user ) {
-          return onLogin( user );
-      }
-      onLogout();
-    });
 
     webmakerAuth.verify();
 
