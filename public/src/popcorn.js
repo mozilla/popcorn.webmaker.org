@@ -16,9 +16,6 @@ requirejs.config({
 
     // Players
     "popcorn.player": "../static/bower/popcorn-js/modules/player/popcorn.player",
-    "popcorn.youtube": "../static/bower/popcorn-js/players/youtube/popcorn.youtube",
-    "popcorn.vimeo": "../static/bower/popcorn-js/players/vimeo/popcorn.vimeo",
-    "popcorn.soundcloud": "../static/bower/popcorn-js/players/soundcloud/popcorn.soundcloud",
 
     // Plugins
     "popcorn.googlemap": "../templates/assets/plugins/googlemap/popcorn.googlemap",
@@ -67,9 +64,6 @@ requirejs.config({
 
     // Players
     "popcorn.player": [ "popcorn.core" ],
-    "popcorn.soundcloud": [ "popcorn.core", "popcorn.player", "popcorn.HTMLSoundCloudAudioElement" ],
-    "popcorn.vimeo":  [ "popcorn.core", "popcorn.player", "popcorn.HTMLVimeoVideoElement" ],
-    "popcorn.youtube":  [ "popcorn.core", "popcorn.player", "popcorn.HTMLYouTubeVideoElement" ],
 
     // Plugins
     "popcorn.googlemap": [ "popcorn.core" ],
@@ -93,9 +87,6 @@ requirejs.config({
 define([
   // We must list all of the popcorn files that get used
   // shim config will handle dependency order
-  "popcorn.soundcloud",
-  "popcorn.vimeo",
-  "popcorn.youtube",
   "popcorn.googlemap",
   "popcorn.image",
   "popcorn.loopPlugin",
