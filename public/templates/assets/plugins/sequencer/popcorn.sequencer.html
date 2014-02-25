@@ -2,12 +2,11 @@
 <html>
 <head>
   <title>Popcorn Sequencer Plug-in Demo</title>
-  <script src="/external/popcorn-js/popcorn.js"></script>
-  <script src="/external/popcorn-js/wrappers/common/popcorn._MediaElementProto.js"></script>
-  <script src="/external/popcorn-js/wrappers/null/popcorn.HTMLNullVideoElement.js"></script>
-  <script src="/external/popcorn-js/wrappers/youtube/popcorn.HTMLYouTubeVideoElement.js"></script>
-  <script src="/external/popcorn-js/modules/player/popcorn.player.js"></script>
-  <script src="/external/popcorn-js/players/youtube/popcorn.youtube.js"></script>
+  <script src="/static/bower/popcorn-js/popcorn.js"></script>
+  <script src="/static/bower/popcorn-js/wrappers/common/popcorn._MediaElementProto.js"></script>
+  <script src="/static/bower/popcorn-js/wrappers/null/popcorn.HTMLNullVideoElement.js"></script>
+  <script src="/static/bower/popcorn-js/wrappers/youtube/popcorn.HTMLYouTubeVideoElement.js"></script>
+  <script src="/static/bower/popcorn-js/modules/player/popcorn.player.js"></script>
   <script src="popcorn.sequencer.js"></script>
   <script src="/external/require/require.js"></script>
   <link href="/css/controls.css" rel="stylesheet">
@@ -57,6 +56,9 @@
         }
       });
 
+      // Shim the analytics module.
+      // We don't want to be tracking clicks on example pages anyway.
+      define( "analytics", function() {} );
       define( "sequencer-example", [ "ui/widget/controls" ], function( Controls ) {
         p.controls( true );
         Controls.create( "controls", {
