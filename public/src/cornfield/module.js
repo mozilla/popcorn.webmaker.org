@@ -13,32 +13,17 @@ define( [ "util/xhr", "localized", "webmaker-auth-client" ], function( xhr, Loca
         self = this;
 
     function onLogin( user ) {
-      function finishCallback() {
-        authenticated = true;
-        username = user.fullName;
-        avatar = user.avatar;
-
-        if ( butter.isReady ) {
-          return butter.dispatch( "authenticated" );
-        }
-
-        butter.listen( "ready", function onReady() {
-          butter.unlisten( "ready", onReady );
-
-          butter.dispatch( "authenticated" );
-        });
-      }
+      authenticated = true;
+      username = user.fullName;
+      avatar = user.avatar;
+      butter.dispatch( "authenticated" );
       if ( butter.project && butter.project.id ) {
         xhr.get( "/api/project/" + butter.project.id, function( res ) {
-          if ( res.status !== 404 ) {
-            return finishCallback();
+          if ( res.status === 404 ) {
+            // They didn't own the project. Use the logic we have to force remixes on butter load.
+            window.location.reload();
           }
-
-          // They didn't own the project. Use the logic we have to force remixes on butter load.
-          window.location.reload();
         });
-      } else {
-        finishCallback();
       }
     }
     function onLogout() {
@@ -50,10 +35,18 @@ define( [ "util/xhr", "localized", "webmaker-auth-client" ], function( xhr, Loca
       csrfToken: document.querySelector( "meta[name=csrf-token]" ).content
     });
 
-    webmakerAuth.on( "login", onLogin );
-    webmakerAuth.on( "logout", onLogout );
+    function onReady() {
+      butter.unlisten( "ready", onReady );
+      webmakerAuth.on( "login", onLogin );
+      webmakerAuth.on( "logout", onLogout );
+      webmakerAuth.verify();
+    }
 
-    webmakerAuth.verify();
+    if ( butter.isReady ) {
+      onReady();
+    } else {
+      butter.listen( "ready", onReady );
+    }
 
     this.username = function() {
       return username;
