@@ -181,6 +181,9 @@ define( [ "core/eventmanager", "./header",
           function firstRunInit() {
             butter.unlisten( "mediaready", firstRunInit );
 
+            _this.tray.attachToDOM();
+            _this.header.attachToDOM();
+
             // Open the media-editor editor right after butter is finished starting up
             butter.editor.openEditor( "media-editor" );
             if ( butter.project.publishUrl ||
@@ -198,9 +201,6 @@ define( [ "core/eventmanager", "./header",
 
       if ( _uiOptions.enabled ) {
         loadUI();
-
-        _this.tray.attachToDOM();
-        _this.header.attachToDOM();
       }
       else {
         onReady();
