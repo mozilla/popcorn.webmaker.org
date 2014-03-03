@@ -451,9 +451,12 @@ function init() {
       };
 
       (function() {
-        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        var ga = document.createElement( "script" );
+        ga.type = "text/javascript";
+        ga.async = true;
         ga.src = butterConfig.user_subdomain + "/dynamic/js/googleanalytics.js";
-        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        var s = document.getElementsByTagName( "script" )[ 0 ];
+        s.parentNode.insertBefore( ga, s );
       })();
 
       resizeHandler.resize();
