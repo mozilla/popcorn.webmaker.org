@@ -145,7 +145,8 @@ app.configure( function() {
       make_endpoint: config.MAKE_ENDPOINT,
       node_hubble_endpoint: config.NODE_HUBBLE_ENDPOINT,
       user_bar: config.USER_BAR,
-      sync_limit: config.SYNC_LIMIT
+      sync_limit: config.SYNC_LIMIT,
+      sync_soundcloud: config.SYNC_SOUNDCLOUD
     },
     supportedLanguages: i18n.getLanguages(),
     listDropdownLang: i18n.getSupportLanguages()
@@ -262,7 +263,8 @@ app.get( "/api/butterconfig", middleware.crossOrigin, function( req, res ) {
     "node_hubble_endpoint": app.locals.config.node_hubble_endpoint,
     "audiour_endpoint": config.AUDIOUR_ENDPOINT,
     "user_bar": app.locals.config.user_bar,
-    "sync_limit": app.locals.config.sync_limit
+    "sync_limit": app.locals.config.sync_limit,
+    "sync_soundcloud": app.locals.config.sync_soundcloud
   });
 });
 
