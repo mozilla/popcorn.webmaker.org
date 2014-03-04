@@ -300,7 +300,7 @@ define([ "WebmakerUI", "localized", "dialog/dialog", "util/lang", "l10n!/layouts
       _projectDetails.thumbnail( _makeDetails.querySelector( "[name='thumbnail']" ) );
       _projectDetails.tags( _makeDetails.querySelector( "[name='tags']" ) );
       _projectDetails.description( _makeDetails.querySelector( "[name='description']" ) );
-      _projectDetails.unpublishedCheckbox( _makeDetails.querySelector( "[name='unpublished']" ) );
+      _projectDetails.searchableCheckbox( _makeDetails.querySelector( "[name='searchable']" ) );
       _projectDetails.buttons( _makeDetails.querySelector( "[name='buttons']" ), function( save ) {
         if ( save ) {
           submitSave();
