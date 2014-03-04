@@ -171,8 +171,10 @@ define( [ "core/eventmanager", "./header",
 
       function loadUI() {
         butter.loader.load( [ loadOptions ], function() {
-          // icon preloading needs css to be loaded first
-
+          // load things that need the css file in loadOptions
+          // to be loaded before we do anything with it.
+          _this.tray.attachToDOM();
+          _this.header.attachToDOM();
           _this.loadIcons( _uiConfig.value( "plugin" ).plugins );
 
           // Spin-up the crash reporter
@@ -180,9 +182,6 @@ define( [ "core/eventmanager", "./header",
 
           function firstRunInit() {
             butter.unlisten( "mediaready", firstRunInit );
-
-            _this.tray.attachToDOM();
-            _this.header.attachToDOM();
 
             // Open the media-editor editor right after butter is finished starting up
             butter.editor.openEditor( "media-editor" );
