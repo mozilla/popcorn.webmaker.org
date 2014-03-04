@@ -194,7 +194,7 @@ define( [ "localized", "util/uri", "util/xhr", "json!/api/butterconfig", "jquery
           id = splitUriDirectory[ splitUriDirectory.length - 1 ];
           userId = splitUriDirectory[ splitUriDirectory.length - 2 ];
 
-          xhrURL = "https://api.soundcloud.com/tracks.json?callback=?&client_id=PRaNFlda6Bhf5utPjUsptg&title=" + id + "&user_id=" + userId;
+          xhrURL = "https://api.soundcloud.com/tracks/" + id + ".json?callback=?&client_id=PRaNFlda6Bhf5utPjUsptg&user_id=" + userId;
         // If an embed iframe source is used, which looks like this:
         // https://w.soundcloud.com/player/?url=https://api.soundcloud.com/tracks/11921587
         } else if ( parsedUri.host === "w.soundcloud.com" ) {
@@ -202,15 +202,13 @@ define( [ "localized", "util/uri", "util/xhr", "json!/api/butterconfig", "jquery
           xhrURL = "https://api.soundcloud.com/tracks/" + id + ".json?callback=?&client_id=PRaNFlda6Bhf5utPjUsptg";
         }
         Popcorn.getJSONP( xhrURL, function( respData ) {
-          if ( !respData || !respData[ 0 ] ) {
+          if ( !respData ) {
             return;
           }
 
           if ( respData.error ) {
             return errorCallback( SOUNDCLOUD_EMBED_UNPLAYABLE );
           }
-
-          respData = respData[ 0 ];
 
           if ( respData.sharing === "private" || respData.embeddable_by === "none" ) {
             errorCallback( SOUNDCLOUD_EMBED_DISABLED );
