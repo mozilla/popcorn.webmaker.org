@@ -224,10 +224,10 @@
       innerContainer.style.fontWeight = fontDecorations.bold ? "bold" : "normal";
 
       if ( options.background ) {
-        innerDiv.style.backgroundColor = backgroundColor;
+        innerContainer.style.backgroundColor = backgroundColor;
       }
       if ( options.shadow ) {
-        innerDiv.style.textShadow = "0 1px 5px " + shadowColor + ", 0 1px 10px " + shadowColor;
+        innerContainer.style.textShadow = "0 1px 5px " + shadowColor + ", 0 1px 10px " + shadowColor;
       }
 
       fontSheet = document.createElement( "link" );
