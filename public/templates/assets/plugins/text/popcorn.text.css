@@ -7,6 +7,10 @@
   visibility: hidden;
 }
 
+.popcorn-text > .text-inner-div {
+  white-space: pre-wrap;
+}
+
 .text-inner-div a {
   text-decoration: none;
 }

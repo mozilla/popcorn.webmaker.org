@@ -125,6 +125,7 @@
   text-align: center;
   overflow: hidden;
   word-wrap: break-word;
+  white-space: pre-wrap;
 }
 
 .popcorn-popup > .popup-inner-div > div > textarea {
