@@ -104,10 +104,6 @@
 .popcorn-popup {
   background-color: black;
   border-radius: 1em;
-  padding: 0.2em 0.6em;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
 }
 
 .popcorn-responsive-image-position {
@@ -124,6 +120,7 @@
   background-color: white;
   border-radius: 0.03em;
   padding: 0.026em;
+  margin: 0.01em 0.03em;
   position: relative;
   text-align: center;
   overflow: hidden;
