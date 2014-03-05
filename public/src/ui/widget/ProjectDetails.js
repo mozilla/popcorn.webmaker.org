@@ -341,7 +341,7 @@ define( [ "util/keys", "ui/widget/tooltip", "localized", "ui/widget/textbox",
         input.checked = butter.project.public;
 
         input.addEventListener( "change", function() {
-          butter.project.public = !input.checked;
+          butter.project.public = input.checked;
         }, false );
       },
 
