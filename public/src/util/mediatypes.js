@@ -301,6 +301,7 @@ define( [ "localized", "util/uri", "util/xhr", "json!/api/butterconfig", "jquery
             source: respData.SecureOggUrl,
             fallback: respData.SecureMp3Url,
             type: type,
+            hidden: true,
             title: respData.Title,
             linkback: baseUrl,
             duration: +respData.Duration
