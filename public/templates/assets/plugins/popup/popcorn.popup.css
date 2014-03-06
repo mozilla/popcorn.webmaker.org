@@ -128,7 +128,8 @@
   white-space: pre-wrap;
 }
 
-.popcorn-popup > .popup-inner-div > div > textarea {
+.popcorn-popup > .popup-inner-div > div > textarea,
+.speechBubble > div > textarea {
   text-align: center;
 }
 
