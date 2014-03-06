@@ -143,6 +143,18 @@ define([ "localized", "editor/editor", "editor/base-editor",
       }
     });
 
+    function shareProject() {
+      if ( _project.publishUrl ) {
+        // Ensure Share buttons have loaded
+        if ( !_shareTwitter.childNodes.length ) {
+          _socialMedia.hotLoad( _shareTwitter, _socialMedia.twitter, _project.publishUrl );
+        }
+        if ( !_shareGoogle.childNodes.length ) {
+          _socialMedia.hotLoad( _shareGoogle, _socialMedia.google, _project.publishUrl );
+        }
+      }
+    }
+
     function onProjectSaved() {
       _previewBtn.href = _projectURL.value = _project.publishUrl;
       _viewSourceBtn.href = "view-source:" + _project.iframeUrl;
@@ -153,6 +165,8 @@ define([ "localized", "editor/editor", "editor/base-editor",
       _projectLinkButton.classList.remove( "butter-disabled" );
       _projectLinkUrl.classList.remove( "butter-disabled" );
       _loginToSaveDialog.classList.add( "hidden" );
+
+      shareProject()
     }
 
     function onLogin() {
@@ -235,13 +249,7 @@ define([ "localized", "editor/editor", "editor/base-editor",
           return _project.isSaved && butter.cornfield.authenticated();
         };
 
-        // Ensure Share buttons have loaded
-        if ( !_shareTwitter.childNodes.length ) {
-          _socialMedia.hotLoad( _shareTwitter, _socialMedia.twitter, _project.publishUrl );
-        }
-        if ( !_shareGoogle.childNodes.length ) {
-          _socialMedia.hotLoad( _shareGoogle, _socialMedia.google, _project.publishUrl );
-        }
+        shareProject();
 
         _this.scrollbar.update();
 
