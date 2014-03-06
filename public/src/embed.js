@@ -233,6 +233,7 @@ function init() {
       });
       setStateClass( "embed-dialog-open" );
       window.parent.postMessage({
+        namespace: "popcorn-embed",
         type: "ended"
       }, "*" );
     });
@@ -245,6 +246,7 @@ function init() {
         setStateClass( "embed-paused" );
       }
       window.parent.postMessage({
+        namespace: "popcorn-embed",
         currentTime: popcorn.currentTime(),
         type: "pause"
       }, "*" );
@@ -252,6 +254,7 @@ function init() {
 
     popcorn.on( "play", function() {
       window.parent.postMessage({
+        namespace: "popcorn-embed",
         currentTime: popcorn.currentTime(),
         type: "play"
       }, "*" );
@@ -260,12 +263,14 @@ function init() {
     if ( document.querySelector( ".embed" ).getAttribute( "data-state-waiting" ) ) {
       popcorn.on( "sequencesReady", function() {
         window.parent.postMessage({
+          namespace: "popcorn-embed",
           type: "loadedmetadata"
         }, "*" );
       });
     } else {
       popcorn.on( "loadedmetadata", function() {
         window.parent.postMessage({
+          namespace: "popcorn-embed",
           type: "loadedmetadata"
         }, "*" );
       });
@@ -273,6 +278,7 @@ function init() {
 
     popcorn.on( "durationchange", function() {
       window.parent.postMessage({
+        namespace: "popcorn-embed",
         duration: popcorn.duration(),
         type: "durationchange"
       }, "*" );
@@ -280,6 +286,7 @@ function init() {
 
     popcorn.on( "timeupdate", function() {
       window.parent.postMessage({
+        namespace: "popcorn-embed",
         currentTime: popcorn.currentTime(),
         type: "timeupdate"
       }, "*" );
@@ -304,6 +311,7 @@ function init() {
 
     popcorn.on( "trackstart", function( e ) {
       window.parent.postMessage({
+        namespace: "popcorn-embed",
         plugin: e.plugin,
         type: e.type,
         options: buildOptions( e, e._natives.manifest.options )
@@ -312,6 +320,7 @@ function init() {
 
     popcorn.on( "trackend", function( e ) {
       window.parent.postMessage({
+        namespace: "popcorn-embed",
         plugin: e.plugin,
         type: e.type,
         options: buildOptions( e, e._natives.manifest.options )
@@ -333,8 +342,9 @@ function init() {
     function onMessage( e ) {
       var data = e.data,
           type = data.type,
+          namespace = data.namespace,
           message = messages[ type ];
-      if ( message ) {
+      if ( namespace !== "popcorn-embed" && message ) {
         message( data );
       }
     }
