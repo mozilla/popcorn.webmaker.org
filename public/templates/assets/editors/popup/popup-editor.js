@@ -227,12 +227,15 @@
     });
   }, false, function( trackEvent ) {
     var _container,
+        _contentContainer,
         target;
 
     _container = trackEvent.popcornTrackEvent._container;
     target = trackEvent.popcornTrackEvent._target;
 
-    this.contentEditable( trackEvent, _container, _container.querySelector( ".popup-inner-div > div" ) );
+    _contentContainer = _container.querySelector( ".popup-inner-div > div" ) || _container.querySelector( ".speechBubble > div" );
+
+    this.contentEditable( trackEvent, _container, _contentContainer );
     this.selectable( trackEvent, _container );
     this.draggable( trackEvent, _container, target );
     this.resizable( trackEvent, _container, target, {

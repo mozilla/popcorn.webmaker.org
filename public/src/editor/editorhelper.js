@@ -311,6 +311,9 @@ define( [ "util/xhr", "util/keys", "localized", "jquery" ], function( XHR, KEYS,
      * @param {DOMElement} contentContainer: the container which to listen for changes and set as editable
      */
     _this.contentEditable = function( trackEvent, container, contentContainer ) {
+      if ( !contentContainer ) {
+        return;
+      }
       var textArea = document.createElement( "textArea" );
       textArea.rows = 1;
       container.classList.add( "content-editable" );
