@@ -166,7 +166,7 @@ define([ "localized", "editor/editor", "editor/base-editor",
       _projectLinkUrl.classList.remove( "butter-disabled" );
       _loginToSaveDialog.classList.add( "hidden" );
 
-      shareProject()
+      shareProject();
     }
 
     function onLogin() {
