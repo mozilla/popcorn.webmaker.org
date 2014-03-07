@@ -253,6 +253,7 @@ define( [ "localized", "util/lang", "util/uri", "util/xhr", "util/keys", "util/m
     }
     thumbnailBtn.appendChild( thumbnailImg );
     if ( thumbnailSrc ) {
+      thumbnailImg.classList.add( "media-thumbnail" );
       thumbnailImg.src = thumbnailSrc;
     }
 

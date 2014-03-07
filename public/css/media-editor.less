@@ -211,15 +211,27 @@
       float: left;
       margin-right: 10px;
       border: 1px solid @baseLightOutline;
-      > img, video {
+      width: 80px;
+      height: 60px;
+      > img, video, .default-thumbnail {
         display: block;
-        width: 80px;
-        height: 60px;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+      }
+      > .default-thumbnail {
+        background: url( "../resources/icons/media.png" ) no-repeat;
+        background-position: center center;
+      }
+      > .media-thumbnail {
       }
       &:hover {
         border-color: @green;
         .icon-plus {
           display: block;
+        }
+        > img, video, .default-thumbnail {
+          display: none;
         }
       }
       &:hover:before {
