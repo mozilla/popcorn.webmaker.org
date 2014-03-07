@@ -153,7 +153,7 @@ app.configure( function() {
   app.use(function (req, res, next) {
     res.locals({
       currentPath: req.path,
-      returnPath: req.param('page')
+      returnPath: req.param( "page" )
     });
     next();
   });
