@@ -1,7 +1,7 @@
 /*globals TogetherJS*/
-define([ "WebmakerUI", "localized", "dialog/dialog", "util/lang", "l10n!/layouts/header.html", "ui/widget/textbox", "ui/widget/tooltip",
+define([ "languages", "localized", "dialog/dialog", "util/lang", "l10n!/layouts/header.html", "ui/widget/textbox", "ui/widget/tooltip",
          "ui/widget/ProjectDetails", "util/togetherjs-syncer", "analytics" ],
-  function( WebmakerUI, Localized, Dialog, Lang, HEADER_TEMPLATE, TextBoxWrapper, ToolTip, ProjectDetails, TogetherJSSyncer, analytics ) {
+  function( Languages, Localized, Dialog, Lang, HEADER_TEMPLATE, TextBoxWrapper, ToolTip, ProjectDetails, TogetherJSSyncer, analytics ) {
 
   return function( butter, options ){
 
@@ -24,12 +24,8 @@ define([ "WebmakerUI", "localized", "dialog/dialog", "util/lang", "l10n!/layouts
         _loginToSaveTooltip, _loginToPreviewTooltip, _saveToPreviewTooltip,
         _projectDetails = new ProjectDetails( butter ),
         _togetherJS,
-        _langSelector = _rootElement.querySelector( "#lang-picker" ),
         _togetherjsBtn = _rootElement.querySelector( ".together-toggle" ),
         _togetherJSSyncer;
-
-    // URL redirector for language picker
-    WebmakerUI.langPicker( _langSelector );
 
     _loginToSaveTooltip = ToolTip.create({
       title: "header-login-save-tooltip",
@@ -287,6 +283,9 @@ define([ "WebmakerUI", "localized", "dialog/dialog", "util/lang", "l10n!/layouts
     });
 
     butter.listen( "ready", function() {
+
+      // Call this when language picker element is ready.
+      Languages.ready({ position: "bottom", arrow: "top" }, true);
 
       _saveButton.addEventListener( "click", saveProject, false );
       if ( !butter.cornfield.authenticated() ) {

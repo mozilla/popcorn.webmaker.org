@@ -19,12 +19,8 @@
     <!-- webmaker user bar -->
     <div id="webmaker-nav">
       <nav class="webmaker-nav-container">
-        <div class="lang-picker">
-          <select id="lang-picker" data-supported="{{supportedLanguages}}">
-          {% for language in listDropdownLang %}
-            <option {% if languageNameFor(localeInfo.lang) == languageNameFor(language) %} selected="selected" {% endif %} value="{{language}}">{{ languageNameFor(language) }}</option>
-          {% endfor %}
-          </select>
+        <div class="langPicker">
+          {% include "/static/bower/webmaker-language-picker/template/partial.html" %}
         </div>
         <div class="butter-btn-menu-container butter-project-menu">
           <a class="butter-btn btn-white butter-project-menu-control butter-btn-menu-control"><span class="icon icon-only icon-reorder"></span></a>

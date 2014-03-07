@@ -147,8 +147,15 @@ app.configure( function() {
       user_bar: config.USER_BAR,
       sync_limit: config.SYNC_LIMIT
     },
-    supportedLanguages: i18n.getLanguages(),
-    listDropdownLang: i18n.getSupportLanguages()
+    languages: i18n.getSupportLanguages()
+  });
+
+  app.use(function (req, res, next) {
+    res.locals({
+      currentPath: req.path,
+      returnPath: req.param('page')
+    });
+    next();
   });
 
   app.use( express.json() )

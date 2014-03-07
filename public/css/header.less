@@ -1,4 +1,7 @@
+@import "@{language-bower-path}/webmaker-language-picker/styles/languages";
 @import "../static/bower/persona-btn/persona-btn.css";
+
+@language-bower-path: "../static/bower";
 
 /*********************************************************
 * HEADER
@@ -346,5 +349,19 @@ div.togetherjs-arrow, div.togetherjs-cursor, div.togetherjs-click {
 
 #togetherjs-menu.togetherjs-menu, #togetherjs-pick-color.togetherjs-menu {
   z-index: @TOGETHERJS_Z_INDEX + 1;
+}
+
+/***************************************************
+* New Language Picker
+*/
+
+.langPicker {
+  padding: 10px;
+  margin: 5px;
+}
+
+a#current-language {
+  color: #000;
+  text-decoration: none;
 }
 
