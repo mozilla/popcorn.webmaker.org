@@ -147,9 +147,9 @@
     if ( options.src ) {
 
       _query = options.src + options.lang;
-      _href = "https://" + encodeURIComponent( options.lang ) + ".wikipedia.org/w/";
+      _href = "https://" + options.lang + ".wikipedia.org/w/";
       _title = options.src.slice( options.src.lastIndexOf( "/" ) + 1 );
-      options._link = "https://" + encodeURIComponent( options.lang + ".wikipedia.org/wiki/" + _title );
+      options._link = "https://" + options.lang + ".wikipedia.org/wiki/" + encodeURIComponent( _title );
 
       if ( !cachedArticles[ _query ] ) {
         // gets the mobile format, so that we don't load unwanted images when the respose is turned into a documentFragment
