@@ -269,6 +269,12 @@ define( [ "localized", "core/eventmanager", "core/trackevent", "./editor",
         get: function() {
           return _currentEditor;
         }
+      },
+      editorHelper: {
+        enumerable: true,
+        get: function() {
+          return _editorHelper;
+        }
       }
     });
   }
