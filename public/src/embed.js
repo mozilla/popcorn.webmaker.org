@@ -385,12 +385,13 @@ function init() {
       "ui/resizeHandler",
       "util/mediatypes",
       "analytics",
+      "json!/api/butterconfig",
       "text!layouts/attribution.html",
       "util/accepted-flash",
       "util/accepted-ua",
       "popcorn"
     ],
-    function( URI, LangUtil, Controls, TextboxWrapper, ResizeHandler, MediaUtil, analytics, DEFAULT_LAYOUT_SNIPPETS, FLASH ) {
+    function( URI, LangUtil, Controls, TextboxWrapper, ResizeHandler, MediaUtil, analytics, butterConfig, DEFAULT_LAYOUT_SNIPPETS, FLASH ) {
 
       var __defaultLayouts = LangUtil.domFragment( DEFAULT_LAYOUT_SNIPPETS );
       /**
@@ -448,6 +449,28 @@ function init() {
         branding: qs.branding === "0" ? false : true,
         showinfo: qs.showinfo === "0" ? false : true
       };
+
+      (function() {
+        function onload() {
+          var ga = document.createElement( "script" );
+          ga.type = "text/javascript";
+          ga.async = true;
+
+          ga.addEventListener( "load", function() {
+            analytics.event( "Embed Content Page View", {
+              nonInteraction: true
+            });
+          }, false );
+
+          ga.src = ( "https:" === document.location.protocol ? "https://ssl" : "http://www" ) + ".google-analytics.com/ga.js";
+          document.head.appendChild( ga );
+        }
+
+        var setupScript = document.createElement( "script" );
+        setupScript.addEventListener( "load", onload, false );
+        setupScript.src = butterConfig.user_subdomain + "/dynamic/js/googleanalytics.js";
+        document.head.appendChild( setupScript );
+      })();
 
       resizeHandler.resize();
       window.addEventListener( "resize", resizeHandler.resize, false );
