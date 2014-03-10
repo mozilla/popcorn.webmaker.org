@@ -451,12 +451,25 @@ function init() {
       };
 
       (function() {
-        var ga = document.createElement( "script" );
-        ga.type = "text/javascript";
-        ga.async = true;
-        ga.src = butterConfig.user_subdomain + "/dynamic/js/googleanalytics.js";
-        var s = document.getElementsByTagName( "script" )[ 0 ];
-        s.parentNode.insertBefore( ga, s );
+        function onload() {
+          var ga = document.createElement( "script" );
+          ga.type = "text/javascript";
+          ga.async = true;
+
+          ga.addEventListener( "load", function() {
+            analytics.event( "Embed Content Page View", {
+              nonInteraction: true
+            });
+          }, false );
+
+          ga.src = ( "https:" === document.location.protocol ? "https://ssl" : "http://www" ) + ".google-analytics.com/ga.js";
+          document.head.appendChild( ga );
+        }
+
+        var setupScript = document.createElement( "script" );
+        setupScript.addEventListener( "load", onload, false );
+        setupScript.src = butterConfig.user_subdomain + "/dynamic/js/googleanalytics.js";
+        document.head.appendChild( setupScript );
       })();
 
       resizeHandler.resize();
