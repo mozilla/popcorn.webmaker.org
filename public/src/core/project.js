@@ -405,15 +405,20 @@ define( [ "localized", "core/eventmanager", "core/media", "util/sanitizer" ],
     }
 
     _this.useBackup = function() {
+      // Using backup means we have likely crashed, so we cannot trust any new
+      // data, just previous data saved before the crash.
+      clearInterval( _backupInterval );
+      window.onbeforeunload = null;
+      _backupInterval = -1;
+
       var data = JSON.parse( __butterStorage.getItem( "butter-backup-project" ) );
+      // If we haven't saved a backup then there's no need to use backup on reload
+      if ( !data ) {
+        return;
+      }
       data.useBackup = true;
-      setData( data, function() {
-        // Using backup means we have likely crashed, so we cannot trust any new
-        // data, just previous data saved before the crash.
-        clearInterval( _backupInterval );
-        window.onbeforeunload = null;
-        _backupInterval = -1;
-      });
+
+      setData( data, function() {} );
     };
 
 
