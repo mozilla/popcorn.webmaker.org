@@ -697,8 +697,8 @@ define( [ "localized", "util/lang", "util/uri", "util/xhr", "util/keys", "util/m
         _galleryHeader.innerHTML = _myMediaText;
         _sectionContainers.project.classList.remove( "butter-hidden" );
         _sectionContainers.search.classList.add( "butter-hidden" );
-        _itemContainers[ _currentSearch ].style.display = "none";
-        _itemContainers.project.style.display = "";
+        _itemContainers[ _currentSearch ].classList.add( "butter-hidden" );
+        _itemContainers.project.classList.remove( "butter-hidden" );
 
         // We don't page the gallery items that are tied down to a project.
         pagination( 1, 0, pagingSearchCallback );
@@ -718,8 +718,8 @@ define( [ "localized", "util/lang", "util/uri", "util/xhr", "util/keys", "util/m
 
         _sectionContainers.project.classList.add( "butter-hidden" );
         _sectionContainers.search.classList.remove( "butter-hidden" );
-        _itemContainers[ _currentSearch ].style.display = "";
-        _itemContainers.project.style.display = "none";
+        _itemContainers[ _currentSearch ].classList.remove( "butter-hidden" );
+        _itemContainers.project.classList.add( "butter-hidden" );
         _addBtn.innerHTML = _searchBtnText;
         _galleryHeader.innerHTML = _currentSearch + " " + _resultsText;
 

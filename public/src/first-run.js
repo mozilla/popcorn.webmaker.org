@@ -7,7 +7,7 @@
  *
  * Determines whether or not a user should be shown a first-run dialog
  */
-define( [ "localized", "dialog/dialog", "ui/widget/tooltip" ], function( Localized, Dialog, ToolTip ) {
+define( [ "localized", "dialog/dialog" ], function( Localized, Dialog ) {
 
   var __butterStorage = window.localStorage;
 
@@ -15,29 +15,10 @@ define( [ "localized", "dialog/dialog", "ui/widget/tooltip" ], function( Localiz
     init: function() {
 
       var dialog,
-          mediaTooltip,
           overlayDiv,
           editor = document.querySelector( ".butter-editor-area" ),
           eventsEditorButton = document.querySelector( ".butter-editor-header-popcorn" ),
-          mediaInput = document.querySelector( ".add-media-input" );
-
-      function showFirstRunTooltips() {
-        ToolTip.create({
-          name: "tooltip-media",
-          element: eventsEditorButton,
-          top: "60px",
-          message: Localized.get( "Event editor tooltip" ),
-          hidden: false
-        });
-
-        mediaTooltip = ToolTip.get( "tooltip-media" );
-
-        document.body.addEventListener( "mousedown", function removeTooltips() {
-          mediaTooltip.hidden = true;
-          document.body.removeEventListener( "mousedown", removeTooltips, true );
-        }, true );
-
-      }
+          mediaInput = document.querySelector( ".search-media-input" );
 
       function onDialogClose() {
         // Remove Listeners
@@ -51,9 +32,6 @@ define( [ "localized", "dialog/dialog", "ui/widget/tooltip" ], function( Localiz
 
         // Remove Overlay
         editor.removeChild( overlayDiv );
-
-        // Show First Run Tooltips
-        showFirstRunTooltips();
       }
 
       function closeDialog() {
