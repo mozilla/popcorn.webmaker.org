@@ -1,4 +1,4 @@
-Butter
+Popcorn Maker
 ======
 
 An SDK for authoring Popcorn projects.
@@ -38,7 +38,7 @@ Environment Setup
 2. `cd popcorn.webmaker.org`
 3. `npm install`
 
-Running Butter in development mode
+Running Popcorn Maker in development mode
 ----------------------------------
 
 1. Run `node server`.
