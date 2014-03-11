@@ -144,7 +144,6 @@ app.configure( function() {
       jwplayer_key: config.JWPLAYER_KEY,
       make_endpoint: config.MAKE_ENDPOINT,
       node_hubble_endpoint: config.NODE_HUBBLE_ENDPOINT,
-      user_bar: config.USER_BAR,
       sync_limit: config.SYNC_LIMIT
     },
     languages: i18n.getSupportLanguages()
@@ -268,7 +267,6 @@ app.get( "/api/butterconfig", middleware.crossOrigin, function( req, res ) {
     "make_endpoint": app.locals.config.make_endpoint,
     "node_hubble_endpoint": app.locals.config.node_hubble_endpoint,
     "audiour_endpoint": config.AUDIOUR_ENDPOINT,
-    "user_bar": app.locals.config.user_bar,
     "sync_limit": app.locals.config.sync_limit
   });
 });
@@ -276,7 +274,6 @@ app.get( "/api/butterconfig", middleware.crossOrigin, function( req, res ) {
 // routes to be used in text!
 app.get( "/layouts/header.html", function( req, res ) {
   res.render( "/layouts/header.html", {
-    user_bar: app.locals.config.user_bar,
     audience: app.locals.config.audience,
     togetherjsEnabled: config.TOGETHERJS_ENABLED
   });
