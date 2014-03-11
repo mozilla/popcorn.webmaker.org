@@ -4,7 +4,13 @@
     <meta charset="utf-8">
     <title>{{ gettext("found an error") }}</title>
     <link rel="stylesheet" href="/css/error.css">
-    {% include "googleanalytics.html" %}
+    {% if config.ga_account %}
+    <script id="google-analytics" src="/src/editor/google-analytics.js"
+            data-ga-account="{{ config.ga_account }}"
+            data-ga-domain="{{ config.ga_domain }}"
+            async>
+    </script>
+    {% endif %}
   </head>
   <body>
     <h1>{{status}}</h1>
