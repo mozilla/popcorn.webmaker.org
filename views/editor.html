@@ -55,11 +55,7 @@
     </div>
   </div>
   {% if togetherjsEnabled %}
-    <script type="text/javascript">
-      var TogetherJSConfig = {
-        disableWebRTC: true
-      };
-    </script>
+    <script src="/src/editor/disableWebRTC.js"></script>
     <script src="{{ togetherjs }}/togetherjs-min.js"></script>
   {% endif %}
   <script src="/src/butter.js"></script>
