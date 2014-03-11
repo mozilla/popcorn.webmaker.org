@@ -5,8 +5,8 @@
 define([ "localized", "editor/editor", "editor/base-editor",
           "l10n!/layouts/project-editor.html",
           "util/social-media", "ui/widget/textbox",
-          "ui/widget/tooltip", "ui/widget/ProjectDetails", "editor/editorhelper", "analytics" ],
-  function( Localized, Editor, BaseEditor, LAYOUT_SRC, SocialMedia, TextboxWrapper, ToolTip, ProjectDetails, EditorHelper, analytics ) {
+          "ui/widget/tooltip", "ui/widget/ProjectDetails", "analytics" ],
+  function( Localized, Editor, BaseEditor, LAYOUT_SRC, SocialMedia, TextboxWrapper, ToolTip, ProjectDetails, analytics ) {
 
   Editor.register( "project-editor", LAYOUT_SRC, function( rootElement, butter ) {
 
@@ -42,7 +42,7 @@ define([ "localized", "editor/editor", "editor/base-editor",
         _project,
         _projectTab,
         _projectDetails,
-        _editorHelper = new EditorHelper( butter ),
+        _editorHelper = butter.editor.editorHelper,
         _idx;
 
     _embedSizeHeight.value = _embedHeight;
