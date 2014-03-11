@@ -8,7 +8,8 @@ module.exports = function( req, res ) {
       validMimeTypes = {
         "image/jpeg": ".jpg",
         "image/png": ".png",
-        "image/gif": ".gif"
+        "image/gif": ".gif",
+        "image/svg+xml": ".svg"
       },
       extension = validMimeTypes[ image.headers[ "content-type" ] ] ? validMimeTypes[ image.headers[ "content-type" ] ] : "",
       s3Path = "/user_uploads/" + uuid.v4() + extension;
