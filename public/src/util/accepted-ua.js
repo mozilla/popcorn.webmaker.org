@@ -23,7 +23,7 @@
     "RIM Tablet OS"
   ];
 
-  define([ "../../external/ua-parser/ua-parser", "util/warn", "localized" ],
+  define([ "ua-parser", "util/warn", "localized" ],
          function( UAParser, Warn, Localized ){
 
     // ua-parser uses the current browsers UA by default

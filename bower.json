@@ -7,6 +7,7 @@
     "nav-global": "https://github.com/mozilla/nav-global/archive/v0.1.4.tar.gz",
     "persona-btn": "0.0.6",
     "popcorn-js": "1.5.3",
+    "ua-parser-js": "0.6.2",
     "webmaker-analytics": "0.0.5",
     "webmaker-language-picker": "0.0.15",
     "webmaker-i18n": "https://github.com/mozilla/node-webmaker-i18n/archive/v0.3.11.tar.gz",
