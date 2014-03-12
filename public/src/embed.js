@@ -372,7 +372,8 @@ function init() {
       "text": "../external/require/text",
       "localized": "/static/bower/webmaker-i18n/localized",
       "analytics": "/static/bower/webmaker-analytics/analytics",
-      "jquery": "/static/bower/jquery/jquery.min"
+      "jquery": "/static/bower/jquery/jquery.min",
+      "ua-parser": "/static/bower/ua-parser-js/src/ua-parser.min"
     }
   });
 
