@@ -214,9 +214,15 @@
           // with no actual error, only in the embed...
           return;
         }
-        var jwDiv = document.createElement( "div" );
+        var jwDiv = document.createElement( "div" ),
+            videoElement = document.getElementById( options._clip.media.id );
+
+        if ( !videoElement ) {
+          options.fail();
+          return;
+        }
         // Remove the dead html5 video element.
-        options._container.removeChild( document.getElementById( options._clip.media.id ) );
+        options._container.removeChild( videoElement );
         options._container.appendChild( jwDiv );
         jwDiv.id = Popcorn.guid( "popcorn-jwplayer-" );
         var jwplayer = Popcorn.HTMLJWPlayerVideoElement( jwDiv ),
