@@ -84,7 +84,7 @@ define( [ "localized", "core/logger", "core/eventmanager", "util/uri", "util/acc
             if ( trackEvent.type === "sequencer" ) {
               // Check for flash and display a warning if
               // the media type is a flash player.
-              if ( !_checkedFlashVersion && "YouTube Vimeo SoundCloud".contains( trackEvent.popcornOptions.type ) ) {
+              if ( !_checkedFlashVersion && "YouTube Vimeo SoundCloud".indexOf( trackEvent.popcornOptions.type ) !== -1 ) {
                 _checkedFlashVersion = true;
                 FLASH.warn();
               }
