@@ -354,38 +354,13 @@ define( [ "util/xhr", "util/keys", "localized", "jquery" ], function( XHR, KEYS,
      */
 
     _this.droppable = function( trackEvent, dropContainer ) {
-      dropContainer.addEventListener( "dragover", function( e ) {
-        e.preventDefault();
-        dropContainer.classList.add( "butter-dragover" );
-      }, false );
+      var fileInput = document.createElement( "input" );
+      fileInput.type = "file";
+      fileInput.accept = "image/*";
 
-      dropContainer.addEventListener( "dragleave", function( e ) {
-        e.preventDefault();
-        dropContainer.classList.remove( "butter-dragover" );
-      }, false );
-
-      dropContainer.addEventListener( "mousedown", function( e ) {
-        // Prevent being able to drag the images inside and re drop them
-        e.preventDefault();
-      }, false );
-
-      dropContainer.addEventListener( "drop", function( e ) {
-        var file, fd;
-
-        e.preventDefault();
-        e.stopPropagation();
-
-        dropContainer.classList.remove( "butter-dragover" );
-
-        if ( !e.dataTransfer || !e.dataTransfer.files || !e.dataTransfer.files[ 0 ] ) {
-          butter.dispatch( "droppable-unsupported" );
-          return;
-        }
-
-        file = e.dataTransfer.files[ 0 ];
-        fd = new FormData();
+      function sendFile( file ) {
+        var fd = new FormData();
         fd.append( "image", file );
-
 
         XHR.put( "/api/image", fd, function( data ) {
           if ( !data.error ) {
@@ -405,6 +380,44 @@ define( [ "util/xhr", "util/keys", "localized", "jquery" ], function( XHR, KEYS,
         if ( trackEvent ) {
           butter.editor.editTrackEvent( trackEvent );
         }
+      }
+
+      dropContainer.addEventListener( "dragover", function( e ) {
+        e.preventDefault();
+        dropContainer.classList.add( "butter-dragover" );
+      }, false );
+
+      dropContainer.addEventListener( "dragleave", function( e ) {
+        e.preventDefault();
+        dropContainer.classList.remove( "butter-dragover" );
+      }, false );
+
+      dropContainer.addEventListener( "mousedown", function( e ) {
+        // Prevent being able to drag the images inside and re drop them
+        e.preventDefault();
+      }, false );
+
+      dropContainer.addEventListener( "click", function() {
+        fileInput.click();
+      }, false );
+
+      fileInput.addEventListener( "change", function() {
+        sendFile( fileInput.files[ 0 ] );
+      }, false );
+
+      dropContainer.addEventListener( "drop", function( e ) {
+
+        e.preventDefault();
+        e.stopPropagation();
+
+        dropContainer.classList.remove( "butter-dragover" );
+
+        if ( !e.dataTransfer || !e.dataTransfer.files || !e.dataTransfer.files[ 0 ] ) {
+          butter.dispatch( "droppable-unsupported" );
+          return;
+        }
+
+        sendFile( e.dataTransfer.files[ 0 ] );
       }, false );
     };
 
