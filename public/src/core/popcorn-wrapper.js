@@ -6,13 +6,8 @@
 define( [ "localized", "core/logger", "core/eventmanager", "util/uri", "util/accepted-flash" ],
         function( Localized, Logger, EventManager, URI, FLASH ) {
 
-  // regex to determine the type of player we need to use based on the provided url
-  var __urlRegex = /(?:http:\/\/www\.|http:\/\/|www\.|\.|^)(youtu|vimeo|soundcloud|baseplayer)/;
-
       // how long to wait for the status of something in checkTimeoutLoop
   var STATUS_INTERVAL = 100,
-      // timeout duration to wait for popcorn players to exist
-      PLAYER_WAIT_DURATION = 10000,
       // timeout duration to wait for media to be ready
       MEDIA_WAIT_DURATION = 10000;
 
@@ -29,7 +24,6 @@ define( [ "localized", "core/logger", "core/eventmanager", "util/uri", "util/acc
         _onTimeout = options.timeout || function(){},
         _popcorn,
         _mediaReady = false,
-        _mediaType,
         _interruptLoad = false,
         _this = this,
         _makeVideoURLsUnique = options.makeVideoURLsUnique,
@@ -73,7 +67,6 @@ define( [ "localized", "core/logger", "core/eventmanager", "util/uri", "util/acc
           popcornEvent = null;
 
       function createTrackEvent() {
-
         if ( _popcorn.getTrackEvent( popcornId ) ) {
           _popcorn[ trackEvent.type ]( popcornId, newOptions );
         } else {
@@ -89,6 +82,12 @@ define( [ "localized", "core/logger", "core/eventmanager", "util/uri", "util/acc
         if ( trackEvent.view ) {
           if ( popcornEvent.toString ) {
             if ( trackEvent.type === "sequencer" ) {
+              // Check for flash and display a warning if
+              // the media type is a flash player.
+              if ( !_checkedFlashVersion && "YouTube Vimeo SoundCloud".contains( trackEvent.popcornOptions.type ) ) {
+                _checkedFlashVersion = true;
+                FLASH.warn();
+              }
               if ( !trackEvent.popcornOptions.hidden ) {
                 trackEvent.view.element.classList.add( "sequencer-video" );
                 trackEvent.view.element.classList.remove( "sequencer-audio" );
@@ -113,13 +112,7 @@ define( [ "localized", "core/logger", "core/eventmanager", "util/uri", "util/acc
       if ( _popcorn ) {
         // make sure the plugin is still included
         if ( _popcorn[ trackEvent.type ] ) {
-          if ( trackEvent.type === "sequencer" ) {
-            waitForPopcorn( createTrackEvent, function() {
-              throw "Your media seems to be taking a long time to load. Review your media URL(s) or continue waiting.";
-            }, findMediaType( trackEvent.popcornOptions.source ) );
-          } else {
-            createTrackEvent();
-          }
+          createTrackEvent();
         }
       }
     };
@@ -146,12 +139,6 @@ define( [ "localized", "core/logger", "core/eventmanager", "util/uri", "util/acc
       var urlsFromString;
 
       _mediaReady = false;
-
-      // called when timeout occurs preparing popcorn
-      function popcornTimeoutWrapper( e ) {
-        _interruptLoad = true;
-        _onTimeout( e );
-      }
 
       // called when timeout occurs preparing media
       function mediaTimeoutWrapper( e ) {
@@ -183,9 +170,6 @@ define( [ "localized", "core/logger", "core/eventmanager", "util/uri", "util/acc
         url = urlsFromString;
       }
 
-      // discover and stash the type of media as dictated by the url
-      setMediaType( firstUrl );
-
       // if there isn't a target, we can't really set anything up, so stop here
       if ( !target ) {
         _logger.log( "Warning: tried to prepare media with null target." );
@@ -195,93 +179,21 @@ define( [ "localized", "core/logger", "core/eventmanager", "util/uri", "util/acc
       // only enter this block if popcorn doesn't already exist (call clear() first to destroy it)
       if ( !_popcorn ) {
         try {
-          // make sure popcorn is setup properly: players, etc
-          waitForPopcorn( function(){
-            // construct the correct dom infrastructure if required
-            constructPlayer( target );
-            // generate a function which will create a popcorn instance when entered into the page
-            createPopcorn( generatePopcornString( popcornOptions, url, target, null, callbacks, scripts ) );
-            // once popcorn is created, attach listeners to it to detect state
-            addPopcornHandlers();
-            // wait for the media to become available and notify the user, or timeout
-            waitForMedia( _onPrepare, mediaTimeoutWrapper );
-          }, popcornTimeoutWrapper, _mediaType );
+          // generate a function which will create a popcorn instance when entered into the page
+          createPopcorn( generatePopcornString( popcornOptions, url, target, null, callbacks, scripts ) );
+          // once popcorn is created, attach listeners to it to detect state
+          addPopcornHandlers();
+          // wait for the media to become available and notify the user, or timeout
+          waitForMedia( _onPrepare, mediaTimeoutWrapper );
         }
         catch( e ) {
           // if we've reached here, we have an internal failure in butter or popcorn
           failureWrapper( e );
         }
       }
-
     };
 
-    /* Return the type of media that is going to be used
-     * based on the specified url
-     */
-    function findMediaType( url ){
-      var regexResult = __urlRegex.exec( url ),
-          // if the regex didn't return anything we know it's an HTML5 source
-          mediaType = "object";
-
-      if ( regexResult ) {
-
-        mediaType = regexResult[ 1 ];
-        // our regex only handles youtu ( incase the url looks something like youtu.be )
-        if ( mediaType === "youtu" ) {
-          mediaType = "youtube";
-        }
-
-        if ( !_checkedFlashVersion ) {
-          _checkedFlashVersion = true;
-          FLASH.warn();
-        }
-      }
-      return mediaType;
-    }
-
-    /* Sets the type of media that is going to be used
-     * based on the specified url
-     */
-    function setMediaType( url ) {
-      _mediaType = findMediaType( url );
-      return _mediaType;
-    }
-
-    /* If possible and necessary, reformat the dom to conform to the url type specified
-     * for the media. For example, youtube/vimeo players like <div>'s, not <video>'s to
-     * dwell in.
-     */
-    function constructPlayer( target ){
-      var targetElement = document.getElementById( target );
-
-      if ( _mediaType !== "object" && targetElement ) {
-        if ( [ "VIDEO", "AUDIO" ].indexOf( targetElement.nodeName ) !== -1 ) {
-          var parentNode = targetElement.parentNode,
-              newElement = document.createElement( "div" ),
-              videoAttributes = [ "controls", "preload", "autoplay", "loop", "muted", "poster", "src" ],
-              attributes;
-
-          newElement.id = targetElement.id;
-          attributes = targetElement.attributes;
-          if ( attributes ) {
-            for( var i = attributes.length - 1; i >= 0; i-- ) {
-              var name = attributes[ i ].nodeName;
-              if ( videoAttributes.indexOf( name ) === -1 ) {
-                newElement.setAttribute( name, targetElement.getAttribute( name ) );
-              }
-            }
-          }
-          if ( targetElement.className ) {
-            newElement.className = targetElement.className;
-          }
-          parentNode.replaceChild( newElement, targetElement );
-          newElement.setAttribute( "data-butter", "media" );
-        }
-      }
-    }
-
-    /* Determine which player is needed (usually based on the result of setMediaType)
-     * and create a stringified representation of the Popcorn constructor (usually to
+    /* Create a stringified representation of the Popcorn constructor (usually to
      * insert in a script tag).
      */
     var generatePopcornString = this.generatePopcornString = function( popcornOptions, url, target, method, callbacks, scripts, trackEvents ){
@@ -325,11 +237,6 @@ define( [ "localized", "core/logger", "core/eventmanager", "util/uri", "util/acc
         }
       } //if
 
-      // if the media type hasn't been discovered yet, bail, since it's pointless to continue
-      if ( !_mediaType ) {
-        throw new Error( "Media type not generated yet. Please specify a url for media objects before generating a popcorn string." );
-      }
-
       if ( scripts.init ) {
         popcornString += scripts.init + "\n";
       }
@@ -337,14 +244,8 @@ define( [ "localized", "core/logger", "core/eventmanager", "util/uri", "util/acc
         popcornString += callbacks.init + "();\n";
       }
 
-      // special case for basePlayer, since it doesn't require as much of a harness
-      if ( _mediaType === "baseplayer" ) {
-        popcornString +=  "Popcorn.player( 'baseplayer' );\n" +
-                          "var popcorn = Popcorn.baseplayer( '#" + target + "' " + popcornOptions + " );\n";
-      } else {
-        // just try to use Popcorn.smart to detect/setup video
-        popcornString += "var popcorn = Popcorn.smart( '#" + target + "', " + url + popcornOptions + " );\n";
-      }
+      // just try to use Popcorn.smart to detect/setup video
+      popcornString += "var popcorn = Popcorn.smart( '#" + target + "', " + url + popcornOptions + " );\n";
 
       if ( scripts.beforeEvents ) {
         popcornString += scripts.beforeEvents + "\n";
@@ -476,20 +377,6 @@ define( [ "localized", "core/logger", "core/eventmanager", "util/uri", "util/acc
 
         return _mediaReady;
       }, readyCallback, timeoutCallback, MEDIA_WAIT_DURATION );
-    }
-
-    /* Wait for Popcorn to be set up and to have the required players load (uses
-     * checkTimeoutLoop).
-     */
-    function waitForPopcorn( readyCallback, timeoutCallback, mediaType ) {
-      if ( mediaType !== "object" ) {
-        checkTimeoutLoop(function(){
-          return ( !!window.Popcorn[ mediaType ] );
-        }, readyCallback, timeoutCallback, PLAYER_WAIT_DURATION );
-      }
-      else{
-        readyCallback();
-      }
     }
 
     function onSequencesReady() {
