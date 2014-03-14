@@ -344,6 +344,53 @@ define( [ "util/xhr", "util/keys", "localized", "jquery" ], function( XHR, KEYS,
       }, false );
     };
 
+    function sendFile( file, trackEvent ) {
+      var fd = new FormData();
+      fd.append( "image", file );
+
+      XHR.put( "/api/image", fd, function( data ) {
+        if ( !data.error ) {
+          if ( trackEvent ) {
+            trackEvent.update( { src: data.url, title: file.name } );
+          }
+
+          butter.dispatch( "droppable-succeeded", {
+            url: data.url,
+            trackEvent: trackEvent
+          });
+        } else {
+          butter.dispatch( "droppable-upload-failed", data.error );
+        }
+      });
+
+      if ( trackEvent ) {
+        butter.editor.editTrackEvent( trackEvent );
+      }
+    }
+
+    /**
+     * Member: uploader
+     *
+     * Make a container a file uploader button
+     *
+     * @param {TrackEvent} trackEvent: The trackEvent to update when content changes
+     * @param {DOMElement} dropContainer: The container that listens for the click
+     */
+
+    _this.uploader = function( trackEvent, dropContainer ) {
+      var fileInput = document.createElement( "input" );
+      fileInput.type = "file";
+      fileInput.accept = "image/*";
+
+      dropContainer.addEventListener( "click", function() {
+        fileInput.click();
+      }, false );
+
+      fileInput.addEventListener( "change", function() {
+        sendFile( fileInput.files[ 0 ], trackEvent );
+      }, false );
+    };
+
     /**
      * Member: droppable
      *
@@ -354,33 +401,6 @@ define( [ "util/xhr", "util/keys", "localized", "jquery" ], function( XHR, KEYS,
      */
 
     _this.droppable = function( trackEvent, dropContainer ) {
-      var fileInput = document.createElement( "input" );
-      fileInput.type = "file";
-      fileInput.accept = "image/*";
-
-      function sendFile( file ) {
-        var fd = new FormData();
-        fd.append( "image", file );
-
-        XHR.put( "/api/image", fd, function( data ) {
-          if ( !data.error ) {
-            if ( trackEvent ) {
-              trackEvent.update( { src: data.url, title: file.name } );
-            }
-
-            butter.dispatch( "droppable-succeeded", {
-              url: data.url,
-              trackEvent: trackEvent
-            });
-          } else {
-            butter.dispatch( "droppable-upload-failed", data.error );
-          }
-        });
-
-        if ( trackEvent ) {
-          butter.editor.editTrackEvent( trackEvent );
-        }
-      }
 
       dropContainer.addEventListener( "dragover", function( e ) {
         e.preventDefault();
@@ -397,14 +417,6 @@ define( [ "util/xhr", "util/keys", "localized", "jquery" ], function( XHR, KEYS,
         e.preventDefault();
       }, false );
 
-      dropContainer.addEventListener( "click", function() {
-        fileInput.click();
-      }, false );
-
-      fileInput.addEventListener( "change", function() {
-        sendFile( fileInput.files[ 0 ] );
-      }, false );
-
       dropContainer.addEventListener( "drop", function( e ) {
 
         e.preventDefault();
@@ -417,7 +429,7 @@ define( [ "util/xhr", "util/keys", "localized", "jquery" ], function( XHR, KEYS,
           return;
         }
 
-        sendFile( e.dataTransfer.files[ 0 ] );
+        sendFile( e.dataTransfer.files[ 0 ], trackEvent );
       }, false );
     };
 

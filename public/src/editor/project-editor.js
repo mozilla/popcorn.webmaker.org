@@ -123,6 +123,7 @@ define([ "localized", "editor/editor", "editor/base-editor",
     TextboxWrapper.applyTo( _projectURL, { readOnly: true } );
     TextboxWrapper.applyTo( _projectEmbedURL, { readOnly: true } );
 
+    _editorHelper.uploader( null, _dropArea );
     _editorHelper.droppable( null, _dropArea );
 
     butter.listen( "droppable-unsupported", function unSupported() {
