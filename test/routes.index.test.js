@@ -103,7 +103,7 @@ test("delete project found", function(t) {
       t.equal(res.statusCode, 200, "status code is 200");
       t.equal(res.type, "application/json", "response type is json");
       // wtf was I think when returning error is a good thing?
-      t.equal(res.body.error, "okay", "json returns okay");
+      t.equal(res.body.status, "okay", "json returns okay");
 
       t.end();
     });
@@ -164,7 +164,7 @@ test("create project valid", function(t) {
     .end(function(err, res) {
       t.equal(res.statusCode, 200, "status code is 200");
       t.equal(res.type, "application/json", "response type is json");
-      t.equal(res.body.error, "okay", "status is okay");
+      t.equal(res.body.status, "okay", "status is okay");
       t.ok(res.body.projectId, "id is present");
 
       t.end();
@@ -225,7 +225,7 @@ test("update project valid", function(t) {
     .end(function(err, res) {
       t.equal(res.statusCode, 200, "status code is 200");
       t.equal(res.type, "application/json", "response type is json");
-      t.equal(res.body.error, "okay", "status is okay");
+      t.equal(res.body.status, "okay", "status is okay");
       mockData.data = JSON.stringify(mockData.data);
       t.deepEqual(res.body.project, mockData, "saved data is equal");
 

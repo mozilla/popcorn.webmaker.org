@@ -35,7 +35,7 @@ module.exports = function( req, res, next ) {
       })
       .success( function( projectUpdateResult ) {
         res.json({
-          error: "okay",
+          status: "okay",
           project: projectUpdateResult,
           publishUrl: req.publishUrl,
           iframeUrl: req.iframeUrl
@@ -64,7 +64,7 @@ module.exports = function( req, res, next ) {
         return next( utils.error( 500, error.toString() ) );
       }
       res.json({
-        error: "okay",
+        status: "okay",
         project: project,
         publishUrl: req.publishUrl,
         iframeUrl: req.iframeUrl

@@ -43,12 +43,18 @@ module.exports = function( Project ) {
             metrics.increment( "user.remix" );
           }
 
-          res.json( req.projectJSON );
+          res.json({
+            status: "okay",
+            project: req.projectJSON
+          });
         });
         return;
       }
 
-      res.json( req.projectJSON );
+      res.json({
+        status: "okay",
+        project: req.projectJSON
+      });
     });
   };
 };

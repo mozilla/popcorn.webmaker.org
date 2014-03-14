@@ -21,8 +21,7 @@ module.exports = function( req, res, next ) {
 
     metrics.increment( "project.publish" );
     res.json({
-      error: "okay"
+      status: "okay"
     });
   });
 };
-

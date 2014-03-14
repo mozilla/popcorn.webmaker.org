@@ -929,7 +929,7 @@ window.Butter = {
             var initialMediaSource;
 
             if ( !qs.initialMedia ) {
-              return projectDataReady( savedData );
+              return projectDataReady( savedData.project );
             }
 
             initialMediaSource = decodeURIComponent( qs.initialMedia );
@@ -937,7 +937,7 @@ window.Butter = {
             // If we successfully retrieve data for that initial media we will hand write it
             // into the default project data before the import.
             MediaUtil.getMetaData( initialMediaSource, function onSuccess( data ) {
-              var media = savedData.media[ 0 ],
+              var media = savedData.project.media[ 0 ],
                   track;
 
               if ( media ) {
@@ -972,12 +972,12 @@ window.Butter = {
                     media.clipData[ data.source ] = data;
                   }
 
-                  projectDataReady( savedData );
+                  projectDataReady( savedData.project );
                 }
               }
             },
             function onError() {
-              projectDataReady( savedData );
+              projectDataReady( savedData.project );
             });
           });
         }
@@ -986,11 +986,11 @@ window.Butter = {
         loadFromSavedDataUrl( savedDataUrl, function( savedData ) {
           // if there's no savedData returned, or the returned object does not
           // contain a media attribute, load the config specified saved data
-          if ( !savedData || savedData.error || !savedData.media ) {
+          if ( !savedData || !savedData.project || savedData.error || !savedData.project.media ) {
             return loadConfigDefault();
           }
           // otherwise, attempt import
-          doImport( savedData );
+          doImport( savedData.project );
           finishedCallback( project );
         });
 

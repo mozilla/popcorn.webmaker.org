@@ -458,7 +458,7 @@ define( [ "localized", "core/eventmanager", "core/media", "util/sanitizer" ],
 
       // Don't delete if there is no project.
       if ( !_this.isSaved ) {
-        callback({ error: "okay" });
+        callback({ status: "okay" });
         return;
       }
 
@@ -475,7 +475,7 @@ define( [ "localized", "core/eventmanager", "core/media", "util/sanitizer" ],
 
       // Don't save if there is nothing new to save.
       if ( _this.isSaved ) {
-        callback({ error: "okay" });
+        callback({ status: "okay" });
         return;
       }
 
@@ -500,7 +500,7 @@ define( [ "localized", "core/eventmanager", "core/media", "util/sanitizer" ],
 
         // Save to db
         butter.cornfield.save( _id, projectData, function( e ) {
-          if ( e.error === "okay" ) {
+          if ( e.status === "okay" ) {
             // Since we've now fully saved, blow away autosave backup
             _isSaved = true;
 
@@ -563,13 +563,13 @@ define( [ "localized", "core/eventmanager", "core/media", "util/sanitizer" ],
 
       // Don't publish if already published.
       if ( _this.isPublished ) {
-        callback({ error: "okay" });
+        callback({ status: "okay" });
         return;
       }
 
       // Now Publish and get URLs for embed
       butter.cornfield.publish( _id, function( e ) {
-        if ( e.error === "okay" ) {
+        if ( e.status === "okay" ) {
           // Save + Publish is OK
           _isPublished = true;
         }
@@ -609,4 +609,3 @@ define( [ "localized", "core/eventmanager", "core/media", "util/sanitizer" ],
 
   return Project;
 });
-
