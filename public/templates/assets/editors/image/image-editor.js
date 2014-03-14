@@ -46,6 +46,7 @@
     }
 
     function attachDropHandlers() {
+      __EditorHelper.uploader( _trackEvent, _dropArea );
       __EditorHelper.droppable( _trackEvent, _dropArea );
       butter.listen( "droppable-unsupported", unSupported );
       butter.listen( "droppable-upload-failed", failedUpload );
