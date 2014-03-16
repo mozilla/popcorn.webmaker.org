@@ -45,14 +45,47 @@ module.exports = function( grunt ) {
           }]
         }
       }
+    },
+    lesslint: {
+      src: [
+        "public/css/butter.ui.less",
+        "public/css/embed.less"
+      ],
+      options: {
+        csslint: {
+          "adjoining-classes": false,
+          "box-model": false,
+          "box-sizing": false,
+          "bulletproof-font-face": false,
+          "compatible-vendor-prefixes": false,
+          "duplicate-background-images": false,
+          "fallback-colors": false,
+          "ids": false,
+          "important": false,
+          "outline-none": false,
+          "overqualified-elements": false,
+          "qualified-headings": false,
+          "regex-selectors": false,
+          "star-property-hack": false,
+          "underscore-property-hack": false,
+          "universal-selector": false,
+          "unique-headings": false,
+          "unqualified-attributes": false,
+          "vendor-prefix": false,
+          "zero-units": false
+        }
+      }
     }
   });
 
   grunt.loadNpmTasks( "grunt-contrib-jshint" );
   grunt.loadNpmTasks( "grunt-cssjanus" );
   grunt.loadNpmTasks( "grunt-string-replace" );
+  grunt.loadNpmTasks( "grunt-lesslint" );
 
-  grunt.registerTask( "default", [ "jshint" ] );
+  grunt.registerTask( "default", [ "jshint", "lesslint" ] );
   grunt.registerTask( "build", [ "cssjanus", "string-replace" ]);
 
+
 };
+
