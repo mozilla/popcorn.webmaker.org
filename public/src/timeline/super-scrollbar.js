@@ -9,22 +9,14 @@ define( [ "util/lang", "text!layouts/super-scrollbar.html" ],
   function( LangUtils, SUPER_SCROLLBAR_LAYOUT ) {
 
   var TRACK_PADDING = 1,          // This padding is pixels between track event visuals.
-                                  // This is, in pixels, how close the left and right handles on the
-                                  // viewport can get.
-                                  // TODO: There is a bug I cannot find (yet), to keep this value from working on
-                                  // right handle.
-                                  // Right drag solves this with css min-width that is the same as MIN_WIDTH.
-                                  // min-width only seems to work for right, and not left, so left uses MIN_WIDTH.
-                                  // need one fix for both cases.
-
-      MIN_WIDTH = 5,
+      MIN_WIDTH = 5,              // The smallest the viewport can get.
       ARROW_MIN_WIDTH = 50,       // The arrows have to change position at this point.
       ARROW_MIN_WIDTH_CLASS = "super-scrollbar-small";
 
   return function( outerElement, innerElement, boundsChangedCallback, media ) {
     var _outer = LangUtils.domFragment( SUPER_SCROLLBAR_LAYOUT, "#butter-super-scrollbar-outer-container" ),
         _inner = _outer.querySelector( "#butter-super-scrollbar-inner-container" ),
-        _rect, _duration,
+        _duration,
         _media = media,
         // viewport is the draggable, resizable, representation of the viewable track container.
         _viewPort = _inner.querySelector( "#butter-super-scrollbar-viewport" ),
@@ -36,7 +28,10 @@ define( [ "util/lang", "text!layouts/super-scrollbar.html" ],
         _zoomSlider = _outer.querySelector( ".butter-super-scrollbar-zoom-slider" ),
         _zoomSliderContainer = _outer.querySelector( ".butter-super-scrollbar-zoom-slider-container" ),
         _zoomSliderHandle = _outer.querySelector( ".butter-super-scrollbar-zoom-handle" ),
-        _offset = 0,
+        _leftOffset = 0,
+        _rightOffset = 0,
+        _viewLeft = 0,
+        _viewRight = 0,
         _trackEventVisuals = {},
         _boundsChangedCallback = function( right, width ) {
           if ( width !== -1 ) {
@@ -61,7 +56,6 @@ define( [ "util/lang", "text!layouts/super-scrollbar.html" ],
     };
 
     _this.update = function() {
-      _rect = _inner.getBoundingClientRect();
       checkMinSize();
     };
 
@@ -73,6 +67,7 @@ define( [ "util/lang", "text!layouts/super-scrollbar.html" ],
 
     onViewMouseUp = function( e ) {
       e.stopPropagation();
+      outerElement.addEventListener( "scroll", updateView, false );
       window.removeEventListener( "mouseup", onViewMouseUp, false );
       window.removeEventListener( "mousemove", onViewMouseMove, false );
     };
@@ -95,8 +90,7 @@ define( [ "util/lang", "text!layouts/super-scrollbar.html" ],
       // Stop text selection in chrome.
       e.preventDefault();
       e.stopPropagation();
-      media.currentTime = ( e.clientX - _rect.left ) / _rect.width * _duration;
-      _viewPort.classList.remove( "viewport-transition" );
+      media.currentTime = ( e.clientX - _inner.offsetLeft ) / _inner.clientWidth * _duration;
       window.addEventListener( "mouseup", onElementMouseUp, false );
       window.addEventListener( "mousemove", onElementMouseMove, false );
     };
@@ -105,8 +99,9 @@ define( [ "util/lang", "text!layouts/super-scrollbar.html" ],
       e.stopPropagation();
       // Stop text selection in chrome.
       e.preventDefault();
-      _viewPort.classList.remove( "viewport-transition" );
-      _offset = e.clientX - _rect.left - _viewPort.offsetLeft;
+      outerElement.removeEventListener( "scroll", updateView, false );
+      _leftOffset = e.clientX - _inner.offsetLeft - _viewPort.offsetLeft;
+      _rightOffset = _viewPort.offsetWidth - _leftOffset;
       _media.pause();  // pause the media here to diffuse confusion with scrolling & playing
       window.addEventListener( "mouseup", onViewMouseUp, false );
       window.addEventListener( "mousemove", onViewMouseMove, false );
@@ -117,7 +112,6 @@ define( [ "util/lang", "text!layouts/super-scrollbar.html" ],
       e.preventDefault();
       e.stopPropagation();
       _media.pause();  // pause the media here to diffuse confusion with scrolling & playing
-      _viewPort.classList.remove( "viewport-transition" );
       outerElement.removeEventListener( "scroll", updateView, false );
       window.addEventListener( "mouseup", onLeftMouseUp, false );
       window.addEventListener( "mousemove", onLeftMouseMove, false );
@@ -129,7 +123,6 @@ define( [ "util/lang", "text!layouts/super-scrollbar.html" ],
       e.stopPropagation();
       _media.pause();  // pause the media here to diffuse confusion with scrolling & playing
       outerElement.removeEventListener( "scroll", updateView, false );
-      _viewPort.classList.remove( "viewport-transition" );
       window.addEventListener( "mouseup", onRightMouseUp, false );
       window.addEventListener( "mousemove", onRightMouseMove, false );
     };
@@ -137,13 +130,29 @@ define( [ "util/lang", "text!layouts/super-scrollbar.html" ],
     onElementMouseMove = function( e ) {
       e.preventDefault();
       e.stopPropagation();
-      media.currentTime = ( e.clientX - _rect.left ) / _rect.width * _duration;
+      media.currentTime = ( e.clientX - _inner.offsetLeft ) / _inner.clientWidth * _duration;
     };
 
     onViewMouseMove = function( e ) {
       e.preventDefault();
       e.stopPropagation();
-      _boundsChangedCallback( Math.max( 0, ( e.clientX - _rect.left - _offset ) ) / _rect.width, -1 );
+      var thisLeft = ( e.clientX - _inner.offsetLeft - _leftOffset ) / _inner.clientWidth,
+          thisRight = ( _inner.clientWidth - ( e.clientX - _inner.offsetLeft + _rightOffset ) ) / _inner.clientWidth;
+
+      if ( thisLeft < 0 ) {
+        thisLeft = 0;
+        thisRight = ( _inner.clientWidth - _viewPort.offsetWidth ) / _inner.clientWidth;
+      } else if ( thisRight < 0 ) {
+        thisRight = 0;
+        thisLeft = _viewPort.offsetLeft / _inner.clientWidth;
+      }
+
+      _viewLeft = thisLeft;
+      _viewRight = thisRight;
+
+      _viewPort.style.left = _viewLeft * 100 + "%";
+      _viewPort.style.right = _viewRight * 100 + "%";
+      _boundsChangedCallback( _viewLeft, -1 );
     };
 
     onLeftMouseMove = function( e ) {
@@ -151,20 +160,20 @@ define( [ "util/lang", "text!layouts/super-scrollbar.html" ],
       e.stopPropagation();
 
       // position is from the left of the container, to the left of the viewport.
-      var position = e.clientX - _rect.left;
+      var position = e.clientX - _inner.offsetLeft,
+          rightBound = ( _viewLeft * _inner.clientWidth ) + _viewPort.clientWidth;
 
       // make sure we never go out of bounds.
       if ( position < 0 ) {
         position = 0;
       }
-
       // make sure left never goes over right.
-      if ( position + MIN_WIDTH > _viewPort.offsetLeft + _viewPort.clientWidth ) {
-        position = _viewPort.offsetLeft + _viewPort.clientWidth - MIN_WIDTH;
+      if ( position + MIN_WIDTH > rightBound ) {
+        position = rightBound - MIN_WIDTH;
       }
-
-      _viewPort.style.left = position / _rect.width * 100 + "%";
-      _boundsChangedCallback( _viewPort.offsetLeft / _rect.width, _viewPort.offsetWidth / _rect.width );
+      _viewLeft = position / _inner.clientWidth;
+      _viewPort.style.left = _viewLeft * 100 + "%";
+      _boundsChangedCallback( _viewLeft, _viewPort.offsetWidth / _inner.clientWidth );
     };
 
     onRightMouseMove = function( e ) {
@@ -172,20 +181,27 @@ define( [ "util/lang", "text!layouts/super-scrollbar.html" ],
       e.stopPropagation();
 
       // position is from the right of the container, to the right of the viewport.
-      var position = _rect.width - ( e.clientX - _rect.left );
+      var position = _inner.clientWidth - ( e.clientX - _inner.offsetLeft ),
+          leftBound = ( _viewRight * _inner.clientWidth ) + _viewPort.clientWidth;
 
       // make sure we never go out of bounds.
       if ( position < 0 ) {
         position = 0;
       }
-
-      _viewPort.style.right = position / _rect.width * 100 + "%";
-      _boundsChangedCallback( _viewPort.offsetLeft / _rect.width, _viewPort.offsetWidth / _rect.width );
+      // make sure right never goes over left.
+      if ( position + MIN_WIDTH > leftBound ) {
+        position = leftBound - MIN_WIDTH;
+      }
+      _viewRight = position / _inner.clientWidth;
+      _viewPort.style.right = _viewRight * 100 + "%";
+      _boundsChangedCallback( _viewLeft, _viewPort.offsetWidth / _inner.clientWidth );
     };
 
     updateView = function() {
-      _viewPort.style.left = outerElement.scrollLeft / innerElement.offsetWidth * 100 + "%";
-      _viewPort.style.right = ( 1 - ( outerElement.scrollLeft + outerElement.offsetWidth ) / innerElement.offsetWidth ) * 100 + "%";
+      _viewLeft = outerElement.scrollLeft / innerElement.offsetWidth;
+      _viewPort.style.left = _viewLeft * 100 + "%";
+      _viewRight = 1 - ( outerElement.scrollLeft + outerElement.clientWidth ) / innerElement.offsetWidth;
+      _viewPort.style.right = _viewRight * 100 + "%";
     };
 
     _inner.addEventListener( "mousedown", onElementMouseDown, false );
@@ -212,41 +228,69 @@ define( [ "util/lang", "text!layouts/super-scrollbar.html" ],
      */
     function scaleViewPort( scale ) {
 
-      var viewWidth = _viewPort.clientWidth,
+      var viewWidth = _viewPort.offsetWidth,
           viewLeft = _viewPort.offsetLeft,
-          rectWidth = _rect.width,
+          rectWidth = _inner.clientWidth,
+          scrubberLeft = _scrubber.offsetLeft,
           oldScale = viewWidth / rectWidth,
           scaleDiff = oldScale - scale,
-          halfScale = scaleDiff / 2,
-          pixelGrowth = halfScale * rectWidth,
-          rightPosition,
-          leftPosition;
+          halfScale = scaleDiff * 0.5,
+          pixelGrowth = Math.abs( scaleDiff * rectWidth ),
+          leftScale = halfScale,
+          rightScale = halfScale,
+          leftSide = scrubberLeft - viewLeft,
+          rightSide = viewWidth - leftSide;
 
       // make sure our growth is at least a pixel on either side.
-      if ( ( pixelGrowth > -1 && pixelGrowth < 1 ) ) {
+      if ( pixelGrowth < 1 ) {
         return;
       }
 
-      rightPosition = ( 1 - ( ( viewLeft + viewWidth ) / rectWidth ) ) + halfScale;
-      leftPosition = ( viewLeft / rectWidth ) + halfScale;
+     // The scrubber is in the viewport
+     if ( scrubberLeft >= viewLeft && scrubberLeft <= viewLeft + viewWidth ) {
 
-      if ( rightPosition < 0 ) {
-        leftPosition += rightPosition;
-        rightPosition = 0;
+       // If we're zooming in, we're already modifying the large side.
+       // However, if we're zooming out, instead modify the small side
+       if ( scaleDiff < 0 ) {
+         rightSide = scrubberLeft - viewLeft;
+         leftSide = viewWidth - rightSide;
+       }
+
+       // The scrubber is close to the middle, modify both sides smoothly.
+       if ( Math.abs( leftSide - rightSide ) <= pixelGrowth  ) {
+         leftScale = scaleDiff * ( leftSide / viewWidth );
+         rightScale = scaleDiff * ( rightSide / viewWidth );
+       } else {
+
+         if ( leftSide > rightSide ) {
+           leftScale += rightScale;
+           rightScale = 0;
+         } else if ( rightSide > leftSide ) {
+           rightScale += leftScale;
+           leftScale = 0;
+         }
+       }
+     }
+
+      _viewRight += rightScale;
+      _viewLeft += leftScale;
+
+      if ( _viewRight < 0 ) {
+        _viewLeft += _viewRight;
+        _viewRight = 0;
       }
-      if ( leftPosition < 0 ) {
-        rightPosition += leftPosition;
-        leftPosition = 0;
+      if ( _viewLeft < 0 ) {
+        _viewRight += _viewLeft;
+        _viewLeft = 0;
       }
 
-      _viewPort.style.right = rightPosition * 100 + "%";
-      _viewPort.style.left = leftPosition * 100 + "%";
-
-      _boundsChangedCallback( leftPosition, scale );
+      _viewPort.style.right = _viewRight * 100 + "%";
+      _viewPort.style.left = _viewLeft * 100 + "%";
+      _boundsChangedCallback( _viewLeft, scale );
     }
 
     function zoomSliderMouseUp() {
-      _viewPort.classList.remove( "viewport-transition" );
+      outerElement.addEventListener( "scroll", updateView, false );
       window.removeEventListener( "mouseup", zoomSliderMouseUp, false );
       window.removeEventListener( "mousemove", zoomSliderMouseMove, false );
       _zoomSliderContainer.addEventListener( "mousedown", zoomSliderContainerMouseDown, false );
@@ -268,8 +312,8 @@ define( [ "util/lang", "text!layouts/super-scrollbar.html" ],
         position = _zoomSlider.offsetWidth;
       }
       scale = position / _zoomSlider.offsetWidth;
-      if ( scale * _rect.width < MIN_WIDTH ) {
-        scale = MIN_WIDTH / _rect.width;
+      if ( scale * _inner.clientWidth < MIN_WIDTH ) {
+        scale = MIN_WIDTH / _inner.clientWidth;
       }
       scaleViewPort( scale );
       _zoomSliderHandle.style.right = position / _zoomSlider.offsetWidth * 100 + "%";
@@ -278,7 +322,7 @@ define( [ "util/lang", "text!layouts/super-scrollbar.html" ],
     function zoomSliderContainerMouseDown( e ) {
       // Stop text selection in chrome.
       e.preventDefault();
-      _viewPort.classList.add( "viewport-transition" );
+      outerElement.removeEventListener( "scroll", updateView, false );
       updateZoomSlider( e );
       _zoomSliderHandle.removeEventListener( "mousedown", zoomSliderHanldeMouseDown, false );
       _zoomSliderContainer.removeEventListener( "mousedown", zoomSliderContainerMouseDown, false );
@@ -289,7 +333,7 @@ define( [ "util/lang", "text!layouts/super-scrollbar.html" ],
     function zoomSliderHanldeMouseDown( e ) {
       // Stop text selection in chrome.
       e.preventDefault();
-      _viewPort.classList.add( "viewport-transition" );
+      outerElement.removeEventListener( "scroll", updateView, false );
       _zoomSliderHandle.removeEventListener( "mousedown", zoomSliderHanldeMouseDown, false );
       _zoomSliderContainer.removeEventListener( "mousedown", zoomSliderContainerMouseDown, false );
       window.addEventListener( "mousemove", zoomSliderMouseMove, false );
@@ -368,11 +412,12 @@ define( [ "util/lang", "text!layouts/super-scrollbar.html" ],
     _media.listen( "mediaready", function( e ) {
       _duration = e.target.duration;
       updateView();
+      checkMinSize();
     });
 
     _this.resize = function() {
       _this.update();
-      _boundsChangedCallback( _viewPort.offsetLeft / _rect.width, _viewPort.offsetWidth / _rect.width );
+      _boundsChangedCallback( _viewPort.offsetLeft / _inner.clientWidth, _viewPort.offsetWidth / _inner.clientWidth );
     };
 
     Object.defineProperties( this, {
