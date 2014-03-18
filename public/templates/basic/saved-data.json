@@ -17,5 +17,6 @@
             "trackEvents": []
             }]
     }],
-    "template": "basic"
+    "template": "basic",
+    "tags": [ "popcorn" ]
 }
