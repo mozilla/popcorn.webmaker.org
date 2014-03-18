@@ -111,7 +111,7 @@
     "webmaker-mediasync": "https://github.com/mozilla/webmaker-mediasync/tarball/v0.1.28"
   },
   "optionalDependencies": {
-    "node-statsd": "https://github.com/sivy/node-statsd.git#d6997fff",
+    "node-statsd": "0.0.7",
     "sqlite3": "2.1.17"
   },
   "devDependencies": {
