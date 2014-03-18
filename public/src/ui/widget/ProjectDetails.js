@@ -215,11 +215,6 @@ define( [ "util/keys", "ui/widget/tooltip", "localized", "ui/widget/textbox",
              _currentTags.length !== _butter.project.tags.length ) {
           var tags = _butter.project.tags;
 
-          // Default a single tag "popcorn" to be present on new projects.
-          if ( !tags.length ) {
-            tags = "popcorn";
-          }
-
           ul.innerHTML = "";
           _currentTags = [];
 
