@@ -343,7 +343,7 @@ define( [ "localized", "util/uri", "util/xhr", "json!/api/butterconfig", "jquery
           }
           successOptions.contentType = errorOptions.contentType = contentType;
 
-          if ( contentType.indexOf( "video" ) === 0 ) {
+          if ( contentType.indexOf( "video" ) === 0 || contentType.indexOf( "application/octet-stream" ) === 0 ) {
             mediaElem = document.createElement( "video" );
           } else if ( contentType.indexOf( "audio" ) === 0 || contentType.indexOf( "application/ogg" ) === 0 ) {
             mediaElem = document.createElement( "audio" );
