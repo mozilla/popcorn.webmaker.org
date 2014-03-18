@@ -198,18 +198,31 @@ define([ "localized", "editor/editor", "editor/base-editor",
     butter.listen( "projectchanged", onProjectChanged );
     butter.listen( "logout", onLogout );
 
+    _project = butter.project;
+
+    _projectDetails = new ProjectDetails( butter );
+    _projectDetails.title( _settingsContainer );
+    _projectDetails.tags( _settingsContainer );
+    _projectDetails.thumbnail( _settingsContainer, _dropArea );
+    _projectDetails.description( _settingsContainer );
+    _projectDetails.searchableCheckbox( _settingsContainer );
+    _projectDetails.updateTitle();
+
+    _previewBtn.onclick = function() {
+      if ( _project.isSaved && butter.cornfield.authenticated() ) {
+        analytics.event( "Preview", {
+          label: "editor"
+        });
+        return true;
+      }
+      return false;
+    };
+    _viewSourceBtn.onclick = function() {
+      return _project.isSaved && butter.cornfield.authenticated();
+    };
+
     Editor.BaseEditor.extend( this, butter, rootElement, {
       open: function() {
-        _project = butter.project;
-
-        this.attachColorChangeHandler( _colorContainer, null, "background", function( te, options, message ) {
-          if ( message ) {
-            _this.setErrorState( message );
-            return;
-          } else {
-            _project.background = options.background;
-          }
-        });
 
         _previewBtn.href = _projectURL.value = _project.publishUrl || "";
         if ( !_project.isSaved ) {
@@ -229,33 +242,21 @@ define([ "localized", "editor/editor", "editor/base-editor",
           onLogout();
         }
 
-        _projectDetails = new ProjectDetails( butter );
-        _projectDetails.title( _settingsContainer );
-        _projectDetails.tags( _settingsContainer );
-        _projectDetails.thumbnail( _settingsContainer, _dropArea );
-        _projectDetails.description( _settingsContainer );
-        _projectDetails.searchableCheckbox( _settingsContainer );
-        _projectDetails.updateTitle();
-
-        _previewBtn.onclick = function() {
-          if ( _project.isSaved && butter.cornfield.authenticated() ) {
-            analytics.event( "Preview", {
-              label: "editor"
-            });
-            return true;
-          }
-          return false;
-        };
-        _viewSourceBtn.onclick = function() {
-          return _project.isSaved && butter.cornfield.authenticated();
-        };
-
         shareProject();
 
         _this.scrollbar.update();
 
       },
       close: function() {
+      }
+    });
+
+    this.attachColorChangeHandler( _colorContainer, null, "background", function( te, options, message ) {
+      if ( message ) {
+        _this.setErrorState( message );
+        return;
+      } else {
+        _project.background = options.background;
       }
     });
   }, true );
