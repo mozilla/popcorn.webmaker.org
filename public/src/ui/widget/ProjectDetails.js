@@ -160,6 +160,7 @@ define( [ "util/keys", "ui/widget/tooltip", "localized", "ui/widget/textbox",
 
         function blurCallback( e ) {
           addTags( encodeURIComponent( e.target.value ) );
+          input.value = "";
         }
 
         $( input ).autocomplete({
