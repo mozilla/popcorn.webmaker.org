@@ -200,11 +200,23 @@ window.Butter = {
           var playWhenReady = false;
 
           if ( popcornOptions.source ) {
-            popcornOptions.source = URI.makeUnique( popcornOptions.source ).toString();
+            if ( typeof popcornOptions.source === "string" ) {
+              popcornOptions.source = URI.makeUnique( popcornOptions.source ).toString();
+            } else {
+              for ( var i = 0; i < popcornOptions.source.length; i++ ) {
+                popcornOptions.source[ i ] = URI.makeUnique( popcornOptions.source[ i ] ).toString();
+              }
+            }
           }
 
           if ( popcornOptions.fallback ) {
-            popcornOptions.fallback = URI.makeUnique( popcornOptions.fallback ).toString();
+            if ( typeof popcornOptions.fallback === "string" ) {
+              popcornOptions.fallback = URI.makeUnique( popcornOptions.source ).toString();
+            } else {
+              for ( var j = 0; j < popcornOptions.fallback.length; j++ ) {
+                popcornOptions.fallback[ j ] = URI.makeUnique( popcornOptions.fallback[ j ] ).toString();
+              }
+            }
           }
 
           if ( end > _currentMedia.duration ) {
