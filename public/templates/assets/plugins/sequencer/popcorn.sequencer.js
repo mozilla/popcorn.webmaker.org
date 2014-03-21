@@ -526,7 +526,11 @@
           options.volume = updates.volume;
           options._volumeEvent();
         }
-        options._setClipCurrentTime();
+        if ( updates.hasOwnProperty( "from" ) ||
+             updates.hasOwnProperty( "start" ) ||
+             updates.hasOwnProperty( "end" ) ) {
+          options._setClipCurrentTime();
+        }
       }
     },
     _teardown: function( options ) {
