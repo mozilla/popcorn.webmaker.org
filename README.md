@@ -69,7 +69,7 @@ The default server configuration can be found in [lib/default-config.js](lib/def
 #### Configuration Options
 
   - `PORT` the port to bind the server to
-  - `hostname` the hostname for the server (e.g., `http://localhost:8888`, `https://popcorn.webmaker.org`). **This must match your browser's address bar otherwise Persona login will not work**
+  - `APP_HOSTNAME` the hostname for the server (e.g., `http://localhost:8888`, `https://popcorn.webmaker.org`). **This must match your browser's address bar otherwise Persona login will not work**
   - `logger` settings for server logging
     - `format` the logging format to use.  Possible values include: default, short, tiny, dev.
   - `session` settings for user sessions
@@ -79,7 +79,7 @@ The default server configuration can be found in [lib/default-config.js](lib/def
   - `dirs` settings for various directories, paths, hostnames
     - `wwwRoot` the server's WWW root directory (e.g., `../`)
     - `templates` the location of templates (e.g., `../templates`)
-    - `embedHostname` *[optional]* the hostname URL where published embed documents are stored, if different from `hostname` (e.g., `http://s3.amazonaws.com/your-bucket`)
+    - `embedHostname` *[optional]* the hostname URL where published embed documents are stored, if different from `APP_HOSTNAME` (e.g., `http://s3.amazonaws.com/your-bucket`)
   - `templates` list of templates to serve.  The format is as follows:
     `<template-name>`: `{{templateBase}}<path/to/template/config.json>`.  The `{{templateBase}}` string will be replaced by the value in `dirs.templates` (e.g., "basic": "{{templateBase}}basic/config.json")
 
@@ -120,7 +120,7 @@ The `fileStore` type is used to setup a backend for storing data:
 
    - `type` the type of file store to use.  Possible values include `local` (i.e., local file system) and `s3` (i.e., Amazon S3)
    - `options` options for the file store, which depends on the type chosen.
-      - `hostname` the hostname to use for constructing urls if different than `embedHostname`
+      - `APP_HOSTNAME` the hostname to use for constructing urls if different than `embedHostname`
       - local options
          - `root` the root directory under which all exported files are placed (e.g., `./view`)
          - `namePrefix` *[optional]* the path prefix to add to any filenames passed to the local file store.  For example, if using "v" all filenames will become "v/<key>"
