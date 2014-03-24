@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html lang="{{localeInfo.lang}}" dir="{{localeInfo.direction}}">
 <head>
-  <title>{{ gettext("Popcorn Maker") }}</title>
   <meta charset="utf-8">
+  {{ newrelic.getBrowserTimingHeader() | safe }}
+  <title>{{ gettext("Popcorn Maker") }}</title>
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <meta name="viewport" content="width=device-width">
   <meta name="csrf-token" content="{{csrf}}">

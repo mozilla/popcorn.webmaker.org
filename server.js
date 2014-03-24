@@ -1,6 +1,13 @@
 // Newrelic *must* be the first module loaded. Do not move this require module!
-if ( process.env.NEW_RELIC_HOME ) {
-  require( "newrelic" );
+var newrelic;
+if ( process.env.NEW_RELIC_ENABLED ) {
+  newrelic = require( "newrelic" );
+} else {
+  newrelic = {
+    getBrowserTimingHeader: function () {
+      return "<!-- New Relic RUM disabled -->";
+    }
+  };
 }
 
 var express = require( "express" ),
@@ -146,7 +153,8 @@ app.configure( function() {
       node_hubble_endpoint: config.NODE_HUBBLE_ENDPOINT,
       sync_limit: config.SYNC_LIMIT
     },
-    languages: i18n.getSupportLanguages()
+    languages: i18n.getSupportLanguages(),
+    newrelic: newrelic
   });
 
   app.use(function (req, res, next) {
