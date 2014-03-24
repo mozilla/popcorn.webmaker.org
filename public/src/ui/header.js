@@ -106,7 +106,7 @@ define([ "languages", "localized", "dialog/dialog", "util/lang", "l10n!/layouts/
 
       // Check box decides save or publish, for now, save then publish in afterSave...
       butter.project.save(function( e ) {
-        if ( e.error === "okay" ) {
+        if ( e.status === "okay" ) {
           afterSave();
           return;
         } else {
@@ -191,7 +191,7 @@ define([ "languages", "localized", "dialog/dialog", "util/lang", "l10n!/layouts/
             callback: function() {
               butter.project.remove(function( e ) {
 
-                if ( e.error === "okay" ) {
+                if ( e.status === "okay" ) {
                   window.onbeforeunload = null;
                   window.history.replaceState( {}, "", "/" + Localized.getCurrentLang() + "/editor/" );
                   window.location.reload();
