@@ -2,6 +2,7 @@
 <html lang="{{localeInfo.lang}}" dir="{{localeInfo.direction}}">
   <head>
     <meta charset="utf-8">
+    {{ newrelic.getBrowserTimingHeader() | safe }}
     <title>{{ gettext("found an error") }}</title>
     <link rel="stylesheet" href="/css/error.css">
     {% if config.ga_account %}
