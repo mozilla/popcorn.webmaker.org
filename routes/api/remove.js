@@ -45,7 +45,7 @@ module.exports = function( req, res, next ) {
       }
 
       metrics.increment( "project.delete.success" );
-      res.json( { error: "okay" }, 200 );
+      res.json( { status: "okay" }, 200 );
     });
   })
   .error(function( err ) {
@@ -53,4 +53,3 @@ module.exports = function( req, res, next ) {
     next( utils.error( 500, err.toString() ) );
   });
 };
-
