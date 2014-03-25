@@ -79,7 +79,7 @@
 }
 
 #butter-super-scrollbar-visuals {
-  margin-top: 7px;
+  margin-top: 4px;
   height: 100%;
   width: 100%;
   position: absolute;
@@ -88,26 +88,9 @@
 #butter-super-scrollbar-viewport {
   .gradient( "vertical", fade( #FFF, 65% ), fade( #FFF, 20% ), true );
   cursor: move;
-  height: 25px;
+  height: 22px;
   position: absolute;
-  top: 2px;
-  min-width: 5px;
-  &.viewport-transition {
-    .transition( left 0.1s linear, right 0.1s linear );
-  }
-  &:before {
-    content: "";
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    top: -3px;
-    bottom: -3px;
-    left: -3px;
-    display: block;
-    border: 4px solid #FFF;
-    z-index: 1;
-    box-shadow: 0 2px 2px 0 rgba( 0, 0, 0, 0.2 ) inset, 0 0 0 1px @baseLightOutline;
-  }
+  top: 4px;
 }
 
 .butter-super-scrollbar-trackevent {
@@ -115,6 +98,17 @@
   height: 3px;
   position: absolute;
   z-index: 1;
+}
+
+.butter-super-scrollbar-border {
+  border: 4px solid #FFF;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  z-index: 1;
+  top: -4px;
+  left: -4px;
+  box-shadow: 0 2px 2px 0 rgba( 0, 0, 0, 0.2 ) inset, 0 0 0 1px @baseLightOutline;
 }
 
 .butter-super-scrollbar-handle {
@@ -152,7 +146,7 @@
 }
 
 #butter-super-scrollbar-handle-left {
-  left: -8px;
+  left: -9px;
   .butter-super-arrow {
     left: 0;
     &:after {
@@ -162,7 +156,7 @@
 }
 
 #butter-super-scrollbar-handle-right {
-  right: -10px;
+  right: -9px;
   .butter-super-arrow {
     right: 0;
     &:after {
