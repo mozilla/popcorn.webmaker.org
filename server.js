@@ -1,6 +1,6 @@
 // Newrelic *must* be the first module loaded. Do not move this require module!
 var newrelic;
-if ( process.env.NEW_RELIC_ENABLED ) {
+if ( process.env.NEW_RELIC_HOME ) {
   newrelic = require( "newrelic" );
 } else {
   newrelic = {
