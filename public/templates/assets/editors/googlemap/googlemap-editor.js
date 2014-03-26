@@ -5,7 +5,7 @@
 /*globals google*/
 ( function( Butter ) {
 
-  Butter.Editor.register( "googlemap", "load!{{baseDir}}templates/assets/editors/googlemap/googlemap-editor.html",
+  Butter.Editor.register( "googlemap", "load!{{baseDir}}plugins/googlemap-editor.html",
     function( rootElement, butter ) {
 
     var _this = this;

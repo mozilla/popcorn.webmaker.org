@@ -4,7 +4,7 @@
 
 ( function( Butter ) {
 
-  Butter.Editor.register( "sketchfab", "load!{{baseDir}}templates/assets/editors/sketchfab/sketchfab-editor.html",
+  Butter.Editor.register( "sketchfab", "load!{{baseDir}}plugins/sketchfab-editor.html",
     function( rootElement, butter ) {
 
     var _this = this;

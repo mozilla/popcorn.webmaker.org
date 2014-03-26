@@ -4,7 +4,7 @@
 
 (function( Butter ) {
 
-  Butter.Editor.register( "wikipedia", "load!{{baseDir}}templates/assets/editors/wikipedia/wikipedia-editor.html",
+  Butter.Editor.register( "wikipedia", "load!{{baseDir}}plugins/wikipedia-editor.html",
     function( rootElement, butter ) {
 
     var _this = this;
