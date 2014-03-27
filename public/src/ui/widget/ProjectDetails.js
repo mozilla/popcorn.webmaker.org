@@ -146,7 +146,6 @@ define( [ "util/keys", "ui/widget/tooltip", "localized", "ui/widget/textbox",
                   li = document.createElement( "li" );
 
               _currentTags.push( val );
-
               if ( !addFromOpen ) {
                 currentProjectTags.push( val );
                 _butter.project.tags = checkTags( currentProjectTags.join( "," ) );
@@ -202,7 +201,7 @@ define( [ "util/keys", "ui/widget/tooltip", "localized", "ui/widget/textbox",
         ul.addEventListener( "click", function( e ) {
           if ( e.target.tagName === "LI" ) {
             var target = e.target,
-                tag = target.value;
+                tag = target.textContent;
 
             // Remove from tags array
             var i = _currentTags.indexOf( tag );
