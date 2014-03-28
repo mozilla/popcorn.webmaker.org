@@ -4,7 +4,7 @@
 
 (function( Butter ) {
 
-  Butter.Editor.register( "popup", "load!{{baseDir}}templates/assets/editors/popup/popup-editor.html",
+  Butter.Editor.register( "popup", "load!{{baseDir}}plugins/popup-editor.html",
     function( rootElement, butter ) {
 
     var _this = this;

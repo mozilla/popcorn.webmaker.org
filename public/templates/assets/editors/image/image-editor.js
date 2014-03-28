@@ -8,7 +8,7 @@
 
   var __EditorHelper;
 
-  Editor.register( "image", "load!{{baseDir}}templates/assets/editors/image/image-editor.html",
+  Editor.register( "image", "load!{{baseDir}}plugins/image-editor.html",
                    function( rootElement, butter, compiledLayout ) {
 
     var _rootElement = rootElement,

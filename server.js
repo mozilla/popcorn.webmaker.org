@@ -287,30 +287,7 @@ app.get( "/layouts/header.html", function( req, res ) {
   });
 });
 
-app.get( "/layouts/status-area.html", routes.path( "/layouts/status-area.html" ) );
-app.get( "/layouts/media-editor.html", routes.path( "/layouts/media-editor.html" ) );
-app.get( "/layouts/media-instance.html", routes.path( "/layouts/media-instance.html" ) );
-app.get( "/layouts/project-editor.html", routes.path( "/layouts/project-editor.html" ) );
-app.get( "/layouts/editor-area.html", routes.path( "/layouts/editor-area.html" ) );
-app.get( "/layouts/plugin-list-editor.html", routes.path( "/layouts/plugin-list-editor.html" ) );
-app.get( "/layouts/sequencer-editor.html", routes.path( "/layouts/sequencer-editor.html" ) );
-app.get( "/layouts/trackevent-editor-defaults.html", routes.path( "/layouts/trackevent-editor-defaults.html" ) );
-app.get( "/dialog/dialogs/backup.html", routes.path( "/dialog/dialogs/backup.html" ) );
-app.get( "/dialog/dialogs/crash.html", routes.path( "/dialog/dialogs/crash.html" ) );
-app.get( "/dialog/dialogs/delete-track-events.html", routes.path( "/dialog/dialogs/delete-track-events.html" ) );
-app.get( "/dialog/dialogs/delete-track.html", routes.path( "/dialog/dialogs/delete-track.html" ) );
-app.get( "/dialog/dialogs/error-message.html", routes.path( "/dialog/dialogs/error-message.html" ) );
-app.get( "/dialog/dialogs/feedback.html", routes.path( "/dialog/dialogs/feedback.html" ) );
-app.get( "/dialog/dialogs/first-run.html", routes.path( "/dialog/dialogs/first-run.html" ) );
-app.get( "/dialog/dialogs/track-data.html", routes.path( "/dialog/dialogs/track-data.html" ) );
-app.get( "/dialog/dialogs/remove-project.html", routes.path( "/dialog/dialogs/remove-project.html" ) );
-app.get( "/editors/default.html", routes.path( "/editor/default.html" ) );
-app.get( "/templates/assets/editors/googlemap/googlemap-editor.html", routes.path( "/plugins/googlemap-editor.html" ) );
-app.get( "/templates/assets/editors/popup/popup-editor.html", routes.path( "/plugins/popup-editor.html" ) );
-app.get( "/templates/assets/editors/image/image-editor.html", routes.path( "/plugins/image-editor.html" ) );
-app.get( "/templates/assets/editors/text/text-editor.html", routes.path( "/plugins/text-editor.html" ) );
-app.get( "/templates/assets/editors/wikipedia/wikipedia-editor.html", routes.path( "/plugins/wikipedia-editor.html" ) );
-app.get( "/templates/assets/editors/sketchfab/sketchfab-editor.html", routes.path( "/plugins/sketchfab-editor.html" ) );
+routes.overrides( app );
 
 // Localized Strings
 app.get( "/strings/:lang?", middleware.crossOrigin, i18n.stringsRoute( "en-US" ) );
