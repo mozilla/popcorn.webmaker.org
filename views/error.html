@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     {{ newrelic.getBrowserTimingHeader() | safe }}
-    <title>{{ gettext("found an error") }}</title>
+    <title>{{ foundAnError }}</title>
     <link rel="stylesheet" href="/css/error.css">
     {% if config.ga_account %}
     <script id="google-analytics" src="/src/editor/google-analytics.js"
@@ -14,8 +14,8 @@
     {% endif %}
   </head>
   <body>
-    <h1>{{status}}</h1>
-    <h2>{{message}}</h2>
-    <p>{{ gettext("Go back to the homepage") | instantiate }}</p>
+    <h1>{{ status }}</h1>
+    <h2>{{ message }}</h2>
+    <p>{{ errMessage | instantiate }}</p>
   </body>
 </html>
