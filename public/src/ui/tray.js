@@ -18,6 +18,7 @@ define( [ "util/lang",  "./logo-spinner", "./resizeHandler", "./toggler", "local
         timelineArea = trayRoot.querySelector( ".butter-timeline-area" ),
         trayHandle = trayRoot.querySelector( ".butter-tray-resize-handle" ),
         bodyWrapper = document.querySelector( ".body-wrapper" ),
+        stageWrapper = document.querySelector( ".stage-wrapper" ),
         addTrackButton = statusAreaFragment.querySelector( "button.add-track" ),
         loadingContainer = trayRoot.querySelector( ".butter-loading-container" ),
         resizeHandler = new ResizeHandler( { margin: 26, border: 15 } ),
@@ -41,7 +42,7 @@ define( [ "util/lang",  "./logo-spinner", "./resizeHandler", "./toggler", "local
     }, false );
 
     this.attachToDOM = function() {
-      document.body.appendChild( trayRoot );
+      bodyWrapper.appendChild( trayRoot );
     };
 
     function onTrayHandleMousedown( e ) {
@@ -61,18 +62,18 @@ define( [ "util/lang",  "./logo-spinner", "./resizeHandler", "./toggler", "local
       } else if ( minimized ) {
         minimize( false );
       }
-      if ( e.pageY < bodyWrapper.offsetTop ) {
-        height = window.innerHeight - bodyWrapper.offsetTop;
+      if ( e.pageY < stageWrapper.offsetTop ) {
+        height = window.innerHeight - stageWrapper.offsetTop;
       }
       trayRoot.style.height = height + "px";
-      bodyWrapper.style.bottom = height + "px";
+      stageWrapper.style.bottom = height + "px";
       resizeHandler.resize();
       butter.timeline.media.verticalResize();
     }
     function onTrayHandleMouseup( e ) {
       var height = window.innerHeight - e.pageY;
-      if ( e.pageY < bodyWrapper.offsetTop  ) {
-        height = window.innerHeight - bodyWrapper.offsetTop;
+      if ( e.pageY < stageWrapper.offsetTop  ) {
+        height = window.innerHeight - stageWrapper.offsetTop;
       }
       // If we have a valid height, store it incase the panel is maximized.
       if ( height > minHeight ) {
@@ -89,7 +90,7 @@ define( [ "util/lang",  "./logo-spinner", "./resizeHandler", "./toggler", "local
     this.setMediaInstance = function( mediaInstanceRootElement ) {
       var timelineContainer = timelineArea.querySelector( ".butter-timeline" );
       LangUtils.applyTransitionEndListener( trayRoot, butter.timeline.media.verticalResize );
-      bodyWrapper.style.bottom = trayHeight + "px";
+      stageWrapper.style.bottom = trayHeight + "px";
       timelineContainer.innerHTML = "";
       timelineContainer.appendChild( mediaInstanceRootElement );
     };
@@ -112,11 +113,11 @@ define( [ "util/lang",  "./logo-spinner", "./resizeHandler", "./toggler", "local
       if ( state ) {
         document.body.classList.add( "tray-minimized" );
         trayRoot.style.height = minHeight + "px";
-        bodyWrapper.style.bottom = minHeight + "px";
+        stageWrapper.style.bottom = minHeight + "px";
       } else {
         document.body.classList.remove( "tray-minimized" );
         trayRoot.style.height = trayHeight + "px";
-        bodyWrapper.style.bottom = trayHeight + "px";
+        stageWrapper.style.bottom = trayHeight + "px";
       }
     }
 
