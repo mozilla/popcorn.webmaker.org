@@ -11,6 +11,13 @@
 * Editor Header
 */
 
+html[dir="rtl"] {
+  .icon-mail-forward:before, .icon-share-alt:before {
+    -webkit-transform: scaleX(-1);
+    transform: scaleX(-1);
+  }
+}
+
 .butter-editor-header {
   position: absolute;
   top: 0;
@@ -71,7 +78,12 @@
   z-index: @HEADER_Z_INDEX + 1;
   &.toggled .icon:before {
     color: @baseText;
-    content: "\f053"; //icon-chevron-left
+    html[dir="ltr"] & {
+      content: "\f053"; //icon-chevron-left
+    }
+    html[dir="rtl"] & {
+      content: "\f054"; //icon-chevron-right
+    }
   }
 }
 

@@ -1,0 +1,204 @@
+@_superScrollbarHeight: 32px;
+
+html[dir="ltr"] {
+  #butter-super-scrollbar-outer-container {
+    position: relative;
+    left: -@_trackHandleWidth;
+
+    .butter-super-scrollbar-zoom-slider {
+      position: absolute;
+      width: 94px;
+      height: 6px;
+      left: 6px;
+      z-index: 2;
+
+      > .butter-super-scrollbar-zoom-handle {
+        top: -6px;
+        position: absolute;
+        height: 16px;
+        width: 6px;
+        right: 100%;
+        line-height: 100%;
+        cursor: pointer;
+        background: #EEE;
+        border: 1px solid #999;
+        border-radius: 6px;
+      }
+    }
+
+    .butter-super-scrollbar-zoom-slider-container {
+      position: absolute;
+      background: #EEE;
+      border: 1px solid #999;
+      width: 100px;
+      height: 6px;
+      border-radius: 6px;
+      left: 12px;
+      top: 13px;
+      z-index: 2;
+
+      > .tick {
+        height: 6px;
+        width: 1px;
+        float: right;
+        border-left: 1px solid #CCC;
+      }
+      > .tick:first-child {
+        margin-right: 1px;
+      }
+      > .tick:nth-child( 2 ) {
+        margin-right: 2px;
+      }
+      > .tick:nth-child( 3 ) {
+        margin-right: 4px;
+      }
+      > .tick:nth-child( 4 ) {
+        margin-right: 8px;
+      }
+      > .tick:nth-child( 5 ) {
+        margin-right: 16px;
+      }
+      > .tick:nth-child( 6 ) {
+        margin-right: 32px;
+      }
+    }
+  }
+
+
+  #butter-super-scrollbar-inner-container {
+    background: darken( @baseLight, 3% );
+    height: @_superScrollbarHeight;
+    position: absolute;
+    left: @_trackHandleWidth;
+    width: 100%;
+    right: -7px;
+    bottom: -@_superScrollbarHeight;
+    border: 1px solid @baseLightOutline;
+    margin-right: 5px;
+    top: 0;
+    box-shadow: inset 2px 0 5px -2px rgba( 0, 0, 0, 0.2 );
+  }
+
+  #butter-super-scrollbar-visuals {
+    margin-top: 4px;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+  }
+
+  #butter-super-scrollbar-viewport {
+    .gradient( "vertical", fade( #FFF, 65% ), fade( #FFF, 20% ), true );
+    cursor: move;
+    height: 22px;
+    position: absolute;
+    top: 4px;
+  }
+
+  .butter-super-scrollbar-trackevent {
+    background: rgba( 0, 0, 0, 0.4 );
+    height: 3px;
+    position: absolute;
+    z-index: 1;
+  }
+
+  .butter-super-scrollbar-border {
+    border: 4px solid #FFF;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    z-index: 1;
+    top: -4px;
+    left: -4px;
+    box-shadow: 0 2px 2px 0 rgba( 0, 0, 0, 0.2 ) inset, 0 0 0 1px @baseLightOutline;
+  }
+
+  .butter-super-scrollbar-handle {
+    background: #41BB92;
+    display: block;
+    height: 18px;
+    margin-top: -9px;
+    position: absolute;
+    top: 50%;
+    width: 6px;
+    border: 1px solid @green;
+    box-shadow: 0 2px 3px -2px;
+    z-index: 1;
+    cursor: ew-resize;
+
+    &:before { // The little center grip on the handle
+      content: "";
+      position: absolute;
+      top: 2px;
+      bottom: 2px;
+      left: 2px;
+      width: 2px;
+      background: darken( @green, 10% );
+    }
+
+    .butter-super-arrow { // The green arrows
+      content: "";
+      opacity: 0;
+      position: absolute;
+      top: 0;
+      color: @green;
+      .font-awesome;
+      .transition( all 0.1s ease );
+    }
+  }
+
+  #butter-super-scrollbar-handle-left {
+    left: -9px;
+    .butter-super-arrow {
+      left: 0;
+      &:after {
+        content: "\f060"; // Left arrow
+      }
+    }
+  }
+
+  #butter-super-scrollbar-handle-right {
+    right: -9px;
+    .butter-super-arrow {
+      right: 0;
+      &:after {
+        content: "\f061"; // Right arrow
+      }
+    }
+  }
+
+
+  // Arrows - hover states
+  // This allows the arrows to animate.
+  #butter-super-scrollbar-viewport:hover  {
+    .butter-super-arrow {
+      opacity: 0.5;
+    }
+    #butter-super-scrollbar-handle-left .butter-super-arrow {
+      left: 10px;
+    }
+    #butter-super-scrollbar-handle-right .butter-super-arrow {
+      right: 10px;
+    }
+  }
+
+  // Arrows - minimum size states
+  // At 50px wide, force the arrows to the outside
+  #butter-super-scrollbar-inner-container.super-scrollbar-small:hover {
+    #butter-super-scrollbar-handle-left .butter-super-arrow {
+      left: -16px;
+    }
+    #butter-super-scrollbar-handle-right .butter-super-arrow {
+      right: -16px;
+    }
+  }
+
+  // The little red scrubber
+  #buter-super-scrollbar-scrubber {
+    background: none repeat scroll 0 0 @red;
+    bottom: 0;
+    cursor: move;
+    position: absolute;
+    top: 0;
+    width: 1px;
+  }
+}

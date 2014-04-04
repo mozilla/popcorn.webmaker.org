@@ -168,7 +168,13 @@ define( [ "util/time" ],
     }
 
     function onTimelineMouseMove( e ) {
-      _timelineMousePos = e.clientX - parentElement.offsetLeft;
+      var butterTrayOffSet = document.querySelector(".butter-tray").offsetLeft;
+
+      if(document.querySelector( "html" ).dir === "rtl") {
+        _timelineMousePos =  e.clientX - (parentElement.offsetLeft + butterTrayOffSet);
+      } else {
+        _timelineMousePos = e.clientX - parentElement.offsetLeft;
+      }
 
       if ( _timelineMousePos < 0 ) {
         _timelineMousePos = 0;

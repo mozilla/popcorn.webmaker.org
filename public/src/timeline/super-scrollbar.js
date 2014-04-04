@@ -28,6 +28,8 @@ define( [ "util/lang", "text!layouts/super-scrollbar.html" ],
         _zoomSlider = _outer.querySelector( ".butter-super-scrollbar-zoom-slider" ),
         _zoomSliderContainer = _outer.querySelector( ".butter-super-scrollbar-zoom-slider-container" ),
         _zoomSliderHandle = _outer.querySelector( ".butter-super-scrollbar-zoom-handle" ),
+        _butterEditorOffsetLeft,
+        _html = document.querySelector( "html" ),
         _leftOffset = 0,
         _rightOffset = 0,
         _viewLeft = 0,
@@ -90,7 +92,7 @@ define( [ "util/lang", "text!layouts/super-scrollbar.html" ],
       // Stop text selection in chrome.
       e.preventDefault();
       e.stopPropagation();
-      media.currentTime = ( e.clientX - _inner.offsetLeft ) / _inner.clientWidth * _duration;
+      media.currentTime = ( (e.clientX + _butterEditorOffsetLeft) - _inner.offsetLeft ) / _inner.clientWidth * _duration;
       window.addEventListener( "mouseup", onElementMouseUp, false );
       window.addEventListener( "mousemove", onElementMouseMove, false );
     };
@@ -100,7 +102,7 @@ define( [ "util/lang", "text!layouts/super-scrollbar.html" ],
       // Stop text selection in chrome.
       e.preventDefault();
       outerElement.removeEventListener( "scroll", updateView, false );
-      _leftOffset = e.clientX - _inner.offsetLeft - _viewPort.offsetLeft;
+      _leftOffset = (e.clientX + _butterEditorOffsetLeft) - _inner.offsetLeft - _viewPort.offsetLeft;
       _rightOffset = _viewPort.offsetWidth - _leftOffset;
       _media.pause();  // pause the media here to diffuse confusion with scrolling & playing
       window.addEventListener( "mouseup", onViewMouseUp, false );
@@ -130,14 +132,14 @@ define( [ "util/lang", "text!layouts/super-scrollbar.html" ],
     onElementMouseMove = function( e ) {
       e.preventDefault();
       e.stopPropagation();
-      media.currentTime = ( e.clientX - _inner.offsetLeft ) / _inner.clientWidth * _duration;
+      media.currentTime = ( (e.clientX + _butterEditorOffsetLeft) -_inner.offsetLeft ) / _inner.clientWidth * _duration;
     };
 
     onViewMouseMove = function( e ) {
       e.preventDefault();
       e.stopPropagation();
-      var thisLeft = ( e.clientX - _inner.offsetLeft - _leftOffset ) / _inner.clientWidth,
-          thisRight = ( _inner.clientWidth - ( e.clientX - _inner.offsetLeft + _rightOffset ) ) / _inner.clientWidth;
+      var thisLeft = ( (e.clientX + _butterEditorOffsetLeft) - _inner.offsetLeft - _leftOffset ) / _inner.clientWidth,
+          thisRight = ( _inner.clientWidth - ( (e.clientX + _butterEditorOffsetLeft) - _inner.offsetLeft + _rightOffset ) ) / _inner.clientWidth;
 
       if ( thisLeft < 0 ) {
         thisLeft = 0;
@@ -160,7 +162,7 @@ define( [ "util/lang", "text!layouts/super-scrollbar.html" ],
       e.stopPropagation();
 
       // position is from the left of the container, to the left of the viewport.
-      var position = e.clientX - _inner.offsetLeft,
+      var position = (e.clientX + _butterEditorOffsetLeft) - _inner.offsetLeft,
           rightBound = ( _viewLeft * _inner.clientWidth ) + _viewPort.clientWidth;
 
       // make sure we never go out of bounds.
@@ -181,7 +183,7 @@ define( [ "util/lang", "text!layouts/super-scrollbar.html" ],
       e.stopPropagation();
 
       // position is from the right of the container, to the right of the viewport.
-      var position = _inner.clientWidth - ( e.clientX - _inner.offsetLeft ),
+      var position = _inner.clientWidth - ( (e.clientX + _butterEditorOffsetLeft) - _inner.offsetLeft ),
           leftBound = ( _viewRight * _inner.clientWidth ) + _viewPort.clientWidth;
 
       // make sure we never go out of bounds.
@@ -303,7 +305,7 @@ define( [ "util/lang", "text!layouts/super-scrollbar.html" ],
     }
 
     function updateZoomSlider( e ) {
-      var position = _zoomSlider.offsetWidth - ( e.clientX - ( _zoomSliderContainer.offsetLeft + ( _zoomSliderHandle.offsetWidth / 2 ) ) ),
+      var position = _zoomSlider.offsetWidth - ( (e.clientX + _butterEditorOffsetLeft) - ( _zoomSliderContainer.offsetLeft + ( _zoomSliderHandle.offsetWidth / 2 ) ) ),
           scale;
 
       if ( position < 0 ) {
@@ -391,6 +393,8 @@ define( [ "util/lang", "text!layouts/super-scrollbar.html" ],
     });
 
     _this.initialize = function() {
+      _butterEditorOffsetLeft = document.querySelector(".butter-editor-area").offsetLeft;
+      _butterEditorOffsetLeft = _html.dir === "rtl" ? _butterEditorOffsetLeft : 0;
       var i, j, tl, tel,
           trackEvents,
           order,
@@ -416,6 +420,8 @@ define( [ "util/lang", "text!layouts/super-scrollbar.html" ],
     });
 
     _this.resize = function() {
+      _butterEditorOffsetLeft = document.querySelector(".butter-editor-area").offsetLeft;
+      _butterEditorOffsetLeft = _html.dir === "rtl" ? _butterEditorOffsetLeft : 0;
       _this.update();
       _boundsChangedCallback( _viewPort.offsetLeft / _inner.clientWidth, _viewPort.offsetWidth / _inner.clientWidth );
     };
