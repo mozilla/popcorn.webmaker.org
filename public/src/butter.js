@@ -961,6 +961,7 @@ window.Butter = {
                       fallback: "",
                       zindex: 1000,
                       id: "TrackEvent1",
+                      linkback: data.linkback,
                       thumbnailSrc: data.thumbnail
                     }
                   });
