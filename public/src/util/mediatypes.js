@@ -14,7 +14,7 @@ define( [ "localized", "util/uri", "util/xhr", "json!/api/butterconfig", "jquery
         // where start or duration can be: X, X.X or XX:XX
         "null": /^\s*#t=(?:\d*(?:(?:\.|\:)?\d+)?),?(\d+(?:(?:\.|\:)\d+)?)\s*$/,
         Flickr: /^https?:\/\/(www\.)?flickr.com/,
-        Audiour: /^https?:\/\/(www\.)?(staging\.)?audiour.com/
+        Clyp: /^https?:\/\/(www\.)?(staging\.)?clyp.it/
       },
       VIMEO_EMBED_UNPLAYABLE = Localized.get( "This Vimeo video is unplayable" ),
       YOUTUBE_EMBED_DISABLED = Localized.get ( "Embedding of this YouTube video is disabled" ),
@@ -22,13 +22,13 @@ define( [ "localized", "util/uri", "util/xhr", "json!/api/butterconfig", "jquery
       YOUTUBE_EMBED_PRIVATE = Localized.get( "Private Video" ),
       ARCHIVE_EMBED_DISABLED = Localized.get( "Embedding of this Archive item is not available yet" ),
       EMBED_UNPLAYABLE = Localized.get( "This media source is unplayable" ),
-      AUDIOUR_EMBED_UNPLAYABLE = Localized.get( "This Audiour source is unplayable" ),
-      AUDIOUR_EMBED_PRIVATE = Localized.get( "This Audiour source is private" ),
+      CLYP_EMBED_UNPLAYABLE = Localized.get( "This Clyp source is unplayable" ),
+      CLYP_EMBED_PRIVATE = Localized.get( "This Clyp source is private" ),
       SOUNDCLOUD_EMBED_UNPLAYABLE = Localized.get( "This SoundCloud source is unplayable" ),
       SOUNDCLOUD_EMBED_DISABLED = Localized.get( "Embedding of this SoundCloud audio source is disabled" );
 
   var nodeHubbleEndpoint = config.node_hubble_endpoint.replace( /\/$/, "" ),
-      audiourEndpoint = config.audiour_endpoint.replace( /\/$/, "" );
+      clypEndpoint = config.clyp_endpoint.replace( /\/$/, "" );
 
   function jwPlayerFallback( options, successCallback, errorCallback ) {
     // We hit an error trying to load HTML5, try the jwplayer instead
@@ -286,16 +286,16 @@ define( [ "localized", "util/uri", "util/xhr", "json!/api/butterconfig", "jquery
           }, false );
           videoElem.src = URI.makeUnique( respData.media ).toString();
         });
-      } else if ( type === "Audiour" ) {
+      } else if ( type === "Clyp" ) {
         parsedUri = URI.parse( baseUrl );
         id = parsedUri.directory;
 
-        $.getJSON( audiourEndpoint + id, function( respData ) {
+        $.getJSON( clypEndpoint + id, function( respData ) {
           if ( !respData ) {
-            return errorCallback( AUDIOUR_EMBED_UNPLAYABLE );
+            return errorCallback( CLYP_EMBED_UNPLAYABLE );
           }
           if ( respData.Status !== "Public" ) {
-            return errorCallback( AUDIOUR_EMBED_PRIVATE );
+            return errorCallback( CLYP_EMBED_PRIVATE );
           }
           successCallback({
             source: respData.SecureOggUrl,
