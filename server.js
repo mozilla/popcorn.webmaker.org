@@ -274,7 +274,7 @@ app.get( "/api/butterconfig", middleware.crossOrigin, function( req, res ) {
     "audience": app.locals.config.audience,
     "make_endpoint": app.locals.config.make_endpoint,
     "node_hubble_endpoint": app.locals.config.node_hubble_endpoint,
-    "audiour_endpoint": config.AUDIOUR_ENDPOINT,
+    "clyp_endpoint": config.CLYP_ENDPOINT,
     "sync_limit": app.locals.config.sync_limit
   });
 });

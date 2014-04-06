@@ -432,7 +432,7 @@ define( [ "localized", "util/mediatypes", "editor/editor", "util/time",
             updateOptions.hidden = false;
           }
 
-          if ( _mediaType === "Archive" || _mediaType === "Audiour" ) {
+          if ( _mediaType === "Archive" || _mediaType === "Clyp" ) {
             updateOptions.source[ 0 ] = data.source;
             updateOptions.linkback = data.linkback;
           }
@@ -465,7 +465,7 @@ define( [ "localized", "util/mediatypes", "editor/editor", "util/time",
           fallbackContainer.classList.remove( "show" );
         }
 
-        if ( _mediaType === "Archive" || _mediaType === "Audiour" ) {
+        if ( _mediaType === "Archive" || _mediaType === "Clyp" ) {
           el.value = _popcornOptions.linkback;
         } else {
           el.value = URI.stripUnique( source ).toString();
