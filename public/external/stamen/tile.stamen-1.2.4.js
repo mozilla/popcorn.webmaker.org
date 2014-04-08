@@ -1,5 +1,5 @@
 // Cached copy of http://maps.stamen.com/js/tile.stamen.js?v1.2.0 to deal with mixed-content warnings.
-// See templates/assets/plugins/googlemap/popcorn.googlemap.js
+// See src/plugins/googlemap/popcorn.googlemap.js
 
 (function(exports) {
 

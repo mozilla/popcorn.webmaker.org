@@ -18,16 +18,16 @@ requirejs.config({
     "popcorn.player": "../static/bower/popcorn-js/modules/player/popcorn.player",
 
     // Plugins
-    "popcorn.googlemap": "../templates/assets/plugins/googlemap/popcorn.googlemap",
-    "popcorn.image": "../templates/assets/plugins/image/popcorn.image",
-    "popcorn.loopPlugin": "../templates/assets/plugins/loopPlugin/popcorn.loopPlugin",
-    "popcorn.pausePlugin": "../templates/assets/plugins/pausePlugin/popcorn.pausePlugin",
-    "popcorn.popup": "../templates/assets/plugins/popup/popcorn.popup",
-    "popcorn.sequencer": "../templates/assets/plugins/sequencer/popcorn.sequencer",
-    "popcorn.sketchfab": "../templates/assets/plugins/sketchfab/popcorn.sketchfab",
-    "popcorn.skip": "../templates/assets/plugins/skip/popcorn.skip",
-    "popcorn.text": "../templates/assets/plugins/text/popcorn.text",
-    "popcorn.wikipedia": "../templates/assets/plugins/wikipedia/popcorn.wikipedia",
+    "popcorn.googlemap": "../src/plugins/googlemap/popcorn.googlemap",
+    "popcorn.image": "../src/plugins/image/popcorn.image",
+    "popcorn.loopPlugin": "../src/plugins/loopPlugin/popcorn.loopPlugin",
+    "popcorn.pausePlugin": "../src/plugins/pausePlugin/popcorn.pausePlugin",
+    "popcorn.popup": "../src/plugins/popup/popcorn.popup",
+    "popcorn.sequencer": "../src/plugins/sequencer/popcorn.sequencer",
+    "popcorn.sketchfab": "../src/plugins/sketchfab/popcorn.sketchfab",
+    "popcorn.skip": "../src/plugins/skip/popcorn.skip",
+    "popcorn.text": "../src/plugins/text/popcorn.text",
+    "popcorn.wikipedia": "../src/plugins/wikipedia/popcorn.wikipedia",
     "popcorn.deprecated": "../src/util/deprecated",
 
     // RequireJS
