@@ -45,7 +45,7 @@
             <li><span class="icon icon-th-large"></span> <a href="{{audience}}/{{localeInfo.lang}}/me" target="_blank">{{ gettext("My makes") }}</a></li>
             <li class="login"><span class="icon icon-signout"></span>
               <div class="webmaker-login persona-button butter-hidden">
-                <span class="text">{{ gettext("Sign in") }}</span><span class="tip"></span>
+                <span dir="{{localeInfo.direction}}" class="text">{{ gettext("Sign in") }}</span><span dir="{{localeInfo.direction}}" class="tip"></span>
               </div>
               <button class="webmaker-logout butter-hidden">{{ gettext("Sign out") }}</button>
             {% if togetherjsEnabled %}
