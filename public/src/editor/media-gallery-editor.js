@@ -527,10 +527,17 @@ define( [ "localized", "util/lang", "util/uri", "util/xhr", "util/keys", "util/m
         startPage = set * MAX_NUMS + 1,
         endPage = Math.min( ( set * MAX_NUMS ) + MAX_NUMS, totalPages ),
         nextBtn = document.createElement( "li" ),
-        prevBtn = document.createElement( "li" );
+        prevBtn = document.createElement( "li" ),
+        html = document.querySelector( "html" );
 
-    prevBtn.innerHTML = "<span class=\"icon-chevron-left\"></span>";
-    nextBtn.innerHTML = "<span class=\"icon-chevron-right\"></span>";
+
+    if ( html.dir === "ltr") {
+      prevBtn.innerHTML = "<span class=\"icon-chevron-left\"></span>";
+      nextBtn.innerHTML = "<span class=\"icon-chevron-right\"></span>";
+    } else {
+      prevBtn.innerHTML = "<span class=\"icon-chevron-right\"></span>";
+      nextBtn.innerHTML = "<span class=\"icon-chevron-left\"></span>";
+    }
 
     ul.innerHTML = "";
 

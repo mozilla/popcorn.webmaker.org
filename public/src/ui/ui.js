@@ -15,8 +15,9 @@ define( [ "core/eventmanager", "./header",
             DragNDrop, Make,
             ResizeHandler, config ){
 
+  var html = document.querySelector( "html" );
   var TRANSITION_DURATION = 500,
-      BUTTER_CSS_FILE = "{css}/butter.ui.css";
+      BUTTER_CSS_FILE = "{css}/butter.ui." + html.dir + ".css";
 
   var __unwantedKeyPressElements = [
         "TEXTAREA",

@@ -30,6 +30,7 @@ define( [ "util/lang",  "./logo-spinner", "./resizeHandler", "./toggler", "local
     this.statusArea = trayRoot.querySelector( ".butter-status-area" );
     this.timelineArea = timelineArea;
 
+    trayRoot.setAttribute( "dir", document.querySelector( "html" ).dir );
     this.rootElement = trayRoot;
 
     this.statusArea.appendChild( statusAreaFragment );
