@@ -22,6 +22,7 @@ module.exports = function( grunt ) {
       "public/css/tray-status-bar-rtl.less": "public/css/tray-status-bar-ltr.less",
       "public/css/tray-rtl.less": "public/css/tray-ltr.less",
       "public/css/tray-timeline-rtl.less": "public/css/tray-timeline-ltr.less",
+      "public/css/sequencer-rtl.less": "public/css/sequencer-ltr.less",
       options: {
         swapLtrRtlInUrl: true,
         swapLeftRightInUrl: false,
@@ -34,7 +35,8 @@ module.exports = function( grunt ) {
           "public/css/super-scrollbar-rtl.less": "public/css/super-scrollbar-rtl.less",
           "public/css/tray-status-bar-rtl.less": "public/css/tray-status-bar-rtl.less",
           "public/css/tray-rtl.less": "public/css/tray-rtl.less",
-          "public/css/tray-timeline-rtl.less": "public/css/tray-timeline-rtl.less"
+          "public/css/tray-timeline-rtl.less": "public/css/tray-timeline-rtl.less",
+          "public/css/sequencer-rtl.less": "public/css/sequencer-rtl.less"
         },
         options: {
           replacements: [{
