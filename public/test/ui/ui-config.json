@@ -21,16 +21,16 @@
     "plugins": [
       {
         "type": "text",
-        "path": "../../templates/assets/plugins/text/popcorn.text.js"
+        "path": "../../src/plugins/text/popcorn.text.js"
       },
       {
         "type": "image",
-        "path": "../../templates/assets/plugins/image/popcorn.image.js"
+        "path": "../../src/plugins/image/popcorn.image.js"
       },
       {
         "name": "googlemap",
         "type": "googlemap",
-        "path": "../../templates/assets/plugins/googlemap/popcorn.googlemap.js"
+        "path": "../../src/plugins/googlemap/popcorn.googlemap.js"
       }
     ],
     "defaults": [
