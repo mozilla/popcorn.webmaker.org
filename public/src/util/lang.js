@@ -137,9 +137,9 @@ define( [], function(){
       for ( p in pre ) {
         if ( div.style[ pre[ p ] ] !== undefined ) {
           return function( element, listener ) {
-            element.addEventListener( "transitionend", listener, false );
-            element.addEventListener( "oTransitionEnd", listener, false );
-            element.addEventListener( "webkitTransitionEnd", listener, false );
+            element.addEventListener( "transitionend", listener );
+            element.addEventListener( "oTransitionEnd", listener );
+            element.addEventListener( "webkitTransitionEnd", listener );
           };
         }
       }
