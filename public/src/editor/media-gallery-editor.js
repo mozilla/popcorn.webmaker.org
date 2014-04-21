@@ -152,7 +152,7 @@ define( [ "localized", "util/lang", "util/uri", "util/xhr", "util/keys", "util/m
     if ( options.remove ) {
       deleteBtn.addEventListener( "click", function() {
 
-        thumbnailBtn.removeEventListener( "click", addEvent, false );
+        thumbnailBtn.removeEventListener( "click", addEvent );
         options.container.removeChild( el );
         _this.scrollbar.update();
         delete _media.clipData[ source ];
@@ -177,7 +177,7 @@ define( [ "localized", "util/lang", "util/uri", "util/xhr", "util/keys", "util/m
       options.callback( popcornOptions, data );
     }
 
-    thumbnailBtn.addEventListener( "click", addEvent, false );
+    thumbnailBtn.addEventListener( "click", addEvent );
 
     options.container.insertBefore( el, options.container.firstChild );
 
@@ -232,7 +232,7 @@ define( [ "localized", "util/lang", "util/uri", "util/xhr", "util/keys", "util/m
         _this.scrollbar.update();
         delete _media.clipData[ source ];
         _butter.dispatch( "mediaclipremoved" );
-      }, false );
+      } );
     } else {
       el.removeChild( deleteBtn );
     }
@@ -285,7 +285,7 @@ define( [ "localized", "util/lang", "util/uri", "util/xhr", "util/keys", "util/m
       options.callback( popcornOptions, data );
     }
 
-    thumbnailBtn.addEventListener( "click", addEvent, false );
+    thumbnailBtn.addEventListener( "click", addEvent );
 
     options.container.insertBefore( el, options.container.firstChild );
 
@@ -545,7 +545,7 @@ define( [ "localized", "util/lang", "util/uri", "util/xhr", "util/keys", "util/m
     if ( page > 1 ) {
       prevBtn.addEventListener( "click", function() {
         callback( page - 1 );
-      }, false );
+      } );
       ul.appendChild( prevBtn );
     }
 
@@ -569,7 +569,7 @@ define( [ "localized", "util/lang", "util/uri", "util/xhr", "util/keys", "util/m
       }
       // If we only have one page, don't add a listener to trigger another page.
       if ( total > _LIMIT ) {
-        li.addEventListener( "click", pageClick, false );
+        li.addEventListener( "click", pageClick );
       }
 
       ul.appendChild( li );
@@ -582,7 +582,7 @@ define( [ "localized", "util/lang", "util/uri", "util/xhr", "util/keys", "util/m
 
       li.addEventListener( "click", function() {
         callback( totalPages );
-      }, false );
+      } );
 
       ellipsis.classList.add( "ellipsis" );
       ul.appendChild( ellipsis );
@@ -612,13 +612,13 @@ define( [ "localized", "util/lang", "util/uri", "util/xhr", "util/keys", "util/m
   }
 
   function setup() {
-    _urlInput.addEventListener( "focus", onFocus, false );
-    _urlInput.addEventListener( "input", onInput, false );
-    _urlInput.addEventListener( "keydown", onEnter, false );
+    _urlInput.addEventListener( "focus", onFocus );
+    _urlInput.addEventListener( "input", onInput );
+    _urlInput.addEventListener( "keydown", onEnter );
 
-    _searchInput.addEventListener( "focus", onFocus, false );
-    _searchInput.addEventListener( "input", onInput, false );
-    _searchInput.addEventListener( "keydown", onEnter, false );
+    _searchInput.addEventListener( "focus", onFocus );
+    _searchInput.addEventListener( "input", onInput );
+    _searchInput.addEventListener( "keydown", onEnter );
 
     _addBtn.addEventListener( "click", function( e ) {
       if ( !_sectionContainers.project.classList.contains( "butter-hidden" ) ) {
@@ -626,7 +626,7 @@ define( [ "localized", "util/lang", "util/uri", "util/xhr", "util/keys", "util/m
       } else {
         searchAPIs( true );
       }
-    }, false );
+    } );
   }
 
   Editor.register( "media-editor", null, function( rootElement, butter ) {
@@ -692,7 +692,7 @@ define( [ "localized", "util/lang", "util/uri", "util/xhr", "util/keys", "util/m
           _this.scrollbar.update();
         }
       }
-    }, false );
+    } );
 
     _projectTab.addEventListener( "mouseup", function() {
       if ( !_projectTab.classList.contains( "butter-active" ) ) {
@@ -735,7 +735,7 @@ define( [ "localized", "util/lang", "util/uri", "util/xhr", "util/keys", "util/m
         resetInput();
         _this.scrollbar.update();
       }
-    }, false );
+    } );
 
     setup();
 
