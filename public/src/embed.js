@@ -47,13 +47,13 @@ function init() {
 
     if ( fullScreenedElem.requestFullscreen ) {
       fullScreenedElem.removeEventListener( "fullscreenchange", fullScreenEnabled, false );
-      fullScreenedElem.addEventListener( "fullscreenchange", fullScreenDisabled, false );
+      fullScreenedElem.addEventListener( "fullscreenchange", fullScreenDisabled );
     } else if ( fullScreenedElem.mozRequestFullScreen ) {
       fullScreenedElem.removeEventListener( "mozfullscreenchange", fullScreenEnabled, false );
-      fullScreenedElem.addEventListener( "mozfullscreenchange", fullScreenDisabled, false );
+      fullScreenedElem.addEventListener( "mozfullscreenchange", fullScreenDisabled );
     } else if ( fullScreenedElem.webkitRequestFullscreen ) {
       fullScreenedElem.removeEventListener( "webkitfullscreenchange", fullScreenEnabled, false );
-      fullScreenedElem.addEventListener( "webkitfullscreenchange", fullScreenDisabled, false );
+      fullScreenedElem.addEventListener( "webkitfullscreenchange", fullScreenDisabled );
     }
 
     // OSX has a nice fancy animation that delays the fullscreen transition, but our event still fires.
@@ -84,13 +84,13 @@ function init() {
     fullScreenedElem = elem;
 
     if ( elem.requestFullscreen ) {
-      elem.addEventListener( "fullscreenchange", fullScreenEnabled, false );
+      elem.addEventListener( "fullscreenchange", fullScreenEnabled );
       elem.requestFullscreen();
     } else if ( elem.mozRequestFullScreen ) {
-      elem.addEventListener( "mozfullscreenchange", fullScreenEnabled, false );
+      elem.addEventListener( "mozfullscreenchange", fullScreenEnabled );
       elem.mozRequestFullScreen();
     } else if ( elem.webkitRequestFullscreen ) {
-      elem.addEventListener( "webkitfullscreenchange", fullScreenEnabled, false );
+      elem.addEventListener( "webkitfullscreenchange", fullScreenEnabled );
       elem.webkitRequestFullscreen();
     }
   }
@@ -147,11 +147,11 @@ function init() {
       popcorn.play( config.start );
     }
 
-    $( "#replay-post" ).addEventListener( "click", replay, false );
-    $( "#replay-share" ).addEventListener( "click", replay, false );
+    $( "#replay-post" ).addEventListener( "click", replay );
+    $( "#replay-share" ).addEventListener( "click", replay );
     $( "#share-post" ).addEventListener( "click", function() {
       shareClick( popcorn );
-    }, false );
+    } );
   }
 
   function buildIFrameHTML() {
@@ -223,7 +223,7 @@ function init() {
     }
 
     for ( i = 0, l = sizeOptions.length; i < l; i++ ) {
-      sizeOptions[ i ].addEventListener( "click", sizeOptionFn, false );
+      sizeOptions[ i ].addEventListener( "click", sizeOptionFn );
     }
 
     popcorn.on( "ended", function() {
@@ -349,7 +349,7 @@ function init() {
       }
     }
 
-    window.addEventListener( "message", onMessage, false );
+    window.addEventListener( "message", onMessage );
 
     function onCanPlay() {
       if ( config.autoplay ) {
@@ -451,7 +451,7 @@ function init() {
       };
 
       resizeHandler.resize();
-      window.addEventListener( "resize", resizeHandler.resize, false );
+      window.addEventListener( "resize", resizeHandler.resize );
 
       Controls.create( "controls", {
         onShareClick: function() {
@@ -515,11 +515,11 @@ function init() {
 
           toggler.addEventListener( "click", function() {
             container.classList.toggle( "attribution-on" );
-          }, false );
+          } );
 
           closeBtn.addEventListener( "click", function() {
             container.classList.toggle( "attribution-on" );
-          }, false );
+          } );
 
           if ( sequencerEvents.length ) {
             var clipsContainer = __defaultLayouts.querySelector( ".attribution-media" ).cloneNode( true ),
@@ -688,4 +688,4 @@ document.addEventListener( "DOMContentLoaded", function() {
   } else {
     init();
   }
-}, false );
+} );
