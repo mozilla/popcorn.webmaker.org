@@ -119,12 +119,11 @@
   },
   "devDependencies": {
     "awsbox": "0.4.2",
-    "grunt": "0.4.2",
+    "grunt": "0.4.1",
     "grunt-contrib-jshint": "0.4.3",
     "grunt-cssjanus": "0.2.2",
     "grunt-string-replace": "0.2.7",
     "grunt-lint5": "0.1.4",
-    "grunt-lesslint": "1.1.0",
     "supertest": "0.5.1",
     "tap": "0.4.0"
   },
