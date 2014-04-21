@@ -90,19 +90,19 @@ define( [ "./scrubber" ], function( Scrubber ) {
     // drawTicks() need only happen when tracksContainer scrolls and the media is
     // not playing (probably when the user is scrubbing/zooming/scrolling).
     _media.listen( "mediapause", function() {
-      _tracksContainer.element.addEventListener( "scroll", drawTicks, false );
+      _tracksContainer.element.addEventListener( "scroll", drawTicks );
     });
     _media.listen( "mediaplay", function() {
       _tracksContainer.element.removeEventListener( "scroll", drawTicks, false );
     });
-    _tracksContainer.element.addEventListener( "scroll", drawTicks, false );
+    _tracksContainer.element.addEventListener( "scroll", drawTicks );
 
     this.update = function() {
       drawTicks();
     };
 
     this.ready = function() {
-      _canvas.addEventListener( "mousedown", _scrubber.onMouseDown, false );
+      _canvas.addEventListener( "mousedown", _scrubber.onMouseDown );
       _scrubber.ready();
     };
 
