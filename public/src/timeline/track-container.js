@@ -57,8 +57,8 @@ define( [ "core/logger", "util/dragndrop", "./ghost-manager", "analytics" ],
       _elementRect = _element.getBoundingClientRect();
       _startingPosition = [ e.clientX, e.clientY ];
       _element.removeEventListener( "mousedown", boundingBoxMouseDown, false );
-      window.addEventListener( "mousemove", boundingBoxMouseMove, false );
-      window.addEventListener( "mouseup", boundingBoxMouseUp, false );
+      window.addEventListener( "mousemove", boundingBoxMouseMove );
+      window.addEventListener( "mouseup", boundingBoxMouseUp );
     }
     function boundingBoxMouseMove( e ) {
       var thisPosition = [ e.clientX, e.clientY ],
@@ -113,16 +113,16 @@ define( [ "core/logger", "util/dragndrop", "./ghost-manager", "analytics" ],
       _boundingBoxElement.classList.add( "hidden" );
       window.removeEventListener( "mousemove", boundingBoxMouseMove, false );
       window.removeEventListener( "mouseup", boundingBoxMouseUp, false );
-      _element.addEventListener( "mousedown", boundingBoxMouseDown, false );
+      _element.addEventListener( "mousedown", boundingBoxMouseDown );
     }
 
-    _element.addEventListener( "mousedown", boundingBoxMouseDown, false );
+    _element.addEventListener( "mousedown", boundingBoxMouseDown );
 
     _container.addEventListener( "mousedown", function( e ) {
       if ( !e.shiftKey ) {
         butter.deselectAllTrackEvents();
       }
-    }, false );
+    } );
 
     _droppable = DragNDrop.droppable( _element, {
       startDrop: function() {
