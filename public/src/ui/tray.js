@@ -40,7 +40,7 @@ define( [ "util/lang",  "./logo-spinner", "./resizeHandler", "./toggler", "local
 
     addTrackButton.addEventListener( "click", function() {
       butter.currentMedia.addTrack( null, true );
-    }, false );
+    } );
 
     this.attachToDOM = function() {
       bodyWrapper.appendChild( trayRoot );
@@ -50,8 +50,8 @@ define( [ "util/lang",  "./logo-spinner", "./resizeHandler", "./toggler", "local
       e.preventDefault();
       trayRoot.classList.remove( "butter-tray-transitions" );
       trayHandle.removeEventListener( "mousedown", onTrayHandleMousedown, false );
-      window.addEventListener( "mousemove", onTrayHandleMousemove, false );
-      window.addEventListener( "mouseup", onTrayHandleMouseup, false );
+      window.addEventListener( "mousemove", onTrayHandleMousemove );
+      window.addEventListener( "mouseup", onTrayHandleMouseup );
     }
     function onTrayHandleMousemove( e ) {
       var height = window.innerHeight - e.pageY;
@@ -81,12 +81,12 @@ define( [ "util/lang",  "./logo-spinner", "./resizeHandler", "./toggler", "local
         trayHeight = height;
       }
       trayRoot.classList.add( "butter-tray-transitions" );
-      trayHandle.addEventListener( "mousedown", onTrayHandleMousedown, false );
+      trayHandle.addEventListener( "mousedown", onTrayHandleMousedown );
       window.removeEventListener( "mousemove", onTrayHandleMousemove, false );
       window.removeEventListener( "mouseup", onTrayHandleMouseup, false );
     }
 
-    trayHandle.addEventListener( "mousedown", onTrayHandleMousedown, false );
+    trayHandle.addEventListener( "mousedown", onTrayHandleMousedown );
 
     this.setMediaInstance = function( mediaInstanceRootElement ) {
       var timelineContainer = timelineArea.querySelector( ".butter-timeline" );
