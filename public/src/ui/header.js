@@ -50,8 +50,8 @@ define([ "languages", "localized", "dialog/dialog", "util/lang", "l10n!/layouts/
 
     _this.element = _rootElement;
 
-    _personaButton.addEventListener( "click", butter.cornfield.login, false );
-    _logoutButton.addEventListener( "click", butter.cornfield.logout, false );
+    _personaButton.addEventListener( "click", butter.cornfield.login );
+    _logoutButton.addEventListener( "click", butter.cornfield.logout );
 
     // Display the img after the src has loaded.
     function userImageLoaded() {
@@ -150,7 +150,7 @@ define([ "languages", "localized", "dialog/dialog", "util/lang", "l10n!/layouts/
     function toggleSaving( on ) {
       if ( on ) {
         _saveButton.classList.remove( "butter-button-waiting" );
-        _saveButton.addEventListener( "click", saveProject, false );
+        _saveButton.addEventListener( "click", saveProject );
       } else {
         _saveButton.classList.add( "butter-button-waiting" );
         _saveButton.removeEventListener( "click", saveProject, false );
@@ -208,7 +208,7 @@ define([ "languages", "localized", "dialog/dialog", "util/lang", "l10n!/layouts/
 
     function toggleDeleteProject( state ) {
       if ( state ) {
-        _removeProject.addEventListener( "click", removeProject, false );
+        _removeProject.addEventListener( "click", removeProject );
         _removeProject.classList.remove( "butter-disabled" );
       } else {
         _removeProject.removeEventListener( "click", removeProject, false );
@@ -246,7 +246,7 @@ define([ "languages", "localized", "dialog/dialog", "util/lang", "l10n!/layouts/
         _personaButton.classList.add( "butter-hidden" );
         _webmakerNav.classList.add( "loggedin" );
         _userName.textContent = butter.cornfield.username();
-        _userImage.addEventListener( "load", userImageLoaded, false );
+        _userImage.addEventListener( "load", userImageLoaded );
         _userImage.src = butter.cornfield.avatar();
       },
       logout: function() {
@@ -288,7 +288,7 @@ define([ "languages", "localized", "dialog/dialog", "util/lang", "l10n!/layouts/
       Languages.ready({ position: "bottom", arrow: "top" }, true);
       $("#supportedLocales").selectize();
 
-      _saveButton.addEventListener( "click", saveProject, false );
+      _saveButton.addEventListener( "click", saveProject );
       if ( !butter.cornfield.authenticated() ) {
         toggleTooltips( false );
         togglePreviewButton( false );
@@ -313,7 +313,7 @@ define([ "languages", "localized", "dialog/dialog", "util/lang", "l10n!/layouts/
         _makeDetails.classList.add( "butter-hidden" );
       });
 
-      _clearEvents.addEventListener( "click", clearEventsClick, false );
+      _clearEvents.addEventListener( "click", clearEventsClick );
     });
   };
 });

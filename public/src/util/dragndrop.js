@@ -140,7 +140,7 @@ define( [ "core/eventmanager", "util/lang", "util/scroll-group" ],
 
       // Prevent drags from happening while we're dragging around objects, since
       // it's not an HTML5 drag and it'll interfere.
-      window.addEventListener( "dragstart", __onWindowDragStart, false );
+      window.addEventListener( "dragstart", __onWindowDragStart );
 
       DragNDrop.dispatch( "dragstarted" );
     }
@@ -210,8 +210,8 @@ define( [ "core/eventmanager", "util/lang", "util/scroll-group" ],
     // Stop text selection in chrome.
     e.preventDefault();
     e.stopPropagation();
-    window.addEventListener( "mousemove", __onDraggableDragged, false );
-    window.addEventListener( "mouseup", __onDraggableMouseUp, false );
+    window.addEventListener( "mousemove", __onDraggableDragged );
+    window.addEventListener( "mouseup", __onDraggableMouseUp );
   }
 
   function __getPaddingRect( element ) {
@@ -403,8 +403,8 @@ define( [ "core/eventmanager", "util/lang", "util/scroll-group" ],
 
       element.classList.add( RESIZABLE_CLASS );
 
-      window.addEventListener( "mousemove", onMouseMove, false );
-      window.addEventListener( "mouseup", onMouseUp, false );
+      window.addEventListener( "mousemove", onMouseMove );
+      window.addEventListener( "mouseup", onMouseUp );
 
       DragNDrop.dispatch( "resizestarted" );
     }
@@ -492,14 +492,14 @@ define( [ "core/eventmanager", "util/lang", "util/scroll-group" ],
 
       element.classList.add( RESIZABLE_CLASS );
 
-      window.addEventListener( "mousemove", onMouseMove, false );
-      window.addEventListener( "mouseup", onMouseUp, false );
+      window.addEventListener( "mousemove", onMouseMove );
+      window.addEventListener( "mouseup", onMouseUp );
 
       DragNDrop.dispatch( "resizestarted" );
     }
 
-    _leftHandle.addEventListener( "mousedown", onLeftMouseDown, false );
-    _rightHandle.addEventListener( "mousedown", onRightMouseDown, false );
+    _leftHandle.addEventListener( "mousedown", onLeftMouseDown );
+    _rightHandle.addEventListener( "mousedown", onRightMouseDown );
 
     return {
       destroy: function() {
@@ -629,10 +629,10 @@ define( [ "core/eventmanager", "util/lang", "util/scroll-group" ],
       }
     }
 
-    element.addEventListener( "drop", onDrop, false );
-    element.addEventListener( "dragover", onDragOver, false );
-    element.addEventListener( "dragenter", onDragEnter, false );
-    element.addEventListener( "dragleave", onDragLeave, false );
+    element.addEventListener( "drop", onDrop );
+    element.addEventListener( "dragover", onDragOver );
+    element.addEventListener( "dragenter", onDragEnter );
+    element.addEventListener( "dragleave", onDragLeave );
 
     function removeDraggable( draggable ) {
       var idx = _rememberedDraggables.indexOf( draggable );
@@ -866,7 +866,7 @@ define( [ "core/eventmanager", "util/lang", "util/scroll-group" ],
       }
     }
 
-    element.addEventListener( "mousedown", __onDraggableMouseDown, false );
+    element.addEventListener( "mousedown", __onDraggableMouseDown );
 
     _draggable.droppable = null;
 
@@ -1087,8 +1087,8 @@ define( [ "core/eventmanager", "util/lang", "util/scroll-group" ],
         _oldZIndex = style.getPropertyValue( "z-index" );
         _mouseDownPosition = e.clientY;
 
-        window.addEventListener( "mouseup", onElementMouseUp, false );
-        window.addEventListener( "mousemove", onElementMouseMove, false );
+        window.addEventListener( "mouseup", onElementMouseUp );
+        window.addEventListener( "mousemove", onElementMouseMove );
 
         DragNDrop.dispatch( "sortstarted", e );
       }
@@ -1107,7 +1107,7 @@ define( [ "core/eventmanager", "util/lang", "util/scroll-group" ],
         }
         DragNDrop.dispatch( "sortstopped" );
       }
-      this.handle.addEventListener( "mousedown", onElementMouseDown, false );
+      this.handle.addEventListener( "mousedown", onElementMouseDown );
       this.destroy = function() {
         this.handle.removeEventListener( "mousedown", onElementMouseDown, false );
       };

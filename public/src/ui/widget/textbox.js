@@ -36,8 +36,8 @@ define( [], function() {
   }
 
   function __addListeners( input ) {
-    input.addEventListener( "focus", __highlight, false );
-    input.addEventListener( "mouseup", __ignoreMouseUp, false );
+    input.addEventListener( "focus", __highlight );
+    input.addEventListener( "mouseup", __ignoreMouseUp );
   }
 
   return {
@@ -55,7 +55,7 @@ define( [], function() {
 
       input.addEventListener( "blur", function( e ) {
           __addListeners( e.target );
-      }, false);
+      } );
 
       __addListeners( input );
 

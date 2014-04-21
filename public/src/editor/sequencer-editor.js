@@ -46,7 +46,7 @@ define( [ "localized", "util/mediatypes", "editor/editor", "util/time",
         el.addEventListener( "click", function() {
           // Toggle the state
           updateTrackEvent( !hiddenInput.checked );
-        }, false );
+        });
 
         updateUI( _popcornOptions[ property ] );
 
@@ -273,13 +273,13 @@ define( [ "localized", "util/mediatypes", "editor/editor", "util/time",
           startWidth = clipSection.offsetWidth;
 
           if ( this === rightHandle ) {
-            document.addEventListener( "mousemove", onResizingRight, false );
+            document.addEventListener( "mousemove", onResizingRight );
             activeHandle = "right";
           } else if ( this === leftHandle ) {
             activeHandle = "left";
-            document.addEventListener( "mousemove", onResizingLeft, false );
+            document.addEventListener( "mousemove", onResizingLeft );
           }
-          document.addEventListener( "mouseup", onResizeStop, false );
+          document.addEventListener( "mouseup", onResizeStop );
         }
 
 
@@ -325,8 +325,8 @@ define( [ "localized", "util/mediatypes", "editor/editor", "util/time",
           firstX = e.clientX;
           startLeft = clipSection.offsetLeft;
           startWidth = clipSection.offsetWidth;
-          document.addEventListener( "mousemove", onDragging, false );
-          document.addEventListener( "mouseup", onDragStop, false );
+          document.addEventListener( "mousemove", onDragging );
+          document.addEventListener( "mouseup", onDragStop );
         }
 
         function onRightInputChange() {
@@ -347,7 +347,7 @@ define( [ "localized", "util/mediatypes", "editor/editor", "util/time",
           e.preventDefault();
           // This triggers a change event.
           outInput.blur();
-          outInput.addEventListener( "keydown", onRightKeydown, false );
+          outInput.addEventListener( "keydown", onRightKeydown );
           window.removeEventListener( "mousedown", onWindowMousedownRight, true );
         }
         function onWindowMousedownLeft( e ) {
@@ -355,7 +355,7 @@ define( [ "localized", "util/mediatypes", "editor/editor", "util/time",
           e.preventDefault();
           // This triggers a change event.
           inInput.blur();
-          inInput.addEventListener( "keydown", onLeftKeydown, false );
+          inInput.addEventListener( "keydown", onLeftKeydown );
           window.removeEventListener( "mousedown", onWindowMousedownLeft, true );
         }
         function onRightKeydown() {
@@ -368,13 +368,13 @@ define( [ "localized", "util/mediatypes", "editor/editor", "util/time",
         }
 
         // Setup
-        outInput.addEventListener( "change", onRightInputChange, false );
-        inInput.addEventListener( "change", onLeftInputChange, false );
-        outInput.addEventListener( "keydown", onRightKeydown, false );
-        inInput.addEventListener( "keydown", onLeftKeydown, false );
-        rightHandle.addEventListener( "mousedown", onResizeStart, false );
-        leftHandle.addEventListener( "mousedown", onResizeStart, false );
-        clipSection.addEventListener( "mousedown", onDragStart, false );
+        outInput.addEventListener( "change", onRightInputChange );
+        inInput.addEventListener( "change", onLeftInputChange );
+        outInput.addEventListener( "keydown", onRightKeydown );
+        inInput.addEventListener( "keydown", onLeftKeydown );
+        rightHandle.addEventListener( "mousedown", onResizeStart );
+        leftHandle.addEventListener( "mousedown", onResizeStart );
+        clipSection.addEventListener( "mousedown", onDragStart );
         updateUI();
 
         return {

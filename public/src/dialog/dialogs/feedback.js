@@ -29,11 +29,11 @@ define( [ "l10n!/dialog/dialogs/feedback.html", "dialog/dialog", "util/xhr" ],
           xhr.post( "/feedback", commentsReport );
           dialog.activity( "default-close" );
         }
-      }, false );
+      } );
 
       infoBtn.addEventListener( "click", function() {
         dialogInfo.classList.toggle( "dialog-hidden" );
-      }, false );
+      } );
 
       dialog.enableCloseButton();
       dialog.assignEscapeKey( "default-close" );

@@ -47,7 +47,7 @@ define( [ "localized", "dialog/dialog" ], function( Localized, Dialog ) {
         editor.appendChild( overlayDiv );
 
         // Add Listener
-        window.addEventListener( "click", closeDialog, false );
+        window.addEventListener( "click", closeDialog );
 
         // Add Classes
         searchInput.classList.add( "overlay-highlight" );

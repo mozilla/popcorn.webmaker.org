@@ -16,10 +16,10 @@ define( [], function() {
     rootElement.addEventListener( "mousedown", function( e ) {
       // Disable text selection in chrome while clicking.
       e.preventDefault();
-    }, false );
+    } );
 
     if ( clickHandler ) {
-      _element.addEventListener( "click", clickHandler, false );
+      _element.addEventListener( "click", clickHandler );
     }
 
     Object.defineProperties( this, {

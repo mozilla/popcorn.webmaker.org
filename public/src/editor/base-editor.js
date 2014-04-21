@@ -200,7 +200,7 @@ define( [ "localized", "core/eventmanager", "util/scrollbars", "ui/widget/toolti
 
       inputElement.addEventListener( "change", function() {
         updateColor( inputElement.value );
-      }, false );
+      } );
 
       function onMousedown( e ) {
         e.stopPropagation();
@@ -212,18 +212,18 @@ define( [ "localized", "core/eventmanager", "util/scrollbars", "ui/widget/toolti
       }
 
       function onMouseover() {
-        colorPickerElement.removeEventListener( "mouseover", onMouseover, false );
-        inputElement.removeEventListener( "mouseover", onMouseover, false );
-        colorPickerElement.addEventListener( "mouseout", onMouseout, false );
-        inputElement.addEventListener( "mouseout", onMouseout, false );
+        colorPickerElement.removeEventListener( "mouseover", onMouseover );
+        inputElement.removeEventListener( "mouseover", onMouseover );
+        colorPickerElement.addEventListener( "mouseout", onMouseout );
+        inputElement.addEventListener( "mouseout", onMouseout );
         window.removeEventListener( "mousedown", onMousedown, true );
       }
 
       function onMouseout() {
-        colorPickerElement.addEventListener("mouseover", onMouseover, false );
-        inputElement.addEventListener( "mouseover", onMouseover, false );
-        colorPickerElement.removeEventListener( "mouseout", onMouseout, false );
-        inputElement.removeEventListener( "mouseout", onMouseout, false );
+        colorPickerElement.addEventListener("mouseover", onMouseover );
+        inputElement.addEventListener( "mouseover", onMouseover );
+        colorPickerElement.removeEventListener( "mouseout", onMouseout );
+        inputElement.removeEventListener( "mouseout", onMouseout );
         window.addEventListener( "mousedown", onMousedown, true );
       }
 
@@ -231,15 +231,15 @@ define( [ "localized", "core/eventmanager", "util/scrollbars", "ui/widget/toolti
         colorPickerElement.classList.remove( "hidden" );
       }
 
-      inputElement.addEventListener( "focus", onFocus, false );
-      colorPickerElement.addEventListener( "mouseover", onMouseover, false );
-      inputElement.addEventListener( "mouseover", onMouseover, false );
+      inputElement.addEventListener( "focus", onFocus );
+      colorPickerElement.addEventListener( "mouseover", onMouseover );
+      inputElement.addEventListener( "mouseover", onMouseover );
 
       colorToggle.addEventListener( "click", function() {
         inputElement.focus();
         window.addEventListener( "mousedown", onMousedown, true );
-        inputElement.addEventListener( "mouseout", onMouseout, false );
-      }, false );
+        inputElement.addEventListener( "mouseout", onMouseout );
+      } );
     };
 
     /**
@@ -305,10 +305,10 @@ define( [ "localized", "core/eventmanager", "util/scrollbars", "ui/widget/toolti
 
         element.addEventListener( "focus", function() {
           tooltip.hidden = false;
-        }, false );
+        } );
         element.addEventListener( "blur", function() {
           tooltip.hidden = true;
-        }, false );
+        } );
       }
     };
 
@@ -374,7 +374,7 @@ define( [ "localized", "core/eventmanager", "util/scrollbars", "ui/widget/toolti
       if ( extendObject.scrollbar ) {
         extendObject.scrollbar.update();
       }
-    }, false );
+    } );
 
   }
 

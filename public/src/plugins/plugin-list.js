@@ -65,7 +65,7 @@ define( [ "localized", "util/dragndrop", "util/lang", "editor/editor", "analytic
         }
       }
 
-      element.addEventListener( "click", onClick, false );
+      element.addEventListener( "click", onClick );
 
       if ( iconImg ) {
         icon.style.backgroundImage = "url('" + iconImg.src + "')";

@@ -123,7 +123,7 @@ define( [ "util/xhr", "util/keys", "localized", "jquery" ], function( XHR, KEYS,
 
       highlight();
 
-      dragContainer.addEventListener( "mousedown", onSelect, false );
+      dragContainer.addEventListener( "mousedown", onSelect );
       trackEvent.listen( "trackeventselected", highlight );
       trackEvent.listen( "trackeventdeselected", highlight );
       trackEvent.listen( "trackeventupdated", update );
@@ -172,7 +172,7 @@ define( [ "util/xhr", "util/keys", "localized", "jquery" ], function( XHR, KEYS,
         if ( tooltipElement ) {
           tooltipElement.classList.remove( "tooltip-off" );
         }
-        el.addEventListener( "dblclick", onDblClick, false );
+        el.addEventListener( "dblclick", onDblClick );
         document.removeEventListener( "mousedown", onBlur, false );
         el.style.display = "";
         dragContainer.classList.remove( "track-event-editing" );
@@ -182,31 +182,31 @@ define( [ "util/xhr", "util/keys", "localized", "jquery" ], function( XHR, KEYS,
           tooltipElement.classList.add( "tooltip-off" );
         }
         el.removeEventListener( "dblclick", onDblClick, false );
-        document.addEventListener( "mousedown", onBlur, false );
+        document.addEventListener( "mousedown", onBlur );
         el.style.display = "none";
         dragContainer.classList.add( "track-event-editing" );
       };
       el.classList.add( "ui-draggable-handle" );
       if ( options.editable !== false ) {
-        el.addEventListener( "dblclick", onDblClick, false );
+        el.addEventListener( "dblclick", onDblClick );
       }
 
       dragContainer.appendChild( el );
 
       onMouseDown = function() {
-        document.addEventListener( "mouseup", onMouseUp, false );
+        document.addEventListener( "mouseup", onMouseUp );
         el.removeEventListener( "mouseup", onMouseDown, false );
         dragContainer.style.overflow = "hidden";
       };
 
       onMouseUp = function() {
         document.removeEventListener( "mouseup", onMouseUp, false );
-        el.addEventListener( "mouseup", onMouseDown, false );
+        el.addEventListener( "mouseup", onMouseDown );
         dragContainer.style.overflow = "";
       };
 
       // This ensures the height of the element is not increased
-      el.addEventListener( "mousedown", onMouseDown, false );
+      el.addEventListener( "mousedown", onMouseDown );
 
       $( dragContainer ).draggable({
         handle: ".ui-draggable-handle",
@@ -324,24 +324,24 @@ define( [ "util/xhr", "util/keys", "localized", "jquery" ], function( XHR, KEYS,
         textArea.style.height = "auto";
         textArea.style.height = textArea.scrollHeight + "px";
         textArea.select();
-      }, false );
+      } );
 
       textArea.addEventListener( "input", function() {
         textArea.style.height = "auto";
         textArea.style.height = textArea.scrollHeight + "px";
-      }, false );
+      } );
 
       textArea.addEventListener( "keydown", function( e ) {
         if ( e.keyCode === KEYS.ENTER && !e.shiftKey ) {
           textArea.blur();
         }
-      }, false );
+      } );
 
       textArea.addEventListener( "change", function() {
         trackEvent.update({
           text: textArea.value
         });
-      }, false );
+      } );
     };
 
     function sendFile( file, trackEvent ) {
@@ -384,11 +384,11 @@ define( [ "util/xhr", "util/keys", "localized", "jquery" ], function( XHR, KEYS,
 
       dropContainer.addEventListener( "click", function() {
         fileInput.click();
-      }, false );
+      } );
 
       fileInput.addEventListener( "change", function() {
         sendFile( fileInput.files[ 0 ], trackEvent );
-      }, false );
+      } );
     };
 
     /**
@@ -405,17 +405,17 @@ define( [ "util/xhr", "util/keys", "localized", "jquery" ], function( XHR, KEYS,
       dropContainer.addEventListener( "dragover", function( e ) {
         e.preventDefault();
         dropContainer.classList.add( "butter-dragover" );
-      }, false );
+      } );
 
       dropContainer.addEventListener( "dragleave", function( e ) {
         e.preventDefault();
         dropContainer.classList.remove( "butter-dragover" );
-      }, false );
+      } );
 
       dropContainer.addEventListener( "mousedown", function( e ) {
         // Prevent being able to drag the images inside and re drop them
         e.preventDefault();
-      }, false );
+      } );
 
       dropContainer.addEventListener( "drop", function( e ) {
 
@@ -430,7 +430,7 @@ define( [ "util/xhr", "util/keys", "localized", "jquery" ], function( XHR, KEYS,
         }
 
         sendFile( e.dataTransfer.files[ 0 ], trackEvent );
-      }, false );
+      } );
     };
 
     _this.addPlugin = function( plugin, callback ) {

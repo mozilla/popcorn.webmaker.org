@@ -20,8 +20,8 @@ define( [ "util/time", "util/keys", "analytics" ], function( util, Keys, analyti
     _button.addEventListener( "mousedown", function( e ) {
       // Disable text selection in chrome while clicking.
       e.preventDefault();
-    }, false );
-    _button.addEventListener( "click", onClick, false );
+    } );
+    _button.addEventListener( "click", onClick );
 
     Object.defineProperties( this, {
       state: {
@@ -81,7 +81,7 @@ define( [ "util/time", "util/keys", "analytics" ], function( util, Keys, analyti
       _durationInput.classList.remove( "input-active" );
       _media.url = "#t=," + seconds;
       _durationInput.value = util.toTimecode( seconds, 0 );
-      _durationInput.addEventListener( "click", onDurationClick, false );
+      _durationInput.addEventListener( "click", onDurationClick );
       _durationInput.removeEventListener( "blur", onBlur, false );
       _durationInput.removeEventListener( "keydown", onKeyDown, false );
       _durationInput.blur();
@@ -103,12 +103,12 @@ define( [ "util/time", "util/keys", "analytics" ], function( util, Keys, analyti
       _durationInput.removeEventListener( "click", onDurationClick, false );
       _durationInput.classList.add( "input-active" );
 
-      _durationInput.addEventListener( "blur", onBlur, false );
+      _durationInput.addEventListener( "blur", onBlur );
 
-      _durationInput.addEventListener( "keydown", onKeyDown, false );
+      _durationInput.addEventListener( "keydown", onKeyDown );
     }
 
-    _durationInput.addEventListener( "click", onDurationClick, false );
+    _durationInput.addEventListener( "click", onDurationClick );
 
     setTime( 0, false );
 

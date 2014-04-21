@@ -144,12 +144,12 @@ define( [ "localized", "util/lang", "util/uri", "util/xhr", "util/keys", "util/m
     if ( options.remove ) {
       deleteBtn.addEventListener( "click", function() {
 
-        thumbnailBtn.removeEventListener( "click", addEvent, false );
+        thumbnailBtn.removeEventListener( "click", addEvent );
         options.container.removeChild( el );
         _this.scrollbar.update();
         delete _media.clipData[ source ];
         _butter.dispatch( "mediaclipremoved" );
-      }, false );
+      } );
     } else {
       el.removeChild( deleteBtn );
     }
@@ -169,7 +169,7 @@ define( [ "localized", "util/lang", "util/uri", "util/xhr", "util/keys", "util/m
       options.callback( popcornOptions, data );
     }
 
-    thumbnailBtn.addEventListener( "click", addEvent, false );
+    thumbnailBtn.addEventListener( "click", addEvent );
 
     options.container.insertBefore( el, options.container.firstChild );
 
@@ -219,12 +219,12 @@ define( [ "localized", "util/lang", "util/uri", "util/xhr", "util/keys", "util/m
     if ( options.remove ) {
       deleteBtn.addEventListener( "click", function() {
 
-        thumbnailBtn.removeEventListener( "click", addEvent, false );
+        thumbnailBtn.removeEventListener( "click", addEvent );
         container.removeChild( el );
         _this.scrollbar.update();
         delete _media.clipData[ source ];
         _butter.dispatch( "mediaclipremoved" );
-      }, false );
+      } );
     } else {
       el.removeChild( deleteBtn );
     }
@@ -277,7 +277,7 @@ define( [ "localized", "util/lang", "util/uri", "util/xhr", "util/keys", "util/m
       options.callback( popcornOptions, data );
     }
 
-    thumbnailBtn.addEventListener( "click", addEvent, false );
+    thumbnailBtn.addEventListener( "click", addEvent );
 
     options.container.insertBefore( el, options.container.firstChild );
 
@@ -600,7 +600,7 @@ define( [ "localized", "util/lang", "util/uri", "util/xhr", "util/keys", "util/m
     if ( page > 1 ) {
       prevBtn.addEventListener( "click", function() {
         callback( container, page - 1 );
-      }, false );
+      } );
       ul.appendChild( prevBtn );
     }
 
@@ -624,7 +624,7 @@ define( [ "localized", "util/lang", "util/uri", "util/xhr", "util/keys", "util/m
       }
       // If we only have one page, don't add a listener to trigger another page.
       if ( total > _LIMIT ) {
-        li.addEventListener( "click", pageClick, false );
+        li.addEventListener( "click", pageClick );
       }
 
       ul.appendChild( li );
@@ -637,7 +637,7 @@ define( [ "localized", "util/lang", "util/uri", "util/xhr", "util/keys", "util/m
 
       li.addEventListener( "click", function() {
         callback( container, totalPages );
-      }, false );
+      } );
 
       ellipsis.classList.add( "ellipsis" );
       ul.appendChild( ellipsis );
@@ -647,7 +647,7 @@ define( [ "localized", "util/lang", "util/uri", "util/xhr", "util/keys", "util/m
     if ( page < totalPages ) {
       nextBtn.addEventListener( "click", function() {
         callback( container, page + 1 );
-      }, false );
+      } );
       ul.appendChild( nextBtn );
     }
 
@@ -698,9 +698,9 @@ define( [ "localized", "util/lang", "util/uri", "util/xhr", "util/keys", "util/m
   }
 
   function setup() {
-    _searchInput.addEventListener( "focus", onFocus, false );
-    _searchInput.addEventListener( "input", onInput, false );
-    _searchInput.addEventListener( "keydown", onEnter, false );
+    _searchInput.addEventListener( "focus", onFocus );
+    _searchInput.addEventListener( "input", onInput );
+    _searchInput.addEventListener( "keydown", onEnter );
 
     _addBtn.addEventListener( "click", onAddMediaClick );
   }
