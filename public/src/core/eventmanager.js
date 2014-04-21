@@ -212,7 +212,7 @@ define( [], function(){
       // in JS, relying on DOM events only for the initial dispatch/handle.
       if( !listeners[ namespacedEventName ] ){
         listeners[ namespacedEventName ] = [];
-        document.addEventListener( namespacedEventName, handler, false );
+        document.addEventListener( namespacedEventName, handler );
       }
 
       // Add the listener to the list so that it's called when a dispatch occurs.
