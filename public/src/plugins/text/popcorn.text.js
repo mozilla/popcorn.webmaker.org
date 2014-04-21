@@ -279,7 +279,7 @@
 
           link.addEventListener( "click", function() {
             context.media.pause();
-          }, false );
+          } );
 
           link.style.color = innerContainer.style.color;
 
