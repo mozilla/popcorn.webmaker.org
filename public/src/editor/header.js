@@ -30,7 +30,7 @@ define([ "localized", "ui/widget/tooltip" ], function( Localized, Tooltip ) {
 
     _mediaButton.addEventListener( "click", function() {
       editorModule.openEditor( "media-editor" );
-    }, false );
+    } );
 
     function openPluginList() {
       editorModule.openEditor( "plugin-list" );
@@ -40,10 +40,10 @@ define([ "localized", "ui/widget/tooltip" ], function( Localized, Tooltip ) {
       editorModule.openEditor( "project-editor" );
     }
 
-    _projectButton.addEventListener( "click", openProjectEditor, false );
+    _projectButton.addEventListener( "click", openProjectEditor );
     _tutorialButton.addEventListener( "click", function() {
       editorModule.openEditor( "tutorial-editor" );
-    }, false );
+    } );
 
     this.setFocus = function( editorName ) {
       var focusCandidate = _focusMap[ editorName ];
@@ -69,7 +69,7 @@ define([ "localized", "ui/widget/tooltip" ], function( Localized, Tooltip ) {
       enablePlugins: function() {
         _waitForMediaTooltip.hidden = true;
         _popcornButton.classList.remove( "butter-editor-btn-disabled" );
-        _popcornButton.addEventListener( "click", openPluginList, false );
+        _popcornButton.addEventListener( "click", openPluginList );
       },
       disablePlugins: function() {
         _waitForMediaTooltip.hidden = false;
