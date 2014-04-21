@@ -68,8 +68,8 @@ define( [ "localized", "util/uri", "util/xhr", "json!/api/butterconfig", "jquery
     }
     container.id = Popcorn.guid( "popcorn-jwplayer-" );
     media = Popcorn.HTMLJWPlayerVideoElement( container );
-    media.addEventListener( "error", errorEvent, false );
-    media.addEventListener( "loadedmetadata", readyEvent, false );
+    media.addEventListener( "error", errorEvent );
+    media.addEventListener( "loadedmetadata", readyEvent );
     media.src = options.source;
   }
 
@@ -273,7 +273,7 @@ define( [ "localized", "util/uri", "util/xhr", "json!/api/butterconfig", "jquery
               linkback: respData.linkback
             };
             jwPlayerFallback( options, successCallback, errorCallback );
-          }, false );
+          } );
           videoElem.addEventListener( "loadedmetadata", function() {
             successCallback({
               source: respData.media,
@@ -283,7 +283,7 @@ define( [ "localized", "util/uri", "util/xhr", "json!/api/butterconfig", "jquery
               linkback: respData.linkback,
               duration: videoElem.duration
             });
-          }, false );
+          } );
           videoElem.src = URI.makeUnique( respData.media ).toString();
         });
       } else if ( type === "Clyp" ) {
@@ -364,10 +364,10 @@ define( [ "localized", "util/uri", "util/xhr", "json!/api/butterconfig", "jquery
             mediaElem.addEventListener( "loadedmetadata", function() {
               successOptions.duration = mediaElem.duration;
               successCallback( successOptions );
-            }, false );
+            } );
             mediaElem.addEventListener( "error", function() {
               jwPlayerFallback( errorOptions, successCallback, errorCallback );
-            }, false );
+            } );
             mediaElem.src = URI.makeUnique( baseUrl ).toString();
           } else {
             errorCallback( EMBED_UNPLAYABLE );
