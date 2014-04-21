@@ -305,7 +305,7 @@ define( [ "localized", "core/logger", "core/eventmanager", "util/uri", "util/acc
       // ... otherwise, wrap the function in an onLoad wrapper
       if ( method === "event" ) {
         popcornString = "\ndocument.addEventListener('DOMContentLoaded',function(e){\n" + popcornString;
-        popcornString += "\n},false);";
+        popcornString += "\n} );";
       }
       else {
         popcornString = popcornString + "\nreturn popcorn;";
