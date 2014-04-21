@@ -136,11 +136,11 @@ define([ "localized", "util/lang", "util/keys", "util/time", "./base-editor", "u
 
       closeEditorLink.addEventListener( "click", function() {
         extendObject.dispatch( "back" );
-      }, false );
+      } );
 
       backLink.addEventListener( "click", function() {
         extendObject.dispatch( "back" );
-      }, false );
+      } );
 
       if ( trackEvent.type ) {
         editorTitle.innerHTML = "";
@@ -214,7 +214,7 @@ define([ "localized", "util/lang", "util/keys", "util/time", "./base-editor", "u
         else {
           extendObject.butter.currentMedia.view.blink();
         }
-      }, false );
+      } );
     };
 
     /**
@@ -254,7 +254,7 @@ define([ "localized", "util/lang", "util/keys", "util/time", "./base-editor", "u
         var updateOptions = {};
         updateOptions[ propertyName ] = element.checked;
         callBack( trackEvent, updateOptions, propertyName );
-      }, false );
+      } );
     };
 
     extendObject.attachSliderChangeHandler = function( element, trackEvent, propertyName, callback ) {
@@ -325,7 +325,7 @@ define([ "localized", "util/lang", "util/keys", "util/time", "./base-editor", "u
         updateTrackEvent( properties );
 
         sliderToolTip.classList.remove( "tooltip-no-transition-on" );
-        element.addEventListener( "mousedown", onSliderMouseDown, false );
+        element.addEventListener( "mousedown", onSliderMouseDown );
         onMouseOut();
         document.removeEventListener( "mousemove", onSliding, false );
         document.removeEventListener( "mouseup", onSlideStop, false );
@@ -343,15 +343,15 @@ define([ "localized", "util/lang", "util/keys", "util/time", "./base-editor", "u
         element.removeEventListener( "mouseout", onMouseOut, false );
         element.removeEventListener( "mousedown", onSliderMouseDown, false );
         sliderToolTip.classList.add( "tooltip-no-transition-on" );
-        document.addEventListener( "mousemove", onSliding, false );
-        document.addEventListener( "mouseup", onSlideStop, false );
+        document.addEventListener( "mousemove", onSliding );
+        document.addEventListener( "mouseup", onSlideStop );
       }
 
       function onSliderMouseDown( e ) {
         e.preventDefault();
 
-        document.addEventListener( "mousemove", onSliding, false );
-        document.addEventListener( "mouseup", onSlideStop, false );
+        document.addEventListener( "mousemove", onSliding );
+        document.addEventListener( "mouseup", onSlideStop );
         element.removeEventListener( "mouseout", onMouseOut, false );
         sliderToolTip.classList.add( "tooltip-no-transition-on" );
         setScrubber( e.clientX );
@@ -365,20 +365,20 @@ define([ "localized", "util/lang", "util/keys", "util/time", "./base-editor", "u
         sliderToolTip.classList.add( "tooltip-no-transition-on" );
         setSliderToolTip( e.clientX );
         element.removeEventListener( "mouseover", onMouseOver, false );
-        element.addEventListener( "mouseout", onMouseOut, false );
-        element.addEventListener( "mousemove", onMouseMove, false );
+        element.addEventListener( "mouseout", onMouseOut );
+        element.addEventListener( "mousemove", onMouseMove );
       }
 
       function onMouseOut() {
         sliderToolTip.classList.remove( "tooltip-no-transition-on" );
         element.removeEventListener( "mouseout", onMouseOut, false );
         element.removeEventListener( "mousemove", onMouseMove, false );
-        element.addEventListener( "mouseover", onMouseOver, false );
+        element.addEventListener( "mouseover", onMouseOver );
       }
 
-      scrubber.addEventListener( "mousedown", onSlideStart, false );
-      element.addEventListener( "mouseover", onMouseOver, false );
-      element.addEventListener( "mousedown", onSliderMouseDown, false );
+      scrubber.addEventListener( "mousedown", onSlideStart );
+      element.addEventListener( "mouseover", onMouseOver );
+      element.addEventListener( "mousedown", onSliderMouseDown );
       updateUI();
     };
 
@@ -409,7 +409,7 @@ define([ "localized", "util/lang", "util/keys", "util/time", "./base-editor", "u
         updateOption[ propertyName ] = updateOptions;
 
         trackEvent.update( updateOption );
-      }, false );
+      } );
     }
 
     /**
@@ -505,7 +505,7 @@ define([ "localized", "util/lang", "util/keys", "util/time", "./base-editor", "u
             updateTrackEvent( trackEvent, callback, updateOptions );
             ignoreChange = true;
           }
-        }, false );
+        } );
       }
 
       if ( element.type === "number" || isNumber ) {
@@ -523,7 +523,7 @@ define([ "localized", "util/lang", "util/keys", "util/time", "./base-editor", "u
             updateOptions[ propertyName ] = val;
             updateTrackEvent( trackEvent, callback, updateOptions );
           }
-        }, false );
+        } );
       }
     };
 
@@ -555,7 +555,7 @@ define([ "localized", "util/lang", "util/keys", "util/time", "./base-editor", "u
         } else {
           trackEvent.isDefault = false;
         }
-      }, false );
+      } );
       return editorElement;
     };
 
