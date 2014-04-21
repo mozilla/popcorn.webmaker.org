@@ -121,8 +121,8 @@ define( [ "core/trackevent", "core/track", "core/eventmanager",
         window.removeEventListener( "mouseup", onTrackEventMouseUp, false );
       }
 
-      window.addEventListener( "mouseup", onTrackEventMouseUp, false );
-      window.addEventListener( "mousemove", onTrackEventDragStarted, false );
+      window.addEventListener( "mouseup", onTrackEventMouseUp );
+      window.addEventListener( "mousemove", onTrackEventDragStarted );
     }
 
     function onTrackEventDeselected( e ) {
@@ -161,7 +161,7 @@ define( [ "core/trackevent", "core/track", "core/eventmanager",
         });
 
         trackEvent.view.listen( "trackeventmousedown", onTrackEventMouseDown );
-        trackEvent.view.element.addEventListener( "mousedown", onTrackEventClicked, false );
+        trackEvent.view.element.addEventListener( "mousedown", onTrackEventClicked );
         trackEvent.listen( "trackeventdeselected", onTrackEventDeselected );
       }
 
