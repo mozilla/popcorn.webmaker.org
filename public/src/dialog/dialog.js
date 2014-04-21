@@ -115,7 +115,7 @@ define( [ "util/lang", "core/eventmanager", "./modal" ],
             closeButton.addEventListener( "click", function closeClickHandler(){
               _internal.activity( "default-close" );
               closeButton.removeEventListener( "click", closeClickHandler, false );
-            }, false );
+            } );
           }
         },
 
@@ -188,7 +188,7 @@ define( [ "util/lang", "core/eventmanager", "./modal" ],
          */
         assignButton: function( selector, activityName ){
           var element = _rootElement.querySelector( selector );
-          element.addEventListener( "click", _activities[ activityName ], false );
+          element.addEventListener( "click", _activities[ activityName ] );
         },
 
         /**
@@ -271,7 +271,7 @@ define( [ "util/lang", "core/eventmanager", "./modal" ],
           setTimeout( function() {
             _external.focus();
           }, 0 );
-          document.addEventListener( "keydown", onKeyDown, false );
+          document.addEventListener( "keydown", onKeyDown );
           _internal.dispatch( "open" );
           _external.dispatch( "open" );
         },
