@@ -65,7 +65,7 @@ define( [ "core/trackevent", "core/track", "core/eventmanager",
       _superScrollbar.resize();
     }
 
-    window.addEventListener( "resize", onResize, false );
+    window.addEventListener( "resize", onResize );
 
     function onMediaTimeUpdate() {
       // Move the viewport to be centered around the scrubber
