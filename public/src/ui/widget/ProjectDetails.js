@@ -32,7 +32,7 @@ define( [ "util/keys", "ui/widget/tooltip", "localized", "ui/widget/textbox",
 
     function enableSave() {
       _noProjectNameToolTip.hidden = true;
-      _saveButton.addEventListener( "click", onButtonClick, false );
+      _saveButton.addEventListener( "click", onButtonClick );
       _saveButton.classList.remove( "butter-disabled" );
     }
     function disableSave() {
@@ -71,7 +71,7 @@ define( [ "util/keys", "ui/widget/tooltip", "localized", "ui/widget/textbox",
         }
 
         _thumbnailInput.value = _butter.project.thumbnail;
-      }, false );
+      } );
 
       _thumbnailUl.appendChild( li );
     }
@@ -109,7 +109,7 @@ define( [ "util/keys", "ui/widget/tooltip", "localized", "ui/widget/textbox",
         updateTitle();
         onInput();
         _titleInput.select();
-        _titleInput.addEventListener( "input", onInput, false );
+        _titleInput.addEventListener( "input", onInput );
       },
 
       updateTitle: updateTitle,
@@ -177,7 +177,7 @@ define( [ "util/keys", "ui/widget/tooltip", "localized", "ui/widget/textbox",
             input.removeEventListener( "blur", blurCallback, false );
           },
           close: function () {
-            input.addEventListener( "blur", blurCallback, false );
+            input.addEventListener( "blur", blurCallback );
           },
           select: function( e, ui) {
             addTags( encodeURIComponent( ui.item.value ) );
@@ -193,9 +193,9 @@ define( [ "util/keys", "ui/widget/tooltip", "localized", "ui/widget/textbox",
             $( input ).autocomplete( "close" );
             input.value = "";
           }
-        }, false );
+        } );
 
-        input.addEventListener( "blur", blurCallback, false );
+        input.addEventListener( "blur", blurCallback );
 
         // Removal of Tags from project
         ul.addEventListener( "click", function( e ) {
@@ -209,7 +209,7 @@ define( [ "util/keys", "ui/widget/tooltip", "localized", "ui/widget/textbox",
             ul.removeChild( target );
             _butter.project.tags = _currentTags.join( "," );
           }
-        }, false );
+        } );
 
         if ( !ul.childNodes.length || _currentTags.length !== ul.childNodes.length ||
              _currentTags.length !== _butter.project.tags.length ) {
@@ -229,7 +229,7 @@ define( [ "util/keys", "ui/widget/tooltip", "localized", "ui/widget/textbox",
           if ( _titleInput.value ) {
             butter.project.name = _titleInput.value;
           }
-        }, false );
+        } );
       },
 
       thumbnail: function( container, dropArea ) {
@@ -268,7 +268,7 @@ define( [ "util/keys", "ui/widget/tooltip", "localized", "ui/widget/textbox",
             selectThumb( source );
           }
 
-        }, false );
+        } );
 
         if ( !_thumbnailUl.childNodes.length ) {
 
@@ -319,7 +319,7 @@ define( [ "util/keys", "ui/widget/tooltip", "localized", "ui/widget/textbox",
 
         TextboxWrapper.applyTo( input );
 
-        input.addEventListener( "keyup", checkDescription, false );
+        input.addEventListener( "keyup", checkDescription );
 
         function checkValue( e ) {
           var target = e.target;
@@ -327,7 +327,7 @@ define( [ "util/keys", "ui/widget/tooltip", "localized", "ui/widget/textbox",
           _butter.project.description = target.value;
         }
 
-        input.addEventListener( "blur", checkValue, false );
+        input.addEventListener( "blur", checkValue );
         input.value = _butter.project.description || "";
       },
 
@@ -337,7 +337,7 @@ define( [ "util/keys", "ui/widget/tooltip", "localized", "ui/widget/textbox",
 
         input.addEventListener( "change", function() {
           butter.project.public = input.checked;
-        }, false );
+        } );
       },
 
       buttons: function( container, callback ) {
@@ -345,7 +345,7 @@ define( [ "util/keys", "ui/widget/tooltip", "localized", "ui/widget/textbox",
         _saveButton = container.querySelector( ".yes-button" );
         _cancelButton = container.querySelector( ".no-button" );
         _saveCallback = callback;
-        _cancelButton.addEventListener( "click", onButtonClick, false );
+        _cancelButton.addEventListener( "click", onButtonClick );
 
         _noProjectNameToolTip = ToolTip.create({
           name: "save-tooltip",

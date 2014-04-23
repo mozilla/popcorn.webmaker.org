@@ -98,7 +98,7 @@ define( [ "util/time" ],
       clearInterval( _scrollInterval );
       _scrollInterval = -1;
 
-      parentElement.addEventListener( "mouseover", onMouseOver, false );
+      parentElement.addEventListener( "mouseover", onMouseOver );
       window.removeEventListener( "mouseup", onMouseUp, false );
       window.removeEventListener( "mousemove", onMouseMove, false );
     } //onMouseUp
@@ -194,9 +194,9 @@ define( [ "util/time" ],
       onTimelineMouseMove( e );
       _timeTooltip.classList.add( "tooltip-no-transition-on" );
 
-      parentElement.addEventListener( "mousemove", onTimelineMouseMove, false );
+      parentElement.addEventListener( "mousemove", onTimelineMouseMove );
       parentElement.removeEventListener( "mouseover", onMouseOver, false );
-      parentElement.addEventListener( "mouseout", onMouseOut, false );
+      parentElement.addEventListener( "mouseout", onMouseOut );
     }
 
     function onMouseOut() {
@@ -204,7 +204,7 @@ define( [ "util/time" ],
 
       parentElement.removeEventListener( "mousemove", onTimelineMouseMove, false );
       parentElement.removeEventListener( "mouseout", onMouseOut, false );
-      parentElement.addEventListener( "mouseover", onMouseOver, false );
+      parentElement.addEventListener( "mouseover", onMouseOver );
     }
 
     var onMouseDown = this.onMouseDown = function( e ) {
@@ -232,11 +232,11 @@ define( [ "util/time" ],
 
       parentElement.removeEventListener( "mouseout", onMouseOut, false );
       parentElement.removeEventListener( "mousemove", onTimelineMouseMove, false );
-      window.addEventListener( "mousemove", onMouseMove, false );
-      window.addEventListener( "mouseup", onMouseUp, false );
+      window.addEventListener( "mousemove", onMouseMove );
+      window.addEventListener( "mouseup", onMouseUp );
     }; //onMouseDown
 
-    parentElement.addEventListener( "mouseover", onMouseOver, false );
+    parentElement.addEventListener( "mouseover", onMouseOver );
 
     this.update = function( containerWidth ) {
       _width = containerWidth || _width;
@@ -247,7 +247,7 @@ define( [ "util/time" ],
     };
 
     this.ready = function() {
-      _container.addEventListener( "mousedown", onMouseDown, false );
+      _container.addEventListener( "mousedown", onMouseDown );
     };
 
 

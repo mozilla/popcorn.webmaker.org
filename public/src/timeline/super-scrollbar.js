@@ -69,21 +69,21 @@ define( [ "util/lang", "text!layouts/super-scrollbar.html" ],
 
     onViewMouseUp = function( e ) {
       e.stopPropagation();
-      outerElement.addEventListener( "scroll", updateView, false );
+      outerElement.addEventListener( "scroll", updateView );
       window.removeEventListener( "mouseup", onViewMouseUp, false );
       window.removeEventListener( "mousemove", onViewMouseMove, false );
     };
 
     onLeftMouseUp = function( e ) {
       e.stopPropagation();
-      outerElement.addEventListener( "scroll", updateView, false );
+      outerElement.addEventListener( "scroll", updateView );
       window.removeEventListener( "mouseup", onLeftMouseUp, false );
       window.removeEventListener( "mousemove", onLeftMouseMove, false );
     };
 
     onRightMouseUp = function( e ) {
       e.stopPropagation();
-      outerElement.addEventListener( "scroll", updateView, false );
+      outerElement.addEventListener( "scroll", updateView );
       window.removeEventListener( "mouseup", onRightMouseUp, false );
       window.removeEventListener( "mousemove", onRightMouseMove, false );
     };
@@ -93,8 +93,8 @@ define( [ "util/lang", "text!layouts/super-scrollbar.html" ],
       e.preventDefault();
       e.stopPropagation();
       media.currentTime = ( (e.clientX + _butterEditorOffsetLeft) - _inner.offsetLeft ) / _inner.clientWidth * _duration;
-      window.addEventListener( "mouseup", onElementMouseUp, false );
-      window.addEventListener( "mousemove", onElementMouseMove, false );
+      window.addEventListener( "mouseup", onElementMouseUp );
+      window.addEventListener( "mousemove", onElementMouseMove );
     };
 
     onViewMouseDown = function( e ) {
@@ -105,8 +105,8 @@ define( [ "util/lang", "text!layouts/super-scrollbar.html" ],
       _leftOffset = (e.clientX + _butterEditorOffsetLeft) - _inner.offsetLeft - _viewPort.offsetLeft;
       _rightOffset = _viewPort.offsetWidth - _leftOffset;
       _media.pause();  // pause the media here to diffuse confusion with scrolling & playing
-      window.addEventListener( "mouseup", onViewMouseUp, false );
-      window.addEventListener( "mousemove", onViewMouseMove, false );
+      window.addEventListener( "mouseup", onViewMouseUp );
+      window.addEventListener( "mousemove", onViewMouseMove );
     };
 
     onLeftMouseDown = function( e ) {
@@ -115,8 +115,8 @@ define( [ "util/lang", "text!layouts/super-scrollbar.html" ],
       e.stopPropagation();
       _media.pause();  // pause the media here to diffuse confusion with scrolling & playing
       outerElement.removeEventListener( "scroll", updateView, false );
-      window.addEventListener( "mouseup", onLeftMouseUp, false );
-      window.addEventListener( "mousemove", onLeftMouseMove, false );
+      window.addEventListener( "mouseup", onLeftMouseUp );
+      window.addEventListener( "mousemove", onLeftMouseMove );
     };
 
     onRightMouseDown = function( e ) {
@@ -125,8 +125,8 @@ define( [ "util/lang", "text!layouts/super-scrollbar.html" ],
       e.stopPropagation();
       _media.pause();  // pause the media here to diffuse confusion with scrolling & playing
       outerElement.removeEventListener( "scroll", updateView, false );
-      window.addEventListener( "mouseup", onRightMouseUp, false );
-      window.addEventListener( "mousemove", onRightMouseMove, false );
+      window.addEventListener( "mouseup", onRightMouseUp );
+      window.addEventListener( "mousemove", onRightMouseMove );
     };
 
     onElementMouseMove = function( e ) {
@@ -206,11 +206,11 @@ define( [ "util/lang", "text!layouts/super-scrollbar.html" ],
       _viewPort.style.right = _viewRight * 100 + "%";
     };
 
-    _inner.addEventListener( "mousedown", onElementMouseDown, false );
-    outerElement.addEventListener( "scroll", updateView, false );
-    _viewPort.addEventListener( "mousedown", onViewMouseDown, false );
-    _leftHandle.addEventListener( "mousedown", onLeftMouseDown, false );
-    _rightHandle.addEventListener( "mousedown", onRightMouseDown, false );
+    _inner.addEventListener( "mousedown", onElementMouseDown );
+    outerElement.addEventListener( "scroll", updateView );
+    _viewPort.addEventListener( "mousedown", onViewMouseDown );
+    _leftHandle.addEventListener( "mousedown", onLeftMouseDown );
+    _rightHandle.addEventListener( "mousedown", onRightMouseDown );
 
     /**
      * scaleViewPort
@@ -292,11 +292,11 @@ define( [ "util/lang", "text!layouts/super-scrollbar.html" ],
     }
 
     function zoomSliderMouseUp() {
-      outerElement.addEventListener( "scroll", updateView, false );
+      outerElement.addEventListener( "scroll", updateView );
       window.removeEventListener( "mouseup", zoomSliderMouseUp, false );
       window.removeEventListener( "mousemove", zoomSliderMouseMove, false );
-      _zoomSliderContainer.addEventListener( "mousedown", zoomSliderContainerMouseDown, false );
-      _zoomSliderHandle.addEventListener( "mousedown", zoomSliderHanldeMouseDown, false );
+      _zoomSliderContainer.addEventListener( "mousedown", zoomSliderContainerMouseDown );
+      _zoomSliderHandle.addEventListener( "mousedown", zoomSliderHanldeMouseDown );
     }
 
     function zoomSliderMouseMove( e ) {
@@ -328,8 +328,8 @@ define( [ "util/lang", "text!layouts/super-scrollbar.html" ],
       updateZoomSlider( e );
       _zoomSliderHandle.removeEventListener( "mousedown", zoomSliderHanldeMouseDown, false );
       _zoomSliderContainer.removeEventListener( "mousedown", zoomSliderContainerMouseDown, false );
-      window.addEventListener( "mousemove", zoomSliderMouseMove, false );
-      window.addEventListener( "mouseup", zoomSliderMouseUp, false );
+      window.addEventListener( "mousemove", zoomSliderMouseMove );
+      window.addEventListener( "mouseup", zoomSliderMouseUp );
     }
 
     function zoomSliderHanldeMouseDown( e ) {
@@ -338,12 +338,12 @@ define( [ "util/lang", "text!layouts/super-scrollbar.html" ],
       outerElement.removeEventListener( "scroll", updateView, false );
       _zoomSliderHandle.removeEventListener( "mousedown", zoomSliderHanldeMouseDown, false );
       _zoomSliderContainer.removeEventListener( "mousedown", zoomSliderContainerMouseDown, false );
-      window.addEventListener( "mousemove", zoomSliderMouseMove, false );
-      window.addEventListener( "mouseup", zoomSliderMouseUp, false );
+      window.addEventListener( "mousemove", zoomSliderMouseMove );
+      window.addEventListener( "mouseup", zoomSliderMouseUp );
     }
 
-    _zoomSliderContainer.addEventListener( "mousedown", zoomSliderContainerMouseDown, false );
-    _zoomSliderHandle.addEventListener( "mousedown", zoomSliderHanldeMouseDown, false );
+    _zoomSliderContainer.addEventListener( "mousedown", zoomSliderContainerMouseDown );
+    _zoomSliderHandle.addEventListener( "mousedown", zoomSliderHanldeMouseDown );
 
     function updateTrackEventVisual( trackEvent, order ) {
       var trackEventVisual = document.createElement( "div" ),

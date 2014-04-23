@@ -296,13 +296,13 @@ define( [ "localized", "core/logger", "core/eventmanager", "util/dragndrop",
     }, true);
     _element.addEventListener( "mouseup", function ( e ) {
       _this.dispatch( "trackeventmouseup", { originalEvent: e, trackEvent: _trackEvent } );
-    }, false);
+    } );
     _element.addEventListener( "mouseover", function ( e ) {
       _this.dispatch( "trackeventmouseover", { originalEvent: e, trackEvent: _trackEvent } );
-    }, false );
+    } );
     _element.addEventListener( "mouseout", function ( e ) {
       _this.dispatch( "trackeventmouseout", { originalEvent: e, trackEvent: _trackEvent } );
-    }, false );
+    } );
 
     function select() {
       if ( _draggable && !_draggable.selected ) {

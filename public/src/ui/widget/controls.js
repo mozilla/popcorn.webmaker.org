@@ -45,7 +45,7 @@ define( [ "util/lang", "util/time", "analytics", "text!layouts/controls.html" ],
       p.media.removeEventListener( "play", bigPlayClicked, false );
       bigPlayButton.removeEventListener( "click", bigPlayClicked, false );
       bigPlayButton.classList.add( "hide-button" );
-      p.media.addEventListener( "mouseover", activate, false );
+      p.media.addEventListener( "mouseover", activate );
 
       if ( thumbnailContainer ) {
         thumbnailContainer.classList.add( "hidden" );
@@ -76,13 +76,13 @@ define( [ "util/lang", "util/time", "analytics", "text!layouts/controls.html" ],
       init( setPopcorn );
 
       p.controls( false );
-      p.media.addEventListener( "play", bigPlayClicked, false );
+      p.media.addEventListener( "play", bigPlayClicked );
       if ( p.readyState() >= 1 ) {
 
         ready();
       } else {
 
-        p.media.addEventListener( "loadedmetadata", ready, false );
+        p.media.addEventListener( "loadedmetadata", ready );
       }
     }
 
@@ -110,10 +110,10 @@ define( [ "util/lang", "util/time", "analytics", "text!layouts/controls.html" ],
       active = false;
 
       // Wire custom callbacks for right-hand buttons
-      controlsShare.addEventListener( "click", onShareClick, false );
-      controlsRemix.addEventListener( "click", onRemixClick, false );
-      controlsFullscreen.addEventListener( "click", onFullscreenClick, false );
-      controlsLogo.addEventListener( "click", onLogoClick, false );
+      controlsShare.addEventListener( "click", onShareClick );
+      controlsRemix.addEventListener( "click", onRemixClick );
+      controlsFullscreen.addEventListener( "click", onFullscreenClick );
+      controlsLogo.addEventListener( "click", onLogoClick );
 
       // this block is used to ensure that when the video is played on a mobile device that the controls and playButton overlay
       // are in the correct state when it begins playing
@@ -145,9 +145,9 @@ define( [ "util/lang", "util/time", "analytics", "text!layouts/controls.html" ],
         }
       };
 
-      p.media.addEventListener( "mouseout", deactivate, false );
-      _controls.addEventListener( "mouseover", activate, false );
-      _controls.addEventListener( "mouseout", deactivate, false );
+      p.media.addEventListener( "mouseout", deactivate );
+      _controls.addEventListener( "mouseover", activate );
+      _controls.addEventListener( "mouseout", deactivate );
 
       togglePlay = function( e ) {
         var waiting = document.querySelector( ".embed" ).getAttribute( "data-state-waiting" );
@@ -185,12 +185,12 @@ define( [ "util/lang", "util/time", "analytics", "text!layouts/controls.html" ],
         playButton.classList.add( "controls-playing" );
       };
 
-      p.media.addEventListener( "click", togglePlay, false );
-      window.addEventListener( "keypress", togglePlay, false );
+      p.media.addEventListener( "click", togglePlay );
+      window.addEventListener( "keypress", togglePlay );
 
       if ( playButton ) {
 
-        playButton.addEventListener( "click", togglePlay, false );
+        playButton.addEventListener( "click", togglePlay );
         if ( analytics ) {
           playButton.addEventListener( "click", function() {
             // State has already been toggled here, so we check the current state.
@@ -203,7 +203,7 @@ define( [ "util/lang", "util/time", "analytics", "text!layouts/controls.html" ],
                 label: "Embed"
               });
             }
-          }, false );
+          } );
         }
 
         p.on( "play", onPlay );
@@ -220,7 +220,7 @@ define( [ "util/lang", "util/time", "analytics", "text!layouts/controls.html" ],
           }
 
           p[ p.muted() ? "unmute" : "mute" ]();
-        }, false );
+        } );
 
         mutechange = function() {
 
@@ -294,8 +294,8 @@ define( [ "util/lang", "util/time", "analytics", "text!layouts/controls.html" ],
           position = e.clientX - volume.getBoundingClientRect().left;
 
           e.preventDefault();
-          window.addEventListener( "mouseup", volumeMouseUp, false );
-          window.addEventListener( "mousemove", volumeMouseMove, false );
+          window.addEventListener( "mouseup", volumeMouseUp );
+          window.addEventListener( "mousemove", volumeMouseMove );
 
           if ( position === 0 ) {
 
@@ -318,7 +318,7 @@ define( [ "util/lang", "util/time", "analytics", "text!layouts/controls.html" ],
           p.volume( position / volume.offsetWidth );
         };
 
-        volume.addEventListener( "mousedown", volumeMouseDown, false );
+        volume.addEventListener( "mousedown", volumeMouseDown );
 
         volumechange = function() {
 
@@ -421,15 +421,15 @@ define( [ "util/lang", "util/time", "analytics", "text!layouts/controls.html" ],
             p.play();
           }
 
-          timebar.addEventListener( "mouseout", timeMouseOut, false );
-          timebar.addEventListener( "mouseover", timeMouseOver, false );
-          timebar.addEventListener( "mousemove", tooltipMouseMove, false );
+          timebar.addEventListener( "mouseout", timeMouseOut );
+          timebar.addEventListener( "mouseover", timeMouseOver );
+          timebar.addEventListener( "mousemove", tooltipMouseMove );
           window.removeEventListener( "mouseup", timeMouseUp, false );
           window.removeEventListener( "mousemove", timeMouseMove, false );
         };
 
         scheduleTooltip = function() {
-          window.addEventListener( "mouseup", removeTooltip, false );
+          window.addEventListener( "mouseup", removeTooltip );
         };
 
         cancelTooltip = function() {
@@ -453,8 +453,8 @@ define( [ "util/lang", "util/time", "analytics", "text!layouts/controls.html" ],
           timebar.removeEventListener( "mouseout", timeMouseOut, false );
           timebar.removeEventListener( "mouseover", timeMouseOver, false );
           timebar.removeEventListener( "mousemove", tooltipMouseMove, false );
-          window.addEventListener( "mousemove", timeMouseMove, false );
-          window.addEventListener( "mouseup", timeMouseUp, false );
+          window.addEventListener( "mousemove", timeMouseMove );
+          window.addEventListener( "mouseup", timeMouseUp );
 
 
           if ( progressBar ) {
@@ -488,7 +488,7 @@ define( [ "util/lang", "util/time", "analytics", "text!layouts/controls.html" ],
         timeMouseOver = function() {
           addTooltip();
 
-          timebar.addEventListener( "mousemove", tooltipMouseMove, false );
+          timebar.addEventListener( "mousemove", tooltipMouseMove );
         };
 
         timeMouseOut = function() {
@@ -496,11 +496,11 @@ define( [ "util/lang", "util/time", "analytics", "text!layouts/controls.html" ],
           timebar.removeEventListener( "mousemove", tooltipMouseMove, false );
         };
 
-        timebar.addEventListener( "mouseout", scheduleTooltip, false );
-        timebar.addEventListener( "mouseover", cancelTooltip, false );
-        timebar.addEventListener( "mouseout", timeMouseOut, false );
-        timebar.addEventListener( "mouseover", timeMouseOver, false );
-        timebar.addEventListener( "mousedown", timeMouseDown, false );
+        timebar.addEventListener( "mouseout", scheduleTooltip );
+        timebar.addEventListener( "mouseover", cancelTooltip );
+        timebar.addEventListener( "mouseout", timeMouseOut );
+        timebar.addEventListener( "mouseover", timeMouseOver );
+        timebar.addEventListener( "mousedown", timeMouseDown );
 
         p.on( "timeupdate", function() {
 
@@ -530,19 +530,19 @@ define( [ "util/lang", "util/time", "analytics", "text!layouts/controls.html" ],
     // If we're not autoPlay, wait for user interaction before we're ready.
     if ( !options.preload ) {
       if ( thumbnailContainer ) {
-        thumbnailContainer.addEventListener( "click", onInit, false );
+        thumbnailContainer.addEventListener( "click", onInit );
       }
-      bigPlayButton.addEventListener( "click", onInit, false );
+      bigPlayButton.addEventListener( "click", onInit );
     } else {
       onInit();
-      bigPlayButton.addEventListener( "click", bigPlayClicked, false );
+      bigPlayButton.addEventListener( "click", bigPlayClicked );
     }
     if ( analytics ) {
       bigPlayButton.addEventListener( "click", function() {
         analytics.event( "Big Play Clicked", {
           label: "Embed"
         });
-      }, false );
+      } );
     }
 
     if ( !_container ) {

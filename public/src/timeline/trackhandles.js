@@ -110,8 +110,8 @@ define( [ "dialog/dialog", "util/dragndrop", "util/lang", "util/keys", "text!lay
         titleElement.removeEventListener( "click", startTitleEdit, false );
         editIconElement.removeEventListener( "click", startTitleEdit, false );
 
-        titleInputElement.addEventListener( "change", finishTitleEdit, false );
-        titleInputElement.addEventListener( "blur", finishTitleEdit, false );
+        titleInputElement.addEventListener( "change", finishTitleEdit );
+        titleInputElement.addEventListener( "blur", finishTitleEdit );
         titleInputElement.select();
       }
 
@@ -121,7 +121,7 @@ define( [ "dialog/dialog", "util/dragndrop", "util/lang", "util/keys", "text!lay
         }
       }
 
-      titleInputElement.addEventListener( "keypress", onKeypress, false );
+      titleInputElement.addEventListener( "keypress", onKeypress );
 
       track.listen( "tracknamechanged", function() {
         titleElement.textContent = track.name;
@@ -133,16 +133,16 @@ define( [ "dialog/dialog", "util/dragndrop", "util/lang", "util/keys", "text!lay
         contentContainerElement.classList.remove( "butter-hidden" );
         titleInputElement.classList.add( "butter-hidden" );
 
-        titleElement.addEventListener( "click", startTitleEdit, false );
-        editIconElement.addEventListener( "click", startTitleEdit, false );
+        titleElement.addEventListener( "click", startTitleEdit );
+        editIconElement.addEventListener( "click", startTitleEdit );
         titleInputElement.removeEventListener( "change", finishTitleEdit, false );
         titleInputElement.removeEventListener( "blur", finishTitleEdit, false );
         titleInputElement.value = "";
       }
 
       titleInputElement.value = "";
-      titleElement.addEventListener( "click", startTitleEdit, false );
-      editIconElement.addEventListener( "click", startTitleEdit, false );
+      titleElement.addEventListener( "click", startTitleEdit );
+      editIconElement.addEventListener( "click", startTitleEdit );
 
       deleteButton.addEventListener( "click", function() {
         var dialog = Dialog.spawn( "delete-track", {
@@ -160,7 +160,7 @@ define( [ "dialog/dialog", "util/dragndrop", "util/lang", "util/keys", "text!lay
           }
         });
         dialog.open();
-      }, false );
+      } );
 
       _menus.push( menuDiv );
 
@@ -207,14 +207,14 @@ define( [ "dialog/dialog", "util/dragndrop", "util/lang", "util/keys", "text!lay
 
     tracksContainer.element.addEventListener( "scroll", function(){
       _container.scrollTop = tracksContainer.element.scrollTop;
-    }, false );
+    } );
 
     _container.addEventListener( "mousewheel", function( e ){
       if( e.wheelDeltaY ){
         tracksContainer.element.scrollTop -= e.wheelDeltaY;
         e.preventDefault();
       }
-    }, false );
+    } );
 
     // For Firefox
     _container.addEventListener( "DOMMouseScroll", function( e ){
@@ -222,7 +222,7 @@ define( [ "dialog/dialog", "util/dragndrop", "util/lang", "util/keys", "text!lay
         tracksContainer.element.scrollTop += e.detail * 2;
         e.preventDefault();
       }
-    }, false );
+    } );
 
     this.update = function(){
       _container.scrollTop = tracksContainer.element.scrollTop;

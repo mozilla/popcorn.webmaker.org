@@ -40,7 +40,7 @@ define( [ "core/eventmanager" ], function( EventManager ) {
     function onMouseUp(){
       window.removeEventListener( "mouseup", onMouseUp, false );
       window.removeEventListener( "mousemove", onMouseMove, false );
-      _handle.addEventListener( "mousedown", onMouseDown, false );
+      _handle.addEventListener( "mousedown", onMouseDown );
       _handle.classList.remove( ACTIVE_CLASS );
     }
 
@@ -59,8 +59,8 @@ define( [ "core/eventmanager" ], function( EventManager ) {
       if( e.button === 0 ){
         var handleY = _handle.offsetTop;
         _mousePos = e.pageY - handleY;
-        window.addEventListener( "mouseup", onMouseUp, false );
-        window.addEventListener( "mousemove", onMouseMove, false );
+        window.addEventListener( "mouseup", onMouseUp );
+        window.addEventListener( "mousemove", onMouseMove );
         _handle.removeEventListener( "mousedown", onMouseDown, false );
         _handle.classList.add( ACTIVE_CLASS );
       }
@@ -78,7 +78,7 @@ define( [ "core/eventmanager" ], function( EventManager ) {
 
     outerElement.addEventListener( "scroll", function(){
       setHandlePosition();
-    }, false );
+    } );
 
     outerElement.addEventListener( "mousewheel", function( e ){
       var delta = e.wheelDeltaY || e.wheelDelta;
@@ -86,7 +86,7 @@ define( [ "core/eventmanager" ], function( EventManager ) {
       outerElement.scrollTop -= delta / SCROLL_MODIFIER;
       setHandlePosition();
       e.preventDefault();
-    }, false );
+    } );
 
     // For Firefox
     outerElement.addEventListener( "DOMMouseScroll", function( e ){
@@ -95,7 +95,7 @@ define( [ "core/eventmanager" ], function( EventManager ) {
         setHandlePosition();
         e.preventDefault();
       }
-    }, false );
+    } );
 
     _element.addEventListener( "click", function( e ) {
       // bail early if this event is coming from the handle
@@ -116,9 +116,9 @@ define( [ "core/eventmanager" ], function( EventManager ) {
 
       p = _handle.offsetTop / ( _elementHeight - _handleHeight );
       outerElement.scrollTop = ( _scrollHeight - _elementHeight ) * p;
-    }, false);
+    } );
 
-    _handle.addEventListener( "mousedown", onMouseDown, false );
+    _handle.addEventListener( "mousedown", onMouseDown );
 
     _this.update();
 
@@ -165,7 +165,7 @@ define( [ "core/eventmanager" ], function( EventManager ) {
     function onMouseUp(){
       window.removeEventListener( "mouseup", onMouseUp, false );
       window.removeEventListener( "mousemove", onMouseMove, false );
-      _handle.addEventListener( "mousedown", onMouseDown, false );
+      _handle.addEventListener( "mousedown", onMouseDown );
     }
 
     function onMouseMove( e ){
@@ -184,8 +184,8 @@ define( [ "core/eventmanager" ], function( EventManager ) {
       if( e.button === 0 ){
         var handleX = _handle.offsetLeft;
         _mousePos = e.pageX - handleX;
-        window.addEventListener( "mouseup", onMouseUp, false );
-        window.addEventListener( "mousemove", onMouseMove, false );
+        window.addEventListener( "mouseup", onMouseUp );
+        window.addEventListener( "mousemove", onMouseMove );
         _handle.removeEventListener( "mousedown", onMouseDown, false );
       }
     }
@@ -201,7 +201,7 @@ define( [ "core/eventmanager" ], function( EventManager ) {
 
     outerElement.addEventListener( "scroll", function(){
       setHandlePosition();
-    }, false );
+    } );
 
     outerElement.addEventListener( "mousewheel", function( e ){
       if( e.wheelDeltaX ){
@@ -209,7 +209,7 @@ define( [ "core/eventmanager" ], function( EventManager ) {
         setHandlePosition();
         e.preventDefault();
       }
-    }, false );
+    } );
 
     // For Firefox
     outerElement.addEventListener( "DOMMouseScroll", function( e ){
@@ -218,7 +218,7 @@ define( [ "core/eventmanager" ], function( EventManager ) {
         setHandlePosition();
         e.preventDefault();
       }
-    }, false );
+    } );
 
     _element.addEventListener( "click", function( e ) {
       // bail early if this event is coming from the handle
@@ -240,9 +240,9 @@ define( [ "core/eventmanager" ], function( EventManager ) {
 
       p = _handle.offsetLeft / ( _elementWidth - _handleWidth );
       outerElement.scrollLeft = ( _scrollWidth - _elementWidth ) * p;
-    }, false);
+    } );
 
-    _handle.addEventListener( "mousedown", onMouseDown, false );
+    _handle.addEventListener( "mousedown", onMouseDown );
 
     _this.update();
 
