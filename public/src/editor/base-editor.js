@@ -224,7 +224,7 @@ define( [ "localized", "core/eventmanager", "util/scrollbars", "ui/widget/toolti
         inputElement.addEventListener( "mouseover", onMouseover );
         colorPickerElement.removeEventListener( "mouseout", onMouseout, false );
         inputElement.removeEventListener( "mouseout", onMouseout, false );
-        window.addEventListener( "mousedown", onMousedown, );
+        window.addEventListener( "mousedown", onMousedown );
       }
 
       function onFocus() {
