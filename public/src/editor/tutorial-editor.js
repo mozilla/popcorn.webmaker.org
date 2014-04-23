@@ -32,7 +32,7 @@ define( [ "util/lang", "editor/editor", "text!layouts/tutorial-editor.html" ],
 
     _select.addEventListener( "change", function( e ) {
       _iframe.src = e.target.value;
-    }, false );
+    } );
 
     Editor.BaseEditor.extend( this, butter, rootElement, {
       open: function( element, results ) {

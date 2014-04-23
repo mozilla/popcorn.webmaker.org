@@ -282,7 +282,7 @@
           soundIndex++;
           audio.preload = true;
           audio.style.display = "none";
-          audio.addEventListener( "ended", resetAudio, false );
+          audio.addEventListener( "ended", resetAudio );
 
           document.body.appendChild( audio );
           sounds[ id ] = [ audio ];
@@ -321,7 +321,7 @@
           // not sure whether cloning copies the events in all browsers,
           // so remove it and add again just in case
           audio.removeEventListener( "ended", resetAudio, false );
-          audio.addEventListener( "ended", resetAudio, false );
+          audio.addEventListener( "ended", resetAudio );
 
           document.body.appendChild( audio );
           sounds[ id ].push( audio );
@@ -387,7 +387,7 @@
 
         link.addEventListener( "click", function() {
           context.media.pause();
-        }, false );
+        } );
 
         link.style.color = textContainer.style.color;
 
@@ -430,7 +430,7 @@
             if ( container ) {
               container.insertBefore( img, container.firstChild );
             }
-          }, false );
+          } );
           img.src = _pluginRoot + "images/" + options.icon + ".png";
         }
 

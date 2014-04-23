@@ -34,12 +34,12 @@ define( [ "l10n!/dialog/dialogs/crash.html", "dialog/dialog", "util/lang" ],
 
       infoBtn.addEventListener( "click", function() {
         dialogInfo.classList.toggle( "dialog-hidden" );
-      }, false );
+      } );
 
-      noBtn.addEventListener( "click", noCallback, false );
+      noBtn.addEventListener( "click", noCallback );
       yesBtn.addEventListener( "click", function() {
         yesCallback( commentsTextArea.value || "" );
-      }, false );
+      } );
 
       dialog.enableCloseButton();
       dialog.assignEscapeKey( "default-close" );

@@ -21,7 +21,7 @@ define( [ "editor/editor", "editor/base-editor", "text!layouts/ui-kit.html" ],
 
     function attachOnClick( nodeList, fn ) {
       for ( var i = 0, l = nodeList.length; i < l; i++ ) {
-        nodeList[ i ].addEventListener( "click", fn, false );
+        nodeList[ i ].addEventListener( "click", fn );
       }
     }
 

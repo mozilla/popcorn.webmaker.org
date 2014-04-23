@@ -69,7 +69,7 @@ define( [ "core/eventmanager", "./header",
       if( butter.selectedEvents.length ) {
         butter.deselectAllTrackEvents();
       }
-    }, false );
+    } );
 
     this.loadIcons = function( plugins ) {
       var path, img, div;
@@ -611,7 +611,7 @@ define( [ "core/eventmanager", "./header",
 
         if ( __disabledKeyRepeats.indexOf( key ) > -1 ) {
           window.removeEventListener( "keydown", onKeyDown, false );
-          window.addEventListener( "keyup", onKeyUp, false );
+          window.addEventListener( "keyup", onKeyUp );
         }
 
         processKey[ key ]( e );
@@ -620,7 +620,7 @@ define( [ "core/eventmanager", "./header",
 
     function onKeyUp() {
       window.removeEventListener( "keyup", onKeyUp, false );
-      window.addEventListener( "keydown", onKeyDown, false );
+      window.addEventListener( "keydown", onKeyDown );
     }
 
     function unbindKeyDownListener() {
@@ -628,7 +628,7 @@ define( [ "core/eventmanager", "./header",
     }
 
     function bindKeyDownListener() {
-      window.addEventListener( "keydown", onKeyDown, false );
+      window.addEventListener( "keydown", onKeyDown );
     }
 
     DragNDrop.listen( "dragstarted", unbindKeyDownListener );
@@ -643,7 +643,7 @@ define( [ "core/eventmanager", "./header",
     butter.listen( "ready", function(){
       _resizeHandler = new ResizeHandler( { margin: 26, border: 15 } ),
       _resizeHandler.resize();
-      window.addEventListener( "resize", _resizeHandler.resize, false );
+      window.addEventListener( "resize", _resizeHandler.resizee );
     });
 
     butter.listen( "mediaready", bindKeyDownListener );

@@ -79,7 +79,7 @@ define([ "localized", "editor/editor", "editor/base-editor",
 
     for ( _idx = 0; _idx < _numProjectTabs; _idx++ ) {
       _projectTab = _projectTabs[ _idx ];
-      _projectTab.addEventListener( "click", onProjectTabClick, false );
+      _projectTab.addEventListener( "click", onProjectTabClick );
     }
 
     function updateEmbed( url ) {
@@ -97,19 +97,19 @@ define([ "localized", "editor/editor", "editor/base-editor",
       _embedSizeHeight.value = _embedHeight;
       _embedSizeWidth.value = _embedWidth;
       updateEmbed( butter.project.iframeUrl );
-    }, false );
+    } );
 
     _embedSizeWidth.addEventListener( "change", function() {
       _embedSize.value = "custom";
       _embedWidth = _embedDimensions[ 0 ] = _embedSizeWidth.value;
       updateEmbed( butter.project.iframeUrl );
-    }, false );
+    } );
 
     _embedSizeHeight.addEventListener( "change", function() {
       _embedSize.value = "custom";
       _embedHeight = _embedDimensions[ 1 ] = _embedSizeHeight.value;
       updateEmbed( butter.project.iframeUrl );
-    }, false );
+    } );
 
     _embedPreload.addEventListener( "change", function() {
       if ( _embedPreload.checked ) {
@@ -118,7 +118,7 @@ define([ "localized", "editor/editor", "editor/base-editor",
         _preloadString = "?preload=none";
       }
       updateEmbed( butter.project.iframeUrl );
-    }, false );
+    } );
 
     TextboxWrapper.applyTo( _projectURL, { readOnly: true } );
     TextboxWrapper.applyTo( _projectEmbedURL, { readOnly: true } );

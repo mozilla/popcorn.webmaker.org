@@ -78,7 +78,7 @@
             else {
               _butter.currentMedia.view.blink();
             }
-          }, false );
+          } );
         }
 
         function colorCallback( te, prop, message ) {

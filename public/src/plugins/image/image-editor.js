@@ -298,8 +298,8 @@
         _this.wrapTextInputElement( _linkInput );
         _this.wrapTextInputElement( _galleryInput );
 
-        _tagRadio.addEventListener( "click", tagHandler, false );
-        _galleryRadio.addEventListener( "click", galleryHandler, false );
+        _tagRadio.addEventListener( "click", tagHandler );
+        _galleryRadio.addEventListener( "click", galleryHandler );
 
         attachDropHandlers();
       }
@@ -417,7 +417,7 @@
         }
 
         _popcornInstance = trackEvent.track._media.popcorn.popcorn;
-        _imageToggler.addEventListener( "change", toggleHandler, false );
+        _imageToggler.addEventListener( "change", toggleHandler );
 
         _this.applyExtraHeadTags( compiledLayout );
         _trackEvent = trackEvent;

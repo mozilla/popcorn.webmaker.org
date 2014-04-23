@@ -29,8 +29,8 @@ define( [ "localized", "l10n!/dialog/dialogs/backup.html", "dialog/dialog", "uti
           discardProject = fireAndCloseFn( data.discardProject, dialog ),
           projectName = data.projectName || "Unsaved Project";
 
-      backupLoadBtn.addEventListener( "click", loadProject, false );
-      backupDiscardBtn.addEventListener( "click", discardProject, false );
+      backupLoadBtn.addEventListener( "click", loadProject );
+      backupDiscardBtn.addEventListener( "click", discardProject );
 
       // Show useful time info, for example: "5 minutes ago"
       backupDateSpan.innerHTML = TimeUtil.toPrettyString( Date.now() - data.backupDate ) + " " + Localized.get( "ago" );

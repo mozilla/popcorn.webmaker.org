@@ -144,7 +144,7 @@
             } else {
               _butter.currentMedia.view.blink();
             }
-          }, false );
+          } );
         }
 
         function attachFullscreenHandler( option ) {
@@ -178,7 +178,7 @@
             }
 
             trackEvent.update( updateOptions );
-          }, false );
+          } );
         }
 
         function updateLocation( te, prop ) {
