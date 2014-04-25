@@ -290,6 +290,7 @@ app.get( "/layouts/header.html", function( req, res ) {
 });
 
 routes.overrides( app );
+routes.redirect( app );
 
 // Localized Strings
 app.get( "/strings/:lang?", middleware.crossOrigin, i18n.stringsRoute( "en-US" ) );
