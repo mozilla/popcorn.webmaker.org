@@ -44,6 +44,7 @@ requirejs.config({
     "languages": "../static/bower/webmaker-language-picker/js/languages",
     "list": "../static/bower/listjs/dist/list.min",
     "fuzzySearch": "../static/bower/list.fuzzysearch.js/dist/list.fuzzysearch.min",
+    "selectize": "../static/bower/selectize/dist/js/standalone/selectize.min",
     "make-api": "../external/make-api",
     "sketchfab-iframe": "../external/sketchfab/sketchfab-iframe",
     "WebmakerUI": "../static/bower/webmaker-ui/ui",
