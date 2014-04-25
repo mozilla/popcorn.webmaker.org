@@ -129,49 +129,55 @@ app.configure( function() {
     .use( express.static( tmpDir, JSON.parse( JSON.stringify( config.staticMiddleware ) ) ) )
     .use( express.static( WWW_ROOT, JSON.parse( JSON.stringify( config.staticMiddleware ) ) ) );
 
-  // Setup locales with i18n
-  app.use( i18n.middleware({
-    supported_languages: config.SUPPORTED_LANGS,
-    default_lang: "en-US",
-    mappings: require("webmaker-locale-mapping"),
-    translation_directory: path.resolve( __dirname, "locale" )
-  }));
-
-  // Adding an external JSON file to our existing one for the specified locale
-  authLocaleJSON = require( "./public/static/bower/webmaker-auth-client/locale/en_US/create-user-form.json" );
-  i18n.addLocaleObject({
-    "en-US": authLocaleJSON
-  }, function () {});
-
-  app.locals({
-    config: {
-      app_hostname: APP_HOSTNAME,
-      audience: config.AUDIENCE,
-      ga_account: config.GA_ACCOUNT,
-      ga_domain: config.GA_DOMAIN,
-      jwplayer_key: config.JWPLAYER_KEY,
-      make_endpoint: config.MAKE_ENDPOINT,
-      node_hubble_endpoint: config.NODE_HUBBLE_ENDPOINT,
-      sync_limit: config.SYNC_LIMIT
-    },
-    languages: i18n.getSupportLanguages(),
-    newrelic: newrelic
-  });
-
-  app.use(function (req, res, next) {
-    res.locals({
-      currentPath: req.path,
-      direction: req.localeInfo.direction === "rtl" ? "left" : "right",
-      returnPath: req.param( "page" )
-    });
-    next();
-  });
-
   app.use( express.json() )
     .use( express.urlencoded() )
     .use( webmakerAuth.cookieParser() )
-    .use( webmakerAuth.cookieSession() )
-    .use( express.csrf() )
+    .use( webmakerAuth.cookieSession() );
+
+    // Setup locales with i18n
+    app.use( i18n.middleware({
+      supported_languages: config.SUPPORTED_LANGS,
+      default_lang: "en-US",
+      mappings: require("webmaker-locale-mapping"),
+      translation_directory: path.resolve( __dirname, "locale" )
+    }));
+
+    // Adding an external JSON file to our existing one for the specified locale
+    authLocaleJSON = require( "./public/static/bower/webmaker-auth-client/locale/en_US/create-user-form.json" );
+    i18n.addLocaleObject({
+      "en-US": authLocaleJSON
+    }, function (err) {
+      if (err) {
+        console.error(err);
+      }
+    });
+
+    app.locals({
+      config: {
+        app_hostname: APP_HOSTNAME,
+        audience: config.AUDIENCE,
+        ga_account: config.GA_ACCOUNT,
+        ga_domain: config.GA_DOMAIN,
+        jwplayer_key: config.JWPLAYER_KEY,
+        make_endpoint: config.MAKE_ENDPOINT,
+        node_hubble_endpoint: config.NODE_HUBBLE_ENDPOINT,
+        sync_limit: config.SYNC_LIMIT
+      },
+      languages: i18n.getSupportLanguages(),
+      newrelic: newrelic,
+      bower_path: "/static/bower"
+    });
+
+    app.use(function (req, res, next) {
+      res.locals({
+        currentPath: req.path,
+        direction: req.localeInfo.direction === "rtl" ? "left" : "right",
+        returnPath: req.param( "page" )
+      });
+      next();
+    });
+
+    app.use( express.csrf() )
     .use( helmet.xframe() )
     /* Show Zeus who's boss
      * This only affects requests under /api and /persona, not static files

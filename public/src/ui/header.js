@@ -1,7 +1,7 @@
 /*globals TogetherJS*/
 define([ "languages", "localized", "dialog/dialog", "util/lang", "l10n!/layouts/header.html", "ui/widget/textbox", "ui/widget/tooltip",
-         "ui/widget/ProjectDetails", "util/togetherjs-syncer", "analytics" ],
-  function( Languages, Localized, Dialog, Lang, HEADER_TEMPLATE, TextBoxWrapper, ToolTip, ProjectDetails, TogetherJSSyncer, analytics ) {
+         "ui/widget/ProjectDetails", "util/togetherjs-syncer", "analytics", "selectize", "jquery" ],
+  function( Languages, Localized, Dialog, Lang, HEADER_TEMPLATE, TextBoxWrapper, ToolTip, ProjectDetails, TogetherJSSyncer, analytics, selectize, $ ) {
 
   return function( butter, options ){
 
@@ -286,6 +286,7 @@ define([ "languages", "localized", "dialog/dialog", "util/lang", "l10n!/layouts/
 
       // Call this when language picker element is ready.
       Languages.ready({ position: "bottom", arrow: "top" }, true);
+      $("#supportedLocales").selectize();
 
       _saveButton.addEventListener( "click", saveProject, false );
       if ( !butter.cornfield.authenticated() ) {
