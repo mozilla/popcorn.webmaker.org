@@ -13,8 +13,8 @@ define( [ "localized", "util/uri", "util/xhr", "json!/api/butterconfig", "jquery
         // supports #t=<start>,<duration>
         // where start or duration can be: X, X.X or XX:XX
         "null": /^\s*#t=(?:\d*(?:(?:\.|\:)?\d+)?),?(\d+(?:(?:\.|\:)\d+)?)\s*$/,
-        Flickr: /^https?:\/\/(www\.)?flickr.com/,
-        Clyp: /^https?:\/\/(www\.)?(staging\.)?clyp.it/
+        Flickr: /^https?:\/\/(www\.)?flickr\.com/,
+        Clyp: /^https?:\/\/(www\.)?(staging\.)?(?:clyp\.it|audiour\.com)/
       },
       VIMEO_EMBED_UNPLAYABLE = Localized.get( "This Vimeo video is unplayable" ),
       YOUTUBE_EMBED_DISABLED = Localized.get ( "Embedding of this YouTube video is disabled" ),
