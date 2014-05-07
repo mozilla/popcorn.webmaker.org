@@ -206,13 +206,17 @@ app.configure( function() {
   filter = require( "./lib/filter" )( Project.isDBOnline );
 });
 
+// Note: REDIS_URL is purposely not added to the default config.
+// This is because the mediasync module will default to using node-cache
+// when it is not provided for local dev.
 require( "webmaker-mediasync" )( app, {
   serviceKeys: {
     soundcloud: config.SYNC_SOUNDCLOUD,
     flickr: config.SYNC_FLICKR,
     giphy: config.SYNC_GIPHY
   },
-  limit: config.SYNC_LIMIT
+  limit: config.SYNC_LIMIT,
+  REDIS_URL: config.REDIS_URL
 });
 
 middleware = require( "./lib/middleware" );

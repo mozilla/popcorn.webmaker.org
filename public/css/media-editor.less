@@ -5,12 +5,7 @@
 .media-editor {
 
   @titleBarHeight: 60px;
-  @addClipHeight: 180px;
-
-  .butter-editor-body.butter-tabs-spacing {
-    // Account for large title and tabs
-    top: @titleBarHeight + 35px;
-  }
+  @addClipHeight: 200px;
 
   .fl-right {
     margin-top: 8px;
@@ -49,22 +44,6 @@
       font-size: 12px;
       font-family: monaco, monospace;
     }
-
-    &.search-items {
-
-      select {
-        width: 150px;
-        float: right;
-      }
-
-      span {
-        line-height: 28px;
-      }
-
-      .fl-right {
-        margin-left: 5px;
-      }
-    }
   }
 
   &.no-paging {
@@ -82,10 +61,6 @@
     opacity: 1;
     margin: 0 20px;
 
-    &.search-items {
-      height: @addClipHeight + 20px;
-    }
-
     &.invalid-field select {
       border-color: @baseLightOutline;
       border-top-color: darken( @baseLightOutline, 10% );
@@ -97,20 +72,15 @@
     bottom: 48px;
     width: 100%;
     margin-top: -1px;
-    top: @addClipHeight + 10px;
-
-    &.search-items {
-      top: @addClipHeight + 30px;
-    }
+    top: @addClipHeight + 30px;
 
     .media-gallery-heading {
       background: #FFF;
-      padding: 15px 20px;
+      height: 10px;
+      width: 100%;
       border: 0 solid @baseLightOutline;
       border-bottom-width: 1px;
       border-top-width: 1px;
-      font-size: 11px;
-      font-weight: 700;
       text-transform: uppercase;
       position: absolute;
       top: 0;
@@ -168,15 +138,43 @@
 
   .media-gallery-scroll-container {
     position: absolute;
-    top: 46px;
+    top: 10px;
     left: 0;
     right: 0;
     bottom: 0;
   }
+
+  .butter-editor-tabs.clip-tabs {
+    @buttonHeight: 33px;
+    position: absolute;
+    top: -@buttonHeight;
+    z-index: 2;
+
+    .butter-btn {
+      height: @buttonHeight;
+      line-height: @buttonHeight;
+
+      &.butter-active {
+        border-top-color: @baseLightOutline;
+        border-bottom-color: #FFF;
+      }
+
+      &.media-tab {
+        font-weight: 700;
+        font-size: 11px;
+      }
+    }
+
+    .media-icon {
+      margin-top: 8px;
+      margin-left: 5px;
+    }
+  }
+
   .media-gallery-list {
     list-style: none;
     padding: 0;
-    margin: 0;
+    margin: 2px 0 0;
     border-radius: 2px;
   }
 
@@ -306,9 +304,10 @@
       font-size: 11px;
       float: left;
       padding: 0;
-      margin-left: 30px;
-      margin-top: 5px;
-      height: 100px;
+      margin-left: 22px;
+      margin-top: 22px;
+      height: 60px;
+      width: 80px;
       border: none;
       .transition( background-color 0.2s linear );
       &.new {
@@ -332,8 +331,8 @@
         border: 1px solid @baseLightOutline;
         > img, video {
           display: block;
-          width: 120px;
-          height: 90px;
+          width: 80px;
+          height: 60px;
         }
         &:hover {
           border-color: @green;
@@ -371,9 +370,8 @@
     }
   }
 
-  .add-media-input,
-  .search-media-input {
-    height: 50px;
+  .add-media-input {
+    height: 60px;
   }
 
   .error,

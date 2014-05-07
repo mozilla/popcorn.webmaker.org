@@ -1,31 +1,8 @@
 <div class="media-editor butter-editor fadable alternates-hidden allow-scrollbar no-paging">
   <h1 class="add-new-media">{{ gettext("Create new media clip") }}</h1>
-  <ul class="butter-editor-tabs">
-    <li><a class="butter-btn search-tab butter-active">{{ gettext("Search for Media") }}</a></li>
-    <li><a class="butter-btn project-tab">{{ gettext("My Media") }}</a></li>
-  </ul>
-  <div class="butter-editor-body butter-tabs-spacing">
+  <div class="butter-editor-body">
     <fieldset class="add-media-panel search-items">
-      <div class="media-editor-inner-wrapper primary-media-wrapper search-items">
-        <p>
-          <span class="fl-right">
-            <span class="media-icon youtube-icon"></span>
-            <span class="media-icon soundcloud-icon"></span>
-            <img class="media-icon" alt="image icon" src="/resources/icons/giphy.png">
-            <img class="media-icon" alt="image icon" src="/resources/icons/flickr-black.png">
-          </span>
-          {{ gettext("Search the web") }}
-        </p>
-        <span>{{ gettext("Search for items from") }}: </span>
-        <select>
-          <option value="YouTube" id="select-youtube">YouTube</option>
-          <option value="SoundCloud" id="select-soundcloud">SoundCloud</option>
-          <option value="Flickr" id="select-flickr">Flickr</option>
-          <option value="Giphy" id="select-giphy">Giphy</option>
-        </select>
-        <textarea class="search-media-input" placeholder="{{ gettext("Type Here") }}"></textarea>
-      </div>
-      <div class="media-editor-inner-wrapper primary-media-wrapper project-clips  butter-hidden">
+      <div class="media-editor-inner-wrapper primary-media-wrapper project-clips">
         <p>
           <span class="fl-right">
             <span class="media-icon youtube-icon"></span>
@@ -40,21 +17,52 @@
         <textarea class="add-media-input" placeholder="{{ gettext("Paste an HTML") }}"></textarea>
       </div>
       <span class="butter-btn-slide-out">
-        <a class="add-media-btn butter-btn btn-green hidden">{{ gettext("Search") }}</a>
+        <a class="add-media-btn butter-btn btn-green hidden">{{ gettext("Get Media") }}</a>
         <span class="media-loading-spinner butter-spinner hidden" ></span>
         <label class="media-error-message hidden"></label>
       </span>
     </fieldset>
 
-    <div class="media-gallery search-items">
-      <div class="media-gallery-heading">YouTube {{ gettext("Results") }}</div>
+    <div class="media-gallery">
+      <ul class="butter-editor-tabs clip-tabs">
+        <li>
+          <a class="butter-btn clip-tab media-tab butter-active" data-container="project">
+            My Media
+          </a>
+        </li>
+        <li>
+          <a class="butter-btn clip-tab youtube-tab butter-disabled" data-container="YouTube"
+             title="YouTube {{ gettext("Results") }}">
+            <span class="media-icon youtube-icon"></span>
+          </a>
+        </li>
+        <li>
+          <a class="butter-btn clip-tab soundcloud-tab butter-disabled" data-container="SoundCloud"
+             title="SoundCloud {{ gettext("Results") }}">
+            <span class="media-icon soundcloud-icon"></span>
+          </a>
+        </li>
+        <li>
+          <a class="butter-btn clip-tab flickr-tab butter-disabled" data-container="Flickr"
+             title="Flickr {{ gettext("Results") }}">
+            <img class="media-icon" alt="image icon" src="/resources/icons/flickr-black.png">
+          </a>
+        </li>
+        <li>
+          <a class="butter-btn clip-tab giphy-tab butter-disabled" data-container="Giphy"
+             title="Giphy {{ gettext("Results") }}">
+            <img class="media-icon" alt="image icon" src="/resources/icons/giphy.png">
+          </a>
+        </li>
+      </ul>
+      <div class="media-gallery-heading"></div>
       <div class="media-gallery-scroll-container scrollbar-container">
         <div class="scrollbar-outer scrollbar-inner">
-          <ul class="media-gallery-list butter-hidden" id="project-items" data-page="1"></ul>
-          <ul class="media-gallery-list" id="youtube-items" data-page="1"></ul>
-          <ul class="media-gallery-list" id="soundcloud-items" data-page="1"></ul>
-          <ul class="media-gallery-list" id="flickr-items" data-page="1"></ul>
-          <ul class="media-gallery-list" id="giphy-items" data-page="1"></ul>
+          <ul class="media-gallery-list" id="project-items" data-page="1" data-total="0" data-container="project"></ul>
+          <ul class="media-gallery-list butter-hidden" id="YouTube-items" data-page="1" data-container="YouTube"></ul>
+          <ul class="media-gallery-list butter-hidden" id="SoundCloud-items" data-page="1" data-container="SoundCloud"></ul>
+          <ul class="media-gallery-list butter-hidden" id="Flickr-items" data-page="1" data-container="Flickr"></ul>
+          <ul class="media-gallery-list butter-hidden" id="Giphy-items" data-page="1" data-container="Giphy"></ul>
         </div>
       </div>
     </div>

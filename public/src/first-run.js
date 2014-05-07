@@ -18,7 +18,7 @@ define( [ "localized", "dialog/dialog" ], function( Localized, Dialog ) {
           overlayDiv,
           editor = document.querySelector( ".butter-editor-area" ),
           eventsEditorButton = document.querySelector( ".butter-editor-header-popcorn" ),
-          mediaInput = document.querySelector( ".search-media-input" );
+          searchInput = document.querySelector( ".add-media-input" );
 
       function onDialogClose() {
         // Remove Listeners
@@ -27,7 +27,7 @@ define( [ "localized", "dialog/dialog" ], function( Localized, Dialog ) {
 
         // Remove Classes
         eventsEditorButton.classList.remove( "overlay-highlight" );
-        mediaInput.classList.remove( "overlay-highlight" );
+        searchInput.classList.remove( "overlay-highlight" );
         document.body.classList.remove( "first-run" );
 
         // Remove Overlay
@@ -50,7 +50,7 @@ define( [ "localized", "dialog/dialog" ], function( Localized, Dialog ) {
         window.addEventListener( "click", closeDialog, false );
 
         // Add Classes
-        mediaInput.classList.add( "overlay-highlight" );
+        searchInput.classList.add( "overlay-highlight" );
         document.body.classList.add( "first-run" );
       }
 

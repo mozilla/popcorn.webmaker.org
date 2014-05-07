@@ -9,41 +9,34 @@ define( [ "localized", "util/lang", "util/uri", "util/xhr", "util/keys", "util/m
   var _parentElement =  LangUtils.domFragment( EDITOR_LAYOUT, ".media-editor" ),
       _addMediaPanel = _parentElement.querySelector( ".add-media-panel" ),
 
-      _clipBtnText = Localized.get( "Create clip" ),
-      _searchBtnText = Localized.get( "Search" ),
-      _resultsText = Localized.get( "Results" ),
-      _myMediaText = Localized.get( "My Media Gallery" ),
-
-      _urlInput = _addMediaPanel.querySelector( ".add-media-input" ),
+      _searchInput = _addMediaPanel.querySelector( ".add-media-input" ),
       _addBtn = _addMediaPanel.querySelector( ".add-media-btn" ),
       _errorMessage = _parentElement.querySelector( ".media-error-message" ),
       _loadingSpinner = _parentElement.querySelector( ".media-loading-spinner" ),
 
-      _searchInput = _addMediaPanel.querySelector( ".search-media-input" ),
-
       _oldValue,
       _galleryPanel = _parentElement.querySelector( ".media-gallery" ),
-      _galleryHeader = _parentElement.querySelector( ".media-gallery-heading" ),
       _galleryList = _galleryPanel.querySelector( "#project-items" ),
       _GALLERYITEM = LangUtils.domFragment( EDITOR_LAYOUT, ".media-gallery-item.gallery-video" ),
-      _searchSelector = _parentElement.querySelector( ".search-items > select" ),
       _pagingContainer = _parentElement.querySelector( ".paging-container" ),
-      _projectTab = _parentElement.querySelector( ".project-tab" ),
-      _searchTab = _parentElement.querySelector( ".search-tab" ),
 
+      _clipTabs = {
+        project: _parentElement.querySelector( ".media-tab" ),
+        YouTube: _parentElement.querySelector( ".youtube-tab" ),
+        SoundCloud: _parentElement.querySelector( ".soundcloud-tab" ),
+        Flickr: _parentElement.querySelector( ".flickr-tab" ),
+        Giphy: _parentElement.querySelector( ".giphy-tab" )
+      },
       _itemContainers = {
         project: _galleryList,
-        YouTube: _galleryPanel.querySelector( "#youtube-items" ),
-        SoundCloud: _galleryPanel.querySelector( "#soundcloud-items" ),
-        Flickr: _galleryPanel.querySelector( "#flickr-items" ),
-        Giphy: _galleryPanel.querySelector( "#giphy-items" )
+        YouTube: _galleryPanel.querySelector( "#YouTube-items" ),
+        SoundCloud: _galleryPanel.querySelector( "#SoundCloud-items" ),
+        Flickr: _galleryPanel.querySelector( "#Flickr-items" ),
+        Giphy: _galleryPanel.querySelector( "#Giphy-items" )
       },
-      _sectionContainers = {
-        project: _addMediaPanel.querySelector( ".project-clips" ),
-        search: _addMediaPanel.querySelector( ".search-items" )
-      },
+      _currentContainer = _itemContainers.project,
+      _currentTab = _clipTabs.project,
 
-      _currentSearch = "YouTube",
       _butter,
       _media,
       _mediaLoadTimeout,
@@ -59,12 +52,11 @@ define( [ "localized", "util/lang", "util/uri", "util/xhr", "util/keys", "util/m
       ];
 
   function resetInput() {
-    _urlInput.value = "";
     _searchInput.value = "";
 
     clearTimeout( _mediaLoadTimeout );
     clearTimeout( _cancelSpinner );
-    _urlInput.classList.remove( "error" );
+    _searchInput.classList.remove( "error" );
     _addMediaPanel.classList.remove( "invalid-field" );
     _errorMessage.classList.add( "hidden" );
     _loadingSpinner.classList.add( "hidden" );
@@ -328,7 +320,7 @@ define( [ "localized", "util/lang", "util/uri", "util/xhr", "util/keys", "util/m
     }
   }
 
-  function addMediaToGallery( url, onDenied ) {
+  function addMediaToGallery( url ) {
     var data = {};
 
     // Don't trigger with empty inputs
@@ -348,15 +340,20 @@ define( [ "localized", "util/lang", "util/uri", "util/xhr", "util/keys", "util/m
       _errorMessage.classList.remove( "hidden" );
       _addMediaPanel.classList.add( "invalid-field" );
     }, MEDIA_LOAD_TIMEOUT );
-    MediaUtils.getMetaData( data.source, onSuccess, onDenied );
+    MediaUtils.getMetaData( data.source, onSuccess, function() {
+      clearTimeout( _cancelSpinner );
+      clearTimeout( _mediaLoadTimeout );
+      _loadingSpinner.classList.add( "hidden" );
+      pagingSearchCallback( _itemContainers.project, 1 );
+    });
   }
 
   function onFocus() {
-    _oldValue = _urlInput.value;
+    _oldValue = _searchInput.value;
   }
 
   function onInput() {
-    if ( _urlInput.value || _searchInput.value ) {
+    if ( _searchInput.value ) {
       _addBtn.classList.remove( "hidden" );
     } else {
       _addBtn.classList.add( "hidden" );
@@ -371,12 +368,7 @@ define( [ "localized", "util/lang", "util/uri", "util/xhr", "util/keys", "util/m
   function onEnter( e ) {
     if ( e.keyCode === KeysUtils.ENTER ) {
       e.preventDefault();
-
-      if ( !_sectionContainers.project.classList.contains( "butter-hidden" ) ) {
-        onAddMediaClick();
-      } else {
-        searchAPIs( true );
-      }
+      onAddMediaClick();
     }
   }
 
@@ -399,8 +391,8 @@ define( [ "localized", "util/lang", "util/uri", "util/xhr", "util/keys", "util/m
       _loadingSpinner.classList.remove( "hidden" );
     }, 300 );
     _addBtn.classList.add( "hidden" );
-    _urlInput.value = formatSource( _urlInput.value );
-    addMediaToGallery( _urlInput.value, onDenied );
+    _searchInput.value = formatSource( _searchInput.value );
+    addMediaToGallery( _searchInput.value, onDenied );
   }
 
   function addPhotoCallback( popcornOptions, data ) {
@@ -436,13 +428,46 @@ define( [ "localized", "util/lang", "util/uri", "util/xhr", "util/keys", "util/m
     addMediaEvent( popcornOptions );
   }
 
-  function pagingSearchCallback( page ) {
-    var search = _currentSearch,
-        container = _itemContainers[ _currentSearch ],
-        value = _searchInput.value || container.dataset.query,
+  function clearSearchContainers( clearAll ) {
+    if ( clearAll ) {
+      for ( var key in _itemContainers ) {
+        if ( _itemContainers.hasOwnProperty( key ) && key !== "project" ) {
+          _itemContainers[ key ].innerHTML = "";
+        }
+      }
+    } else {
+      _currentContainer.innerHTML = "";
+    }
+  }
+
+  function pagingSearchCallback( container, page ) {
+    var search,
+        id = container.id,
+        value = _searchInput.value,
         query,
+        tab,
         loadingLi = document.createElement( "li" );
 
+    search = id.substring( 0, id.indexOf( "-items" ) );
+    search = search === "project" ? "all" : search;
+
+    if ( search === "all" ) {
+      // If we aren't the "My Media" tab, don't default it to the YouTube container
+      if ( _currentContainer !== _itemContainers.project ) {
+        container = _currentContainer;
+        tab = _clipTabs[ _currentContainer.dataset.container ];
+      } else {
+        container = _itemContainers.YouTube;
+        tab = _clipTabs.YouTube;
+      }
+    } else {
+      container = _itemContainers[ search ];
+      tab = _clipTabs[ search ];
+    }
+
+    toggleContainers( tab );
+
+    value = value || container.dataset.query;
     value = value ? value.trim() : "";
     _searchInput.value = value;
 
@@ -451,7 +476,6 @@ define( [ "localized", "util/lang", "util/uri", "util/xhr", "util/keys", "util/m
     }
 
     query = value;
-    container.setAttribute( "data-query", value );
 
     // Hashtags will break URLs
     if ( value.charAt( 0 ) === "#" ) {
@@ -459,42 +483,47 @@ define( [ "localized", "util/lang", "util/uri", "util/xhr", "util/keys", "util/m
     }
 
     query = encodeURIComponent( query );
-    container.innerHTML = "";
-    container.setAttribute( "data-page", page );
+    clearSearchContainers( search === "all" );
     loadingLi.innerHTML = "<span class=\"media-loading-spinner butter-spinner media-gallery-loading\" ></span>";
     container.appendChild( loadingLi );
+    container.classList.remove( "butter-hidden" );
 
-    XHR.get( "/api/webmaker/search/" + _currentSearch + "?page=" + page + "&q=" + query, function( data ) {
-      container.innerHTML = "";
+    XHR.get( "/api/webmaker/search/" + search + "?page=" + page + "&q=" + query, function( data ) {
+      _currentContainer.innerHTML = "";
 
       if ( data.status === "okay" ) {
-        container.setAttribute( "data-total", data.total );
-
-        // If the user selects the project tab before finishing, we still populate that container
-        // with results, but prevent the pagination controls from displaying.
-        if ( !_projectTab.classList.contains( "butter-active" ) ) {
-          pagination( page, data.total, pagingSearchCallback );
-        } else {
-          pagination( 1, 0, pagingSearchCallback );
-        }
-
         if ( data.results && data.results.length ) {
+          var service;
+
           for ( var k = 0; k < data.results.length; k++ ) {
             if ( data.results[ k ] ) {
-              if ( search !== "Flickr" && search !== "Giphy" ) {
-                addMedia( data.results[ k ], {
-                  container: container,
-                  callback: addMediaCallback
-                });
-              } else {
-                addPhotos( data.results[ k ], {
-                  container: container,
-                  callback: addPhotoCallback
-                });
+              service = data.results[ k ];
+
+              _itemContainers[ service.service ].setAttribute( "data-total", service.total );
+              _itemContainers[ service.service ].setAttribute( "data-page", page );
+              _itemContainers[ service.service ].setAttribute( "data-query", decodeURIComponent( query ) );
+
+              for ( var j = 0; j < service.results.length; j++ ) {
+                if ( service.service !== "Flickr" && service.service !== "Giphy" ) {
+                  addMedia( service.results[ j ], {
+                    container: _itemContainers[ service.service ],
+                    callback: addMediaCallback
+                  });
+                } else {
+                  addPhotos( service.results[ j ], {
+                    container: _itemContainers[ service.service ],
+                    callback: addPhotoCallback
+                  });
+                }
               }
+
+              addToggleListener( _clipTabs[ service.service ] );
+            } else {
+              removeToggleListener( _clipTabs[ service.service ] );
             }
           }
 
+          pagination( _currentContainer, pagingSearchCallback );
           resetInput();
         } else {
           onDenied( Localized.get( "Your search contained no results!" ) );
@@ -507,11 +536,11 @@ define( [ "localized", "util/lang", "util/uri", "util/xhr", "util/keys", "util/m
     });
   }
 
-  var pagination = function( page, total, callback ) {
+  var pagination = function( container, callback ) {
 
     // Ensure page and toal are always an integer. IE: 2 and not "2"
-    page = parseInt( page, 10 );
-    total = parseInt( total, 10 );
+    var page = parseInt( container.dataset.page, 10 ),
+        total = parseInt( container.dataset.total, 10 );
 
     _parentElement.classList.add( "no-paging" );
 
@@ -544,7 +573,7 @@ define( [ "localized", "util/lang", "util/uri", "util/xhr", "util/keys", "util/m
     // Show previous?
     if ( page > 1 ) {
       prevBtn.addEventListener( "click", function() {
-        callback( page - 1 );
+        callback( container, page - 1 );
       }, false );
       ul.appendChild( prevBtn );
     }
@@ -555,7 +584,7 @@ define( [ "localized", "util/lang", "util/uri", "util/xhr", "util/keys", "util/m
       // Ensure page is always an integer. IE: 2 and not "2"
       nextPage = parseInt( nextPage, 10 );
 
-      callback( nextPage );
+      callback( container, nextPage );
     }
 
     // Iterate over all pages;
@@ -581,7 +610,7 @@ define( [ "localized", "util/lang", "util/uri", "util/xhr", "util/keys", "util/m
       li.innerHTML = totalPages;
 
       li.addEventListener( "click", function() {
-        callback( totalPages );
+        callback( container, totalPages );
       }, false );
 
       ellipsis.classList.add( "ellipsis" );
@@ -591,7 +620,7 @@ define( [ "localized", "util/lang", "util/uri", "util/xhr", "util/keys", "util/m
 
     if ( page < totalPages ) {
       nextBtn.addEventListener( "click", function() {
-        callback( page + 1 );
+        callback( container, page + 1 );
       }, false );
       ul.appendChild( nextBtn );
     }
@@ -599,34 +628,55 @@ define( [ "localized", "util/lang", "util/uri", "util/xhr", "util/keys", "util/m
     _parentElement.classList.remove( "no-paging" );
   };
 
-  function searchAPIs( resetPage ) {
-    var page = _itemContainers[ _currentSearch ].dataset.page;
-    _addBtn.classList.add( "hidden" );
+  function toggleContainers( currentTab ) {
+    var previousTab = _currentTab,
+        currentContainer,
+        container;
 
-    // Reset page as it's a new search.
-    if ( resetPage ) {
-      page = 1;
+    if ( currentTab.nodeName === "SPAN" || currentTab.nodeName === "IMG" ) {
+      currentTab = currentTab.parentNode;
     }
 
-    pagingSearchCallback( page );
+    currentContainer = currentTab.dataset.container,
+    container = _itemContainers[ currentContainer ];
+
+    _currentContainer = container;
+    _currentTab = currentTab;
+
+    // Unhighlight previous tab and hide clip container
+    previousTab.classList.remove( "butter-active" );
+    _itemContainers[ previousTab.dataset.container ].classList.add( "butter-hidden" );
+
+    currentTab.classList.add( "butter-active" );
+    container.classList.remove( "butter-hidden" );
+
+    pagination( container, pagingSearchCallback );
+    resetInput();
+    _this.scrollbar.update();
+  }
+
+  function toggleListener( e ) {
+    toggleContainers( e.target );
+  }
+
+  function addToggleListener( element ) {
+    // We are making the tab active, remove the visual class showing it's inactive
+    element.classList.remove( "butter-disabled" );
+    element.addEventListener( "mouseup", toggleListener );
+  }
+
+  function removeToggleListener( element ) {
+    // We are making the tab inactive, add the visual class showing it's inactive
+    element.classList.add( "butter-disabled" );
+    element.removeEventListener( "mouseup", toggleListener );
   }
 
   function setup() {
-    _urlInput.addEventListener( "focus", onFocus, false );
-    _urlInput.addEventListener( "input", onInput, false );
-    _urlInput.addEventListener( "keydown", onEnter, false );
-
     _searchInput.addEventListener( "focus", onFocus, false );
     _searchInput.addEventListener( "input", onInput, false );
     _searchInput.addEventListener( "keydown", onEnter, false );
 
-    _addBtn.addEventListener( "click", function( e ) {
-      if ( !_sectionContainers.project.classList.contains( "butter-hidden" ) ) {
-        onAddMediaClick( e );
-      } else {
-        searchAPIs( true );
-      }
-    }, false );
+    _addBtn.addEventListener( "click", onAddMediaClick );
   }
 
   Editor.register( "media-editor", null, function( rootElement, butter ) {
@@ -672,70 +722,7 @@ define( [ "localized", "util/lang", "util/uri", "util/xhr", "util/keys", "util/m
       }
     }
 
-    _searchSelector.addEventListener( "change", function toggleItemType( e ) {
-      var value = e.target.value,
-          container;
-
-      for ( var key in _itemContainers ) {
-        if ( _itemContainers.hasOwnProperty( key ) ) {
-          container = _itemContainers[ key ];
-
-          if ( key === value ) {
-            _currentSearch = key;
-            container.style.display = "";
-            _galleryHeader.innerHTML = _currentSearch + " " + _resultsText;
-            pagination( container.dataset.page, container.dataset.total, pagingSearchCallback );
-          } else {
-            container.style.display = "none";
-          }
-
-          _this.scrollbar.update();
-        }
-      }
-    }, false );
-
-    _projectTab.addEventListener( "mouseup", function() {
-      if ( !_projectTab.classList.contains( "butter-active" ) ) {
-        _searchTab.classList.remove( "butter-active" );
-        _projectTab.classList.add( "butter-active" );
-        _galleryPanel.classList.remove( "search-items" );
-        _addMediaPanel.classList.remove( "search-items" );
-
-        _addBtn.innerHTML = _clipBtnText;
-        _galleryHeader.innerHTML = _myMediaText;
-        _sectionContainers.project.classList.remove( "butter-hidden" );
-        _sectionContainers.search.classList.add( "butter-hidden" );
-        _itemContainers[ _currentSearch ].classList.add( "butter-hidden" );
-        _itemContainers.project.classList.remove( "butter-hidden" );
-
-        // We don't page the gallery items that are tied down to a project.
-        pagination( 1, 0, pagingSearchCallback );
-        resetInput();
-        _this.scrollbar.update();
-      }
-    });
-
-    _searchTab.addEventListener( "mouseup", function() {
-      if ( !_searchTab.classList.contains( "butter-active" ) ) {
-        var container = _itemContainers[ _currentSearch ];
-
-        _searchTab.classList.add( "butter-active" );
-        _projectTab.classList.remove( "butter-active" );
-        _galleryPanel.classList.add( "search-items" );
-        _addMediaPanel.classList.add( "search-items" );
-
-        _sectionContainers.project.classList.add( "butter-hidden" );
-        _sectionContainers.search.classList.remove( "butter-hidden" );
-        _itemContainers[ _currentSearch ].classList.remove( "butter-hidden" );
-        _itemContainers.project.classList.add( "butter-hidden" );
-        _addBtn.innerHTML = _searchBtnText;
-        _galleryHeader.innerHTML = _currentSearch + " " + _resultsText;
-
-        pagination( container.dataset.page, container.dataset.total, pagingSearchCallback );
-        resetInput();
-        _this.scrollbar.update();
-      }
-    }, false );
+    addToggleListener( _clipTabs.project );
 
     setup();
 
