@@ -318,24 +318,23 @@ define( [ "localized", "util/uri", "util/xhr", "json!/api/butterconfig", "jquery
         var title = baseUrl.substring( baseUrl.lastIndexOf( "/" ) + 1 ),
             mediaElem,
             errorOptions,
-            successOptions;
-
-        baseUrl = encodeURI( baseUrl );
+            successOptions,
+            encodedBaseUrl = encodeURI( baseUrl );
 
         errorOptions = {
-          source: baseUrl,
+          source: encodedBaseUrl,
           type: type,
           title: title
         };
 
         successOptions = {
-          source: baseUrl,
+          source: encodedBaseUrl,
           type: type,
           title: title,
-          thumbnail: URI.makeUnique( baseUrl ).toString()
+          thumbnail: URI.makeUnique( encodedBaseUrl ).toString()
         };
 
-        Popcorn.getJSONP( nodeHubbleEndpoint + "/mime/" + baseUrl, function( resp ) {
+        Popcorn.getJSONP( nodeHubbleEndpoint + "/mime/" + encodeURIComponent(baseUrl), function( resp ) {
           var contentType = resp.contentType;
 
           if ( resp.error ) {
@@ -350,10 +349,10 @@ define( [ "localized", "util/uri", "util/xhr", "json!/api/butterconfig", "jquery
             successOptions.hidden = errorOptions.hidden = true;
           } else if ( contentType.indexOf( "image" ) === 0 ) {
             successCallback({
-              source: baseUrl,
+              source: encodedBaseUrl,
               type: "image",
-              thumbnail: baseUrl,
-              title: baseUrl,
+              thumbnail: encodedBaseUrl,
+              title: encodedBaseUrl,
               contentType: contentType,
               duration: 5
             });
@@ -368,7 +367,7 @@ define( [ "localized", "util/uri", "util/xhr", "json!/api/butterconfig", "jquery
             mediaElem.addEventListener( "error", function() {
               jwPlayerFallback( errorOptions, successCallback, errorCallback );
             }, false );
-            mediaElem.src = URI.makeUnique( baseUrl ).toString();
+            mediaElem.src = URI.makeUnique( encodedBaseUrl ).toString();
           } else {
             errorCallback( EMBED_UNPLAYABLE );
           }
