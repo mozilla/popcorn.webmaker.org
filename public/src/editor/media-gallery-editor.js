@@ -36,7 +36,8 @@ define( [ "localized", "util/lang", "util/uri", "util/xhr", "util/keys", "util/m
         YouTube: _galleryPanel.querySelector( "#youtube-items" ),
         SoundCloud: _galleryPanel.querySelector( "#soundcloud-items" ),
         Flickr: _galleryPanel.querySelector( "#flickr-items" ),
-        Giphy: _galleryPanel.querySelector( "#giphy-items" )
+        Giphy: _galleryPanel.querySelector( "#giphy-items" ),
+        Archive: _galleryPanel.querySelector( "#archive-items" )
       },
       _sectionContainers = {
         project: _addMediaPanel.querySelector( ".project-clips" ),
