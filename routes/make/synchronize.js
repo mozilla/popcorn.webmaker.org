@@ -12,7 +12,7 @@ module.exports = function( req, res, next ) {
     makeClient.create({
       title: project.name,
       author: project.author,
-      email: project.email,
+      email: req.session.user.email,
       contentType: "application/x-popcorn",
       locale: req.localeInfo.locale || "en_US",
       url: utils.embedShellURL( project.author, project.id ),
@@ -44,7 +44,6 @@ module.exports = function( req, res, next ) {
     });
   } else {
     makeClient.update( project.makeid, {
-      maker: project.email,
       make: {
         title: project.name,
         author: project.author,
@@ -53,7 +52,7 @@ module.exports = function( req, res, next ) {
         contentType: "application/x-popcorn",
         thumbnail: project.thumbnail,
         description: project.description,
-        email: project.email,
+        email: req.session.user.email,
         tags: req.makeTags,
         remixurl: res.app.locals.config.app_hostname + "/editor/" + project.id + "/remix",
         editurl: res.app.locals.config.app_hostname + "/editor/" + project.id + "/edit",

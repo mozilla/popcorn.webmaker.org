@@ -45,20 +45,20 @@ module.exports = function( Project ) {
 
     if ( req.body.id ) {
 
-      Project.find( { email: req.session.email, id: req.body.id }, function( err, doc ) {
+      Project.find( { userid: req.session.user.id, id: req.body.id }, function( err, doc ) {
         if ( err ) {
           metrics.increment( "project.find.error" );
           res.json( 500, { error: err } );
           return;
         }
         if ( doc ) {
-          Project.update( { email: req.session.email, id: req.body.id, data: projectData }, onUpdate );
+          Project.update( { userid: req.session.user.id, id: req.body.id, data: projectData }, onUpdate );
         } else {
-          Project.create( { email: req.session.email, data: projectData }, onCreate );
+          Project.create( { userid: req.session.user.id, data: projectData }, onCreate );
         }
       });
     } else {
-      Project.create( { email: req.session.email, data: projectData }, onCreate );
+      Project.create( { userid: req.session.user.id, data: projectData }, onCreate );
     }
   };
 };

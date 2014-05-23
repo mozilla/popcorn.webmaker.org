@@ -10,7 +10,6 @@ module.exports = function( req, res, next ) {
   }
 
   makeClient.update( project.makeid, {
-    maker: project.email,
     make: {
       published: true
     }
