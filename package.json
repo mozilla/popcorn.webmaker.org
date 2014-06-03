@@ -105,14 +105,14 @@
     "nunjucks": "0.1.10",
     "requirejs-middleware": "0.1.2",
     "rtltr-for-less": "0.0.7",
-    "sequelize": "1.6.0",
+    "sequelize": "^1.7.8",
     "webmaker-auth": "0.0.11",
     "webmaker-download-locales": "0.1.2",
-    "webmaker-locale-mapping": "latest",
     "webmaker-i18n": "0.3.20",
+    "webmaker-locale-mapping": "latest",
+    "webmaker-mediasync": "https://github.com/mozilla/webmaker-mediasync/tarball/v0.1.28",
     "webmaker-translation-stats": "0.0.1",
-    "webmaker-user-client": "0.0.2",
-    "webmaker-mediasync": "https://github.com/mozilla/webmaker-mediasync/tarball/v0.1.28"
+    "webmaker-user-client": "0.0.2"
   },
   "optionalDependencies": {
     "node-statsd": "0.0.7",

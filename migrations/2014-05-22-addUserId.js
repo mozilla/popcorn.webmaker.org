@@ -30,12 +30,14 @@ var async = require( "async" ),
 
     // helper vars
     limit = 50,
+    lastpid = 0,
     processed = 0,
     updated = 0;
 
 // Resolve remix dependencies
 function setUserid( project, callback ) {
   userClient.get.byEmail(project.email, function (err, resp) {
+    lastpid = project.id;
     if ( err ) {
       return callback(err);
     }
@@ -57,6 +59,9 @@ function setUserid( project, callback ) {
 function getNextSet( callback ) {
   Project.findAll({
     where: {
+      id: {
+        gt: lastpid
+      },
       userid: null
     },
     limit: limit,
