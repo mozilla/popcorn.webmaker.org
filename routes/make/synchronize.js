@@ -29,6 +29,10 @@ module.exports = function( req, res, next ) {
         return next( utils.error( 500, error.toString() ) );
       }
 
+      if (!make) {
+        return next( utils.error( 500, "Failed to create make" ) );
+      }
+
       project.updateAttributes({ makeid: make._id })
       .error( function() {
         return next( utils.error( 500, "Failed to add Make ID" ) );
