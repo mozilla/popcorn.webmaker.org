@@ -46,7 +46,7 @@ function setUserid( project, callback ) {
       return callback();
     }
     project.userid = resp.user.id;
-    project.save().error(function( error ){
+    project.save(["userid"]).error(function( error ){
       callback(error);
     }).success(function() {
       updated++;
