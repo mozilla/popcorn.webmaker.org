@@ -1,0 +1,1 @@
+ALTER TABLE Projects MODIFY email VARCHAR(255);
