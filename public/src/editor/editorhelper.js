@@ -349,7 +349,7 @@ define( [ "util/xhr", "util/keys", "localized", "jquery" ], function( XHR, KEYS,
       fd.append( "image", file );
 
       XHR.put( "/api/image", fd, function( data ) {
-        if ( !data.error ) {
+        if ( !data.error && data.url ) {
           if ( trackEvent ) {
             trackEvent.update( { src: data.url, title: file.name } );
           }
