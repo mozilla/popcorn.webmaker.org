@@ -14,7 +14,7 @@ var validMimeTypes = {
 module.exports = function( req, res ) {
   // We've verified the image is valid in filters
   var image = req.files.image[0],
-      extension = validMimeTypes[ image.headers[ "content-type" ] ];
+      extension = validMimeTypes[ image.headers[ "content-type" ] ],
       s3Path = "/user_uploads/" + uuid.v4() + extension;
 
   var s3req = s3.put( s3Path, {
