@@ -14,7 +14,7 @@ define( [ "util/xhr", "localized", "webmaker-auth-client" ], function( xhr, Loca
 
     function onLogin( user ) {
       authenticated = true;
-      username = user.fullName;
+      username = user.username;
       avatar = user.avatar;
       butter.dispatch( "authenticated" );
       if ( butter.project && butter.project.id ) {
