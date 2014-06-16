@@ -95,8 +95,8 @@
       tooltip: Butter.localized.get( "Double click to interact" )
     });
     this.resizable( trackEvent, _container, target, {
-      minWidth: 40,
-      minHeight: 40,
+      minWidth: 10,
+      minHeight: 10,
       handlePositions: "n,ne,e,se,s,sw,w,nw"
     });
   });
