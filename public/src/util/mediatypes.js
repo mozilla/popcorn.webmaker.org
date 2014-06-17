@@ -337,7 +337,7 @@ define( [ "localized", "util/uri", "util/xhr", "json!/api/butterconfig", "jquery
         Popcorn.getJSONP( nodeHubbleEndpoint + "/mime/" + encodeURIComponent(baseUrl), function( resp ) {
           var contentType = resp.contentType;
 
-          if ( resp.error ) {
+          if ( resp.error || !contentType ) {
             return errorCallback( EMBED_UNPLAYABLE );
           }
           successOptions.contentType = errorOptions.contentType = contentType;
