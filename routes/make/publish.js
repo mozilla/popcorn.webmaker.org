@@ -10,9 +10,7 @@ module.exports = function( req, res, next ) {
   }
 
   makeClient.update( project.makeid, {
-    make: {
-      published: true
-    }
+    published: true
   }, function( err ) {
     if ( err ) {
       return next( utilities.error( 500, err.toString() ) );

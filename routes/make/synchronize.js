@@ -48,20 +48,18 @@ module.exports = function( req, res, next ) {
     });
   } else {
     makeClient.update( project.makeid, {
-      make: {
-        title: project.name,
-        author: project.author,
-        url: utils.embedShellURL( project.author, project.id ),
-        contenturl: utils.embedURL( project.author, project.id ),
-        contentType: "application/x-popcorn",
-        thumbnail: project.thumbnail,
-        description: project.description,
-        email: req.session.user.email,
-        tags: req.makeTags,
-        remixurl: res.app.locals.config.app_hostname + "/editor/" + project.id + "/remix",
-        editurl: res.app.locals.config.app_hostname + "/editor/" + project.id + "/edit",
-        published: false
-      }
+      title: project.name,
+      author: project.author,
+      url: utils.embedShellURL( project.author, project.id ),
+      contenturl: utils.embedURL( project.author, project.id ),
+      contentType: "application/x-popcorn",
+      thumbnail: project.thumbnail,
+      description: project.description,
+      email: req.session.user.email,
+      tags: req.makeTags,
+      remixurl: res.app.locals.config.app_hostname + "/editor/" + project.id + "/remix",
+      editurl: res.app.locals.config.app_hostname + "/editor/" + project.id + "/edit",
+      published: false
     }, function( error ) {
       if ( error ) {
         return next( utils.error( 500, error.toString() ) );
