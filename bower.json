@@ -8,9 +8,12 @@
     "persona-btn": "0.0.12",
     "popcorn-js": "1.5.6",
     "ua-parser-js": "0.6.2",
-    "webmaker-analytics": "0.0.5",
-    "webmaker-auth-client": "0.1.5",
+    "webmaker-analytics": "0.1.0",
+    "webmaker-auth-client": "0.1.7",
     "webmaker-language-picker": "0.0.22",
     "webmaker-i18n": "https://github.com/mozilla/node-webmaker-i18n/archive/v0.3.11.tar.gz"
+  },
+  "resolutions": {
+    "webmaker-analytics": "0.1.0"
   }
 }
