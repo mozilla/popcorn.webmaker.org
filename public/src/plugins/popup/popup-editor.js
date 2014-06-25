@@ -102,6 +102,14 @@
           }
           trackEvent.update( updateOptions );
         }
+        
+        function iconHandler( e ) {
+          var elementVal = e.target.value,
+          updateOptions = {};
+
+          updateOptions.icon = elementVal;
+          option.trackEvent.update( updateOptions );        
+        }
 
         for ( key in pluginOptions ) {
           if ( pluginOptions[ key ] ) {
@@ -123,7 +131,11 @@
 
               attachTypeHandler( option );
             }
-            else if ( option.elementType === "select" && key !== "type" ) {
+            else if ( key === "icon" ) {
+                option.element.addEventListener( "keyup" , iconHandler, false );
+                option.element.addEventListener( "mouseover" , iconHandler, false );
+            }
+            else if ( option.elementType === "select" && key !== "type" && key !== "icon" ) {
               _this.attachSelectChangeHandler( option.element, option.trackEvent, key, _this.updateTrackEventSafe );
               if ( key === "linkTarget" ) {
                 pickers.linkTarget = option.element;
