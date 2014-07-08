@@ -44,7 +44,8 @@ nunjucksEnv.express( app );
 app.disable( "x-powered-by" );
 
 var webmakerAuth = new WebmakerAuth({
-  loginURL: config.LOGIN_SERVER_URL_WITH_AUTH,
+  loginURL: config.LOGIN_SERVER_URL,
+  authLoginUrl: config.LOGIN_SERVER_URL_WITH_AUTH,
   secretKey: config.SECRET,
   forceSSL: config.FORCE_SSL,
   domain: config.COOKIE_DOMAIN
