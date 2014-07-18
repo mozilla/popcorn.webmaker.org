@@ -492,8 +492,9 @@ define( [ "localized", "util/lang", "util/uri", "util/xhr", "util/keys", "util/m
       _currentContainer.innerHTML = "";
 
       if ( data.status === "okay" ) {
-        if ( data.results && data.results.length ) {
-          var service;
+        if ( data.results && data.results.length && data.total ) {
+          var service,
+              tabWithResults = false;
 
           for ( var k = 0; k < data.results.length; k++ ) {
             if ( data.results[ k ] ) {
@@ -503,21 +504,40 @@ define( [ "localized", "util/lang", "util/uri", "util/xhr", "util/keys", "util/m
               _itemContainers[ service.service ].setAttribute( "data-page", page );
               _itemContainers[ service.service ].setAttribute( "data-query", decodeURIComponent( query ) );
 
-              for ( var j = 0; j < service.results.length; j++ ) {
-                if ( service.service !== "Flickr" && service.service !== "Giphy" ) {
-                  addMedia( service.results[ j ], {
-                    container: _itemContainers[ service.service ],
-                    callback: addMediaCallback
-                  });
-                } else {
-                  addPhotos( service.results[ j ], {
-                    container: _itemContainers[ service.service ],
-                    callback: addPhotoCallback
-                  });
-                }
-              }
+              // Ensure container/tab is only enabled when it had results
+              if ( service.results.length ) {
 
-              addToggleListener( _clipTabs[ service.service ] );
+                // If we are the first index in the data and have results we already
+                // have the correct tab selected
+                if ( k === 0 ) {
+                  tabWithResults = true;
+                }
+
+                // If previous indexes in the data didn't have results, check if so and
+                // change the selected tab to the first one with returned data
+                if ( !tabWithResults ) {
+                  toggleContainers( _clipTabs[ service.service ] );
+                  tabWithResults = true;
+                }
+
+                for ( var j = 0; j < service.results.length; j++ ) {
+                  if ( service.service !== "Flickr" && service.service !== "Giphy" ) {
+                    addMedia( service.results[ j ], {
+                      container: _itemContainers[ service.service ],
+                      callback: addMediaCallback
+                    });
+                  } else {
+                    addPhotos( service.results[ j ], {
+                      container: _itemContainers[ service.service ],
+                      callback: addPhotoCallback
+                    });
+                  }
+                }
+
+                addToggleListener( _clipTabs[ service.service ] );
+              } else {
+                removeToggleListener( _clipTabs[ service.service ] );
+              }
             } else {
               removeToggleListener( _clipTabs[ service.service ] );
             }
@@ -526,6 +546,12 @@ define( [ "localized", "util/lang", "util/uri", "util/xhr", "util/keys", "util/m
           pagination( _currentContainer, pagingSearchCallback );
           resetInput();
         } else {
+          // We had no results found so disable all containers and focus the "My Media" tab.
+          removeToggleListener( _clipTabs.YouTube );
+          removeToggleListener( _clipTabs.SoundCloud );
+          removeToggleListener( _clipTabs.Flickr );
+          removeToggleListener( _clipTabs.Giphy );
+          toggleContainers( _clipTabs.project );
           onDenied( Localized.get( "Your search contained no results!" ) );
         }
 
