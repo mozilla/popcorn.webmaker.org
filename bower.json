@@ -6,7 +6,7 @@
     "jquery-ui": "1.9.1",
     "nav-global": "https://github.com/mozilla/nav-global/archive/v0.1.4.tar.gz",
     "persona-btn": "0.0.12",
-    "popcorn-js": "1.5.6",
+    "popcorn-js": "1.5.10",
     "ua-parser-js": "0.6.2",
     "webmaker-analytics": "0.1.0",
     "webmaker-auth-client": "0.1.11",
