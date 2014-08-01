@@ -81,7 +81,7 @@ define( [ "dialog/dialog", "util/xhr", "util/uri" ], function( Dialog, xhr, URI 
     });
   }
 
-  // Record a handfull of recently-triggered state-changing events.
+  // Record a handful of recently-triggered state-changing events.
   function butterStateChangedOnEvent( e ) {
     __stateEventQueue.push( e.type );
     if ( __stateEventQueue.length > STATE_EVENT_QUEUE_LENGTH ) {

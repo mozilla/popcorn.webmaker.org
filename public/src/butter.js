@@ -846,7 +846,7 @@ window.Butter = {
        *
        * @param {String} savedDataUrl: The url from which to attempt to load saved project data.
        * @param {Function} responseCallback: A callback function which is called upon completion (successful or not).
-       * @returns: If successfull, an object is returned containing project data. Otherwise, null.
+       * @returns: If successful an object is returned containing project data. Otherwise, null.
        */
       function loadFromSavedDataUrl( savedDataUrl, responseCallback ) {
         // if no valid url was provided, return early

@@ -107,7 +107,7 @@ define( [ "localized", "util/mediatypes", "editor/editor", "util/time",
             outInput = _rootElement.querySelector( ".trimmer-input-right" ),
             inInput = _rootElement.querySelector( ".trimmer-input-left" ),
             clipSection = el.querySelector( ".clip-section" ),
-            clipEndLable = el.querySelector( ".clip-end" );
+            clipEndLabel = el.querySelector( ".clip-end" );
 
         var firstX,
             startLeft,
@@ -165,7 +165,7 @@ define( [ "localized", "util/mediatypes", "editor/editor", "util/time",
           outInput.value = Time.toTimecode( from + end - start );
 
           if ( options.duration ) {
-            clipEndLable.innerHTML = Time.toTimecode( options.duration );
+            clipEndLabel.innerHTML = Time.toTimecode( options.duration );
           }
 
         }

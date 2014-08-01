@@ -198,7 +198,7 @@ define( [ "localized", "./eventmanager", "./trackevent", "./views/track-view", "
 
       // If the update will cause this event to overlap with another ...
       if ( trackEvent.track.findOverlappingTrackEvent( start, end, trackEvent ) ) {
-        // reject the update by cancelling the notifiction;
+        // reject the update by cancelling the notification;
         notification.cancel( "trackevent-overlap" );
 
         // remove the incriminating trackEvent to avoid conflicts;

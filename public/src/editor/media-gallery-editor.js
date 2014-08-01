@@ -563,14 +563,14 @@ define( [ "localized", "util/lang", "util/uri", "util/xhr", "util/keys", "util/m
 
         _this.scrollbar.update();
       } else {
-        onDenied( Localized.get( "An error occured when making your request!" ), true );
+        onDenied( Localized.get( "An error occurred when making your request!" ), true );
       }
     });
   }
 
   var pagination = function( container, callback ) {
 
-    // Ensure page and toal are always an integer. IE: 2 and not "2"
+    // Ensure page and total are always an integer. IE: 2 and not "2"
     var page = parseInt( container.dataset.page, 10 ),
         total = parseInt( container.dataset.total, 10 );
 
