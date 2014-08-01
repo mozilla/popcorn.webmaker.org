@@ -57,7 +57,7 @@ function init() {
     }
 
     // OSX has a nice fancy animation that delays the fullscreen transition, but our event still fires.
-    // Because of this, we recieve a "premature" innerHeight value.
+    // Because of this, we receive a "premature" innerHeight value.
     setTimeout(function() {
       controls = document.querySelector( "#controls" );
       container.style.height = window.innerHeight - controls.offsetHeight + "px";

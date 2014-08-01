@@ -75,7 +75,7 @@ The default server configuration can be found in [lib/default-config.js](lib/def
   - `session` settings for user sessions
     - `secret` the sessions secret (i.e., some long string)
   - `staticMiddleware` settings for cornfield Connect middleware
-    - `maxAge` the max age of static assests
+    - `maxAge` the max age of static assets
   - `dirs` settings for various directories, paths, hostnames
     - `wwwRoot` the server's WWW root directory (e.g., `../`)
     - `templates` the location of templates (e.g., `../templates`)

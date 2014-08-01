@@ -204,7 +204,7 @@
           return newTrack;
         }
         else {
-          throw "inserTrackBefore must be passed a valid relative track.";
+          throw "insertTrackBefore must be passed a valid relative track.";
         }
       };
 

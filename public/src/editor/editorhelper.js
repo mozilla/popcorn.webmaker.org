@@ -141,7 +141,7 @@ define( [ "util/xhr", "util/keys", "localized", "jquery" ], function( XHR, KEYS,
      *                 Options are:
      *                    {DOMElement} handle: Restrict drag start event to this element
      *                    {Function} start: Function to execute on drag start event
-     *                    {Function} end: Fucntion to execute on drag end event
+     *                    {Function} end: Function to execute on drag end event
      */
     _this.draggable = function( trackEvent, dragContainer, targetContainer, options ) {
       if ( $( dragContainer ).data( "draggable" ) ) {
@@ -247,7 +247,7 @@ define( [ "util/xhr", "util/keys", "localized", "jquery" ], function( XHR, KEYS,
      *                              - Recommended that this option is specified due to a bug in z-indexing with
      *                                jQueryUI Resizable.
      *                    {Function} start: Function to execute on resize start event
-     *                    {Function} end: Fucntion to execute on resize end event
+     *                    {Function} end: Function to execute on resize end event
      *                    {Number} minWidth: Minimum width that the resizeContainer should be
      *                    {Number} minHeight: Minimum height that the resizeContainer should be
      */

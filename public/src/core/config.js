@@ -134,7 +134,7 @@
        * variable replacement as needed. If only one argument is passed,
        * the name of a property, the value is returned. If two arguments
        * are passed, the second is used in order to override the property's
-       * value. If a known variable is overriden, its validate() method
+       * value. If a known variable is overridden, its validate() method
        * is called (if any). The value is returned in both cases.
        *
        * @param {String} property: The config property to get.

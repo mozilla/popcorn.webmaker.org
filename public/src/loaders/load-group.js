@@ -90,7 +90,7 @@ define( [ "./load-item" ], function( LoadItem ) {
 
       function unorderedErrorCallback( loadItem ) {
         _erroneousItems.push( loadItem );
-        // If an error occured, call the error callback, but keep loading.
+        // If an error occurred, call the error callback, but keep loading.
         errorCallback.call( this, loadItem.error );
         next();
       }
@@ -120,7 +120,7 @@ define( [ "./load-item" ], function( LoadItem ) {
 
       function unorderedErrorCallback( loadItem ) {
         _erroneousItems.push( loadItem );
-        // If an error occured, call the error callback, but keep loading.
+        // If an error occurred, call the error callback, but keep loading.
         errorCallback.call( this, loadItem.error );
         checkFinished();
       }

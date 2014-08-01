@@ -29,7 +29,7 @@ define( [ "localized", "core/logger", "core/eventmanager", "util/uri", "util/acc
         _makeVideoURLsUnique = options.makeVideoURLsUnique,
         _checkedFlashVersion = false;
 
-    /* Destroy popcorn bindings specfically without touching other discovered
+    /* Destroy popcorn bindings specifically without touching other discovered
      * settings
      */
     this.unbind = function(){
@@ -314,7 +314,7 @@ define( [ "localized", "core/logger", "core/eventmanager", "util/uri", "util/acc
       return popcornString;
     };
 
-    /* Create a Popcorn instace in the page. Try just running the generated function first (from popcornString)
+    /* Create a Popcorn instance in the page. Try just running the generated function first (from popcornString)
      * and insert it as a script in the head if that fails.
      */
     function createPopcorn( popcornString ){
@@ -356,7 +356,7 @@ define( [ "localized", "core/logger", "core/eventmanager", "util/uri", "util/acc
 
       // set a timeout to occur after timeoutDuration milliseconds
       setTimeout(function(){
-        // if success hasn't already occured, call timeoutCallback
+        // if success hasn't already occurred, call timeoutCallback
         if ( !ready ) {
           timeoutCallback();
         }

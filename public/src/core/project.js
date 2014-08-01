@@ -149,7 +149,7 @@ define( [ "localized", "core/eventmanager", "core/media", "util/sanitizer" ],
 
       "data": {
         get: function() {
-          // Memoize value, since it doesn't always change
+          // Memorize value, since it doesn't always change
           if ( !_dataObject || !_isSaved ) {
             var exportJSONMedia = [];
             for ( var i = 0; i < butter.media.length; ++i ) {
@@ -547,7 +547,7 @@ define( [ "localized", "core/eventmanager", "core/media", "util/sanitizer" ],
           byEnd = popcorn.data.trackEvents.byEnd,
           lastEvent = byEnd[ byEnd.length - 2 ];
 
-      // If it's not greater than two, this mean we only have Popcorns padding events.
+      // If it's not greater than two, this mean we only have Popcorn's padding events.
       if ( byEnd.length > 2  && lastEvent.end < butter.currentMedia.duration ) {
         butter.listen( "mediaready", saveProject );
         butter.currentMedia.url = "#t=," + lastEvent.end;

@@ -154,7 +154,7 @@
       options._link = "https://" + options.lang + ".wikipedia.org/wiki/" + encodeURIComponent( _title );
 
       if ( !cachedArticles[ _query ] ) {
-        // gets the mobile format, so that we don't load unwanted images when the respose is turned into a documentFragment
+        // gets the mobile format, so that we don't load unwanted images when the response is turned into a documentFragment
         Popcorn.getScript( _href + "api.php?action=parse&prop=text&redirects&page=" +
           encodeURIComponent( _title ) + "&noimages=1&mobileformat=html&format=json&callback=" + _guid );
       } else {
