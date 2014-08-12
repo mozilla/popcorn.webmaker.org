@@ -94,14 +94,6 @@ define( [ "localized", "util/lang", "util/uri", "util/xhr", "util/keys", "util/m
     });
   }
 
-  function addPhotoEvent( popcornOptions ) {
-    _butter.deselectAllTrackEvents();
-    _butter.generateSafeTrackEvent({
-      type: "image",
-      popcornOptions: popcornOptions
-    });
-  }
-
   function addPhotos( data, options ) {
     var el = options.element || LangUtils.domFragment( EDITOR_LAYOUT, ".media-gallery-item.gallery-photo" ),
         deleteBtn = el.querySelector( ".mg-delete-btn" ),
@@ -154,9 +146,9 @@ define( [ "localized", "util/lang", "util/uri", "util/xhr", "util/keys", "util/m
       el.removeChild( deleteBtn );
     }
 
-    options.callback = options.callback || addPhotoEvent;
+    options.callback = options.callback || function() {};
 
-    function addEvent() {
+    function addEvent( clickEvent ) {
       analytics.event( "Track Event Added", {
         label: "clicked"
       });
@@ -166,7 +158,17 @@ define( [ "localized", "util/lang", "util/uri", "util/xhr", "util/keys", "util/m
             title: data.title
           };
 
-      options.callback( popcornOptions, data );
+      _butter.deselectAllTrackEvents();
+      _butter.generateSafeTrackEvent({
+        type: "image",
+        popcornOptions: popcornOptions
+      }, function( trackEvent ) {
+
+        if ( clickEvent.shiftKey ) {
+          _butter.currentTime = trackEvent.popcornOptions.end;
+        }
+        options.callback( popcornOptions, data );
+      });
     }
 
     thumbnailBtn.addEventListener( "click", addEvent );
@@ -179,14 +181,6 @@ define( [ "localized", "util/lang", "util/uri", "util/xhr", "util/keys", "util/m
     resetInput();
   }
 
-  function addMediaEvent( popcornOptions ) {
-    _butter.deselectAllTrackEvents();
-    _butter.generateSafeTrackEvent({
-      type: "sequencer",
-      popcornOptions: popcornOptions
-    });
-  }
-
   function addMedia( data, options ) {
     var el = options.element || _GALLERYITEM.cloneNode( true ),
         container = options.container,
@@ -197,6 +191,7 @@ define( [ "localized", "util/lang", "util/uri", "util/xhr", "util/keys", "util/m
         source = data.source;
 
     data.duration = ( +data.duration );
+    options.callback = options.callback || function() {};
 
     dragNDrop( thumbnailBtn, {
       source: source,
@@ -251,7 +246,7 @@ define( [ "localized", "util/lang", "util/uri", "util/xhr", "util/keys", "util/m
 
     el.classList.add( "mg-" + data.type.toLowerCase() );
 
-    function addEvent() {
+    function addEvent( clickEvent ) {
       analytics.event( "Track Event Added", {
         label: "clicked"
       });
@@ -273,8 +268,17 @@ define( [ "localized", "util/lang", "util/uri", "util/xhr", "util/keys", "util/m
             hidden: data.hidden || false
           };
 
-      options.callback = options.callback || addMediaEvent;
-      options.callback( popcornOptions, data );
+      _butter.deselectAllTrackEvents();
+      _butter.generateSafeTrackEvent({
+        type: "sequencer",
+        popcornOptions: popcornOptions
+      }, function( trackEvent ) {
+
+        if ( clickEvent.shiftKey ) {
+          _butter.currentTime = trackEvent.popcornOptions.end;
+        }
+        options.callback( popcornOptions, data );
+      });
     }
 
     thumbnailBtn.addEventListener( "click", addEvent );
@@ -411,8 +415,6 @@ define( [ "localized", "util/lang", "util/uri", "util/xhr", "util/keys", "util/m
         remove: true
       });
     }
-
-    addPhotoEvent( popcornOptions );
   }
 
   function addMediaCallback( popcornOptions, data ) {
@@ -424,8 +426,6 @@ define( [ "localized", "util/lang", "util/uri", "util/xhr", "util/keys", "util/m
         remove: true
       });
     }
-
-    addMediaEvent( popcornOptions );
   }
 
   function clearSearchContainers( clearAll ) {

@@ -48,7 +48,7 @@ define( [ "localized", "util/dragndrop", "util/lang", "editor/editor", "analytic
         }
       });
 
-      function onClick() {
+      function onClick( clickEvent ) {
         if ( butter.currentMedia.ready ) {
           butter.deselectAllTrackEvents();
           butter.generateSafeTrackEvent({
@@ -60,7 +60,11 @@ define( [ "localized", "util/dragndrop", "util/lang", "editor/editor", "analytic
             analytics.event( "Track Event Added", {
               label: "clicked"
             });
-            butter.editor.editTrackEvent( trackEvent );
+            if ( clickEvent.shiftKey ) {
+              butter.currentTime = trackEvent.popcornOptions.end;
+            } else {
+              butter.editor.editTrackEvent( trackEvent );
+            }
           });
         }
       }
