@@ -103,12 +103,22 @@
           trackEvent.update( updateOptions );
         }
 
-        function iconHandler( e ) {
-          var elementVal = e.target.value,
-          updateOptions = {};
+        function updateIcon( iconImg, value ) {
+            if ( value === "none" ) {
+              iconImg.style.visibility = "hidden";
+              iconImg.src = "";
+            }
+            else {
+              iconImg.src = "/src/plugins/popup/images/" + value + ".png";
+              iconImg.style.visibility = "initial";
+            }
+        }
 
-          updateOptions.icon = elementVal;
-          option.trackEvent.update( updateOptions );
+        function iconHandler() {
+          var that = this;
+          setTimeout(function() {
+            updateIcon( that.parentNode.querySelector( ".popup-icon-preview" ), that.value );
+          });
         }
 
         for ( key in pluginOptions ) {
@@ -132,6 +142,24 @@
               attachTypeHandler( option );
             }
             else if ( key === "icon" ) {
+              var iconImg = document.createElement( "img" );
+              iconImg.className = "popup-icon-preview";
+
+              var iconSpan = document.createElement( "span" );
+              iconSpan.className = "butter-unit";
+              iconSpan.style.right = "120px";
+
+              var iconDiv = document.createElement( "div" );
+              iconDiv.className = "butter-form-append";
+
+              option.element.parentNode.appendChild( iconDiv );
+              iconDiv.appendChild( iconSpan );
+              iconSpan.appendChild( iconImg );
+              iconDiv.appendChild( option.element );
+
+              _this.attachSelectChangeHandler( option.element, option.trackEvent, key, _this.updateTrackEventSafe );
+              option.element.style = "margin-left: 40px";
+              updateIcon( iconImg, _popcornOptions.icon );
               option.element.addEventListener( "keyup" , iconHandler, false );
               option.element.addEventListener( "mouseover" , iconHandler, false );
             }
