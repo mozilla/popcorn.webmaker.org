@@ -103,6 +103,18 @@
           trackEvent.update( updateOptions );
         }
 
+        function iconHandler( e ) {
+          var iconImg = this.parentNode.querySelector( ".popup-icon-preview" );
+          if ( this.value === "none" ) {
+            iconImg.style.visibility = "hidden";
+            iconImg.src = "";
+          }
+          else {
+            iconImg.src = "/src/plugins/popup/images/" + this.value + ".png";
+            iconImg.style.visibility = "initial";
+          }
+        }
+
         for ( key in pluginOptions ) {
           if ( pluginOptions[ key ] ) {
             option = pluginOptions[ key ];
@@ -123,7 +135,29 @@
 
               attachTypeHandler( option );
             }
-            else if ( option.elementType === "select" && key !== "type" ) {
+            else if ( key === "icon" ) {
+              var iconImg = document.createElement( "img" );
+              iconImg.className = "popup-icon-preview";
+              iconImg.src = "/src/plugins/popup/images/info.png";
+
+              var iconSpan = document.createElement( "span" );
+              iconSpan.className = "butter-unit";
+              iconSpan.style.right = "120px";
+
+              var iconDiv = document.createElement( "div" );
+              iconDiv.className = "butter-form-append";
+
+              option.element.parentNode.appendChild( iconDiv );
+              iconDiv.appendChild( iconSpan );
+              iconSpan.appendChild( iconImg );
+              iconDiv.appendChild( option.element );
+
+              _this.attachSelectChangeHandler( option.element, option.trackEvent, key, _this.updateTrackEventSafe );
+              option.element.style = "margin-left: 40px";
+              option.element.addEventListener( "keyup" , iconHandler, false );
+              option.element.addEventListener( "mouseover" , iconHandler, false );
+            }
+            else if ( option.elementType === "select" && key !== "type" && key !== "icon" ) {
               _this.attachSelectChangeHandler( option.element, option.trackEvent, key, _this.updateTrackEventSafe );
               if ( key === "linkTarget" ) {
                 pickers.linkTarget = option.element;
