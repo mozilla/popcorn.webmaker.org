@@ -10,7 +10,7 @@
     "ua-parser-js": "0.6.2",
     "webmaker-analytics": "0.1.0",
     "webmaker-auth-client": "0.1.11",
-    "webmaker-language-picker": "0.0.22",
+    "webmaker-language-picker": "0.0.25",
     "webmaker-i18n": "https://github.com/mozilla/node-webmaker-i18n/archive/v0.3.11.tar.gz"
   },
   "resolutions": {
