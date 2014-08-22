@@ -89,7 +89,6 @@ define( [ "localized", "util/uri", "util/xhr", "json!/api/butterconfig", "jquery
       baseUrl = decodeURI( baseUrl );
 
       var id,
-          userId,
           parsedUri,
           splitUriDirectory,
           xhrURL,
@@ -190,17 +189,15 @@ define( [ "localized", "util/uri", "util/xhr", "json!/api/butterconfig", "jquery
         parsedUri = URI.parse( baseUrl );
 
         if ( parsedUri.host === "soundcloud.com" ) {
-          splitUriDirectory = parsedUri.directory.split( "/" );
-          id = splitUriDirectory[ splitUriDirectory.length - 1 ];
-          userId = splitUriDirectory[ splitUriDirectory.length - 2 ];
 
-          xhrURL = "https://api.soundcloud.com/tracks/" + id + ".json?callback=?&client_id=PRaNFlda6Bhf5utPjUsptg&user_id=" + userId;
+          xhrURL = "https://api.soundcloud.com/resolve.json?callback=?&client_id=PRaNFlda6Bhf5utPjUsptg&url=" + decodeURIComponent( baseUrl );
         // If an embed iframe source is used, which looks like this:
         // https://w.soundcloud.com/player/?url=https://api.soundcloud.com/tracks/11921587
         } else if ( parsedUri.host === "w.soundcloud.com" ) {
           id = parsedUri.queryKey.url.split( "api.soundcloud.com/tracks/" )[ 1 ];
           xhrURL = "https://api.soundcloud.com/tracks/" + id + ".json?callback=?&client_id=PRaNFlda6Bhf5utPjUsptg";
         }
+
         Popcorn.getJSONP( xhrURL, function( respData ) {
           if ( !respData ) {
             return;
