@@ -59,7 +59,7 @@ define([ "languages", "localized", "dialog/dialog", "util/lang", "l10n!/layouts/
     }
 
     // Feature flag might not be enabled.
-    if ( _togetherjsBtn ) {
+    if ( _togetherjsBtn && window.TogetherJS ) {
       _togetherJSSyncer = new TogetherJSSyncer( butter );
 
       var toggleTogether = function( started ) {
