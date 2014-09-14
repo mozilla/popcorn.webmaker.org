@@ -104,15 +104,18 @@
         }
 
         function iconHandler( e ) {
-          var iconImg = this.parentNode.querySelector( ".popup-icon-preview" );
-          if ( this.value === "none" ) {
-            iconImg.style.visibility = "hidden";
-            iconImg.src = "";
-          }
-          else {
-            iconImg.src = "/src/plugins/popup/images/" + this.value + ".png";
-            iconImg.style.visibility = "initial";
-          }
+          var that = this;
+          setTimeout(function() {
+            var iconImg = that.parentNode.querySelector( ".popup-icon-preview" );
+            if ( that.value === "none" ) {
+              iconImg.style.visibility = "hidden";
+              iconImg.src = "";
+            }
+            else {
+              iconImg.src = "/src/plugins/popup/images/" + that.value + ".png";
+              iconImg.style.visibility = "initial";
+            }
+          });
         }
 
         for ( key in pluginOptions ) {
