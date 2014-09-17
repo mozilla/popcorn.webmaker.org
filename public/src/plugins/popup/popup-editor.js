@@ -103,18 +103,21 @@
           trackEvent.update( updateOptions );
         }
 
-        function iconHandler( e ) {
-          var that = this;
-          setTimeout(function() {
-            var iconImg = that.parentNode.querySelector( ".popup-icon-preview" );
-            if ( that.value === "none" ) {
+        function updateIcon( iconImg, value ) {
+            if ( value === "none" ) {
               iconImg.style.visibility = "hidden";
               iconImg.src = "";
             }
             else {
-              iconImg.src = "/src/plugins/popup/images/" + that.value + ".png";
+              iconImg.src = "/src/plugins/popup/images/" + value + ".png";
               iconImg.style.visibility = "initial";
             }
+        }
+
+        function iconHandler( e ) {
+          var that = this;
+          setTimeout(function() {
+            updateIcon( that.parentNode.querySelector( ".popup-icon-preview" ), that.value );
           });
         }
 
@@ -141,7 +144,7 @@
             else if ( key === "icon" ) {
               var iconImg = document.createElement( "img" );
               iconImg.className = "popup-icon-preview";
-              iconImg.src = "/src/plugins/popup/images/info.png";
+              iconImg.src = "/src/plugins/popup/images/" + _popcornOptions.icon + ".png";
 
               var iconSpan = document.createElement( "span" );
               iconSpan.className = "butter-unit";
@@ -157,6 +160,7 @@
 
               _this.attachSelectChangeHandler( option.element, option.trackEvent, key, _this.updateTrackEventSafe );
               option.element.style = "margin-left: 40px";
+              updateIcon( iconImg, _popcornOptions.icon );
               option.element.addEventListener( "keyup" , iconHandler, false );
               option.element.addEventListener( "mouseover" , iconHandler, false );
             }
