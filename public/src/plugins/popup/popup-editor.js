@@ -144,7 +144,6 @@
             else if ( key === "icon" ) {
               var iconImg = document.createElement( "img" );
               iconImg.className = "popup-icon-preview";
-              iconImg.src = "/src/plugins/popup/images/" + _popcornOptions.icon + ".png";
 
               var iconSpan = document.createElement( "span" );
               iconSpan.className = "butter-unit";
