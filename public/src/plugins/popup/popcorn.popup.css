@@ -126,6 +126,7 @@
   overflow: hidden;
   word-wrap: break-word;
   white-space: pre-wrap;
+  min-height: .08em;
 }
 
 .popcorn-popup > .popup-inner-div > div > textarea,
