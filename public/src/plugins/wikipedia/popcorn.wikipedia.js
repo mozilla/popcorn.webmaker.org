@@ -107,8 +107,10 @@
     }
 
     function buildArticle( data ) {
+
       var childIndex = 1,
-          responseFragment = getFragment( "<div>" + data.parse.text + "</div>" ),
+          textData = data.parse.text[ "*" ],
+          responseFragment = getFragment( "<div>" + textData + "</div>" ),
           element = responseFragment.querySelector( "div > p:nth-of-type(" + childIndex + ")" ),
           mainText = "";
 
