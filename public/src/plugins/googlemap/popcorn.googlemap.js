@@ -146,6 +146,11 @@ var googleCallback;
         options.lat = results[ 0 ].geometry.location.lat();
         options.lng = results[ 0 ].geometry.location.lng();
         _cachedGeoCode[ options.location ] = location = results[ 0 ].geometry.location;
+      }
+      else if ( status === google.maps.GeocoderStatus.OK ) {
+        options.lat = results[ 0 ].geometry.urlmap.lat();
+        options.lng = results[ 0 ].geometry.urlmap.lng();
+        _cachedGeoCode[ options.urlmap ] = location = results[ 0 ].geometry.urlmap;
 
         map = buildMap( options, innerdiv, that );
       } else if ( status === google.maps.GeocoderStatus.OVER_QUERY_LIMIT ) {
@@ -175,6 +180,22 @@ var googleCallback;
               // calls an anonymous google function called on separate thread
               geocoder.geocode({
                 "address": options.location
+              }, geoCodeCallback );
+            }
+
+          } else {
+            location = new google.maps.LatLng( options.lat, options.lng );
+            map = map = buildMap( options, innerdiv, that );
+          }
+          if ( options.urlmap) {
+            location = _cachedGeoCode[ options.urlmap];
+
+            if ( urlmap ) {
+              map = buildMap( options, innerdiv, that );
+            } else {
+              // calls an anonymous google function called on separate thread
+              geocoder.geocode({
+                "address": options.urlmap
               }, geoCodeCallback );
             }
 
@@ -575,7 +596,7 @@ var googleCallback;
                     }
                   );
                 } else {
-                  map.panTo( location );
+                  map.panTo( urlmap );
                 }
               }
             });
@@ -690,6 +711,11 @@ var googleCallback;
         type: "text",
         label: "Location",
         "default": "Toronto, Ontario, Canada"
+      },
+      urlmap: {
+        elem: "input",
+        type: "text",
+        label: "Map URL",
       },
       fullscreen: {
         elem: "input",
