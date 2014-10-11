@@ -59,16 +59,15 @@ define( [ "localized", "util/lang", "util/uri", "util/xhr", "util/keys", "util/m
     _searchInput.classList.remove( "error" );
     _addMediaPanel.classList.remove( "invalid-field" );
     _errorMessage.classList.add( "hidden" );
-    _loadingSpinner.classList.add( "hidden" );
-
     _addBtn.classList.add( "hidden" );
+    deactivateSpinner();
   }
 
   function onDenied( error, preventFieldHightlight ) {
     clearTimeout( _cancelSpinner );
     clearTimeout( _mediaLoadTimeout );
     _errorMessage.innerHTML = error;
-    _loadingSpinner.classList.add( "hidden" );
+    deactivateSpinner();
     if ( !preventFieldHightlight ) {
       _addMediaPanel.classList.add( "invalid-field" );
     }
@@ -224,7 +223,7 @@ define( [ "localized", "util/lang", "util/uri", "util/xhr", "util/keys", "util/m
       el.removeChild( deleteBtn );
     }
 
-    _loadingSpinner.classList.add( "hidden" );
+    deactivateSpinner();
 
     el.querySelector( ".mg-title" ).innerHTML = data.title;
     el.querySelector( ".mg-type" ).classList.add( data.type.toLowerCase() + "-icon" );
@@ -347,7 +346,7 @@ define( [ "localized", "util/lang", "util/uri", "util/xhr", "util/keys", "util/m
     MediaUtils.getMetaData( data.source, onSuccess, function() {
       clearTimeout( _cancelSpinner );
       clearTimeout( _mediaLoadTimeout );
-      _loadingSpinner.classList.add( "hidden" );
+      deactivateSpinner();
       pagingSearchCallback( _itemContainers.project, 1 );
     });
   }
@@ -365,8 +364,8 @@ define( [ "localized", "util/lang", "util/uri", "util/xhr", "util/keys", "util/m
     clearTimeout( _cancelSpinner );
     clearTimeout( _mediaLoadTimeout );
     _addMediaPanel.classList.remove( "invalid-field" );
-    _loadingSpinner.classList.add( "hidden" );
     _errorMessage.classList.add( "hidden" );
+    deactivateSpinner();
   }
 
   function onEnter( e ) {
@@ -425,6 +424,13 @@ define( [ "localized", "util/lang", "util/uri", "util/xhr", "util/keys", "util/m
         container: _galleryList,
         remove: true
       });
+    }
+  }
+
+  function deactivateSpinner() {
+    var allSpinnerElements = _parentElement.querySelectorAll( ".media-loading-spinner" );
+    for ( var i = 0 ; i < allSpinnerElements.length; ++i ) {
+      allSpinnerElements[i].classList.add( "hidden" );
     }
   }
 

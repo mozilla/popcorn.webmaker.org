@@ -61,7 +61,8 @@
   display: inline-block;
   background-image: url( "../resources/icons/spinny.gif" );
   &.hidden {
-    display: none;
+    /* conflict with .media-editor .media-loading-spinner.media-gallery-loading */
+    display: none !important;
   }
 }
 
