@@ -124,7 +124,7 @@ define([ "languages", "localized", "dialog/dialog", "util/lang", "l10n!/layouts/
       } else if ( !butter.project.id ) {
         toggleSaving( false );
         _makeDetails.classList.remove( "butter-hidden" );
-        _makeDetails.style.webkitTransform = 'scale(1)';
+        _makeDetails.style.webkitTransform = "scale(1)";
         _projectDetails.open();
       } else {
         submitSave();
