@@ -2,6 +2,9 @@
  * If a copy of the MIT license was not distributed with this file, you can
  * obtain one at https://raw.github.com/mozilla/butter/master/LICENSE */
 
+@import "../static/bower/makerstrap/less/makerstrap";
+@makerstrap-bower-path: "../static/bower";
+
 @import "globals";
 @import "webfonts";
 @import "normalize";
@@ -33,3 +36,17 @@
 @import "super-scrollbar-rtl";
 
 @import "tutorial";
+
+/* Makerstrap-Popcorn Maker compatibility */
+* {
+  box-sizing: content-box;
+}
+
+*:before, *:after {
+  box-sizing: content-box;
+}
+
+body {
+  font-size: 16px;
+  line-height: normal;
+}

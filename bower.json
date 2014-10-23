@@ -4,6 +4,7 @@
     "farbtastic": "1.3u",
     "jquery": "1.8.3",
     "jquery-ui": "1.9.1",
+    "makerstrap": "0.2.7",
     "nav-global": "https://github.com/mozilla/nav-global/archive/v0.1.4.tar.gz",
     "persona-btn": "0.0.12",
     "popcorn-js": "1.5.10",
@@ -14,6 +15,7 @@
     "webmaker-i18n": "https://github.com/mozilla/node-webmaker-i18n/archive/v0.3.11.tar.gz"
   },
   "resolutions": {
-    "webmaker-analytics": "0.1.0"
+    "selectize": "0.10.1",
+    "jquery": ">= 1.9.0"
   }
 }

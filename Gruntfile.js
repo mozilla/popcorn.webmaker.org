@@ -60,6 +60,8 @@ module.exports = function( grunt ) {
           "compatible-vendor-prefixes": false,
           "duplicate-background-images": false,
           "fallback-colors": false,
+          "floats": false,
+          "font-sizes": false,
           "ids": false,
           "important": false,
           "outline-none": false,

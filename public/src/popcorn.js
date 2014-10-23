@@ -38,7 +38,7 @@ requirejs.config({
     // Our other APIs
     "analytics": "../static/bower/webmaker-analytics/analytics",
     "farbtastic": "../static/bower/farbtastic/farbtastic",
-    "jquery": "../static/bower/jquery/jquery.min",
+    "jquery": "../static/bower/jquery/dist/jquery.min",
     "jquery-ui": "../static/bower/jquery-ui/ui/jquery-ui",
     "localized": "../static/bower/webmaker-i18n/localized",
     "languages": "../static/bower/webmaker-language-picker/js/languages",
