@@ -1,4 +1,5 @@
 #make-details {
+  line-height: 1.4;
   background-color: #FFF;
   width: 430px;
   position: absolute;
@@ -31,19 +32,27 @@
         line-height: 0;
         input {
           width: auto;
-          margin-top: 0;
         }
       }
       border: none;
       padding: 0;
       margin-bottom: 2px;
       .error {
-        line-height: 0;
+        margin-left: 5px;
+        margin-top: 5px;
         color: red;
       }
     }
 
+    .input-container {
+      width: 75%;
+      .input {
+        width: 100%;
+      }
+    }
+
     label {
+      margin-top: 25px;
       min-width: 85px;
       padding: 8px;
       float: left;
@@ -68,7 +77,7 @@
       }
 
       &.thumbnail-choices {
-        margin-top: 0;
+        margin-top: 10px;
         border: none;
         max-height: 100px;
         overflow-y: auto;
@@ -180,16 +189,17 @@
   }
 
   .confirmation-buttons {
-    margin: 0 15px 1em;
+    margin: 15px 15px 1em;
     text-align: right;
 
     .confirmation-button {
+      display: inline-block;
       color: #FFF;
       cursor: pointer;
       font-size: 16px;
+      line-height: 1;
       padding: 0.8em 1em;
       .transition( opacity 0.5s ease );
-      height: 25px;
 
       &.yes-button {
         background-color: #3FB58E;
