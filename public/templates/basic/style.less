@@ -83,6 +83,9 @@ body.editor-minimized .stage-wrapper {
   .video-container {
     .transition( opacity 0.5s );
     opacity: 1;
+    // Makestrap overrides
+    max-width: none;
+    width: auto;
   }
 
   &.faded .video-container {
@@ -95,10 +98,6 @@ body.editor-minimized .stage-wrapper {
 .video-container {
   @baseFontSize: 14px;
   position: relative;
-
-  // Makestrap overrides
-  max-width: auto;
-  width: auto;
 }
 
 #video {
