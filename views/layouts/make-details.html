@@ -2,8 +2,10 @@
 <form class="makeapi-details">
   <fieldset name="title">
     <label>{{ gettext("Title") }}:</label>
-    <input type="text" class="input title-input">
-    <div class="error">{{ gettext("Please give your project a name before saving") }}</div>
+    <div class="pull-left input-container">
+      <input type="text" class="input title-input">
+      <div class="error">{{ gettext("Please give your project a name before saving") }}</div>
+    </div>
   </fieldset>
   <fieldset name="tags">
     <label>{{ gettext("Tags") }}:</label>
@@ -14,8 +16,10 @@
   </fieldset>
   <fieldset name="thumbnail">
     <label>{{ gettext("Thumbnail") }}:</label>
-    <input type="text" class="input thumbnail-input">
-    <ul class="thumbnail-choices input"></ul>
+    <div class="pull-left input-container">
+      <input type="text" class="input thumbnail-input">
+      <ul class="thumbnail-choices input"></ul>
+    </div>
   </fieldset>
   <fieldset name="searchable" class="searchable">
     <label for="searchable-make-checkbox-details">{{ gettext("Searchable") }}:</label>
