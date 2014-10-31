@@ -2,7 +2,7 @@
  * If a copy of the MIT license was not distributed with this file, you can
  * obtain one at https://raw.github.com/mozilla/butter/master/LICENSE */
 
-define( [ "util/xhr", "localized", "webmaker-auth-client" ], function( xhr, Localized, WebmakerAuth ) {
+define( [ "util/xhr", "localized" ], function( xhr, Localized ) {
 
   var Cornfield = function( butter ) {
 
@@ -31,15 +31,21 @@ define( [ "util/xhr", "localized", "webmaker-auth-client" ], function( xhr, Loca
       butter.dispatch( "logout" );
     }
 
-    webmakerAuth = new WebmakerAuth({
-      csrfToken: document.querySelector( "meta[name=csrf-token]" ).content
-    });
-
     function onReady() {
+      webmakerAuth = new window.WebmakerLogin({
+        csrfToken: document.querySelector( "meta[name=csrf-token]" ).content,
+        showCTA: false
+      });
       butter.unlisten( "ready", onReady );
       webmakerAuth.on( "login", onLogin );
       webmakerAuth.on( "logout", onLogout );
-      webmakerAuth.verify();
+      webmakerAuth.on( "verified", function(user) {
+        if ( user ) {
+          onLogin( user );
+        } else {
+          onLogout();
+        }
+      });
     }
 
     if ( butter.isReady ) {
@@ -126,8 +132,15 @@ define( [ "util/xhr", "localized", "webmaker-auth-client" ], function( xhr, Loca
       });
     }
 
-    this.login = webmakerAuth.login;
-    this.logout = webmakerAuth.logout;
+    this.create = function() {
+      webmakerAuth.create();
+    };
+    this.login = function() {
+      webmakerAuth.login();
+    };
+    this.logout = function() {
+      webmakerAuth.logout();
+    };
     this.remove = removeFunction;
     this.save = saveFunction;
     this.publish = publishFunction;

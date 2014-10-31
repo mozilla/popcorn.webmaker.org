@@ -42,7 +42,6 @@
 </head>
 <body>
 
-  {% include "/static/bower/webmaker-auth-client/create-user/create-user-form.html" %}
   <div class="body-wrapper">
     <div class="stage-wrapper">
       <div id="embed-wrapper" class="wrapper cf faded embed">
@@ -60,6 +59,7 @@
     <script src="/src/editor/disableWebRTC.js"></script>
     <script src="{{ togetherjs }}/togetherjs-min.js"></script>
   {% endif %}
+  <script src="/static/bower/webmaker-login-ux/dist/min/webmakerLogin.min.js"></script>
   <script src="/src/butter.js"></script>
   <script src="/templates/basic/template.js"></script>
 </body>

@@ -2,6 +2,8 @@
  * If a copy of the MIT license was not distributed with this file, you can
  * obtain one at https://raw.github.com/mozilla/butter/master/LICENSE */
 
+@import "nav-global";
+
 @import "../static/bower/makerstrap/less/makerstrap";
 @makerstrap-bower-path: "../static/bower";
 
@@ -49,4 +51,19 @@
 body {
   font-size: 16px;
   line-height: normal;
+}
+
+/* Webmaker Login UX compatibility */
+.modal-backdrop {
+  z-index: 11000;
+}
+.modal {
+  z-index: 11001;
+}
+.modal * {
+  box-sizing: border-box;
+}
+.modal {
+  font-size: 14px;
+  line-height: 1.42857;
 }

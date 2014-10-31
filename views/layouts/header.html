@@ -44,10 +44,9 @@
           <ul class="menu-container">
             <li><span class="icon icon-th-large"></span> <a href="{{audience}}/{{localeInfo.lang}}/me" target="_blank">{{ gettext("My makes") }}</a></li>
             <li class="login"><span class="icon icon-signout"></span>
-              <div class="webmaker-login persona-button butter-hidden">
-                <span dir="{{localeInfo.direction}}" class="text">{{ gettext("Sign in") }}</span><span dir="{{localeInfo.direction}}" class="tip"></span>
-              </div>
-              <button class="webmaker-logout butter-hidden">{{ gettext("Sign out") }}</button>
+              <button class="btn btn-primary join-button">{{ gettext("Join Webmaker") }}</button>
+              <button class="btn btn-secondary-nav signin-button">{{ gettext("Sign in") }}</button>
+              <span class="logout-button hidden">{{ gettext("Sign out") }}</span>
             {% if togetherjsEnabled %}
               <li><span class="icon icon-comments-alt"></span><button class="together-toggle">{{ gettext("Collaborate") }}</button></li>
             {% endif %}

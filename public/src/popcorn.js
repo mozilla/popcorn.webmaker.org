@@ -50,8 +50,7 @@ requirejs.config({
     "WebmakerUI": "../static/bower/webmaker-ui/ui",
     "webmaker-ui-fragments": "../static/bower/webmaker-ui/webmaker-ui-fragments",
     "eventEmitter": "../static/bower/eventEmitter",
-    "ua-parser": "../static/bower/ua-parser-js/src/ua-parser.min",
-    "webmaker-auth-client": "../static/bower/webmaker-auth-client/dist/webmaker-auth-client.min"
+    "ua-parser": "../static/bower/ua-parser-js/src/ua-parser.min"
   },
   // shim config defines dependencies between non-AMD modules, which is all of the Popcorn code
   shim: {

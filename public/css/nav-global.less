@@ -1,0 +1,108 @@
+/*********************************************************
+* Webmaker nav
+*/
+
+#webmaker-nav {
+  font-family: "Open Sans", "Helvetica Neue", sans-serif;
+  font-size: 13px;
+  width: 100%;
+  color: #373737;
+}
+
+.webmaker-nav-container {
+  overflow: hidden;
+  background: #eaeff2;
+  border-bottom: 1px solid #fff;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 0 15px;
+}
+
+.webmaker-nav {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  font-size: 1em;
+}
+
+.webmaker-nav li a {
+  display: block;
+  height: 100%;
+  padding: 0 10px;
+  text-decoration: none;
+  cursor: pointer;
+  user-select: none;
+  color: #373737;
+}
+
+#logo {
+  line-height: 1;
+  float: left;
+  display: block;
+}
+
+/*********************************************************
+* User/Login Styles
+*/
+
+.user-info {
+  float: right;
+  text-align: right;
+}
+
+.user-info > li {
+  float: left;
+  border-right: none;
+  height: 100%;
+  margin: 0.9em 0;
+  border-right: 1px solid #b5b7b8;
+  &:last-child {
+    border-right: none;
+  }
+}
+
+.webmaker-nav .user {
+  position: relative;
+  padding-left: 36px;
+  border-right: none;
+  img {
+    position: absolute;
+    left: 0;
+    top: -0.4em;
+    border-radius: 50%;
+    width: 26px;
+    height: 26px;
+  }
+}
+
+#identity {
+  font-weight: bold;
+  > a {
+    color: inherit;
+  }
+}
+
+/*********************************************************
+* Login button states - done via a JS class switch
+*/
+
+/* Initial we don't want anything shown */
+#webmaker-nav {
+  .user,
+  .dash,
+  .makes,
+  #webmaker-logout {
+    display: none;
+  }
+}
+
+/* We're logged in - show all the things */
+#webmaker-nav.loggedin {
+  .user,
+  .dash,
+  .makes {
+    display: block;
+  }
+}

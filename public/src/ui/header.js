@@ -13,8 +13,9 @@ define([ "languages", "localized", "dialog/dialog", "util/lang", "l10n!/layouts/
         _saveButton = _saveContainer.querySelector( ".butter-save-btn" ),
         _clearEvents = _rootElement.querySelector( ".butter-clear-events-btn" ),
         _webmakerNav = _rootElement.querySelector( "#webmaker-nav" ),
-        _personaButton = _rootElement.querySelector( ".webmaker-login" ),
-        _logoutButton = _rootElement.querySelector( ".webmaker-logout" ),
+        _joinButton = _rootElement.querySelector( ".join-button" ),
+        _signinButton = _rootElement.querySelector( ".signin-button" ),
+        _logoutButton = _rootElement.querySelector( ".logout-button" ),
         _userName = _rootElement.querySelector( ".user-name-container a" ),
         _userImage = _rootElement.querySelector( ".user-image" ),
         _removeProject = _rootElement.querySelector( ".butter-remove-project-btn" ),
@@ -50,7 +51,8 @@ define([ "languages", "localized", "dialog/dialog", "util/lang", "l10n!/layouts/
 
     _this.element = _rootElement;
 
-    _personaButton.addEventListener( "click", butter.cornfield.login );
+    _joinButton.addEventListener( "click", butter.cornfield.create );
+    _signinButton.addEventListener( "click", butter.cornfield.login );
     _logoutButton.addEventListener( "click", butter.cornfield.logout );
 
     // Display the img after the src has loaded.
@@ -243,8 +245,9 @@ define([ "languages", "localized", "dialog/dialog", "util/lang", "l10n!/layouts/
         togglePreviewButton( isSaved );
         toggleSaveButton( !isSaved && butter.cornfield.authenticated() );
         toggleDeleteProject( isSaved && butter.cornfield.authenticated() );
-        _logoutButton.classList.remove( "butter-hidden" );
-        _personaButton.classList.add( "butter-hidden" );
+        _joinButton.classList.add( "hidden" );
+        _signinButton.classList.add( "hidden" );
+        _logoutButton.classList.remove( "hidden" );
         _webmakerNav.classList.add( "loggedin" );
         _userName.textContent = butter.cornfield.username();
         _userImage.addEventListener( "load", userImageLoaded );
@@ -254,8 +257,9 @@ define([ "languages", "localized", "dialog/dialog", "util/lang", "l10n!/layouts/
         togglePreviewButton( false );
         toggleSaveButton( false );
         toggleTooltips( false );
-        _personaButton.classList.remove( "butter-hidden" );
-        _logoutButton.classList.add( "butter-hidden" );
+        _joinButton.classList.remove( "hidden" );
+        _signinButton.classList.remove( "hidden" );
+        _logoutButton.classList.add( "hidden" );
         _webmakerNav.classList.remove( "loggedin" );
         _userName.textContent = "";
         _userImage.removeEventListener( "load", userImageLoaded, false );

@@ -45,15 +45,15 @@ app.disable( "x-powered-by" );
 
 var webmakerAuth = new WebmakerAuth({
   loginURL: config.LOGIN_SERVER_URL,
-  authLoginUrl: config.LOGIN_SERVER_URL_WITH_AUTH,
+  loginHost: config.APP_HOSTNAME,
+  authLoginURL: config.LOGIN_SERVER_URL_WITH_AUTH,
   secretKey: config.SECRET,
   forceSSL: config.FORCE_SSL,
   domain: config.COOKIE_DOMAIN
 });
 
 app.configure( function() {
-  var tmpDir = path.normalize( require( "os" ).tmpDir() + "/mozilla.butter/" ),
-      authLocaleJSON;
+  var tmpDir = path.normalize( require( "os" ).tmpDir() + "/mozilla.butter/" );
 
   if ( config.ENABLE_GELF_LOGS ) {
     messina = require( "messina" );
@@ -143,16 +143,6 @@ app.configure( function() {
       translation_directory: path.resolve( __dirname, "locale" )
     }));
 
-    // Adding an external JSON file to our existing one for the specified locale
-    authLocaleJSON = require( "./public/static/bower/webmaker-auth-client/locale/en_US/create-user-form.json" );
-    i18n.addLocaleObject({
-      "en-US": authLocaleJSON
-    }, function (err) {
-      if (err) {
-        console.error(err);
-      }
-    });
-
     app.locals({
       config: {
         app_hostname: APP_HOSTNAME,
@@ -232,11 +222,17 @@ app.post( "/api/publish/:myproject",
   routes.make.publish
 );
 
-app.post( "/verify", webmakerAuth.handlers.verify );
 app.post( "/authenticate", webmakerAuth.handlers.authenticate );
-app.post( "/create", webmakerAuth.handlers.create );
 app.post( "/logout", webmakerAuth.handlers.logout );
-app.post( "/check-username", webmakerAuth.handlers.exists );
+app.post( "/verify", webmakerAuth.handlers.verify );
+
+app.post( "/auth/v2/create", webmakerAuth.handlers.createUser );
+app.post( "/auth/v2/uid-exists", webmakerAuth.handlers.uidExists );
+app.post( "/auth/v2/request", webmakerAuth.handlers.request );
+app.post( "/auth/v2/authenticateToken", webmakerAuth.handlers.authenticateToken );
+app.post( "/auth/v2/verify-password", webmakerAuth.handlers.verifyPassword );
+app.post( "/auth/v2/request-reset-code", webmakerAuth.handlers.requestResetCode );
+app.post( "/auth/v2/reset-password", webmakerAuth.handlers.resetPassword );
 
 app.get( "/", routes.pages.editor );
 app.get( "/index.html", routes.pages.editor );
