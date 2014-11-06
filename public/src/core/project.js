@@ -149,7 +149,7 @@ define( [ "localized", "core/eventmanager", "core/media", "util/sanitizer" ],
 
       "data": {
         get: function() {
-          // Memorize value, since it doesn't always change
+          // Memoize value, since it doesn't always change
           if ( !_dataObject || !_isSaved ) {
             var exportJSONMedia = [];
             for ( var i = 0; i < butter.media.length; ++i ) {

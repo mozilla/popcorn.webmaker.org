@@ -5,7 +5,7 @@
   // XXX: SoundCloud has a bug (reported by us, but as yet unfixed) which blocks
   // loading of a second iframe/player if the iframe for the first is removed
   // from the DOM.  We can simply move old ones to a quarantine div, hidden from
-  // the user for now (see #2630).  We lazily create and memorize the instance.
+  // the user for now (see #2630).  We lazily create and memoize the instance.
   // I am seeing this on other iframes as well. Going to do this on all cases.
   function getElementQuarantine() {
     if ( getElementQuarantine.instance ) {
