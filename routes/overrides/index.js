@@ -2,7 +2,7 @@ module.exports = function( app ) {
   var routes = [
     "/layouts/status-area.html",
     "/layouts/media-editor.html",
-    "/layouts/media-instance.html",,
+    "/layouts/media-instance.html",
     "/layouts/project-editor.html",
     "/editors/default.html",
     "/layouts/editor-area.html",
