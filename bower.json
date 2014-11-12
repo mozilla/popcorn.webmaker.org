@@ -15,5 +15,6 @@
   "resolutions": {
     "selectize": "0.10.1",
     "jquery": ">= 1.9.0"
-  }
+  },
+  "version": "2.1.22"
 }
