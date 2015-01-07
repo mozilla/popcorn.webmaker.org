@@ -1,3 +1,5 @@
+process.env.NEW_RELIC_BROWSER_MONITOR_ENABLE = false;
+
 // Newrelic *must* be the first module loaded. Do not move this require module!
 var newrelic;
 if ( process.env.NEW_RELIC_HOME ) {
