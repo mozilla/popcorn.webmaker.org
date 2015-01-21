@@ -187,6 +187,9 @@
           backgroundColor = options.backgroundColor || DEFAULT_BACKGROUND_COLOR,
           context = this;
 
+      var padding = "3",
+          width = 100 - ( padding * 2 );
+
       if ( !target ) {
         target = this.media.parentNode;
       }
@@ -239,55 +242,55 @@
       document.head.appendChild( fontSheet );
 
       fontSheet.onload = function () {
-        var padding = "3",
-            width = 100 - ( padding * 2 );
         innerContainer.style.fontFamily = options.fontFamily;
-        innerContainer.style.fontSize = options.fontSize + "%";
-        container.classList.add( "text-custom" );
-        innerContainer.classList.add( alignment );
-        if ( position === "top" ) {
-          container.style.left = padding + "%";
-          container.style.width = width + "%";
-          container.style.top = padding + "%";
-        } else if ( position === "bottom" ) {
-          container.style.left = padding + "%";
-          container.style.width = width + "%";
-          container.style.top = 100 - padding - options.fontSize + "%";
-        } else if ( position === "middle" ) {
-          container.style.left = padding + "%";
-          container.style.width = width + "%";
-          container.style.top = 50 - ( options.fontSize / 2 ) + "%";
-        } else if ( position === "custom" ) {
-          container.style.left = options.left + "%";
-          container.style.top = options.top + "%";
-          if ( options.width ) {
-            container.style.width = options.width + "%";
-          }
-        }
-        container.style.zIndex = +options.zindex;
-
-        if ( linkUrl ) {
-
-          if ( !linkUrl.match( /^http(|s):\/\// ) ) {
-            linkUrl = "//" + linkUrl;
-          }
-
-          link = document.createElement( "a" );
-          link.href = linkUrl;
-          link.target = linkTarget;
-          link.innerHTML = text;
-
-          link.addEventListener( "click", function() {
-            context.media.pause();
-          } );
-
-          link.style.color = innerContainer.style.color;
-
-          innerDiv.appendChild( link );
-        } else {
-          innerDiv.innerHTML = text;
-        }
       };
+
+      innerContainer.style.fontSize = options.fontSize + "%";
+      container.classList.add( "text-custom" );
+      innerContainer.classList.add( alignment );
+      if ( position === "top" ) {
+        container.style.left = padding + "%";
+        container.style.width = width + "%";
+        container.style.top = padding + "%";
+      } else if ( position === "bottom" ) {
+        container.style.left = padding + "%";
+        container.style.width = width + "%";
+        container.style.top = 100 - padding - options.fontSize + "%";
+      } else if ( position === "middle" ) {
+        container.style.left = padding + "%";
+        container.style.width = width + "%";
+        container.style.top = 50 - ( options.fontSize / 2 ) + "%";
+      } else if ( position === "custom" ) {
+        container.style.left = options.left + "%";
+        container.style.top = options.top + "%";
+        if ( options.width ) {
+          container.style.width = options.width + "%";
+        }
+      }
+      container.style.zIndex = +options.zindex;
+
+      if ( linkUrl ) {
+
+        if ( !linkUrl.match( /^http(|s):\/\// ) ) {
+          linkUrl = "//" + linkUrl;
+        }
+
+        link = document.createElement( "a" );
+        link.href = linkUrl;
+        link.target = linkTarget;
+        link.innerHTML = text;
+
+        link.addEventListener( "click", function() {
+          context.media.pause();
+        } );
+
+        link.style.color = innerContainer.style.color;
+
+        innerDiv.appendChild( link );
+      } else {
+        innerDiv.innerHTML = text;
+      }
+
       fontSheet.href = "https://fonts.googleapis.com/css?family=" + options.fontFamily.replace( /\s/g, "+" ) + ":400,700";
 
       options.toString = function() {
