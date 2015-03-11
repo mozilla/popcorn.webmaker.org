@@ -158,7 +158,7 @@
               iconDiv.appendChild( option.element );
 
               _this.attachSelectChangeHandler( option.element, option.trackEvent, key, _this.updateTrackEventSafe );
-              option.element.style = "margin-left: 40px";
+              option.element.style.marginLeft = "40px";
               updateIcon( iconImg, _popcornOptions.icon );
               option.element.addEventListener( "keyup" , iconHandler, false );
               option.element.addEventListener( "mouseover" , iconHandler, false );
