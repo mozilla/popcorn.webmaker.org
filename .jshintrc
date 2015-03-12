@@ -6,7 +6,8 @@
     "require": true,
     "console": true,
     "Popcorn": true,
-    "Buffer": true
+    "Buffer": true,
+    "ga": true
   },
   "browser": true,
   "curly": true,

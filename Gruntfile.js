@@ -13,6 +13,7 @@ module.exports = function( grunt ) {
         "lib/**/*.js",
         "package.json",
         "public/src/**/*.js",
+        "!public/src/editor/google-analytics.js",
         "public/templates/**/*.js",
         "routes/**/*.js"
       ]
