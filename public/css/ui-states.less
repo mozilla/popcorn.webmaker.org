@@ -23,24 +23,29 @@
   background: @red;
   z-index: @HEADER_Z_INDEX + 10;
   font-size: 10pt;
-  text-align: left;
-  line-height: 1.2;
-  overflow: hidden;
-  span {
-    margin-top: -100%;
-    display: block;
-    position: relative;
-    padding: 1em;
-    .box-sizing( border-box );
-    .transition( margin-top 0.2s linear 1s);
+  .box-sizing( border-box );
+  .transform( scaleY(0) );
+  .transform-origin( top );
+  .transition( transform 0.2s linear 1s );
+  &.slide-out {
+    .transform( scaleY(1) );
   }
-  &.slide-out span {
-    margin-top: 0;
+  span {
+    display: block;
+    padding: 1em;
+    line-height: 1.2;
   }
   a {
     color: #FFF;
     text-decoration: underline;
     cursor: pointer;
+  }
+  button {
+    float: right;
+    margin: 0.4em;
+    padding: 4px 6px;
+    border: 1px solid #FFF;
+    background: transparent;
   }
 }
 

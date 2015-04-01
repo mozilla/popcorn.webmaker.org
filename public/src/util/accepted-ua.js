@@ -44,7 +44,7 @@
     }
 
     if ( !acceptedUA ) {
-      Warn.showWarning( Localized.get( "UA_WARNING_TEXT" ) + " " + Localized.get( "Click to remove warning" ) );
+      Warn.showWarning( Localized.get( "UA_WARNING_TEXT" ) );
     }
   });
 }());
