@@ -14,7 +14,7 @@
       warn: function() {
         var flashVersion = PluginDetect.getVersion( "Flash" );
         if ( !flashVersion || +flashVersion.split( "," )[ 0 ] < MIN_FLASH_VERSION ) {
-          Warn.showWarning( Localized.get( "flashWarning" ) + " " + Localized.get( "Click to remove warning" ) );
+          Warn.showWarning( Localized.get( "flashWarning" ) );
         }
       }
     };
