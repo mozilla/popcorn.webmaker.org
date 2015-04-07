@@ -312,20 +312,6 @@
         _popcornWrapper.paused = false;
       };
 
-      this.generatePopcornString = function( callbacks, scripts ){
-        var popcornOptions = _popcornOptions || {};
-
-        callbacks = callbacks || _this.popcornCallbacks;
-        scripts = scripts || _this.popcornScripts;
-
-        var collectedEvents = [];
-        for ( var i = 0, l = _tracks.length; i < l; ++i ) {
-          collectedEvents = collectedEvents.concat( _tracks[ i ].trackEvents );
-        }
-
-        return _popcornWrapper.generatePopcornString( popcornOptions, _url, _target, null, callbacks, scripts, collectedEvents );
-      };
-
       function compareTrackOrder( a, b ) {
         return a.order - b.order;
       }
