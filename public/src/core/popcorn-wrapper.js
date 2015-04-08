@@ -26,7 +26,6 @@ define( [ "localized", "core/logger", "core/eventmanager", "util/uri", "util/acc
         _mediaReady = false,
         _interruptLoad = false,
         _this = this,
-        _makeVideoURLsUnique = options.makeVideoURLsUnique,
         _checkedFlashVersion = false;
 
     /* Destroy popcorn bindings specifically without touching other discovered
