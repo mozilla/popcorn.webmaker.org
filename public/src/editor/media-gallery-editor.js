@@ -345,7 +345,7 @@ define( [ "localized", "util/lang", "util/uri", "util/xhr", "util/keys", "util/m
     }, MEDIA_LOAD_TIMEOUT );
     MediaUtils.getMetaData( data.source, onSuccess, function( errorMessage ) {
       // Unplayable clip, so display search term pages.
-      if (errorMessage === "This media source is unplayable") {
+      if (errorMessage === Localized.get( "This media source is unplayable" ) ) {
         clearTimeout( _cancelSpinner );
         clearTimeout( _mediaLoadTimeout );
         deactivateSpinner();
