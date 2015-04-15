@@ -291,9 +291,6 @@ define( [ "localized", "util/uri", "util/xhr", "json!/api/butterconfig", "jquery
           if ( !respData ) {
             return errorCallback( CLYP_EMBED_UNPLAYABLE );
           }
-          if ( respData.Status !== "Public" ) {
-            return errorCallback( CLYP_EMBED_PRIVATE );
-          }
           successCallback({
             source: respData.SecureOggUrl,
             fallback: respData.SecureMp3Url,
