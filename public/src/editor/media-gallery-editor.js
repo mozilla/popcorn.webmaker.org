@@ -343,11 +343,16 @@ define( [ "localized", "util/lang", "util/uri", "util/xhr", "util/keys", "util/m
       _errorMessage.classList.remove( "hidden" );
       _addMediaPanel.classList.add( "invalid-field" );
     }, MEDIA_LOAD_TIMEOUT );
-    MediaUtils.getMetaData( data.source, onSuccess, function() {
-      clearTimeout( _cancelSpinner );
-      clearTimeout( _mediaLoadTimeout );
-      deactivateSpinner();
-      pagingSearchCallback( _itemContainers.project, 1 );
+    MediaUtils.getMetaData( data.source, onSuccess, function( errorMessage ) {
+      // Unplayable clip, so display search term pages.
+      if (errorMessage === Localized.get( "This media source is unplayable" ) ) {
+        clearTimeout( _cancelSpinner );
+        clearTimeout( _mediaLoadTimeout );
+        deactivateSpinner();
+        pagingSearchCallback( _itemContainers.project, 1 );
+      } else {
+        onDenied( errorMessage );
+      }
     });
   }
 

@@ -23,7 +23,6 @@ define( [ "localized", "util/uri", "util/xhr", "json!/api/butterconfig", "jquery
       ARCHIVE_EMBED_DISABLED = Localized.get( "Embedding of this Archive item is not available yet" ),
       EMBED_UNPLAYABLE = Localized.get( "This media source is unplayable" ),
       CLYP_EMBED_UNPLAYABLE = Localized.get( "This Clyp source is unplayable" ),
-      CLYP_EMBED_PRIVATE = Localized.get( "This Clyp source is private" ),
       SOUNDCLOUD_EMBED_UNPLAYABLE = Localized.get( "This SoundCloud source is unplayable" ),
       SOUNDCLOUD_EMBED_DISABLED = Localized.get( "Embedding of this SoundCloud audio source is disabled" );
 
@@ -290,9 +289,6 @@ define( [ "localized", "util/uri", "util/xhr", "json!/api/butterconfig", "jquery
         $.getJSON( clypEndpoint + id, function( respData ) {
           if ( !respData ) {
             return errorCallback( CLYP_EMBED_UNPLAYABLE );
-          }
-          if ( respData.Status !== "Public" ) {
-            return errorCallback( CLYP_EMBED_PRIVATE );
           }
           successCallback({
             source: respData.SecureOggUrl,
