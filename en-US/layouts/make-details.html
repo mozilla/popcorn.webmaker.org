@@ -1,0 +1,38 @@
+<div class="make-arrow"></div>
+<form class="makeapi-details">
+  <fieldset name="title">
+    <label>Title:</label>
+    <div class="pull-left input-container">
+      <input type="text" class="input title-input">
+      <div class="error">Please give your project a name before saving</div>
+    </div>
+  </fieldset>
+  <fieldset name="tags">
+    <label>Tags:</label>
+    <div class="tags-wrapper">
+      <ul class="tags-output"></ul>
+      <input type="text" class="tags-input" placeholder="Type your tag here">
+    </div>
+  </fieldset>
+  <fieldset name="thumbnail">
+    <label>Thumbnail:</label>
+    <div class="pull-left input-container">
+      <input type="text" class="input thumbnail-input">
+      <ul class="thumbnail-choices input"></ul>
+    </div>
+  </fieldset>
+  <fieldset name="searchable" class="searchable">
+    <label for="searchable-make-checkbox-details">Searchable:</label>
+    <input id="searchable-make-checkbox-details" type="checkbox" class="input searchable-checkbox">
+  </fieldset>
+  <fieldset name="description">
+    <label>Description:</label>
+    <textarea class="input description-input" maxlength="200" placeholder="A project about..."></textarea>
+  </fieldset>
+  <fieldset name="buttons">
+    <div class="confirmation-buttons">
+      <span class="yes-button-container"><span class="confirmation-button yes-button butter-disabled">Save</span></span>
+      <span class="no-button-container"><span class="confirmation-button no-button">Cancel</span></span>
+    </div>
+  </fieldset>
+</form>

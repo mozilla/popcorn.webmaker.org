@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="{{localeInfo.lang}}" dir="{{localeInfo.direction}}">
+<head>
+  <meta charset="utf-8">
+  <title>Popcorn Maker</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width">
+  <meta name="csrf-token" content="{{csrf}}">
+  <meta name="persona-email" content="{{personaEmail}}">
+  <link rel="stylesheet" href="/static/bower/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/static/bower/farbtastic/farbtastic.css">
+  <link rel="stylesheet" href="/templates/basic/style.ltr.css">
+  <link rel="stylesheet" href="/templates/assets/css/jquery-ui/jquery.ui.butter.ltr.css">
+
+  <script src="https://cdn.optimizely.com/js/206878104.js"></script>
+  <script src="/external/jwplayer.js"></script>
+  <script src="https://login.persona.org/include.js"></script>
+  <link rel="stylesheet" href="/css/transitions.css">
+  <link rel="stylesheet" href="/src/plugins/popup/popcorn.popup.css">
+  <link rel="stylesheet" href="/src/plugins/image/popcorn.image.css">
+  <link rel="stylesheet" href="/src/plugins/text/popcorn.text.css">
+  <link rel="stylesheet" href="/src/plugins/wikipedia/popcorn.wikipedia.css">
+  <link rel="stylesheet" href="/src/plugins/sketchfab/popcorn.sketchfab.css">
+
+  <meta property="og:title" content="Popcorn Maker">
+  <meta property="og:description" content="ogDesc">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://popcorn.webmaker.org">
+  <meta property="og:site_name" content="Mozilla Webmaker">
+  <meta property="og:image" content="https://popcorn.webmaker.org/resources/icons/fb-logo.png">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="200">
+  <meta property="og:image:height" content="200">
+</head>
+<body>
+
+  <div class="body-wrapper">
+    <div class="stage-wrapper">
+      <div id="embed-wrapper" class="wrapper cf faded embed">
+        <div id="video-container" class="video-container" data-butter="target">
+          <div id="video" class="video" data-butter="media"></div>
+        </div>
+        <div class="loading-message"></div>
+        <div class="sidebar">
+          <div class="sidebar-inner"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="/src/butter.js"></script>
+  <script src="/templates/basic/template.js"></script>
+</body>
+</html>

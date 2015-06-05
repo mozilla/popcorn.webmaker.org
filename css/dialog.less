@@ -1,0 +1,262 @@
+/*********************************************************
+* DIALOGS
+*/
+
+@_overlayOpacity: 0.75; // How dark is the overlay?
+@_dialogWidth: 600px; // Width of dialog
+@_dialogPadding: 25px; // Inner padding
+@_dialogTopMargin: 100px; // How far should the dialog be from the top of the window?
+
+.butter-modal-overlay {
+  z-index: @MODAL_Z_INDEX;
+  position: fixed;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  &.fade-in {
+    opacity: 1;
+    .transition( opacity 0.3s );
+  }
+  &.butter-modal-overlay-dark-bg {
+    right: 0;
+    bottom: 0;
+    background: rgba( 0, 0, 0, @_overlayOpacity );
+  }
+
+}
+
+.butter-dialog {
+  font-size: 14px;
+  line-height: 1.4;
+  color: @baseText;
+  position: relative;
+  width: @_dialogWidth;
+  padding: @_dialogPadding;
+  margin: @_dialogTopMargin auto;
+  background: #FFF;
+  border-radius: 2px;
+  box-shadow: 0 10px 10px -10px #000;
+  .box-sizing( border-box );
+
+  &.small {
+    width: 330px;
+    text-align: center;
+  }
+
+  .close-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+    opacity: 0.5;
+    &:hover {
+      opacity: 1;
+    }
+  }
+
+  .butter-dialog-title {
+    margin: 0 0 10px 0;
+  }
+
+  .butter-form {
+    margin-bottom: 10px;
+    textarea {
+      padding: 10px;
+      min-height: 150px;
+    }
+  }
+  .butter-dialog-body {
+    padding: 20px;
+  }
+
+}
+
+.butter-feedback-form {
+  padding: 0;
+  background: lighten( #EEE, 3% );
+  font-size: 13px;
+  .butter-dialog-title {
+    border-bottom: 1px solid #CCC;
+    .gradient( "vertical", #FFF, #EEE );
+    box-shadow: 0 1px #FFF;
+    border-radius: 3px 3px 0 0;
+    padding: 10px 35px;
+    font-size: 18px;
+    font-weight: 700;
+    margin: 0;
+    .icon-info-sign {
+      opacity: 0.2;
+      margin: 3px 0 0 3px;
+      cursor: pointer;
+      &:hover {
+        opacity: 0.7;
+      }
+    }
+    p {
+      font-weight: normal;
+      font-size: 13px;
+    }
+  }
+  .butter-logo {
+    position: absolute;
+    top: -35px;
+    left: -25px;
+    width: 50px;
+  }
+  .butter-form {
+    padding: 8px 0;
+    label {
+      position: relative;
+      padding-left: 60px;
+      padding-bottom: 20px;
+    }
+    textarea {
+      font-size: 11px;
+      font-family: menlo, mono;
+      box-shadow: 0 1px 0 #FFF;
+      &:focus {
+        box-shadow: inset 0 2px 4px -2px #CCC,
+        0 1px 0 #FFF;
+        border-color: #AAA;
+        .transition( all 0.5s ease );
+      }
+    }
+  }
+  strong {
+    color: @red;
+  }
+  .butter-btn {
+    font-weight: 700;
+    font-size: 11px;
+    text-transform: uppercase;
+  }
+}
+
+.dialog-hidden {
+  display: none;
+}
+
+.dialog-scrollable {
+  height: 150px;
+  overflow-y: scroll;
+  pre {
+    font-size: 11px;
+    font-family: menlo, mono;
+  }
+}
+
+.ticket-icon {
+  display: block;
+  position: absolute;
+  top: 5px;
+  left: 0;
+  height: 50px;
+  width: 50px;
+  background: url( "/resources/icons/ticket.png" ) top center no-repeat;
+}
+
+/*********************************************************
+* First-run
+*/
+
+.first-run {
+  .butter-editor-area {
+    z-index: @MODAL_Z_INDEX + 1;
+  }
+  .butter-modal-container {
+    position: relative;
+    z-index: @MODAL_Z_INDEX + 1;
+  }
+}
+
+.butter-first-run-dialog {
+  position: fixed;
+  right: 360px;
+  top: 195px;
+  -moz-animation: bounce ease 1s;
+  -webkit-animation: bounce ease 1s;
+  -o-animation: bounce ease 1s;
+  animation: bounce ease 1s;
+
+  h2 {
+    font-size: 1.2em;
+    margin: 0;
+    margin-left: 10px;
+    font-weight: 400;
+  }
+  .butter-logo {
+    top: 50%;
+    margin-top: -40px;
+    background-size: 280px;
+    background-position: 0 50%;
+  }
+
+  .triangle( "right", 20px, @baseLight, 1px, #CCC );
+
+  .butter-dialog-title {
+    padding: 10px 0 10px 50px;
+  }
+  p {
+    margin-top: 0;
+  }
+  width: 400px;
+}
+
+.overlay-highlight {
+  z-index: @MODAL_Z_INDEX + 1;
+  position: relative;
+}
+
+.butter-tooltip.tooltip-popup,
+.butter-tooltip.tooltip-media {
+  h3 {
+    margin: 0 0 5px 0;
+    font-style: normal;
+    font-weight: 700;
+    border-radius: 3px;
+  }
+}
+
+.butter-tooltip.tooltip-popup.tooltip-on,
+.butter-tooltip.tooltip-media.tooltip-on {
+  background: #F8EDAB;
+  &:after {
+    border-bottom-color: #F8EDAB;
+  }
+}
+
+.butter-tooltip.tooltip-popup {
+  text-transform: none;
+}
+
+.butter-tooltip.tooltip-media {
+  width: 150px;
+  margin-left: -75px;
+  .center-div {
+    display: inline-block;
+  }
+}
+
+@-moz-keyframes bounce {
+  0% { right: 360px; }
+  50% { right: 345px; }
+  100% { right: 360px; }
+}
+
+@-webkit-keyframes bounce {
+  0% { right: 360px; }
+  50% { right: 345px; }
+  100% { right: 360px; }
+}
+
+@-o-keyframes bounce {
+  0% { right: 360px; }
+  50% { right: 345px; }
+  100% { right: 360px; }
+}
+
+@keyframes bounce {
+  0% { right: 360px; }
+  50% { right: 345px; }
+  100% { right: 360px; }
+}

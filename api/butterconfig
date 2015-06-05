@@ -1,0 +1,7 @@
+{
+    "audience": "http://localhost:7777",
+    "make_endpoint": "http://localhost:5000",
+    "node_hubble_endpoint": "http://node-hubble.mofostaging.net/",
+    "clyp_endpoint": "https://apistaging.clyp.it",
+    "sync_limit": 20
+}

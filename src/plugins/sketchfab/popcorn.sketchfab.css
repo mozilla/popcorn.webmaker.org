@@ -1,0 +1,12 @@
+.sketchfab-outer-container {
+  position: absolute;
+}
+.sketchfab-outer-container .ui-draggable-handle {
+  z-index: 1000;
+}
+.sketchfab-outer-container iframe {
+  position: relative;
+  height: 100%;
+  width: 100%;
+  z-index: 1;
+}

@@ -1,0 +1,69 @@
+/* This Source Code Form is subject to the terms of the MIT license
+ * If a copy of the MIT license was not distributed with this file, you can
+ * obtain one at https://raw.github.com/mozilla/butter/master/LICENSE */
+
+@import "nav-global";
+
+@import "../static/bower/makerstrap/less/makerstrap";
+@makerstrap-bower-path: "../static/bower";
+
+@import "globals";
+@import "webfonts";
+@import "normalize";
+@import "utilities";
+
+@import "common";
+
+@import "ui-states";
+@import "buttons";
+@import "dialog";
+
+@import "editors";
+@import "sequencer-ltr";
+@import "sequencer-rtl";
+@import "media-editor";
+
+@import "header";
+@import "project-make-details";
+@import "tray-ltr";
+@import "tray-rtl";
+@import "tray-status-bar-ltr";
+@import "tray-status-bar-rtl";
+@import "tray-timeline-ltr";
+@import "tray-timeline-rtl";
+
+@import "plugin-module";
+@import "project-editor";
+@import "super-scrollbar-ltr";
+@import "super-scrollbar-rtl";
+
+@import "tutorial";
+
+/* Makerstrap-Popcorn Maker compatibility */
+* {
+  box-sizing: content-box;
+}
+
+*:before, *:after {
+  box-sizing: content-box;
+}
+
+body {
+  font-size: 16px;
+  line-height: normal;
+}
+
+/* Webmaker Login UX compatibility */
+.modal-backdrop {
+  z-index: 11000;
+}
+.modal {
+  z-index: 11001;
+}
+.modal * {
+  box-sizing: border-box;
+}
+.modal {
+  font-size: 14px;
+  line-height: 1.42857;
+}

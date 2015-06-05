@@ -1,0 +1,408 @@
+/*********************************************************
+* MEDIA EDITOR
+*/
+
+.media-editor {
+
+  @titleBarHeight: 60px;
+  @addClipHeight: 200px;
+
+  .fl-right {
+    margin-top: 8px;
+    float: right;
+  }
+
+  h1.add-new-media {
+    height: @titleBarHeight;
+    line-height: @titleBarHeight;
+    text-transform: none;
+    font-weight: normal;
+    color: #555;
+    font-size: 14px;
+    &:before {
+      content: "";
+      background: url( "../resources/icons/media.png" ) no-repeat;
+      float: left;
+      height: 26px;
+      width: 22px;
+      position: relative;
+      top: 16px;
+      left: 3px;
+      margin-right: 16px;
+    }
+  }
+
+  .media-editor-inner-wrapper { // Textarea wrappers
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 5px;
+    margin-top: 10px;
+    &:hover .delete-media-btn {
+      right: 2px;
+    }
+    textarea {
+      font-size: 12px;
+      font-family: monaco, monospace;
+    }
+    p {
+      margin-top: 13px;
+    }
+  }
+
+  &.no-paging {
+    .media-gallery {
+      bottom: 0;
+    }
+    .media-gallery-base-media {
+      display: none;
+    }
+  }
+
+  .add-media-panel {
+    height: @addClipHeight;
+    overflow: hidden;
+    opacity: 1;
+    margin: 0 20px;
+
+    &.invalid-field select {
+      border-color: @baseLightOutline;
+      border-top-color: darken( @baseLightOutline, 10% );
+    }
+  }
+
+  .media-gallery {
+    position: absolute;
+    bottom: 48px;
+    width: 100%;
+    margin-top: -1px;
+    top: @addClipHeight + 30px;
+
+    .media-gallery-heading {
+      background: #FFF;
+      height: 10px;
+      width: 100%;
+      border: 0 solid @baseLightOutline;
+      border-bottom-width: 1px;
+      border-top-width: 1px;
+      text-transform: uppercase;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+    }
+  }
+
+  .media-gallery-base-media.butter-form-inline.form-single {
+    left: 0;
+    right: 0;
+    margin: 0;
+    padding: 5px 20px;
+    background: @baseLight;
+    border-top: 1px solid @baseLightOutline;
+
+    > .paging-container {
+      margin: 0.5em 0;
+      ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        font-size: 0.8em;
+        > li {
+          cursor: pointer;
+          line-height: 1;
+          display: inline-block;
+          margin-right: 0.2em;
+          padding: 0.4em 0.6em;
+          border-radius: 2px;
+          border: 1px solid #DDDDDD;
+          &.active {
+            background: #3fb58e;
+            border-color: #38a27f;
+            color: #FFF;
+          }
+          &.ellipsis {
+            border: none;
+            cursor: default;
+            &:before {
+              content: "...";
+            }
+          }
+        }
+      }
+    }
+    &.bottom {
+      bottom: 0;
+      position: absolute;
+    }
+    &.top {
+      top: 0;
+    }
+  }
+
+  .media-gallery-scroll-container {
+    position: absolute;
+    top: 10px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+
+  .butter-editor-tabs.clip-tabs {
+    @buttonHeight: 33px;
+    position: absolute;
+    top: -@buttonHeight;
+    z-index: 2;
+
+    .butter-btn {
+      height: @buttonHeight;
+      line-height: @buttonHeight;
+
+      &.butter-active {
+        border-top-color: @baseLightOutline;
+        border-bottom-color: #FFF;
+      }
+
+      &.media-tab {
+        font-weight: 700;
+        font-size: 11px;
+      }
+    }
+
+    .media-icon {
+      margin-top: 8px;
+      margin-left: 5px;
+    }
+  }
+
+  .media-gallery-list {
+    list-style: none;
+    padding: 0;
+    margin: 2px 0 0;
+    border-radius: 2px;
+  }
+
+  .media-gallery-item {
+    position: relative;
+    padding: 10px 20px;
+    height: 70px;
+    border: 0 solid @baseLightOutline;
+    border-top-width: 1px;
+    background-color: @baseLight;
+    font-size: 11px;
+    .transition( background-color 0.2s linear );
+    &:first-child {
+      margin-top: -1px;
+    }
+    &.new {
+      background: @green;
+      color: #FFF;
+      > .delete-btn {
+        display: none;
+      }
+      > .mg-meta-data {
+        > .mg-type {
+          color: #FFF;
+        }
+      }
+    }
+
+    .mg-thumbnail {
+      position: relative;
+      overflow: hidden;
+      float: left;
+      margin-right: 10px;
+      border: 1px solid @baseLightOutline;
+      width: 80px;
+      height: 60px;
+      > img, video, .default-thumbnail {
+        display: block;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+      }
+      > .default-thumbnail {
+        background: url( "../resources/icons/media.png" ) no-repeat;
+        background-position: center center;
+      }
+      > .media-thumbnail {
+      }
+      &:hover {
+        border-color: @green;
+        .icon-plus {
+          display: block;
+        }
+        > img, video, .default-thumbnail {
+          display: none;
+        }
+      }
+      &:hover:before {
+        content: "";
+        display: block;
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        background: fade( @green, 60% );
+      }
+      .icon-plus {
+        position: absolute;
+        font-size: 16px;
+        margin: -8px 0 0 -8px;
+        top: 50%;
+        left: 50%;
+        color: white;
+        display: none;
+      }
+    }
+    .mg-html5 .mg-thumbnail {
+      > video {
+        height: auto;
+      }
+      background: url( "../resources/icons/media.png" ) center no-repeat;
+    }
+
+    .mg-meta-data {
+      float: left;
+      width: 190px;
+      height: 60px;
+      line-height: 1.2em;
+    }
+    .mg-title {
+      overflow: hidden;
+      font-weight: 700;
+      max-height: 3.6em; // 3 lines
+    }
+    .mg-type-text {
+      color: #999;
+      margin-top: 3px;
+      line-height: 18px;
+      width: 180px;
+      &.media::after {
+        content: " clip";
+      }
+      &.photo::after {
+        content: " image";
+      }
+    }
+    .mg-duration {
+      &:before {
+        content: "Duration: "
+      }
+    }
+    .mg-delete-btn {
+      position: absolute;
+      top: 10px;
+      right: 5px;
+      opacity: 0.5;
+      &:hover {
+        opacity: 1;
+      }
+    }
+  }
+
+  .gallery-item-grid {
+    &.media-gallery-item {
+      background-color: @baseLight;
+      font-size: 11px;
+      float: left;
+      padding: 0;
+      margin-left: 22px;
+      margin-top: 22px;
+      height: 60px;
+      width: 80px;
+      border: none;
+      .transition( background-color 0.2s linear );
+      &.new {
+        background: @green;
+        color: #FFF;
+        > .delete-btn {
+          display: none;
+        }
+        > .mg-meta-data {
+          > .mg-type {
+            color: #FFF;
+          }
+        }
+      }
+
+      .mg-thumbnail {
+        position: relative;
+        overflow: hidden;
+        float: left;
+        margin-right: 0;
+        border: 1px solid @baseLightOutline;
+        > img, video {
+          display: block;
+          width: 80px;
+          height: 60px;
+        }
+        &:hover {
+          border-color: @green;
+          .icon-plus {
+            display: block;
+          }
+        }
+        &:hover:before {
+          content: "";
+          display: block;
+          position: absolute;
+          top: 0;
+          left: 0;
+          height: 100%;
+          width: 100%;
+          background: fade( @green, 60% );
+        }
+        .icon-plus {
+          position: absolute;
+          font-size: 16px;
+          margin: -8px 0 0 -8px;
+          top: 50%;
+          left: 50%;
+          color: white;
+          display: none;
+        }
+      }
+      .mg-meta-data,
+      .mg-title,
+      .mg-type,
+      .mg-duration,
+      .mg-delete-btn {
+        display: none;
+      }
+    }
+  }
+
+  .add-media-input {
+    height: 60px;
+  }
+
+  .error,
+  .error:focus {
+    border: 1px inset @red;
+  }
+
+  .media-error-message {
+    color: @red;
+    &.hidden {
+      display: none;
+    }
+  }
+
+  .media-loading-spinner {
+    float: left;
+    margin-right: 10px;
+    margin-top: 4px;
+    &.media-gallery-loading {
+      .clearfix();
+      position: absolute;
+      display: block;
+      top: 35%;
+      left: 35%;
+      width: 95px;
+      height: 70px;
+      background-image: url( "../resources/img/cat.gif" );
+    }
+  }
+}
+

@@ -1,0 +1,272 @@
+/*!
+ * jQuery UI
+ *
+ * Copyright 2012, AUTHORS.txt (http://jqueryui.com/about)
+ * Dual licensed under the MIT or GPL Version 2 licenses.
+ * http://jquery.org/license
+ *
+ * Modified by @k88hudson for Popcorn Maker
+ */
+.ui-resizable,
+.ui-droppable,
+.ui-draggable {
+  position: relative;
+  color: #FFF83A;
+}
+/*********************************************************
+* Resizable
+*/
+.ui-resizable-handle {
+  position: absolute;
+  display: block;
+  z-index: 1000;
+  opacity: 0;
+  -webkit-transition: opacity 0.3s ease 0s;
+  -moz-transition: opacity 0.3s ease 0s;
+  -o-transition: opacity 0.3s ease 0s;
+  -ms-transition: opacity 0.3s ease 0s;
+  transition: opacity 0.3s ease 0s;
+}
+.ui-draggable:hover .ui-resizable-handle,
+.ui-resizable:hover .ui-resizable-handle,
+.ui-draggable:hover .ui-draggable-handle,
+.ui-resizable:hover .ui-draggable-handle,
+.ui-draggable:hover .title,
+.ui-resizable:hover .title {
+  opacity: 1;
+}
+.ui-resizable-resizing .ui-resizable-handle,
+.ui-draggable-dragging .ui-resizable-handle,
+.ui-resizable-resizing .ui-draggable-handle,
+.ui-draggable-dragging .ui-draggable-handle {
+  opacity: 1;
+}
+.ui-resizable-top {
+  height: 7px;
+  width: 7px;
+  border: 1px solid black;
+  background: white;
+  top: -5px;
+  left: 50%;
+  margin-left: -3.5px;
+}
+.ui-resizable-bottom {
+  height: 7px;
+  width: 7px;
+  border: 1px solid black;
+  background: white;
+  bottom: -5px;
+  left: 50%;
+  margin-left: -3.5px;
+}
+.ui-resizable-left {
+  width: 7px;
+  height: 7px;
+  border: 1px solid black;
+  background: white;
+  left: -5px;
+  top: 50%;
+  margin-top: -3.5px;
+}
+.ui-resizable-right {
+  height: 7px;
+  width: 7px;
+  border: 1px solid black;
+  background: white;
+  right: -5px;
+  margin-top: -3.5px;
+  top: 50%;
+}
+.ui-resizable-w {
+  z-index: 1000;
+  cursor: w-resize;
+  width: 7px;
+  top: 5px;
+  left: -5px;
+  bottom: 5px;
+}
+.ui-resizable-n {
+  z-index: 1000;
+  cursor: n-resize;
+  height: 7px;
+  top: -5px;
+  left: 5px;
+  right: 5px;
+}
+.ui-resizable-s {
+  z-index: 1000;
+  cursor: s-resize;
+  height: 7px;
+  bottom: -5px;
+  left: 5px;
+  right: 5px;
+}
+.ui-resizable-e {
+  z-index: 1000;
+  cursor: e-resize;
+  width: 7px;
+  bottom: 5px;
+  top: 5px;
+  right: -5px;
+}
+.ui-resizable-se {
+  z-index: 1000;
+  cursor: se-resize;
+  background: white;
+  height: 7px;
+  width: 7px;
+  bottom: -5px;
+  right: -5px;
+  border: 1px solid black;
+}
+.ui-resizable-sw {
+  z-index: 1000;
+  cursor: sw-resize;
+  background: white;
+  border: 1px solid black;
+  height: 7px;
+  width: 7px;
+  bottom: -5px;
+  left: -5px;
+}
+.ui-resizable-ne {
+  z-index: 1000;
+  cursor: ne-resize;
+  background: white;
+  height: 7px;
+  width: 7px;
+  top: -5px;
+  right: -5px;
+  border: 1px solid black;
+}
+.ui-resizable-nw {
+  z-index: 1000;
+  cursor: nw-resize;
+  background: white;
+  height: 7px;
+  width: 7px;
+  top: -5px;
+  left: -5px;
+  border: 1px solid black;
+}
+/* DRAGGABLE
+-------------------------------------------------- */
+.ui-draggable-handle {
+  position: absolute;
+  cursor: move;
+  height: 100%;
+  width: 100%;
+  border: none;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  z-index: 1;
+  overflow: hidden;
+}
+.ui-draggable-handle:hover {
+  border: 1px solid #3fb58e;
+  margin: -1px;
+}
+.butter-dragover {
+  border: 3px dashed #3fb58e;
+}
+/* Editable */
+.popcorn-text > .text-inner-div > textarea,
+.popcorn-popup > .popup-inner-div > div > textarea,
+.speechBubble > div > textarea {
+  border-width: 0;
+  margin: 0;
+  padding: 0;
+  font-family: inherit;
+  color: inherit;
+  text-shadow: inherit;
+  background-color: inherit;
+  font-weight: inherit;
+  font-style: inherit;
+  overflow: hidden;
+  line-height: 1;
+}
+.content-editable textarea {
+  display: none;
+  width: 100%;
+}
+.content-editable.track-event-editing textarea {
+  resize: none;
+  display: block;
+}
+.content-editable.track-event-editing span {
+  display: none;
+}
+/* Selectable */
+.track-event-selected {
+  box-shadow: 0 0 1px #3fb58e;
+  border: 1px solid #3fb58e;
+  margin: -1px;
+}
+.track-event-selected.track-event-editing {
+  box-shadow: 0 0 4px #3fb58e;
+}
+.track-event-selected .ui-resizable-handle,
+.track-event-selected .ui-draggable-handle,
+.track-event-selected .title {
+  opacity: 1;
+}
+/* Autocomplete
+-------------------------------------------------- */
+.ui-autocomplete {
+  position: absolute;
+  top: 0;
+  left: 0;
+  cursor: default;
+  /* Override Autocomplete z-index values which get applied directly to the element */
+  z-index: 200000000 !important;
+}
+.ui-menu {
+  list-style: none;
+  padding: 2px;
+  margin: 0;
+  display: block;
+  outline: none;
+}
+.ui-menu .ui-menu-item {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  /* support for IE10 */
+  list-style-image: url(data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7);
+}
+.ui-menu .ui-menu-item a {
+  text-decoration: none;
+  display: block;
+  padding: 2px .4em;
+  line-height: 1.5;
+  font-weight: normal;
+  color: #000;
+}
+.ui-menu .ui-menu-item a.ui-state-focus,
+.ui-menu .ui-menu-item a.ui-state-active {
+  font-weight: normal;
+  background: #e3eaee;
+}
+.ui-widget {
+  font-size: 1.1em;
+}
+.ui-widget-content {
+  border: 1px solid #aaa;
+  background: #fff;
+}
+.ui-corner-all {
+  font-family: "Open sans", sans-serif;
+  font-size: 0.9em;
+  border-radius: 4px;
+}
+.ui-helper-hidden-accessible {
+  border: 0;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+}

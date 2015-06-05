@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="{{localeInfo.lang}}" dir="{{localeInfo.direction}}">
+  <head>
+    <meta charset="utf-8">
+    {{ newrelic.getBrowserTimingHeader() | safe }}
+    <title>{{ foundAnError }}</title>
+    <link rel="stylesheet" href="/css/error.css">
+    {% if config.ga_account %}
+    <script id="google-analytics" src="/src/editor/google-analytics.js"
+            data-ga-account="{{ config.ga_account }}"
+            data-ga-domain="{{ config.ga_domain }}"
+            async>
+    </script>
+    {% endif %}
+  </head>
+  <body>
+    <h1>{{ status }}</h1>
+    <h2>{{ message }}</h2>
+    <p>{{ errMessage | instantiate }}</p>
+  </body>
+</html>

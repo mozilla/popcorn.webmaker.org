@@ -1,0 +1,93 @@
+<!--  This Source Code Form is subject to the terms of the MIT license
+      If a copy of the MIT license was not distributed with this file, you can
+      obtain one at https://raw.github.com/mozilla/butter/master/LICENSE -->
+
+<div class="trackevent-warning">
+  <strong>Warning:</strong> <span class="trackevent-warning-message"></span>
+</div>
+
+<fieldset class="trackevent-property default input">
+  <label class="property-name"></label>
+  <input class="value" type="text" />
+</fieldset>
+
+<fieldset class="trackevent-property default input range">
+  <div class="butter-editor-inline slider-container">
+    <label class="property-name"></label>
+    <div>
+      <div class="butter-slider">
+        <span class="butter-slider-scrubber"></span>
+        <label class="slider-start"></label>
+        <div class="butter-tooltip butter-slider-tooltip tooltip-no-hover"></div>
+        <label class="slider-end"></label>
+      </div>
+    </div>
+  </div>
+</fieldset>
+
+<fieldset class="trackevent-property default input units">
+  <label class="property-name"></label>
+  <div class="butter-form-append">
+    <input class="value" type="text" />
+    <span class="butter-unit"></span>
+  </div>
+</fieldset>
+
+<fieldset class="trackevent-property default input checkbox">
+  <label class="butter-form-checkbox">
+    <input type="checkbox" class="value"/>
+    <span class="property-name"></span>
+  </label>
+</fieldset>
+
+<fieldset class="trackevent-property default input color">
+  <label class="property-name"></label>
+  <div class="butter-form-append">
+    <input class="value" type="text"/>
+    <span class="color-picker-toggle butter-unit"></span>
+  </div>
+  <div class="color-picker hidden"></div>
+</fieldset>
+
+<fieldset class="trackevent-property select">
+  <label class="property-name"></label>
+  <select>
+  </select>
+</fieldset>
+
+<fieldset class="trackevent-property targets">
+  <label class="property-name">Target</label>
+  <select data-manifest-key="target">
+    <option class="default-target-option" value="Media Element">Media Element</option>
+  </select>
+</fieldset>
+
+<fieldset class="trackevent-property textarea">
+  <label class="property-name"></label>
+  <textarea class="value"></textarea>
+</fieldset>
+
+<fieldset class="trackevent-property checkbox-group">
+  <div class="checkbox-group">
+    <label class="property-name"></label>
+    <input type="checkbox" class="value" />
+  </div>
+</fieldset>
+
+<fieldset class="butter-form-inline form-half start-end">
+  <div class="butter-form-append">
+    <label class="property-name">Start</label>
+    <input type="text" class="value" data-manifest-key="start">
+  </div>
+  <div class="butter-form-append">
+    <label class="property-name">End</label>
+    <input type="text" class="value" data-manifest-key="end">
+  </div>
+</fieldset>
+
+<!-- For createBreadcrumbs -->
+<div class="butter-breadcrumbs">
+  <a class="butter-breadcrumbs-back">Events</a>
+  <span class="butter-editor-title">Event</span>
+  <a class="close-btn"><span class="icon icon-only icon-x"></span></a>
+</div>

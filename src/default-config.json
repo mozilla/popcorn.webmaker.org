@@ -1,0 +1,78 @@
+{
+  "name": "default-config",
+  "baseDir": "../",
+  "crashReporter": true,
+  "cssRenderClientSide": false,
+  "snapshotHTMLOnReady": false,
+  "scrapePage": true,
+  "backupInterval": 30000,
+  "title": "Popcorn Maker",
+  "ui": {
+    "enabled": true,
+    "onLeaveDialog": true,
+    "trackEventHighlight": "click"
+  },
+  "makeVideoURLsUnique": true,
+  "mediaDefaults": {
+    "frameAnimation": true
+  },
+  "trackEvent": {
+    "defaultDuration": 5
+  },
+  "plugin": {
+    "plugins": [
+      {
+        "type": "text",
+        "icon": "{{baseDir}}src/plugins/text/text-icon.png"
+      },
+      {
+        "type": "popup",
+        "icon": "{{baseDir}}src/plugins/popup/popup-icon.png"
+      },
+      {
+        "type": "googlemap",
+        "icon": "{{baseDir}}resources/icons/map.png"
+      },
+      {
+        "type": "image",
+        "icon": "{{baseDir}}src/plugins/image/image-icon.png"
+      },
+      {
+        "type": "loopPlugin",
+        "displayName": "loop",
+        "icon": "{{baseDir}}src/plugins/loopPlugin/loop-icon.png"
+      },
+      {
+        "type": "skip",
+        "icon": "{{baseDir}}src/plugins/skip/skip-icon.png"
+      },
+      {
+        "type": "pausePlugin",
+        "displayName": "Pause",
+        "icon": "{{baseDir}}src/plugins/pausePlugin/pause-icon.png"
+      },
+      {
+        "type": "wikipedia",
+        "icon": "{{baseDir}}src/plugins/wikipedia/wikipedia-icon.png"
+      },
+      {
+        "type": "sketchfab",
+        "displayName": "3D Model",
+        "icon": "{{baseDir}}src/plugins/sketchfab/sketchfab-icon.png"
+      },
+      {
+        "type": "sequencer",
+        "hidden": true,
+        "icon": "{{baseDir}}resources/icons/media.png"
+      }
+    ]
+  },
+  "dirs": {
+    "css": "{{baseDir}}css/",
+    "resources": "{{baseDir}}resources/"
+  },
+  "icons": {
+    "default": "popcorn-icon.png",
+    "image": "image-icon.png"
+  }
+}

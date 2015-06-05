@@ -1,0 +1,359 @@
+@language-bower-path: "../..";
+@bower-path: "../static/bower";
+@colors-path: "../../../../css";
+@import "@{bower-path}/webmaker-language-picker/styles/languages";
+
+
+/*********************************************************
+* HEADER
+*/
+@_logoWidth: 220px;
+@midgrey: #ddd;
+
+// Used to position absolute elements in the middle of our header bar area
+@HEADER_ALIGN_MIDDLE: 2.7;
+
+// Adds room to template to account for header
+.butter-header-spacing {
+  padding-top: @HEADER_SPACING;
+}
+
+.butter-editor-spacing {
+  .butter-header {
+    right: 0;
+  }
+}
+
+.butter-header {
+  z-index: @HEADER_Z_INDEX;
+  position: fixed;
+  left: 0;
+  top: 0;
+  right: @EDITOR_WIDTH;
+  height: @HEADER_SPACING;
+  .transition( all .2s ease-in-out );
+
+  // Used to overwrite collisions from nav.css included for userbar.
+  a:hover {
+    text-decoration: none;
+  }
+}
+
+/*********************************************************
+* Primary white nav bar
+*/
+
+.butter-header-primary {
+  position: relative;
+  background: #FFF;
+  color: lighten( @baseText, 10% );
+  height: 62px;
+  text-shadow: 0 1px 0 #FFF;
+  font-size: 0.95em;
+  border-bottom: 1px solid darken( @editorOutline, 10% );
+  box-shadow: 0 -1px 10px 0 rgba( 0, 0, 0, 0.1 );
+  .clearfix();
+}
+
+.butter-logo {
+  position: absolute;
+  top: 0;
+  left: 15px;
+  height: 62px;
+  width: @_logoWidth;
+  background: url( "https://air.cdn.mozilla.net/static/img/logo-airmo-md.png" ) center no-repeat;
+  background-size: contain;
+}
+
+.butter-nav {
+  position: absolute;
+  top: 0;
+  margin: 0;
+  padding: 0;
+  margin-left: @_logoWidth + 30;
+  list-style: none;
+  width: 60%;
+  height: @HEADER_SPACING;
+  line-height: @HEADER_SPACING;
+  > li {
+    float: left;
+    margin: 0 10px;
+    &.butter-breadcrumbs {
+      position: relative;
+      padding: 0;
+      margin-right: 10px;
+      width: 1px;
+      height: 100%;
+      border-right: 1px solid @baseLightOutline;
+      .triangle( "right", 5px, #FFF, 1px, @baseLightOutline );
+    }
+  }
+}
+
+// Temporary overriding classes.
+#webmaker-nav {
+  text-align: right;
+}
+.webmaker-nav-container {
+  text-align: left;
+  z-index: 10;
+  display: inline-block;
+  background: #FFFFFF;
+  margin-top: 10px;
+  overflow: visible;
+  width: auto;
+  > div {
+    float: left;
+  }
+}
+
+.user-info {
+  float: right;
+  z-index: 10;
+  padding: 0 10px;
+  margin-right: 1.4142em;
+  position: relative;
+  cursor: pointer;
+  .user {
+    min-width: 80px;
+    text-align: left;
+    padding: 5px 15px 5px 50px;
+    margin-top: 0;
+    height: 30px;
+    line-height: 30px;
+    border: 1px solid #CCC;
+    cursor: pointer;
+    img {
+      top: auto;
+      left: 10px;
+    }
+    a {
+      text-decoration: none;
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+  .menu-container {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    background: #FFF;
+    min-width: 100%;
+    .box-sizing(border-box);
+    > li {
+      white-space: nowrap;
+      display: none;
+      text-align: left;
+      line-height: 40px;
+      .icon-signout {
+        display: none;
+      }
+      &.login {
+        display: block;
+      }
+    }
+  }
+}
+
+.webmaker-icon {
+  float: left;
+  background: url("../resources/webmaker/webmaker-main_01.png") no-repeat;
+  background-position: center;
+  background-size: 30px 30px;
+  height: 40px;
+  width: 30px;
+  margin-left: -7px;
+  margin-right: 7px;
+}
+
+.back-to-webmaker {
+  display: inline-block;
+  line-height: 40px;
+  a {
+    color: #555;
+    text-decoration: none;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+}
+
+.loggedin {
+  #webmaker-nav iframe.include-frame {
+    margin-left: 0;
+  }
+  .back-to-webmaker {
+    margin-left: 10px;
+  }
+  .user-info .menu-container {
+    display: none;
+    position: absolute;
+    top: 100%;
+    > li {
+      display: block;
+      border: 1px solid #CCC;
+      border-top: 0;
+      padding: 0 10px;
+      .icon {
+        display: block;
+        float: left;
+        line-height: 40px;
+        width: 30px;
+        font-size: 16px;
+      }
+      button {
+        padding: 0;
+      }
+    }
+  }
+  .user-info:hover .menu-container {
+    display: block;
+  }
+}
+
+/*********************************************************
+* Buttons
+*/
+
+.butter-header {
+  .butter-btn {
+    text-shadow: none;
+  }
+}
+
+.butter-login-project-info {
+  position: relative;
+}
+
+.butter-login-project-info > ul {
+  position: absolute;
+  top: 48px;
+  left: 28px;
+  width: 175px;
+  border-top: 0;
+  border-radius: 0 0 2px 2px;
+  box-shadow: 0 10px 15px -5px rgba( 0, 0, 0, 0.6 );
+  padding: 0;
+  background: #FFF;
+  z-index: @MODAL_Z_INDEX;
+  li {
+    border-top: 1px solid @baseLight;
+    list-style: none;
+    font-size: 10px;
+    line-height: 35px;
+    margin: 0;
+    &:first-child {
+      border-top: none;
+    }
+    &:last-child {
+      border-radius: 0 0 2px 2px;
+    }
+  }
+  a {
+    text-decoration: none;
+    color: @baseText;
+    display: block;
+    padding: 0 20px;
+    height: 100%;
+    cursor: pointer;
+    &:hover {
+      color: @green;
+    }
+  }
+}
+
+/*********************************************************
+* Selects
+*/
+
+.ui-select {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  text-align: left;
+  border: 1px solid @midgrey;
+  padding: 10px;
+  margin-right: 15px;
+  height: 1.5em;
+  a {
+    color: black;
+  }
+}
+
+.ui-selected {
+  display: inline-block;
+}
+
+.ui-select-menu {
+  display: none;
+  position: absolute;
+  left: -1px;
+  border: 1px solid @midgrey;
+  z-index: 100;
+  vertical-align: middle;
+  &:hover {
+    border-color: @midgrey;
+  }
+  top: 100%;
+  width: 100%;
+  ul {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    > li {
+      color: lighten( #4d4e53, 30% );
+      background: #FFF;
+      border-bottom: 1px solid @midgrey;
+      padding: 10px;
+      &:last-child {
+        border-bottom: none;
+      }
+      &:hover,
+      &[data-selected] {
+        color: #4d4e53;
+        background: #e3eaee;
+      }
+    }
+  }
+}
+
+/***************************************************
+* TogetherJS restyling.
+*/
+
+div#togetherjs-dock.togetherjs-dock-right {
+  position:fixed;
+  top: @HEADER_SPACING + 50;
+  right: @EDITOR_WIDTH + 5;
+  z-index: @TOGETHERJS_Z_INDEX;
+  .transition( right 0.35s );
+
+  &.minimized {
+    right: 5px;
+  }
+}
+
+div.togetherjs-arrow, div.togetherjs-cursor, div.togetherjs-click {
+  z-index: @TOGETHERJS_Z_INDEX
+}
+
+#togetherjs-menu.togetherjs-menu, #togetherjs-pick-color.togetherjs-menu {
+  z-index: @TOGETHERJS_Z_INDEX + 1;
+}
+
+/***************************************************
+* New Language Picker
+*/
+
+.langPicker {
+  padding: 10px;
+  margin: 5px;
+}
+
+a#current-language {
+  color: #000;
+  text-decoration: none;
+}
+

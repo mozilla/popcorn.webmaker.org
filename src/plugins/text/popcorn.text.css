@@ -1,0 +1,62 @@
+.popcorn-text {
+  color: #FFF;
+  font-size: 22.5em;
+}
+
+.popcorn-text.off {
+  visibility: hidden;
+}
+
+.popcorn-text > .text-inner-div {
+  white-space: pre-wrap;
+}
+
+.text-inner-div a {
+  text-decoration: none;
+}
+.text-inner-div a:after {
+  font-family: FontAwesome;
+  font-weight: normal;
+  font-style: normal;
+  text-decoration: none;
+  -webkit-font-smoothing: antialiased;
+  font-size: 0.6em;
+  margin-left: 0.2em;
+  vertical-align: middle;
+  content: "\f064"; /* icon-share-alt */
+}
+.text-inner-div a:hover {
+  text-decoration: underline;
+}
+.text-inner-div a:hover:after {
+  opacity: 1;
+}
+
+.center > span,
+.center > textarea {
+  text-align: center;
+}
+
+.right > span,
+.right > textarea {
+  text-align: right;
+}
+
+.left > span,
+.left > textarea {
+  text-align: left;
+}
+
+.text-custom {
+  display: inline-block;
+  max-height: 100%;
+  max-width: 100%;
+}
+
+.text-custom > div > span {
+  display: block;
+  width: 100%;
+  line-height: 1;
+  min-height: 1em;
+}
+

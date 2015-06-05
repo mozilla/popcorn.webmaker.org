@@ -1,0 +1,22 @@
+{
+    "targets": [{
+        "id": "Target0",
+        "name": "video-container",
+        "element": "video-container"
+    }],
+    "media": [{
+        "id": "Media0",
+        "name": "Media0",
+        "url": "#t=,30",
+        "target": "video",
+        "duration": 30,
+        "controls": false,
+        "tracks": [{
+            "name": "",
+            "id": "0",
+            "trackEvents": []
+            }]
+    }],
+    "template": "basic",
+    "tags": [ "popcorn" ]
+}

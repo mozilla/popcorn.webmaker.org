@@ -1,0 +1,15 @@
+{
+  "name": "basic",
+  "template": "index.html",
+  "baseDir": "/",
+  "savedDataUrl": "/templates/basic/saved-data.json",
+  "editor": {
+    "googlemap": "{{baseDir}}src/plugins/googlemap/googlemap-editor.js",
+    "popup": "{{baseDir}}src/plugins/popup/popup-editor.js",
+    "image": "{{baseDir}}src/plugins/image/image-editor.js",
+    "text": "{{baseDir}}src/plugins/text/text-editor.js",
+    "sketchfab": "{{baseDir}}src/plugins/sketchfab/sketchfab-editor.js",
+    "wikipedia": "{{baseDir}}src/plugins/wikipedia/wikipedia-editor.js"
+  },
+  "maxPluginZIndex": 1000
+}

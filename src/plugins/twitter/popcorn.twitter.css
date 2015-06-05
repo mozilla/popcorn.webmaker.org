@@ -1,0 +1,7 @@
+.jons-beard {
+  border-bottom-right-radius: 3em;
+  border-bottom-left-radius: 3em;
+  border: 5px solid rgb( 76, 38, 30 );
+  border-top-right-radius: 1em;
+  border-top-left-radius: 1em;
+}

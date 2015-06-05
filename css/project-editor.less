@@ -1,0 +1,160 @@
+//This is the css for the editor that is opened when clicking the "Project" Button
+.butter-editor-area {
+  .project-editor {
+    .editor-title-card {
+      height: 110px;
+      > .title {
+        line-height: 1;
+        padding: 20px 0 10px 0;
+      }
+    }
+    .butter-editor-body {
+      top: 140px;
+    }
+    .butter-project-url {
+      height: 35px;
+      width: 270px;
+      border-color: @green;
+    }
+    .butter-project-thumbnail {
+      margin-top: 10px;
+    }
+    .butter-embed-preload-label {
+      width: 90px;
+      float: left;
+      padding: 0;
+      margin: 5px 0 0 40px;
+    }
+    .butter-preview-link {
+      vertical-align: top;
+    }
+    .butter-embed-height-width {
+      width: 50%;
+      padding: 5px;
+      .box-sizing( border-box );
+      float: left;
+    }
+    .description-wrapper {
+      display: block;
+    }
+    .searchable-checkbox-wrapper {
+      margin: 5px 0px 0px 40px;
+      & label {
+        padding: 0;
+      }
+    }
+    .editor-container {
+      padding: 20px;
+      > p {
+        margin-top: 0;
+        font-style: italic;
+      }
+      > label {
+        padding: 10px 0;
+      }
+    }
+    .project-tab,
+    .butter-view-source-btn {
+      outline: none;
+    }
+
+    .tags-label {
+      display: inline;
+    }
+
+    .tags-wrapper {
+      display: inline;
+
+      .tags-output {
+        display: inline;
+        list-style: none;
+        padding: 0;
+        border: none;
+        text-align: left;
+
+        li {
+          vertical-align: baseline;
+          display: inline-block;
+          background: #3FB58E;
+          color: #FFF;
+          border: 1px solid #40835B;
+          line-height: 20px;
+          border-radius: 3px;
+          margin: 3px 3px 0 0;
+          cursor: pointer;
+
+          &:before {
+            content: "#";
+            opacity: 0.7;
+          }
+
+          &:after {
+            content: "x";
+            display: inline-block;
+            position: relative;
+            margin-left: 3px;
+            top: -1px;
+            font-size: 9px;
+            font-weight: 700;
+            text-align: center;
+            line-height: 12px;
+            background: #40835B;
+            border-radius: 10px;
+            opacity: 0.7;
+            height: 13px;
+            width: 13px;
+            overflow: hidden;
+          }
+        }
+      }
+
+      .tags-input {
+        width: 100px;
+        line-height: 20px;
+        display: block;
+        height: 25px;
+        margin-left: 5px;
+        border: none;
+        border-bottom: 1px dashed #DDD;
+        font-size: 1em;
+        font-family: inherit;
+        .box-sizing( border-box );
+        background: @baseLight;
+
+        &:focus {
+          outline: none;
+          border-color: #3FB58E;
+        }
+      }
+    }
+
+    .thumbnail-choices {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+
+      > li {
+        float: left;
+        border: 3px solid white;
+        width: 50px;
+        height: 50px;
+        background-size: cover;
+        background-position: center center;
+        opacity: 0.5;
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+        transition: all 0.2s linear;
+
+        &.selected {
+          border-color: #3FB58E;
+          opacity: 1;
+        }
+      }
+    }
+  }
+}
+
+.login-to-save-dialog.hidden {
+  display: none;
+}

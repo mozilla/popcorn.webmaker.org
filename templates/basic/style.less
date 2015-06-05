@@ -1,0 +1,136 @@
+@import "../../css/globals.less";
+
+/* ===== Primary Styles ========================================================
+   Author: @k88hudson
+   ========================================================================== */
+
+.wrapper {
+  border: 15px solid #FFF;
+  box-shadow: 0 0 0 1px #CCC,
+    0 25px 5px -20px rgba( 0, 0, 0, 0.5 );
+}
+
+/* body-wrapper required to circumvent this bug in webkit: https://bugs.webkit.org/show_bug.cgi?id=77811 */
+.body-wrapper {
+  height: 100%;
+  top: 0;
+  left: 0;
+  right: 0;
+  position: absolute;
+  bottom: 0;
+  .tray-minimized & {
+    bottom: @CONTROLS_HEIGHT;
+  }
+  .editor-open & {
+    right: @EDITOR_WIDTH;
+  }
+  bottom: @TRAY_HEIGHT;
+  -webkit-transition: right 0.25s;
+  -moz-transition: right 0.25s;
+  -ms-transition: right 0.25s;
+  -o-transition: right 0.25s;
+  transition: right 0.25s;
+}
+
+.stage-wrapper {
+  position: absolute;
+  right: 0;
+  top: 62px;
+  left: 0;
+}
+
+body.editor-minimized .stage-wrapper {
+  right: 0;
+}
+
+.show-loading .loading-message {
+  opacity: 1;
+  // this zindex puts it above all track events
+  z-index: 1000;
+  visibility: visible;
+}
+
+.loading-message {
+  position: absolute;
+
+  opacity: 0;
+  visibility: hidden;
+
+  .transition( opacity 0.35s, visibility 0.35s );
+
+  background: url( "/resources/icons/big-loader.gif" ) center no-repeat;
+
+  width: 100%;
+  bottom: 42px;
+  top: 0;
+  line-height: 1;
+
+  &.show-waiting {
+    opacity: 1;
+    background: rgba( 0,0,0,1 );
+    // this zindex puts it above all track events
+    z-index: 1000;
+    visibility: visible;
+  }
+}
+
+#embed-wrapper {
+  position: relative;
+
+  background: #FFF;
+
+  .video-container {
+    .transition( opacity 0.5s );
+    opacity: 1;
+    // Makestrap overrides
+    max-width: none;
+    width: auto;
+  }
+
+  &.faded .video-container {
+    opacity: 0;
+  }
+}
+
+/* VIDEO
+-------------------------------------------------- */
+.video-container {
+  @baseFontSize: 14px;
+  position: relative;
+}
+
+#video {
+  position: relative;
+  width: 100%;
+  padding-bottom: 56.25%;
+  height: 0;
+  z-index: 1;
+  background: #FFF;
+  .butter-header-spacing & {
+    box-shadow: inset 0 0 0 1px #DDD;
+  }
+}
+
+.video > video,
+.video > iframe,
+.video > object {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.video > video {
+  background: #FFF;
+}
+
+/* Use this class for a full overlay */
+.video-overlay {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  overflow: hidden;
+}

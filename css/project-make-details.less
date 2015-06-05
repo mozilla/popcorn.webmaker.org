@@ -1,0 +1,213 @@
+#make-details {
+  line-height: 1.4;
+  background-color: #FFF;
+  width: 430px;
+  position: absolute;
+  top: 75px;
+  left: 10px;
+  border: 1px solid #C0C0C0;
+  text-shadow: none;
+
+  .make-arrow {
+    position: absolute;
+    display: block;
+    width: 30px;
+    height: 30px;
+    top: -16px;
+    left: 34px;
+    background-color: #FFF;
+    border-style: solid;
+    border-color: #C0C0C0;
+    border-image: none;
+    border-width: 1px 0 0 1px;
+    .transform( rotate( 45deg ) );
+  }
+
+  .makeapi-details {
+    border: none;
+    font-size: 13px;
+
+    fieldset {
+      &.searchable {
+        line-height: 0;
+        input {
+          width: auto;
+        }
+      }
+      border: none;
+      padding: 0;
+      margin-bottom: 2px;
+      .error {
+        margin-left: 5px;
+        margin-top: 5px;
+        color: red;
+      }
+    }
+
+    .input-container {
+      width: 75%;
+      .input {
+        width: 100%;
+      }
+    }
+
+    label {
+      margin-top: 25px;
+      min-width: 85px;
+      padding: 8px;
+      float: left;
+      .box-sizing( border-box );
+    }
+
+    .input {
+      display: inline-block;
+      border: 1px solid #CCC;
+      padding: 8px;
+      font-size: 1em;
+      width: 75%;
+      margin-top: 25px;
+      margin-left: 5px;
+      font-family: inherit;
+      .box-sizing( border-box );
+      .transition( border-color 0.2s linear );
+
+      &:focus {
+        outline: none;
+        border-color: #3FB58E;
+      }
+
+      &.thumbnail-choices {
+        margin-top: 10px;
+        border: none;
+        max-height: 100px;
+        overflow-y: auto;
+        padding: 0;
+      }
+    }
+
+    input:focus {
+      outline: none;
+      border-color: #3FB58E;
+    }
+
+    .tags-output {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      border: none;
+      text-align: left;
+
+      li {
+        vertical-align: baseline;
+        float: left;
+        background: #3FB58E;
+        color: #FFF;
+        border: 1px solid #40835B;
+        line-height: 20px;
+        border-radius: 3px;
+        margin: 3px 3px 0 0;
+        cursor: pointer;
+
+        &:before {
+          content: "#";
+          opacity: 0.7;
+        }
+
+        &:after {
+          content: "x";
+          display: inline-block;
+          position: relative;
+          margin-left: 3px;
+          top: 2px;
+          font-size: 9px;
+          text-align: center;
+          line-height: 12px;
+          background: #40835B;
+          border-radius: 10px;
+          opacity: 0.7;
+          height: 13px;
+          width: 13px;
+          overflow: hidden;
+        }
+      }
+    }
+
+    .tags-wrapper {
+      vertical-align: top;
+      width: 80%;
+      margin-top: 25px;
+      float: right;
+
+      .tags-output {
+        width: auto;
+      }
+
+      .tags-input {
+        width: 116px;
+        line-height: 20px;
+        display: block;
+        height: 25px;
+        margin-left: 5px;
+        border: none;
+        border-bottom: 1px dashed #DDD;
+        font-size: 1em;
+        font-family: inherit;
+        .box-sizing( border-box );
+
+        &:focus {
+          outline: none;
+          border-color: #3FB58E;
+        }
+      }
+    }
+  }
+
+  .thumbnail-choices {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border: none;
+    text-align: left;
+    line-height: 55px;
+
+    li {
+      border: 3px solid white;
+      float: left;
+      width: 50px;
+      height: 50px;
+      background-size: cover;
+      background-position: center center;
+      opacity: 0.5;
+      .box-sizing( border-box );
+      .transition( all 0.2s linear );
+
+      &.selected {
+        border-color: #3FB58E; /* @green */
+        opacity: 1;
+      }
+    }
+  }
+
+  .confirmation-buttons {
+    margin: 15px 15px 1em;
+    text-align: right;
+
+    .confirmation-button {
+      display: inline-block;
+      color: #FFF;
+      cursor: pointer;
+      font-size: 16px;
+      line-height: 1;
+      padding: 0.8em 1em;
+      .transition( opacity 0.5s ease );
+
+      &.yes-button {
+        background-color: #3FB58E;
+      }
+
+      &.no-button {
+        background-color: #D93B3B;
+      }
+    }
+  }
+}

@@ -1,0 +1,107 @@
+<div class="media-editor butter-editor fadable alternates-hidden allow-scrollbar no-paging">
+  <h1 class="add-new-media">Create new media clip</h1>
+  <div class="butter-editor-body">
+    <fieldset class="add-media-panel search-items">
+      <div class="media-editor-inner-wrapper primary-media-wrapper project-clips">
+        <p>
+          <span class="fl-right">
+            <span class="media-icon youtube-icon"></span>
+            <span class="media-icon vimeo-icon"></span>
+            <span class="media-icon soundcloud-icon"></span>
+            <span class="media-icon html5-icon"></span>
+            <span class="media-icon archive-icon"></span>
+            <span class="media-icon clyp-icon"></span>
+          </span>
+          Paste a link
+        </p>
+        <textarea class="add-media-input" placeholder="Paste an HTML"></textarea>
+      </div>
+      <span class="butter-btn-slide-out">
+        <a class="add-media-btn butter-btn btn-green hidden">Get Media</a>
+        <span class="media-loading-spinner butter-spinner hidden" ></span>
+        <label class="media-error-message hidden"></label>
+      </span>
+    </fieldset>
+
+    <div class="media-gallery">
+      <ul class="butter-editor-tabs clip-tabs">
+        <li>
+          <a class="butter-btn clip-tab media-tab butter-active" data-container="project">
+            My Media
+          </a>
+        </li>
+        <li>
+          <a class="butter-btn clip-tab youtube-tab butter-disabled" data-container="YouTube"
+             title="YouTube Results">
+            <span class="media-icon youtube-icon"></span>
+          </a>
+        </li>
+        <li>
+          <a class="butter-btn clip-tab soundcloud-tab butter-disabled" data-container="SoundCloud"
+             title="SoundCloud Results">
+            <span class="media-icon soundcloud-icon"></span>
+          </a>
+        </li>
+        <li>
+          <a class="butter-btn clip-tab flickr-tab butter-disabled" data-container="Flickr"
+             title="Flickr Results">
+            <img class="media-icon" alt="image icon" src="/resources/icons/flickr-black.png">
+          </a>
+        </li>
+        <li>
+          <a class="butter-btn clip-tab giphy-tab butter-disabled" data-container="Giphy"
+             title="Giphy Results">
+            <img class="media-icon" alt="image icon" src="/resources/icons/giphy.png">
+          </a>
+        </li>
+      </ul>
+      <div class="media-gallery-heading"></div>
+      <div class="media-gallery-scroll-container scrollbar-container">
+        <div class="scrollbar-outer scrollbar-inner">
+          <ul class="media-gallery-list" id="project-items" data-page="1" data-total="0" data-container="project"></ul>
+          <ul class="media-gallery-list butter-hidden" id="YouTube-items" data-page="1" data-container="YouTube"></ul>
+          <ul class="media-gallery-list butter-hidden" id="SoundCloud-items" data-page="1" data-container="SoundCloud"></ul>
+          <ul class="media-gallery-list butter-hidden" id="Flickr-items" data-page="1" data-container="Flickr"></ul>
+          <ul class="media-gallery-list butter-hidden" id="Giphy-items" data-page="1" data-container="Giphy"></ul>
+        </div>
+      </div>
+    </div>
+
+    <fieldset class="media-gallery-base-media butter-form-inline form-single bottom">
+      <div class="paging-container">
+        <ul></ul>
+      </div>
+    </fieldset>
+
+  </div>
+</div>
+
+<!-- This is used for photo based media items -->
+<li class="media-gallery-item gallery-item-grid gallery-photo">
+  <div class="mg-thumbnail">
+    <span class="icon-plus hidden"></span>
+  </div>
+  <div class="mg-meta-data">
+    <div class="mg-title"></div>
+    <div class="mg-type">
+      <img class="media-icon" alt="image icon">
+      <span class="mg-type-text photo"></span>
+    </div>
+  </div>
+  <span class="mg-delete-btn icon icon-trash"></span>
+</li>
+
+<!-- This is added to media-gallery for each new media item -->
+<li class="media-gallery-item gallery-video">
+  <div class="mg-thumbnail">
+    <span class="icon-plus hidden"></span>
+    <div class="default-thumbnail"></div>
+  </div>
+  <div class="mg-meta-data">
+    <div class="mg-title"></div>
+    <div class="mg-type media-icon"></div>
+    <span class="mg-type-text media"></span>
+    <div class="mg-duration"></div>
+  </div>
+  <span class="mg-delete-btn icon icon-trash"></span>
+</li>

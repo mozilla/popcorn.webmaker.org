@@ -1,0 +1,126 @@
+/*********************************************************
+* UI STATES
+*/
+
+/* Hidden */
+.butter-hidden {
+  display: none !important;
+}
+
+.butter-button-waiting,
+.butter-disabled {
+  opacity: 0.5;
+  cursor: not-allowed !important;
+}
+
+/* Warning for unsupported browsers */
+.butter-warning {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  color: #FFF;
+  background: @red;
+  z-index: @HEADER_Z_INDEX + 10;
+  font-size: 10pt;
+  .box-sizing( border-box );
+  .transform( scaleY(0) );
+  .transform-origin( top );
+  .transition( transform 0.2s linear 1s );
+  &.slide-out {
+    .transform( scaleY(1) );
+  }
+  span {
+    display: block;
+    padding: 1em;
+    line-height: 1.2;
+  }
+  a {
+    color: #FFF;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+  button {
+    float: right;
+    margin: 0.4em;
+    padding: 4px 6px;
+    border: 1px solid #FFF;
+    background: transparent;
+  }
+}
+
+/* Spinney */
+.butter-logo-spin-outer {
+  width: 16px;
+  height: 16px;
+  .transition( opacity 0.5s );
+  opacity: 1;
+  &.fade-out {
+    opacity: 0;
+  }
+}
+
+.butter-spinner {
+  height: 16px;
+  width: 16px;
+  display: inline-block;
+  background-image: url( "../resources/icons/spinny.gif" );
+  &.hidden {
+    /* conflict with .media-editor .media-loading-spinner.media-gallery-loading */
+    display: none !important;
+  }
+}
+
+.invalid-field {
+  .butter-spinner {
+    background-image: url( "../resources/icons/spinny-error.gif" );
+  }
+}
+
+/* Toggle hide/show button for editor and tray */
+
+.butter-toggle-button {
+  .font-awesome;
+  color: @lightGrey;
+  position: absolute;
+  &:hover {
+    color: @darkGrey;
+  }
+  &:after {
+    content: "\f078"; // chevron down
+  }
+  &.toggled:after {
+    content: "\f077"; //chevron up
+  }
+}
+
+/* Targets and highlighting */
+
+.butter-highlight-on {
+  box-shadow: 0 0 0 10px @green;
+}
+
+.butter-highlight-fade {
+  .transition( box-shadow 1.5s );
+  box-shadow: 0 0 0 10px transparent;
+}
+
+.butter-iframe-fix {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #000000;
+  opacity: 0;
+  z-index: @BASE_Z_INDEX;
+  display: none;
+}
+
+/*********************************************************
+* Drop down
+*/
+
+.butter-dropdown-off {
+  visibility: hidden;
+}

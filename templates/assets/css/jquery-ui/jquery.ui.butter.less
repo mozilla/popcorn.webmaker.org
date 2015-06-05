@@ -1,0 +1,324 @@
+/*!
+ * jQuery UI
+ *
+ * Copyright 2012, AUTHORS.txt (http://jqueryui.com/about)
+ * Dual licensed under the MIT or GPL Version 2 licenses.
+ * http://jquery.org/license
+ *
+ * Modified by @k88hudson for Popcorn Maker
+ */
+
+.transition(@transition1) {
+  -webkit-transition: @transition1;
+  -moz-transition: @transition1;
+  -o-transition: @transition1;
+  -ms-transition: @transition1;
+  transition: @transition1;
+}
+.box-sizing( @property ) {
+  // https://developer.mozilla.org/En/CSS/Box-sizing
+  -webkit-box-sizing: @property; // Chrome 10-
+  -moz-box-sizing: @property;
+  -ms-box-sizing: @property; // IE 8+
+  box-sizing: @property; // Opera, Safari 5.1+, Chrome 10+
+}
+
+@highlight: #3FB58E;
+@offset: 5px;
+@handlesmall: 8px;
+@handlecorner: 18px;
+@handlelarge: 25px;
+@handleZIndex: 1000;
+
+.ui-resizable,
+.ui-droppable,
+.ui-draggable {
+  position: relative;
+  color: #FFF83A;
+}
+
+/*********************************************************
+* Resizable
+*/
+@handleSize: 7px;
+
+.ui-resizable-handle {
+  position: absolute;
+  display: block;
+  z-index: @handleZIndex;
+  opacity: 0;
+  .transition( opacity 0.3s ease 0s );
+}
+
+.ui-draggable:hover,
+.ui-resizable:hover {
+  .ui-resizable-handle,
+  .ui-draggable-handle,
+  .title {
+    opacity: 1;
+  }
+}
+
+.ui-resizable-resizing,
+.ui-draggable-dragging {
+  .ui-resizable-handle,
+  .ui-draggable-handle {
+    opacity: 1;
+  }
+}
+
+.ui-resizable-top {
+  height: @handleSize;
+  width: @handleSize;
+  border: 1px solid black;
+  background: white;
+  top: -@offset;
+  left: 50%;
+  margin-left: -@handleSize/2;
+}
+.ui-resizable-bottom {
+  height: @handleSize;
+  width: @handleSize;
+  border: 1px solid black;
+  background: white;
+  bottom: -@offset;
+  left: 50%;
+  margin-left: -@handleSize/2;
+}
+.ui-resizable-left {
+  width:  @handleSize;
+  height: @handleSize;
+  border: 1px solid black;
+  background: white;
+  left: -@offset;
+  top: 50%;
+  margin-top: -@handleSize/2;
+}
+.ui-resizable-right {
+  height: @handleSize;
+  width: @handleSize;
+  border: 1px solid black;
+  background: white;
+  right: -@offset;
+  margin-top: -@handleSize/2;
+  top: 50%;
+}
+
+.ui-resizable-w {
+  z-index: @handleZIndex;
+  cursor: w-resize;
+  width: @handleSize;
+  top: @offset;
+  left: -@offset;
+  bottom: @offset;
+}
+.ui-resizable-n {
+  z-index: @handleZIndex;
+  cursor: n-resize;
+  height: @handleSize;
+  top: -@offset;
+  left: @offset;
+  right: @offset;
+}
+.ui-resizable-s {
+  z-index: @handleZIndex;
+  cursor: s-resize;
+  height: @handleSize;
+  bottom: -@offset;
+  left: @offset;
+  right: @offset;
+}
+.ui-resizable-e {
+  z-index: @handleZIndex;
+  cursor: e-resize;
+  width: @handleSize;
+  bottom: @offset;
+  top: @offset;
+  right: -@offset;
+}
+
+.ui-resizable-se {
+  z-index: @handleZIndex;
+  cursor: se-resize;
+  background: white;
+  height: @handleSize;
+  width: @handleSize;
+  bottom: -@offset;
+  right: -@offset;
+  border: 1px solid black;
+}
+.ui-resizable-sw {
+  z-index: @handleZIndex;
+  cursor: sw-resize;
+  background: white;
+  border: 1px solid black;
+  height: @handleSize;
+  width: @handleSize;
+  bottom: -@offset;
+  left: -@offset;
+}
+
+.ui-resizable-ne {
+  z-index: @handleZIndex;
+  cursor: ne-resize;
+  background: white;
+  height: @handleSize;
+  width: @handleSize;
+  top: -@offset;
+  right: -@offset;
+  border: 1px solid black;
+}
+
+.ui-resizable-nw {
+  z-index: @handleZIndex;
+  cursor: nw-resize;
+  background: white;
+  height: @handleSize;
+  width: @handleSize;
+  top: -@offset;
+  left: -@offset;
+  border: 1px solid black;
+}
+
+
+/* DRAGGABLE
+-------------------------------------------------- */
+.ui-draggable-handle {
+  position: absolute;
+  cursor: move;
+  height: 100%;
+  width: 100%;
+  border: none;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  z-index: 1;
+  overflow: hidden;
+  &:hover {
+    border: 1px solid @highlight;
+    margin: -1px;
+  }
+}
+
+.butter-dragover {
+  border: 3px dashed @highlight;
+}
+
+/* Editable */
+
+.popcorn-text > .text-inner-div > textarea,
+.popcorn-popup > .popup-inner-div > div > textarea,
+.speechBubble > div > textarea {
+  border-width: 0;
+  margin: 0;
+  padding: 0;
+  font-family: inherit;
+  color: inherit;
+  text-shadow: inherit;
+  background-color: inherit;
+  font-weight: inherit;
+  font-style: inherit;
+  overflow: hidden;
+  line-height: 1;
+}
+
+.content-editable {
+  textarea {
+    display: none;
+    width: 100%;
+  }
+  &.track-event-editing {
+    textarea {
+      resize: none;
+      display: block;
+    }
+    span {
+      display: none;
+    }
+  }
+}
+
+/* Selectable */
+
+.track-event-selected {
+  box-shadow: 0 0 1px @highlight;
+  border: 1px solid @highlight;
+  margin: -1px;
+  &.track-event-editing {
+    box-shadow: 0 0 4px @highlight;
+  }
+  .ui-resizable-handle,
+  .ui-draggable-handle,
+  .title {
+    opacity: 1;
+  }
+}
+
+
+/* Autocomplete
+-------------------------------------------------- */
+
+.ui-autocomplete {
+  position: absolute;
+  top: 0;
+  left: 0;
+  cursor: default;
+  /* Override Autocomplete z-index values which get applied directly to the element */
+  z-index: 200000000 !important;
+}
+
+.ui-menu {
+  list-style: none;
+  padding: 2px;
+  margin: 0;
+  display: block;
+  outline: none;
+
+  .ui-menu-item {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    /* support for IE10 */
+    list-style-image: url(data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7);
+    a {
+      text-decoration: none;
+      display: block;
+      padding: 2px .4em;
+      line-height: 1.5;
+      font-weight: normal;
+      color: #000;
+
+      &.ui-state-focus,
+      &.ui-state-active {
+        font-weight: normal;
+        background: #e3eaee;
+      }
+    }
+  }
+}
+
+.ui-widget {
+  font-size: 1.1em;
+}
+
+.ui-widget-content {
+  border: 1px solid #aaa;
+  background: #fff;
+}
+
+.ui-corner-all {
+  font-family: "Open sans", sans-serif;
+  font-size: 0.9em;
+  border-radius: 4px;
+}
+
+.ui-helper-hidden-accessible {
+  border: 0;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+}

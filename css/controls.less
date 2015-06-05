@@ -1,0 +1,255 @@
+/* @override
+http://ocupopdev.com/popcorn-embed/css/controls.css */
+
+@import "globals";
+
+.controls {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: white;
+  border: 1px solid #d5d6d5;
+  height: 41px;
+  visibility: visible;
+  opacity: 1;
+  z-index: 3;
+}
+.controls-hide {
+  opacity: 0;
+}
+#butter-controls {
+  color: #F8FDE2;
+  position: relative;
+  height: 22px;
+  width: 100%;
+  display: block;
+  background: white;
+  &.controls-active {
+    display: block;
+  }
+  &.controls-ready {
+    display: block;
+  }
+}
+#controls-big-play-button {
+  width: 57px;
+  height: 66px;
+  background: url( "../resources/controls/icon_play.png" ) no-repeat;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-top: -33px;
+  margin-left: -26px;
+  z-index: 4;
+  cursor: pointer;
+  &.hide-button {
+    display: none;
+  }
+}
+.controls-left {
+  height: 22px;
+  position: absolute;
+  width: 35px;
+}
+.controls-middle {
+  margin-top: 0;
+  height: 41px;
+  position: absolute;
+  left: 185px;
+  right: 215px;
+  padding-right: 20px;
+  border-right: 1px solid #d5d6d5;
+}
+.controls-right {
+  padding-top: 0;
+  height: 41px;
+  position: absolute;
+  width: 108px;
+  right: 45px;
+  background: #f2f2f2;
+  border-right: 1px solid #d5d6d5;
+  border-left: 1px solid #d5d6d5;
+  div {
+    background: @midGrey url( "../resources/controls/controls_icons.png" ) no-repeat;
+    margin-top: 6px;
+    margin-left: 6px;
+    width: 28px;
+    height: 28px;
+    border-radius: 3px;
+    float: left;
+    cursor: pointer;
+    &:hover {
+      background-color: #1eb771;
+    }
+  }
+}
+#controls-timebar {
+  position: absolute;
+  background: #e4e4e4;
+  height: 15px;
+  left: 0;
+  right: 0;
+  top: 12px;
+  margin-right: 12px;
+  border-radius: 0;
+  box-shadow: none;
+  cursor: pointer;
+}
+#controls-progressbar {
+  height: 100%;
+  background: #1eb771;
+  position: absolute;
+  border-radius: 0;
+}
+.time {
+  position: absolute;
+  left: 43px;
+  height: 27px;
+  background: url( "../resources/controls/controls_time_arrowL.gif" ) no-repeat left top, url( "../resources/controls/controls_time_arrowR.gif" ) right top no-repeat;
+  background-color: #f2f2f2;
+  font-size: 12px;
+  line-height: 1em;
+  padding-top: 14px;
+  padding-right: 15px;
+  padding-left: 15px;
+  color: #58595b;
+}
+#controls-currenttime {
+  color: #1eb771;
+  position: relative;
+  text-align: left;
+  left: auto;
+  right: auto;
+  font-size: 12px;
+  line-height: 1em;
+}
+#controls-duration {
+  left: auto;
+  right: auto;
+  position: relative;
+  text-align: left;
+  font-size: 12px;
+  line-height: 1em;
+}
+#controls-volume-container {
+  position: absolute;
+  right: 165px;
+  width: 38px;
+}
+#controls-volume {
+  position: absolute;
+  background: #e4e4e4;
+  height: 15px;
+  left: 7px;
+  right: 0;
+  top: 12px;
+  border-radius: 0;
+  box-shadow: none;
+  cursor: pointer;
+}
+#controls-volume-progressbar {
+  height: 100%;
+  background: #1eb771;
+  position: absolute;
+  border-radius: 0;
+}
+#controls-volume-scrubber {
+  height: 100%;
+  width: 2px;
+  background: #EEE;
+  position: absolute;
+  cursor: pointer;
+  &:after {
+    content: "";
+    position: absolute;
+    width: 8px;
+    height: 15px;
+    border-radius: 15px;
+    background: #EEE;
+    top: -2px;
+    left: -5px;
+  }
+}
+#controls-play {
+  width: 28px;
+  height: 28px;
+  background: #1eb771 url( "../resources/controls/controls_icon_playPause.png" ) no-repeat;
+  padding: 0;
+  border-radius: 3px;
+  margin-top: 7px;
+  margin-left: 7px;
+  cursor: pointer;
+  &:hover {
+    background-color: #60c7a5;
+  }
+}
+#controls-mute {
+  width: 14px;
+  height: 14px;
+  cursor: pointer;
+  padding: 0;
+  left: -8px;
+  top: 12px;
+  color: @midGrey;
+}
+.controls-btn {
+  padding: 10px;
+  position: absolute;
+  top: 0;
+}
+.controls-playing {
+  background-position: center -15px !important;
+}
+.controls-paused {
+  background-position: center 10px !important;
+}
+#controls-share {
+  background-position: -27px -2px;
+}
+#controls-remix {
+  background-position: -61px -2px;
+}
+#controls-fullscreen {
+  background-position: 7px -2px;
+}
+#controls-logo {
+  width: 45px;
+  height: 42px;
+  background: url( "../resources/controls/controls_icons.png" ) no-repeat -85px 2px;
+  position: absolute;
+  right: 0;
+  cursor: pointer;
+}
+.controls-time-tooltip {
+  @_tooltipHeight: 30px;
+  @_tooltipWidth: 70px;
+  &.tooltip-no-transition-on {
+    opacity: 1;
+    visibility: visible;
+  }
+  visibility: hidden;
+  opacity: 0;
+  height: @_tooltipHeight;
+  position: absolute;
+  top: -( @_tooltipHeight + 4px );
+  left: 50%;
+  margin-top: -7px;
+  margin-left: -@_tooltipWidth / 2;
+  z-index: @MODAL_Z_INDEX;
+  width: @_tooltipWidth;
+  padding: @_tooltipHeight / 3;
+  background: #FFF;
+  text-shadow: none;
+  color: @baseText;
+  line-height: @_tooltipHeight / 3;
+  font-size: 11px;
+  .box-sizing( border-box );
+  border-radius: 2px;
+  text-align: center;
+  border: 1px solid @baseLightOutline;
+  box-shadow: 0 5px 6px -5px rgba( 0, 0, 0, .3 );
+  pointer-events: none;
+  .transition( opacity 0.3s ease 0 );
+}
+

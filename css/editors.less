@@ -1,0 +1,749 @@
+/*********************************************************
+* EDITORS
+*/
+  @_editorHeaderHeight: 45px;
+  @_editorHeaderBorder: 5px;
+  @_editorTitle: 50px;
+  @_editorTabs: 30px;
+  @_editorScrollbarWidth: 15px;
+
+/*********************************************************
+* Editor Header
+*/
+
+html[dir="rtl"] {
+  .icon-mail-forward:before, .icon-share-alt:before {
+    -webkit-transform: scaleX(-1);
+    transform: scaleX(-1);
+  }
+}
+
+.butter-editor-header {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: -1px;
+  border-bottom: @_editorHeaderBorder solid @green;
+  height: @_editorHeaderHeight;
+  background: @baseDark;
+
+  // Used to overwrite collisions from nav.css included for userbar.
+  a:hover {
+    text-decoration: none;
+  }
+
+  > ul {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    list-style: none;
+
+    > .butter-editor-header-li {
+      float: left;
+      position: relative;
+      top: 0;
+    }
+  }
+} // .butter-editor-header
+
+.butter-editor-header .butter-btn {
+  background: none;
+  border: none;
+  color: #FFF;
+  font-size: 14px;
+  padding: 0 12px;
+  border-radius: 0;
+  height: @_editorHeaderHeight;
+  line-height: @_editorHeaderHeight;
+  >.icon {
+    margin-top: 1px;
+    margin-left: 0;
+    margin-right: 2px;
+  }
+  &.butter-active {
+    background: @green;
+  }
+  &.butter-editor-btn-disabled {
+    color: rgba( 255, 255, 255, 0.3 );
+    > .icon {
+      opacity: 0.3;
+    }
+  }
+}
+
+.butter-editor-close-btn {
+  position: fixed;
+  top: @HEADER_SPACING;
+  right: 0;
+  z-index: @HEADER_Z_INDEX + 1;
+  &.toggled .icon:before {
+    color: @baseText;
+    html[dir="ltr"] & {
+      content: "\f053"; //icon-chevron-left
+    }
+    html[dir="rtl"] & {
+      content: "\f054"; //icon-chevron-right
+    }
+  }
+}
+
+/*********************************************************
+* Main Editor Area
+*/
+
+.butter-editor-area {
+
+  position: fixed;
+  z-index: @EDITOR_Z_INDEX;
+  top: @HEADER_SPACING;
+  bottom: 0;
+  right: 0;
+  width: @EDITOR_WIDTH;
+  background: @baseLight;
+  .transition( right 0.35s );
+  border-left: 1px solid @baseLightOutline;
+
+  &.minimized {
+    right: -@EDITOR_WIDTH - 2;
+  }
+
+  // Tabs, breadcrumbs
+  .butter-editor {
+    color: @baseText;
+    font-size: 13px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    .butter-editor-tabs {
+      padding: 0 20px;
+      margin: 0;
+      list-style: none;
+      height: @_editorTabs;
+
+      > li {
+        float: left;
+        margin-right: 3px;
+        margin-top: -1px;
+
+        a:hover {
+          color: #555;
+        }
+      }
+      .butter-btn {
+        background: lighten( @baseLightOutline, 10% );
+        border-radius: 0;
+        border: 1px solid @baseLightOutline;
+        &.butter-active {
+          background: #FFF;
+          border-top-color: #FFF;
+        }
+      }
+    }
+
+    h1,
+    .butter-breadcrumbs,
+    .editor-title-card > .title {
+      font-weight: 700;
+      font-size: 16px;
+      line-height: @_editorTitle;
+      color: @green;
+      text-transform: capitalize;
+      margin: 0;
+    }
+
+    h1,
+    .butter-breadcrumbs,
+    .editor-title-card {
+      height: @_editorTitle;
+      margin: 0;
+      padding: 0 20px;
+      background: #FFF;
+      border-bottom: 1px solid @baseLightOutline;
+      .box-sizing( border-box );
+      .butter-breadcrumbs-back {
+        opacity: 0.6;
+        position: relative;
+        padding-right: 15px;
+        margin-right: 15px;
+        display: inline-block;
+        cursor: pointer;
+        color: @green;
+        border-right: 1px solid @baseLightOutline;
+        .triangle( "right", 5px, #FFF, 1px, @baseLightOutline );
+        &:hover {
+          opacity: 1;
+        }
+      }
+      .close-btn {
+        position: relative;
+        float: right;
+        top: 10px;
+        left: 10px;
+        line-height: 14px;
+        cursor: pointer;
+      }
+
+    }
+
+    // Tabs
+    .editor-tabs {
+      position: absolute;
+      top: 60px;
+      left: 5px;
+      bottom: 5px;
+      right: 5px;
+      border-radius: 5px;
+
+      > button {
+        margin: 10px;
+      }
+
+    }
+
+  }
+
+  // States
+
+  .display-off {
+    display: none;
+  }
+
+  // Errors
+  .error-message-container {
+    .transition( height 0.35s, margin 0.35s, padding 0.35s );
+    overflow: hidden;
+    height: 0;
+    color: #D93B21;
+    visibility: hidden;
+    width: 300px;
+  }
+
+  .error-message-container.open {
+    padding: 10px 20px;
+    padding-right: 15px; //scrollbars
+    background: #F0DDDD;
+  }
+
+  // Spacing
+ .butter-editor-spacing {
+    padding-right: 0;
+  }
+
+  .butter-editor-spacing.editor-open {
+    padding-right: @EDITOR_WIDTH;
+  }
+
+  .butter-editor-content {
+    position: absolute;
+    top: @_editorHeaderHeight + @_editorHeaderBorder;
+    bottom: 0;
+    width: 100%;
+  }
+
+  .butter-editor-body {
+    position: absolute;
+    top: @_editorTitle;
+    bottom: 0;
+    width: 100%;
+  }
+
+  .droparea {
+
+    > label {
+      text-align: center;
+    }
+
+    > .image-droparea {
+      border: dashed 2px #ABABAB;
+      text-align: center;
+      height: 170px;
+      position: relative;
+
+      > img {
+        max-width: 100%;
+        max-height: 100%;
+        position: absolute;
+        margin: auto;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+      }
+    }
+  }
+
+  .butter-editor-body.butter-tabs-spacing {
+    top: @_editorTitle + @_editorTabs;
+  }
+
+  // Scrollbars
+  .scrollbar-outer {
+    position: absolute;
+    top: 0;
+    right: @_editorScrollbarWidth;
+    left: 0;
+    bottom: 0;
+    overflow: hidden;
+  }
+
+  .allow-scrollbar {
+    .butter-scroll-bar.butter-scroll-bar-v {
+      top: 5px;
+      right: 5px;
+      width: 10px;
+      bottom: 5px;
+    }
+  }
+
+} //editor area
+
+
+/*********************************************************
+* Editor UI styles
+*/
+
+@_editorInnerWidth: 286px;
+@_editorTextIndent: 40px;
+@_editorInputHeight: 32px;
+
+.butter-form {
+
+  // Container building blocks
+  .trackevent-property,
+  .trackevent-warning,
+  fieldset {
+    border: none;
+    margin: 10px 20px;
+    padding: 0;
+    .clearfix();
+  }
+
+  .trackevent-warning {
+    background: darken( @baseLight, 10% );
+    padding: 10px;
+    border-radius: 5px;
+  }
+
+  // Label
+  label.property-name,
+  label {
+    display: block;
+    font-size: 13px;
+    padding: 5px 0;
+  }
+
+  .editor-section-header {
+    font-weight: 700;
+    font-size: 16px;
+    margin-bottom: 5px;
+  }
+
+
+  // Inputs
+  select,
+  input,
+  textarea {
+    height: @_editorInputHeight;
+    width: 100%;
+    padding: 6px;
+    margin-bottom: 5px;
+    border: 1px solid @baseLightOutline;
+    border-top-color: darken( @baseLightOutline, 10% );
+    border-radius: 2px;
+    .box-sizing( border-box );
+    &:-moz-placeholder {
+      color: #AAA;
+    }
+    &:focus {
+      outline: none;
+      border: 1px solid @green;
+      .transition( border 0.25s ease );
+    }
+  }
+
+  .farbtastic {
+    margin: auto;
+  }
+
+  .color .value {
+    height: 32px;
+    float: left;
+  }
+
+  .color-picker {
+    height: 195px;
+    width: 200px;
+    transition: height .3s linear;
+    overflow: hidden;
+  }
+
+  .color-picker.hidden {
+    height: 0;
+  }
+
+  // Textareas
+  textarea {
+    height: 100px;
+    line-height: 1.3;
+    resize: none;
+  }
+
+  // Radios
+  .butter-form-radio,
+  .butter-form-checkbox {
+    line-height: 1.3em;
+    padding-left: @_editorTextIndent;
+    padding-top: 0;
+    border: none;
+  }
+
+  input[type="radio"],
+  input[type="checkbox"] {
+    float: left;
+    vertical-align: text-top;
+    width: 12px;
+    height: 13px;
+    margin-left: -@_editorTextIndent + 2;
+    margin-top: 2px;
+  }
+
+  .checkbox-group {
+    float: left;
+    margin-right: 10px;
+
+    input[type="checkbox"] {
+      float: right;
+    }
+  }
+
+  // Error/Invalid
+  :invalid,
+  :invalid + .butter-unit,
+  .invalid,
+  .invalid + .butter-unit,
+  .invalid:focus,
+  .invalid-field input,
+  .invalid-field textarea,
+  .invalid-field select {
+    border-color: @red;
+  }
+
+
+  // Units
+  .butter-form-append {
+    position: relative;
+    display: inline-block;
+    .clearfix();
+    >input {
+      height: @_editorInputHeight;
+      float: left;
+      border-radius: 2px 0 0 2px;
+      width: 200px;
+    }
+  }
+
+  .butter-unit {
+    height: @_editorInputHeight - 2;
+    position: absolute;
+    right: -2px;
+    bottom: 5px;
+    font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+    font-size: 10px;
+    line-height: @_editorInputHeight;
+    padding: 0 5px;
+    min-width: 16px;
+    font-weight: normal;
+    text-align: center;
+    background-color: @baseLight;
+    color: #777;
+    border: 1px solid @baseLightOutline;
+    border-radius: 0 3px 3px 0;
+  }
+
+  // Inline form styles
+
+  .butter-form-inline.form-single {
+    .clearfix();
+    label {
+      .box-sizing( border-box );
+      width: 80px;
+      float: left;
+      padding: 0;
+      margin-top: 5px;
+    }
+
+    > input, textarea, select {
+      float: left;
+      margin-left: 5px;
+      width: @_editorInnerWidth;
+    }
+  }
+
+  .butter-form-inline.form-half{
+    .butter-form-radio,
+    .butter-form-checkbox {
+      .box-sizing( border-box );
+      width: @_editorInnerWidth / 2;
+      float: left;
+    }
+    > input,
+    > select,
+    .butter-form-append {
+      &:last-child {
+        margin-left: 10px;
+      }
+      position: relative;
+      width: @_editorInnerWidth / 2 - 10;
+      float: left;
+      > input {
+        width: 100%;
+      }
+    }
+  }
+
+  code, pre {
+    font-size: 10px;
+  }
+
+} // Fieldset
+
+/*********************************************************
+* Scrollbars
+*/
+
+.butter-scroll-bar {
+  position: absolute;
+  background: darken( @baseLight, 30% );
+  box-shadow: 0 0 1px rgba( 0, 0, 0, 0.3   );
+  border-radius: 15px;
+  overflow: hidden;
+}
+
+.butter-scroll-handle {
+  height: 8px;
+  top: 1px;
+  position: absolute;
+  background: darken( @baseLight, 10% );
+  border-radius: 15px;
+  &:hover,
+  &.butter-scollbar-active {
+    background: darken( @baseLight, 50% );
+    cursor: pointer;
+  }
+}
+
+.butter-scroll-bar-v {
+  .butter-scroll-handle {
+    width: 8px;
+    left: 1px;
+  }
+}
+
+/*********************************************************
+* Tooltip
+*/
+
+* {
+  &:hover > .butter-tooltip:not(.tooltip-no-hover) {
+    opacity: 1;
+    visibility: visible;
+    .transition( opacity 0.3s ease 0.5s );
+  }
+}
+
+.butter-tooltip {
+  @_tooltipWidth: 110px;
+  &.tooltip-off {
+    display: none;
+  }
+  &.tooltip-no-transition-on {
+    opacity: 1;
+    visibility: visible;
+  }
+  &.tooltip-error {
+    color: red;
+  }
+
+  &.butter-tooltip-middle {
+    top: 50%;
+  }
+  visibility: hidden;
+  opacity: 0;
+
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-top: -7px;
+  margin-left: -@_tooltipWidth / 2;
+  z-index: @MODAL_Z_INDEX;
+  width: @_tooltipWidth;
+  padding: 10px;
+  background: #FFF;
+  text-shadow: none;
+  color: #555;
+  line-height: 15px;
+  font-size: 11px;
+  font-weight: 600;
+  .box-sizing( border-box );
+  border-radius: 2px;
+  text-align: center;
+  border: 1px solid #CCC;
+  box-shadow: 0 5px 6px -5px rgba( 0, 0, 0, .3 );
+  pointer-events: none;
+  .transition( opacity 0.3s ease 0 );
+
+  &.arrow {
+    &:before {
+      content: "";
+      position: absolute;
+      top: -6px;
+      left: 50%;
+      margin-left: -5px;
+      width: 9px;
+      height: 9px;
+      background-color: rgb(255, 255, 255);
+      border-style: solid;
+      border-color: rgb(192, 192, 192);
+      border-image: none;
+      border-width: 1px 0 0 1px;
+      .transform( rotate( 45deg ) );
+    }
+  }
+}
+
+.butter-no-top-margin {
+  margin-top: 0;
+}
+
+/*********************************************************
+* Draggable/Resizable
+*/
+
+.editor-disable-pointer-events {
+  pointer-events: none;
+}
+
+.editor-drag-handle {
+  -webkit-transition: opacity .3s ease;
+     -moz-transition: opacity .3s ease;
+      -ms-transition: opacity .3s ease;
+       -o-transition: opacity .3s ease;
+          transition: opacity .3s ease;
+
+  opacity: 0.4;
+  z-index: 5000;
+  height: 32px;
+  width: 32px;
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  &:hover {
+    opacity: 1;
+  }
+}
+
+/*********************************************************
+* Sequencer. See also public/css/sequencer-ltr.less
+*/
+
+.butter-form .butter-editor-section {
+  margin: 0;
+  padding: 10px 20px;
+  border-bottom: 1px solid @baseLightOutline;
+}
+
+.butter-form .switch {
+  border: 1px solid @baseLightOutline;
+  float: left;
+  border-radius: 2px;
+  color: #CCC;
+  line-height: 1;
+  &:hover {
+    color: #999;
+  }
+  > input {
+    display: none;
+  }
+  > span {
+    float: left;
+    padding: 8px;
+    text-transform: uppercase;
+    font-size: 11px;
+    font-weight: 700;
+    cursor: pointer;
+    &:first-of-type {
+      border-right: 1px solid @baseLightOutline;
+    }
+  }
+  &.on .switch-on {
+    background: #FFF;
+    color: @green;
+  }
+  &:not(.on) .switch-off {
+    background: #FFF;
+    color: @red;
+  }
+}
+
+.fallback-container {
+  display: none;
+  &.show {
+    display: block;
+  }
+  .icon {
+    position: relative;
+  }
+  .butter-tooltip {
+    margin-top: 5px;
+    width: 150px;
+    margin-left: -75px;
+  }
+}
+
+
+.butter-editor-inline {
+  > label,
+  > div,
+  > textarea,
+  > input {
+    float: left;
+    line-height: 24px;
+    padding: 0;
+    > .icon {
+      margin-right: 8px;
+    }
+    &:first-child {
+      width: 33%;
+    }
+    &:last-child {
+      width: 66%;
+    }
+  }
+  > textarea {
+    padding: 5px;
+    height: 50px;
+    line-height: 1;
+    width: 66%
+  }
+  .clearfix();
+}
+
+
+/*********************************************************
+* Tutorial
+*/
+
+.tutorial-editor {
+  margin: 10px 20px;
+}
+
+.tutorial-iframe {
+  border-radius: 2px;
+  height: 100%;
+  width: 100%;
+  border: 1px solid rgb(204, 204, 204);
+  background: white;
+}

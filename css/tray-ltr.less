@@ -1,0 +1,70 @@
+/*********************************************************
+* TRAY
+*/
+html[dir="ltr"] {
+  // Adds room to bottom of template for tray
+  .butter-tray-spacing {
+    padding-bottom: @TRAY_SPACING;
+    .transition( padding-bottom 0.5s );
+  }
+
+  .butter-tray-spacing.tray-minimized {
+    padding-bottom: @TRAY_SPACING_MINIMIZED;
+  }
+
+  .butter-editor-spacing.editor-open .butter-tray[dir="ltr"] {
+    right: @EDITOR_WIDTH;
+  }
+  .butter-editor-spacing.editor-open .butter-tray[dir="rtl"] {
+    left: @EDITOR_WIDTH;
+  }
+
+  .butter-tray {
+    background: #FFF;
+    position: fixed;
+    z-index: @TRAY_Z_INDEX;
+    height: @TRAY_HEIGHT;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    &.butter-tray-transitions {
+      .transition( height 0.35s );
+    }
+
+    .butter-toggle-button {
+      top: 15px;
+      right: 6px;
+      z-index: @TRAY_Z_INDEX + 10;
+      cursor: pointer;
+    }
+
+    // This is the list of plugins in "my events"
+    .butter-timeline-area {
+      top: @CONTROLS_HEIGHT;
+    }
+
+    .butter-tray-resize-handle {
+      height: 8px;
+      position: absolute;
+      left: 0;
+      right: 0;
+      cursor: row-resize;
+    }
+
+    // This is the container for the spinning popcorn logo on the right side of the tray
+    .butter-loading-container {
+      position: absolute;
+      z-index: @TRAY_Z_INDEX + 1;
+      right: 5px;
+      top: 12px;
+      width: 16px;
+      height: 16px;
+    }
+
+    .fadable {
+      // TODO: This should be moved into a general UI kit
+      .transition( opacity 0.5s );
+    }
+  }
+}

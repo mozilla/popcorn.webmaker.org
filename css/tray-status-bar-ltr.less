@@ -1,0 +1,301 @@
+/*********************************************************
+* TRAY STATUS
+*/
+@_superScrollbarHeight: 32px;
+@_statusContainerHeight: 25px;
+@_playButtonHeight: 20px;
+@_scrubberBarHeight: 8px;
+@_scrubberHandleHeight: 10px;
+@_traySideWidth: 129px;
+@_timebarRight: 27px;
+@_buttonColour: #949494;
+
+/*********************************************************
+* Butter Status Area - The top bar in the tray
+*/
+html[dir="ltr"] {
+  .butter-status-area {
+    position: absolute;
+    bottom: @_superScrollbarHeight;
+    top: 0;
+    left: 0;
+    width: 100%;
+    min-height: @CONTROLS_HEIGHT;
+  }
+
+  .media-status-container {
+    position: relative;
+    height: 100%;
+    background: #FFF;
+    border-top: 1px solid @baseLightOutline;
+
+    .add-track {
+      position: absolute;
+      left: 14px;
+      padding: 0;
+      font-size: 11px;
+      position: absolute;
+      top: 17px;
+      width: 80px;
+      margin-left: 10px;
+      line-height: 20px;
+      outline: none;
+    }
+  }
+
+
+  /*********************************************************
+  * Time bar - The horizontal line where the scrubber is
+  */
+
+  .time-bar {
+    position: absolute;
+    left: @_traySideWidth;
+    top: ( @CONTROLS_HEIGHT - @_scrubberBarHeight ) / 2;
+    right: @_timebarRight;
+    bottom: 0;
+  }
+
+  // Time ticks
+  .time-bar-canvas-container {
+    position: absolute;
+    left: 0;
+    top: @_scrubberBarHeight;
+    height: ( @CONTROLS_HEIGHT / 2 ) - ( @_scrubberBarHeight / 2 );
+    overflow: hidden;
+    right: 0;
+    opacity: 0.5;
+  }
+
+  .time-bar-scrubber-container {
+    border-bottom: 1px solid #FFF;
+    z-index: @TRAY_Z_INDEX + 10;
+    height: 100%;
+    .fill-bar {
+      background: @green;
+      border-radius: 15px;
+      height: @_scrubberBarHeight;
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+    }
+    .total-bar {
+      background: fade( @baseDark, 20% );
+      border-radius: 15px;
+      height: @_scrubberBarHeight;
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      right: 0;
+      left: 0;
+    }
+  }
+
+  .time-bar-scrubber-line {
+    position: absolute;
+    top: @_scrubberHandleHeight + 3px;
+    left: 4px;
+    width: 2px;
+    bottom: 0;
+    cursor: pointer;
+    z-index: @TRAY_Z_INDEX + 9;
+    background: fade( @red, 50% );
+    margin-left: 2px;
+    &:after {
+      content: "";
+      position: absolute;
+      bottom: -3px;
+      left: -2px;
+      width: 6px;
+      height: 6px;
+      border-radius: 6px;
+      background-color: @red;
+    }
+  }
+
+  .time-bar-scrubber-node {
+    position: absolute;
+    top: 0;
+    left: 0;
+    border: 3px solid #FFF;
+    background: @green;
+    width: @_scrubberHandleHeight;
+    height: @_scrubberHandleHeight;
+    border-radius: @_scrubberHandleHeight;
+    margin-left: -@_scrubberHandleHeight / 2;
+    margin-top: -@_scrubberHandleHeight / 2;
+    box-shadow: 0 2px 3px rgba( 0, 0, 0, 0.8 );
+    cursor: pointer;
+  }
+
+  // Tooltip that show the time when you hover over/drag the scrubber
+  .butter-time-tooltip {
+    @_tooltipHeight: 30px;
+    @_tooltipWidth: 70px;
+    width: @_tooltipWidth;
+    margin-left: -@_tooltipWidth / 2;
+    padding: @_tooltipHeight / 3;
+    font-size: 11px;
+    line-height: @_tooltipHeight / 3;
+    top: -( @_tooltipHeight + 4px );
+    height: @_tooltipHeight;
+
+    &:after, &:before{
+      top: 100%;
+      border-bottom: none;
+      border-left: 5px solid transparent;
+      border-right: 5px solid transparent;
+      border-top: 5px solid #FFF;
+    }
+    &:before {
+      top: 100%;
+      border-bottom: none;
+      border-top: 5px solid #CCC;
+    }
+  }
+
+  /*********************************************************
+  * Status container - Play button, mute button and time code at the top of the tray.
+  */
+
+  @statusSidePosition: -7px;
+  @statusSideRotation: 25deg;
+
+  .status-container {
+    position: absolute;
+    width: @_traySideWidth + 70px;
+    height: @_statusContainerHeight;
+    line-height: @_statusContainerHeight;
+    top: -25px;
+    left: 25px;
+    background-color: #FFFFFF;
+    border-top-right-radius: 5px;
+    border-top-left-radius: 5px;
+    border-top: 1px solid @baseLightOutline;
+
+    .status-inner-container {
+      height: 100%;
+      width: 100%;
+      position: relative;
+      z-index: 3;
+    }
+
+    > .status-side {
+      position: absolute;
+      width: 40px;
+      height: 100%;
+      top: 9px;
+      background-color: #FFFFFF;
+      z-index: 2;
+
+      &.left {
+        left: @statusSidePosition;
+        .transform( rotate( @statusSideRotation ) );
+        border-left: 1px solid @baseLightOutline;
+      }
+
+      &.right {
+        right: @statusSidePosition;
+        .transform( rotate( -@statusSideRotation ) );
+        border-right: 1px solid @baseLightOutline;
+      }
+    }
+  }
+
+  .time-wrapper {
+    position: relative;
+    margin-top: 5px;
+    float: left;
+
+    .time-container {
+      display: inline;
+      position: relative;
+      color: @baseText;
+      font-size: 10px;
+      font-family: menlo, monospace;
+
+      .current-time {
+        margin-right: -3px;
+      }
+
+      .duration-input {
+        display: inline;
+        padding: 3px;
+        border: 1px solid @baseLightOutline;
+        position: relative;
+        max-width: 55px;
+        background: transparent;
+        color: @baseText;
+        font-size: 10px;
+        font-family: menlo, monospace;
+        margin-left: -3px;
+        outline: none;
+        line-height: 1.3;
+
+        &.input-active {
+          border: 1px solid @green;
+        }
+      }
+    }
+  }
+
+  .status-button {
+    width: @_playButtonHeight;
+    height: @_playButtonHeight;
+    line-height: @_playButtonHeight;
+    text-align: center;
+    padding: 0;
+    margin: 0;
+  }
+
+  .play-button-container {
+    position: relative;
+    float: left;
+    height: 100%;
+    width: @_playButtonHeight + 10px;
+    margin-left: 10px;
+    margin-top: 5px;
+
+    .status-button {
+      width: 21px;
+      height: 21px;
+      line-height: 21px;
+      border-radius: 25px;
+
+      .icon {
+        margin-left: 2px;
+      }
+    }
+
+    .status-button[data-state="true"] {
+      .icon {
+        margin-left: 0;
+        &:before {
+          content: "\f04c"; //pause
+        }
+      }
+    }
+  }
+
+  .mute-button-container {
+    position: relative;
+    float: left;
+    margin-top: 10px;
+
+    .status-button {
+      text-align: left;
+      background: none;
+
+      &:hover {
+        cursor: pointer;
+      }
+      .icon {
+        color: @_buttonColour;
+      }
+      &[data-state="true"] .icon:before {
+        content: "\f026"; // volume-off
+      }
+    }
+
+  }
+}

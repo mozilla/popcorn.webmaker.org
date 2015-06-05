@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Butter Test Suite [Popcorn Wrapper]</title>
+    <link rel="stylesheet" href="../qunit/qunit.css" type="text/css" media="screen">
+    <script type="text/javascript" src="../qunit/qunit.js"></script>
+    <script type="text/javascript" src="../inject.js"></script>
+    <script type="text/javascript" src="../../src/butter.js"></script>
+    <script type="text/javascript" src="../../external/popcorn-js/popcorn.js"></script>
+    <script src="../../external/popcorn-js/wrappers/common/popcorn._MediaElementProto.js"></script>
+    <script src="../../external/popcorn-js/wrappers/youtube/popcorn.HTMLYouTubeVideoElement.js"></script>
+    <script src="../../external/popcorn-js/wrappers/vimeo/popcorn.HTMLVimeoVideoElement.js"></script>
+    <script src="../../external/popcorn-js/wrappers/soundcloud/popcorn.HTMLSoundCloudAudioElement.js"></script>
+    <script src="../../external/popcorn-js/wrappers/null/popcorn.HTMLNullVideoElement.js"></script>
+    <script src="../../external/popcorn-js/wrappers/html5/popcorn.HTMLMediaElement.js"></script>
+    <script type="text/javascript" src="../../external/popcorn-js/modules/player/popcorn.player.js"></script>
+    <script type="text/javascript" src="../../external/popcorn-js/plugins/text/popcorn.text.js"></script>
+    <script src="../butter.inject.js"></script>
+    <script>
+      require( [ "../src/core/popcorn-wrapper" ], function( PopcornWrapper ) {
+        var defaultEvent = { start: 1, end: 4, text: "Track Event" },
+            _iframe,
+            _butter,
+            _trackEventData = { start: 2, end: 3, text: "Updated with updateEvent" };
+
+        function prepare( events, ready ) {
+          events.prepare = ready;
+
+          var popcornWrapper = new PopcornWrapper( "video", events );
+
+          popcornWrapper.prepare(
+            [
+              "#t=,200"
+            ],
+            "video",
+            [
+              { frameAnimation: true }
+            ]
+          );
+          
+          return popcornWrapper;
+        }
+
+        asyncTest( "Prepare", 2, function() {
+          var _pPrepare = prepare( {} );
+
+          ok( _pPrepare.popcorn, "Successfully generated popcorn instance" );
+          ok( _pPrepare.popcorn.options[ 0 ].frameAnimation, "Successfully set true flag for frameAnimation" );
+          _pPrepare.popcorn.destroy();
+          start();
+        });
+        
+        asyncTest( "synchronizeEvent - new TrackEvent", 2, function() {
+          var id = "Sample Event",
+              options = {
+                text: "Sample Text"
+              },
+              trackEvent,
+              _pCreate = prepare( {} );
+
+          _pCreate.synchronizeEvent({
+            id: id,
+            type: "text",
+            popcornOptions: options
+          });
+          trackEvent = _pCreate.popcorn.getTrackEvent( id );
+
+          equal( trackEvent.id, id, "TrackEvent created with expected ID" );
+          deepEqual( trackEvent.text, options.text, "TrackEvent created with expected text" );
+          start();
+        });
+
+        asyncTest( "synchronizeEvent - TrackEvent updated", 2, function() {
+          var id = "Sample Event",
+              options = {
+                text: "Sample Text"
+              },
+              updateOptions = {
+                text: "Updated Text"
+              },
+              trackEvent,
+              _pUpdate = prepare( {} );
+
+          _pUpdate.synchronizeEvent({
+            id: id,
+            type: "text",
+            popcornOptions: options
+          });
+
+          _pUpdate.synchronizeEvent({
+            id: id,
+            type: "text",
+            popcornOptions: options
+          }, updateOptions );
+
+          trackEvent = _pUpdate.popcorn.getTrackEvent( id );
+
+          equal( trackEvent.id, id, "ID of track event is correct" );
+          deepEqual( trackEvent.text, updateOptions.text, "TrackEvent updated with expected text" );
+          start();
+        });
+
+        asyncTest( "unbind ", 2, function() {
+          var _pBind = prepare( {} ),
+              popcorn = _pBind.popcorn;
+
+          ok( popcorn !== undefined, "Popcorn instance is not undefined after prepare" );
+
+          // Destroys popcorn instance
+          _pBind.unbind();
+
+          popcorn = _pBind.popcorn;
+          ok( !popcorn, "Popcorn instance is successfully unbound" );
+
+          start();
+        });
+
+        asyncTest( "play passthrough", 1, function() {
+          var _eventsPlay = {
+                "popcornEvents": {
+                  "play": function() {
+                    ok( true, "PopcornWrapper play passthrough successfully played video" );
+                    start();
+                  }
+                }
+              },
+              _pPlay;
+
+          _pPlay = prepare( _eventsPlay, function() {
+            _pPlay.play();
+          });
+        });
+
+        asyncTest( "pause passthrough", 1, function() {
+          var _eventsPause = {
+                "popcornEvents": {
+                  pause: function() {
+                    ok( true, "PopcornWrapper pause passthrough successfully paused video" );
+                    start();
+                  }
+                }
+              },
+              _pPause;
+
+          // Seems to require a play fired first of some sort
+          _pPause = prepare( _eventsPause, function() {
+            _pPause.play();
+            _pPause.pause();
+          });
+        });
+
+      });
+    </script>
+  </head>
+  <body>
+    <h1 id="qunit-header">Butter API Test Suite [Popcorn Wrapper]</h1>
+    <h2 id="qunit-banner"></h2>
+    <div id="qunit-testrunner-toolbar"></div>
+    <h2 id="qunit-userAgent"></h2>
+    <ol id="qunit-tests"></ol>
+    <div id="qunit-fixture">
+      <div id="video"></div>
+    </div>
+  </body>
+</html>

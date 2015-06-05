@@ -1,0 +1,169 @@
+.speechBubble {
+  line-height: 1.2;
+  font-size: 22.5em;
+  text-align: center;
+  position: relative;
+  border: 2px solid black;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 3px 3px 7px rgba(0,0,0,.2);
+  background: #FFF;
+  word-wrap: break-word;
+}
+
+.speechBubble .canvas {
+  position: absolute;
+  -webkit-transform-origin: 30% 0;
+  -moz-transform-origin: 30% 0;
+  -o-transform-origin: 30% 0;
+  -ms-transform-origin: 30% 0;
+  transform-origin: 30% 0;
+  z-index: 3;
+}
+
+/* HORIZONTAL POSITIONING */
+.speechBubble.right .canvas { right: 15px; }
+.speechBubble.left .canvas { left: 15px; }
+
+/* BOTTOM */
+.speechBubble .canvas {
+  bottom: -59px;
+  -webkit-transform: scale(1, 1);
+  -moz-transform: scale(1, 1);
+  -o-transform: scale(1, 1);
+  -ms-transform: scale(1, 1);
+  transform: scale(1, 1);
+}
+
+.speechBubble.flip .canvas {
+  -webkit-transform: scale(-1, 1);
+  -moz-transform: scale(-1, 1);
+  -o-transform: scale(-1, 1);
+  -ms-transform: scale(-1, 1);
+  transform: scale(-1, 1);
+}
+
+.speechBubble.thought .canvas {
+  bottom: -65px;
+}
+.speechBubble.long .canvas {
+  bottom: -58px;
+  -webkit-transform: scale(1, 1.5);
+  -moz-transform: scale(1, 1.5);
+  -o-transform: scale(1, 1.5);
+  -ms-transform: scale(1, 1.5);
+  transform: scale(1, 1.5);
+}
+
+.speechBubble.long.flip .canvas {
+  -webkit-transform: scale(-1, 1.5);
+  -moz-transform: scale(-1, 1.5);
+  -o-transform: scale(-1, 1.5);
+  -ms-transform: scale(-1, 1.5);
+  transform: scale(-1, 1.5);
+}
+
+/*TOP*/
+
+.speechBubble.top .canvas {
+  top: 1px;
+  -webkit-transform: scale(1, -1);
+  -moz-transform: scale(1, -1);
+  -o-transform: scale(1, -1);
+  -ms-transform: scale(1, -1);
+  transform: scale(1, -1);
+}
+
+.speechBubble.top.flip .canvas {
+  -webkit-transform: scale(-1, -1);
+  -moz-transform: scale(-1, -1);
+  -o-transform: scale(-1, -1);
+  -ms-transform: scale(-1, -1);
+  transform: scale(-1, -1);
+}
+
+.speechBubble.thought.top .canvas { top: -5px; }
+
+.speechBubble.long.top .canvas {
+  top: 2px;
+  -webkit-transform: scale(-1, -1.5);
+  -moz-transform: scale(-1, -1.5);
+  -o-transform: scale(-1, -1.5);
+  -ms-transform: scale(-1, -1.5);
+  transform: scale(-1, -1.5);
+}
+
+.speechBubble.long.top.flip .canvas {
+  -webkit-transform: scale(1, -1.5);
+  -moz-transform: scale(1, -1.5);
+  -o-transform: scale(1, -1.5);
+  -ms-transform: scale(1, -1.5);
+  transform: scale(1, -1.5);
+}
+
+.popcorn-popup {
+  background-color: black;
+  border-radius: 1em;
+}
+
+.popcorn-responsive-image-position {
+  height: 3em;
+  width: 3em;
+  right: 100%;
+  top: 50%;
+  margin-top: -1.5em;
+  margin-right: -1em;
+}
+
+.popcorn-popup .popup-inner-div {
+  font-size: 22.5em;
+  background-color: white;
+  border-radius: 0.03em;
+  padding: 0.026em;
+  margin: 0.01em 0.03em;
+  position: relative;
+  text-align: center;
+  overflow: hidden;
+  word-wrap: break-word;
+  white-space: pre-wrap;
+  min-height: .08em;
+}
+
+.popcorn-popup > .popup-inner-div > div > textarea,
+.speechBubble > div > textarea {
+  text-align: center;
+}
+
+.popup-inner-div a {
+  text-decoration: none;
+}
+.popup-inner-div a:after {
+  font-family: FontAwesome;
+  font-weight: normal;
+  font-style: normal;
+  text-decoration: none;
+  -webkit-font-smoothing: antialiased;
+  font-size: 0.6em;
+  margin-left: 0.2em;
+  vertical-align: middle;
+  content: "\f064"; /* icon-share-alt */
+}
+.popup-inner-div a:hover {
+  text-decoration: underline;
+}
+.popup-inner-div a:hover:after {
+  opacity: 1;
+}
+
+.popcorn-popup .popup-icon {
+  position: absolute;
+  z-index: 2;
+}
+
+.popcorn-popup .popup-icon + div {
+  padding-left: 12px;
+}
+
+.popup-icon-preview {
+  height: 29px;
+}

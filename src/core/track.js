@@ -1,0 +1,385 @@
+/* This Source Code Form is subject to the terms of the MIT license
+ * If a copy of the MIT license was not distributed with this file, you can
+ * obtain one at https://raw.github.com/mozilla/butter/master/LICENSE */
+
+define( [ "localized", "./eventmanager", "./trackevent", "./views/track-view", "util/sanitizer" ],
+        function( Localized, EventManager, TrackEvent, TrackView, Sanitizer ){
+
+  var __guid = 0,
+      NAME_PREFIX = Localized.get( "Layer" ) + " ",
+      // Old layer names can be saved as Layer n before l10n existed,
+      // these names are default names and should be translated.
+      // If we are going to start using this,
+      // we should check if it's the translated or english default, and update it.
+      defaultNameRegexTranslated = new RegExp( "^" + NAME_PREFIX + "(\\d)+$" ),
+      defaultNameRegex = new RegExp( "^" + "Layer " + "(\\d)+$" ),
+      Track;
+
+  Track = function( options ) {
+    options = options || {};
+
+    // If we've been passed an Id then use it, otherwise use __guid like usual.
+    if ( "id" in options ) {
+      // If we've been passed an Id with the same Id as the current GUID then
+      // just increment __guid.
+      if ( options.id === __guid ) {
+        __guid++;
+      }
+      // If the id we've been passed is greater then Id then this means we're
+      // out of sync. Update __guid to be in sync.
+      else if( options.id > __guid ) {
+        __guid = options.id + 1;
+      }
+    } else {
+      options.id = __guid++;
+    }
+
+    var _trackEvents = [],
+        _target = options.target,
+        _id = "" + options.id,
+        _view = new TrackView( _id, this ),
+        _popcornWrapper = null,
+        _this = this,
+        _order = 0,
+        _name = "";
+
+    _this._media = null;
+
+    /*
+     * ghost stores a reference to the current track's ghost.
+     * A ghost track is created when a trackevent overlaps another trackevent and there is
+     * no room for a ghost trackevent to exist.
+     */
+    _this.ghost = null;
+
+    EventManager.extend( _this );
+
+    /**
+     * Member: setPopcornWrapper
+     *
+     * Sets the PopcornWrapper object. Subsequently, PopcornWrapper can be used to directly manipulate Popcorn track events.
+     *
+     * @param {Object} newPopcornWrapper: PopcornWrapper object or null
+     */
+    this.setPopcornWrapper = function ( newPopcornWrapper ) {
+      _popcornWrapper = newPopcornWrapper;
+      for ( var i = 0, l = _trackEvents.length; i < l; ++i ){
+        _trackEvents[ i ].bind( _this, newPopcornWrapper );
+      }
+    };
+
+    this.updateTrackEvents = function() {
+      var trackEvents = _trackEvents.slice();
+      for ( var i = 0, l = trackEvents.length; i < l; i++ ) {
+        trackEvents[ i ].update();
+      }
+    };
+
+    Object.defineProperties( this, {
+      view: {
+        enumerable: true,
+        configurable: false,
+        get: function(){
+          return _view;
+        }
+      },
+      target: {
+        enumerable: true,
+        get: function(){
+          return _target;
+        },
+        set: function( val ){
+          _target = val;
+          _this.dispatch( "tracktargetchanged", _this );
+          for( var i=0, l=_trackEvents.length; i<l; i++ ) {
+            _trackEvents[ i ].target = val;
+            _trackEvents[ i ].update({ target: val });
+          }
+        }
+      },
+      name: {
+        enumerable: true,
+        get: function(){
+          if ( !_name || defaultNameRegexTranslated.test( _name ) || defaultNameRegex.test( _name ) ) {
+            return NAME_PREFIX + _order;
+          }
+          return _name;
+        },
+        set: function( name ) {
+          if ( _name !== name ) {
+            _name = name;
+            _this.dispatch( "tracknamechanged", _this );
+          }
+        }
+      },
+      id: {
+        enumerable: true,
+        get: function() {
+          return _id;
+        }
+      },
+      json: {
+        enumerable: true,
+        get: function(){
+          var exportJSONTrackEvents = [];
+          for ( var i=0, l=_trackEvents.length; i<l; ++i ) {
+            exportJSONTrackEvents.push( _trackEvents[ i ].json );
+          }
+          return {
+            name: _name,
+            id: _id,
+            order: _order,
+            trackEvents: exportJSONTrackEvents
+          };
+        },
+        set: function( importData ) {
+          var importName = importData.name;
+          if( importName && _name !== importName &&
+              !defaultNameRegexTranslated.test( importName ) &&
+              !defaultNameRegex.test( importName ) ) {
+
+            _name = importName;
+            _this.dispatch( "tracknamechanged", _this );
+          }
+          if( importData.trackEvents ){
+            var importTrackEvents = importData.trackEvents;
+            if ( Array.isArray( importTrackEvents ) ) {
+              for( var i = 0, l = importTrackEvents.length; i < l; ++i ) {
+                _this.addTrackEvent( importTrackEvents[ i ] );
+              }
+            } else if ( console ) {
+              console.warn( "Ignored imported track event data. Must be in an Array." );
+            }
+          }
+        }
+      },
+      trackEvents: {
+        enumerable: true,
+        configurable: false,
+        get: function(){
+          return _trackEvents;
+        }
+      },
+      order: {
+        enumerable: true,
+        get: function() {
+          return _order;
+        },
+        set: function( val ) {
+          _order = val;
+        }
+      }
+    });
+
+    this.getTrackEventById = function( id ){
+      for ( var i=0, l=_trackEvents.length; i<l; ++i) {
+        if( _trackEvents[ i ].id === id ) {
+          return _trackEvents[ i ];
+        } //if
+      } //for
+    }; //getTrackEventById
+
+    this.getTrackEventByName = function( name ){
+      for ( var i=0, l=_trackEvents.length; i<l; ++i) {
+        if( _trackEvents[ i ].name === name ) {
+          return _trackEvents[ i ];
+        } //if
+      } //for
+    }; //getTrackEventByName
+
+    function trackEventUpdateNotificationHandler( notification ) {
+      var trackEvent = notification.origin,
+          updateOptions = notification.data,
+          currentOptions = trackEvent.popcornOptions,
+          start = updateOptions.start || updateOptions.start === 0 ? updateOptions.start : currentOptions.start,
+          end = updateOptions.end || updateOptions.end === 0 ? updateOptions.end : currentOptions.end,
+          destinationTrack,
+          nextTrack;
+
+      // If the update will cause this event to overlap with another ...
+      if ( trackEvent.track.findOverlappingTrackEvent( start, end, trackEvent ) ) {
+        // reject the update by cancelling the notification;
+        notification.cancel( "trackevent-overlap" );
+
+        // remove the incriminating trackEvent to avoid conflicts;
+        _this.removeTrackEvent( trackEvent );
+
+        // find another track for the trackEvent to live on;
+        nextTrack = _this._media.getNextTrack( _this );
+        destinationTrack = nextTrack ? _this._media.forceEmptyTrackSpaceAtTime( nextTrack, start, end ) : _this._media.addTrack();
+
+        // update the track with the updateOptions that were first issued;
+        trackEvent.update( updateOptions );
+
+        // and, finally, place the track in its new home.
+        destinationTrack.addTrackEvent( trackEvent );
+      }
+    }
+
+    /**
+     * Sanitize a trackEvent's popcornOptions data, so that we do not
+     * build any elements in the editor that might contain hidden
+     * DOM nodes. Practically, this means scrubbing textarea and
+     * input[type=text] plugin fields for content that spanws DOM
+     * nodes when assigned through .innerHTML or as contentEditable
+     * user-generated content.
+     */
+    this.sanitizeTrackEventData = function( trackEvent ) {
+      // Step 1: find all properties that may lead to problems
+      var manifestOptions = trackEvent.manifest.options,
+          sanitizationList = [],
+          propertyName,
+          option;
+      for ( propertyName in manifestOptions) {
+        if ( manifestOptions.hasOwnProperty(propertyName) ) {
+          option = manifestOptions[propertyName];
+          if ( option.elem === "textarea" || option.elem === "input" ) {
+            // sanitize the input for this element
+            sanitizationList.push(propertyName);
+          }
+        }
+      }
+
+      // Step 2: with the properties known, find their
+      // content, and ensure it's clean prior to UI building.
+      sanitizationList.forEach(function( optionName ) {
+        var content = trackEvent.popcornOptions[optionName];
+        if ( typeof content !== "string" ) {
+          return;
+        }
+        trackEvent.popcornOptions[optionName] = Sanitizer.reconstituteHTML(content);
+      });
+    },
+
+    this.addTrackEvent = function( trackEvent ) {
+      var oldSelected = false;
+
+      if ( !( trackEvent instanceof TrackEvent ) ) {
+        trackEvent = new TrackEvent( trackEvent );
+      } else if ( trackEvent.selected ) {
+        // cache the track event's selected state
+        oldSelected = true;
+        // a selected track event cannot be selected again, so we deselect it
+        trackEvent.selected = false;
+      }
+
+
+      if ( trackEvent.manifest.deprecated ) {
+        return;
+      }
+
+      if ( trackEvent.track ) {
+        throw "TrackEvent still bound to track. Please use `track.removeTrackEvent` first.";
+      }
+
+      // Sanitize the track even data prior to building the UI.
+      this.sanitizeTrackEventData(trackEvent);
+
+      trackEvent.bind( _this, _popcornWrapper );
+
+      // If the track itself has a target, give it to the trackevent as well.
+      if( _target ){
+        trackEvent.target = _target;
+      }
+      // Remember the trackevent
+      _trackEvents.push( trackEvent );
+
+      // Listen for a handful of events that affect functionality in and outside of this track.
+      _this.chain( trackEvent, [
+        "trackeventupdated",
+        "trackeventselected",
+        "trackeventdeselected"
+      ]);
+
+      // Add it to the view.
+      _view.addTrackEvent( trackEvent );
+
+      trackEvent.selected = oldSelected;
+
+      trackEvent.subscribe( "update", trackEventUpdateNotificationHandler );
+
+      _this.dispatch( "trackeventadded", trackEvent );
+
+      // Update the trackevent with defaults (if necessary)
+      trackEvent.applyDefaults();
+
+      return trackEvent;
+    }; //addTrackEvent
+
+    /*
+     * Method removeTrackEvent
+     *
+     * @param {Object} trackEvent: The trackEvent to be removed from this track
+     * @param {Boolean} preventRemove: This prevents the removal of the trackevent from the Popcorn Instance.
+     */
+    this.removeTrackEvent = function( trackEvent, preventRemove ) {
+      var idx = _trackEvents.indexOf( trackEvent );
+      if ( idx > -1 ) {
+        _trackEvents.splice( idx, 1 );
+        _this.unchain( trackEvent, [
+          "trackeventupdated",
+          "trackeventselected",
+          "trackeventdeselected"
+        ]);
+        trackEvent.unsubscribe( "update", trackEventUpdateNotificationHandler );
+        _view.removeTrackEvent( trackEvent );
+        trackEvent.unbind( preventRemove );
+
+        if ( !preventRemove ) {
+          _this.dispatch( "trackeventeditorclose", trackEvent );
+        }
+
+        _this.dispatch( "trackeventremoved", trackEvent );
+        return trackEvent;
+      }
+    };
+
+    this.findOverlappingTrackEvent = function( start, end, ignoreTrackEvent ) {
+      var trackEvent, popcornOptions;
+
+      // If a TrackEvent was passed in, we can derive the rest from less arguments.
+      if ( start instanceof TrackEvent ) {
+        // If only two args were passed in, treat the last one as ignoreTrackEvent.
+        if ( arguments.length === 2 ) {
+          ignoreTrackEvent = end;
+        }
+
+        // Sort out the args again.
+        trackEvent = start;
+        start = trackEvent.popcornOptions.start;
+        end = trackEvent.popcornOptions.end;
+      }
+
+      // loop over all the trackevents for this track and see if we overlap
+      for ( var i = 0, l = _trackEvents.length; i < l; i++ ) {
+        trackEvent = _trackEvents[ i ];
+        popcornOptions = trackEvent.popcornOptions;
+        // if a trackevent overlaps and it's not a ghost...
+        if (  trackEvent !== ignoreTrackEvent &&
+              !trackEvent.view.isGhost &&
+              !( start >= popcornOptions.end || end <= popcornOptions.start ) ) {
+          return trackEvent;
+        }
+      }
+      return null;
+    };
+
+    this.deselectEvents = function( except ){
+      var trackEvent;
+      for ( var i = 0, l = _trackEvents.length; i < l; ++i ) {
+        trackEvent = _trackEvents[ i ];
+        if( trackEvent !== except && trackEvent.selected ){
+          trackEvent.selected = false;
+        } //if
+      } //for
+    }; //deselectEvents
+
+  }; //Track
+
+  Track.setGuid = function( val ) {
+    __guid = val;
+  };
+
+  return Track;
+
+}); //define
