@@ -20939,7 +20939,7 @@ body {
 .butter-first-run-dialog {
   position: fixed;
   right: 360px;
-  top: 195px;
+  top: 105px;
   -moz-animation: bounce ease 1s;
   -webkit-animation: bounce ease 1s;
   -o-animation: bounce ease 1s;
