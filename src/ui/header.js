@@ -1,7 +1,7 @@
 /*globals TogetherJS*/
 define([ "languages", "localized", "dialog/dialog", "util/lang", "l10n!/layouts/header.html", "ui/widget/textbox", "ui/widget/tooltip",
-         "ui/widget/ProjectDetails", "util/togetherjs-syncer", "analytics", "selectize", "jquery" ],
-  function( Languages, Localized, Dialog, Lang, HEADER_TEMPLATE, TextBoxWrapper, ToolTip, ProjectDetails, TogetherJSSyncer, analytics, selectize, $ ) {
+         "util/togetherjs-syncer", "analytics", "selectize", "jquery" ],
+  function( Languages, Localized, Dialog, Lang, HEADER_TEMPLATE, TextBoxWrapper, ToolTip, TogetherJSSyncer, analytics, selectize, $ ) {
 
   return function( butter, options ){
 
@@ -22,7 +22,6 @@ define([ "languages", "localized", "dialog/dialog", "util/lang", "l10n!/layouts/
         _previewContainer = _rootElement.querySelector( ".butter-preview-container" ),
         _previewBtn = _previewContainer.querySelector( ".butter-preview-btn" ),
         _loginToSaveTooltip, _loginToPreviewTooltip, _saveToPreviewTooltip,
-        _projectDetails = new ProjectDetails( butter ),
         _togetherJS,
         _togetherjsBtn = _rootElement.querySelector( ".together-toggle" ),
         _togetherJSSyncer;
@@ -103,7 +102,7 @@ define([ "languages", "localized", "dialog/dialog", "util/lang", "l10n!/layouts/
 
     function submitSave() {
       toggleSaving( false );
-      _saveButton.textContent = Localized.get( "Saving" );
+      _saveButton.textContent = "Saving";
 
       // Check box decides save or publish, for now, save then publish in afterSave...
       butter.project.save(function( e ) {
@@ -120,11 +119,10 @@ define([ "languages", "localized", "dialog/dialog", "util/lang", "l10n!/layouts/
     }
 
     function saveProject() {
-      if ( butter.project.isSaved || !butter.cornfield.authenticated() ) {
+      if ( butter.project.isSaved ) {
         return;
       } else if ( !butter.project.id ) {
         toggleSaving( false );
-        _projectDetails.open();
       } else {
         submitSave();
       }
@@ -136,15 +134,17 @@ define([ "languages", "localized", "dialog/dialog", "util/lang", "l10n!/layouts/
 
     function toggleSaveButton( on ) {
       if ( butter.project.isSaved ) {
-        _saveButton.textContent = Localized.get( "Saved" );
+        _saveButton.textContent = "Saved";
       } else {
-        _saveButton.textContent = Localized.get( "Save" );
+        _saveButton.textContent = "Save";
       }
       if ( on ) {
         _saveButton.classList.remove( "butter-disabled" );
       } else {
         _saveButton.classList.add( "butter-disabled" );
       }
+
+      butter.project.isSaved = !butter.project.isSaved;
     }
 
     function toggleSaving( on ) {
@@ -229,7 +229,7 @@ define([ "languages", "localized", "dialog/dialog", "util/lang", "l10n!/layouts/
     this.views = {
       dirty: function() {
         togglePreviewButton( false );
-        toggleSaveButton( butter.cornfield.authenticated() );
+        toggleSaveButton( true );
       },
       clean: function() {
         togglePreviewButton( true );

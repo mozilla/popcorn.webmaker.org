@@ -433,7 +433,7 @@ define( [ "localized", "core/eventmanager", "core/media", "util/sanitizer" ],
       var data = _this.data;
       data.name = _name;
       data.template = _template;
-      data.author = butter.cornfield.username();
+      data.author = 'TODO';
       data.description = _description;
       data.tags = _this.tags;
       data.thumbnail = _thumbnail;
@@ -462,7 +462,7 @@ define( [ "localized", "core/eventmanager", "core/media", "util/sanitizer" ],
         return;
       }
 
-      butter.cornfield.remove( _id, callback );
+      // butter.cornfield.remove( _id, callback );
     };
 
     // Save a project.  Saving only happens if project data needs
@@ -485,7 +485,7 @@ define( [ "localized", "core/eventmanager", "core/media", "util/sanitizer" ],
           id: _id,
           name: _name,
           template: _template,
-          author: butter.cornfield.username(),
+          author: 'TODO',
           description: _description,
           thumbnail: _thumbnail,
           background: _background,
@@ -499,6 +499,7 @@ define( [ "localized", "core/eventmanager", "core/media", "util/sanitizer" ],
         backupData();
 
         // Save to db
+        /*
         butter.cornfield.save( _id, projectData, function( e ) {
           if ( e.status === "okay" ) {
             // Since we've now fully saved, blow away autosave backup
@@ -541,6 +542,7 @@ define( [ "localized", "core/eventmanager", "core/media", "util/sanitizer" ],
             callback( e );
           }
         });
+        */
       }
 
       var popcorn = butter.currentMedia.popcorn.popcorn,
@@ -567,6 +569,7 @@ define( [ "localized", "core/eventmanager", "core/media", "util/sanitizer" ],
         return;
       }
 
+      /*
       // Now Publish and get URLs for embed
       butter.cornfield.publish( _id, function( e ) {
         if ( e.status === "okay" ) {
@@ -576,6 +579,7 @@ define( [ "localized", "core/eventmanager", "core/media", "util/sanitizer" ],
 
         callback( e );
       });
+      */
     };
   }
 

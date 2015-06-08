@@ -5,8 +5,8 @@
 define([ "localized", "editor/editor", "editor/base-editor",
           "l10n!/layouts/project-editor.html",
           "util/social-media", "ui/widget/textbox",
-          "ui/widget/tooltip", "ui/widget/ProjectDetails", "analytics" ],
-  function( Localized, Editor, BaseEditor, LAYOUT_SRC, SocialMedia, TextboxWrapper, ToolTip, ProjectDetails, analytics ) {
+          "ui/widget/tooltip", "analytics" ],
+  function( Localized, Editor, BaseEditor, LAYOUT_SRC, SocialMedia, TextboxWrapper, ToolTip, analytics ) {
 
   Editor.register( "project-editor", LAYOUT_SRC, function( rootElement, butter ) {
 
@@ -41,7 +41,6 @@ define([ "localized", "editor/editor", "editor/base-editor",
         _numProjectTabs = _projectTabs.length,
         _project,
         _projectTab,
-        _projectDetails,
         _editorHelper = butter.editor.editorHelper,
         _idx;
 
@@ -137,10 +136,6 @@ define([ "localized", "editor/editor", "editor/base-editor",
     butter.listen( "droppable-succeeded", function uploadSuceeded( e ) {
       if ( !e.data.trackEvent ) {
         _project.thumbnail = _dropArea.querySelector( "img" ).src = e.data.url;
-        _projectDetails.addThumbnail( _project.thumbnail, _dropArea );
-        _projectDetails.selectThumb( _project.thumbnail );
-      } else {
-        _projectDetails.addThumbnail( e.data.url );
       }
     });
 
@@ -199,14 +194,6 @@ define([ "localized", "editor/editor", "editor/base-editor",
     butter.listen( "logout", onLogout );
 
     _project = butter.project;
-
-    _projectDetails = new ProjectDetails( butter );
-    _projectDetails.title( _settingsContainer );
-    _projectDetails.tags( _settingsContainer );
-    _projectDetails.thumbnail( _settingsContainer, _dropArea );
-    _projectDetails.description( _settingsContainer );
-    _projectDetails.searchableCheckbox( _settingsContainer );
-    _projectDetails.updateTitle();
 
     _previewBtn.onclick = function() {
       if ( _project.isSaved && butter.cornfield.authenticated() ) {

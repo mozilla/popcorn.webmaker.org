@@ -6,7 +6,7 @@ define( [ "util/xhr", "localized" ], function( xhr, Localized ) {
 
   var Cornfield = function( butter ) {
 
-    var authenticated = false,
+    var authenticated = true,
         avatar = "",
         username = "",
         webmakerAuth,
@@ -80,18 +80,10 @@ define( [ "util/xhr", "localized" ], function( xhr, Localized ) {
       // received from the server.
       self.save = savePlaceholder;
 
-      var url = "/" + Localized.getCurrentLang() + "/api/project/";
+      // This is where we manage saving the popcorn data
+      console.log(id, data);
 
-      if ( id ) {
-        url += id;
-      }
-
-      xhr.post( url, data, function( response ) {
-        // Reset save function to its original incarnation.
-        self.save = saveFunction;
-
-        callback( response );
-      });
+      callback({});
     }
 
     function removePlaceholder( id, callback ) {
