@@ -2,14 +2,12 @@
  * If a copy of the MIT license was not distributed with this file, you can
  * obtain one at https://raw.github.com/mozilla/butter/master/LICENSE */
 
-define( [ "core/eventmanager", "./header",
-          "./unload-dialog", "crashreporter",
+define( [ "core/eventmanager", "./unload-dialog", "crashreporter",
           "first-run", "./tray", "editor/ui-kit",
           "core/trackevent", "dialog/dialog",
           "util/dragndrop", "make-api",
           "./resizeHandler", "json!/api/butterconfig" ],
-  function( EventManager, Header,
-            UnloadDialog, CrashReporter,
+  function( EventManager, UnloadDialog, CrashReporter,
             FirstRun, Tray, UIKitDummy,
             TrackEvent, Dialog,
             DragNDrop, Make,
@@ -51,7 +49,6 @@ define( [ "core/eventmanager", "./header",
     this.contentStateLocked = false;
 
     this.tray = new Tray( butter );
-    this.header = new Header( butter, _uiConfig );
 
     // Filled in by the editor module
     this.editor = null;
@@ -61,8 +58,6 @@ define( [ "core/eventmanager", "./header",
         _unloadDialog = new UnloadDialog( butter );
         _this.unloadDialog = _unloadDialog;
       }
-      document.body.classList.add( "butter-header-spacing" );
-      document.body.classList.add( "butter-tray-spacing" );
     }
 
     _stageWrapper.addEventListener( "mousedown", function() {
@@ -175,7 +170,6 @@ define( [ "core/eventmanager", "./header",
           // load things that need the css file in loadOptions
           // to be loaded before we do anything with it.
           _this.tray.attachToDOM();
-          _this.header.attachToDOM();
           _this.loadIcons( _uiConfig.value( "plugin" ).plugins );
 
           // Spin-up the crash reporter

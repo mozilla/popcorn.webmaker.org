@@ -18,5 +18,6 @@
 /user_published/
 /static/bower/
 locale/
+/templates/basic/*.css
 !locale/en_US/*
 !locale/localeinfo.json

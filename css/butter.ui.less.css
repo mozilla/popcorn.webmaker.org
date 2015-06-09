@@ -21119,7 +21119,7 @@ html[dir="rtl"] .icon-share-alt:before {
 }
 .butter-editor-close-btn {
   position: fixed;
-  top: 62px;
+  top: 0px;
   right: 0;
   z-index: 10011;
 }
@@ -21138,7 +21138,7 @@ html[dir="rtl"] .butter-editor-close-btn.toggled .icon:before {
 .butter-editor-area {
   position: fixed;
   z-index: 10001;
-  top: 62px;
+  top: 0px;
   bottom: 0;
   right: 0;
   width: 350px;
@@ -23720,7 +23720,7 @@ label[for="language-search"] {
 * HEADER
 */
 .butter-header-spacing {
-  padding-top: 62px;
+  padding-top: 0px;
 }
 .butter-editor-spacing .butter-header {
   right: 0;
@@ -23731,7 +23731,7 @@ label[for="language-search"] {
   left: 0;
   top: 0;
   right: 350px;
-  height: 62px;
+  height: 0px;
   -webkit-transition: all 0.2s ease-in-out;
   -moz-transition: all 0.2s ease-in-out;
   -o-transition: all 0.2s ease-in-out;
@@ -23804,8 +23804,8 @@ label[for="language-search"] {
   margin-left: 250px;
   list-style: none;
   width: 60%;
-  height: 62px;
-  line-height: 62px;
+  height: 0px;
+  line-height: 0px;
 }
 .butter-nav > li {
   float: left;
@@ -24059,7 +24059,7 @@ label[for="language-search"] {
 */
 div#togetherjs-dock.togetherjs-dock-right {
   position: fixed;
-  top: 112px;
+  top: 50px;
   right: 355px;
   z-index: 10099;
   -webkit-transition: right 0.35s;
