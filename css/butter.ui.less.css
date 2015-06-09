@@ -21164,14 +21164,14 @@ html[dir="rtl"] .butter-editor-close-btn.toggled .icon:before {
 }
 .butter-editor-area .butter-editor .butter-editor-tabs {
   padding: 0 20px;
-  margin: 0;
+  margin: 1px;
   list-style: none;
   height: 30px;
 }
 .butter-editor-area .butter-editor .butter-editor-tabs > li {
   float: left;
   margin-right: 3px;
-  margin-top: -1px;
+  margin-top: 0;
 }
 .butter-editor-area .butter-editor .butter-editor-tabs > li a:hover {
   color: #555;
@@ -25738,7 +25738,7 @@ html[dir="rtl"] .placeholder {
   padding: 20px 0 10px 0;
 }
 .butter-editor-area .project-editor .butter-editor-body {
-  top: 140px;
+  top: 20px;
 }
 .butter-editor-area .project-editor .butter-project-url {
   height: 35px;
