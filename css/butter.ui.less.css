@@ -12,7 +12,7 @@
 }
 .webmaker-nav-container {
   overflow: hidden;
-  background: #eaeff2;
+  background: #333333;
   border-bottom: 1px solid #fff;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -18238,7 +18238,7 @@ label[for="language-search"] {
 */
 .butter-header-primary {
   position: relative;
-  background: #FFF;
+  background: #052938;
   color: #6f6f6f;
   height: 62px;
   text-shadow: 0 1px 0 #FFF;
@@ -18340,7 +18340,7 @@ label[for="language-search"] {
   text-align: left;
   z-index: 10;
   display: inline-block;
-  background: #FFFFFF;
+  background: #333333;
   margin-top: 10px;
   overflow: visible;
   width: auto;
@@ -23746,7 +23746,7 @@ label[for="language-search"] {
 */
 .butter-header-primary {
   position: relative;
-  background: #FFF;
+  background: #333;
   color: #6f6f6f;
   height: 62px;
   text-shadow: 0 1px 0 #FFF;
@@ -23848,7 +23848,7 @@ label[for="language-search"] {
   text-align: left;
   z-index: 10;
   display: inline-block;
-  background: #FFFFFF;
+  background: #333333;
   margin-top: 10px;
   overflow: visible;
   width: auto;
