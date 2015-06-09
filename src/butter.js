@@ -26,7 +26,8 @@ window.Butter = {
   }
 
   var require = requirejs.config({
-    baseUrl: "/src"
+    baseUrl: "/src",
+    urlArgs: "bust=" + (new Date()).getTime()
   });
 
   define( "butter-main",
