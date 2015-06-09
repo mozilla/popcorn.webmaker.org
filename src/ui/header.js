@@ -121,8 +121,6 @@ define([ "languages", "localized", "dialog/dialog", "util/lang", "l10n!/layouts/
     function saveProject() {
       if ( butter.project.isSaved ) {
         return;
-      } else if ( !butter.project.id ) {
-        toggleSaving( false );
       } else {
         submitSave();
       }
