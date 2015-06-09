@@ -495,8 +495,12 @@ define( [ "localized", "core/eventmanager", "core/media", "util/sanitizer" ],
           makeid: _makeid
         };
 
+        console.log('project.save', projectData);
         // Save to local storage first in case network is down.
         backupData();
+
+        _isSaved = true;
+        callback({ status: "okay" });
 
         // Save to db
         /*

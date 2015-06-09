@@ -16,6 +16,7 @@ define([ "localized", "editor/editor", "editor/base-editor",
         _colorContainer = _rootElement.querySelector( ".color-container" ),
         _viewSourceBtn = _rootElement.querySelector( ".butter-view-source-btn" ),
         _settingsTabBtn = _rootElement.querySelector( ".settings-tab-btn" ),
+        _saveButton = _rootElement.querySelector( ".butter-save-btn" ),
         _settingsContainer = _rootElement.querySelector( ".settings-container" ),
         _projectTabs = _rootElement.querySelectorAll( ".project-tab" ),
         _this = this,
@@ -74,6 +75,73 @@ define([ "localized", "editor/editor", "editor/base-editor",
       }
     }
 
+    function afterSave() {
+      toggleSaving( true );
+      toggleSaveButton( false );
+    }
+
+    function submitSave() {
+      toggleSaving( false );
+      _saveButton.textContent = "Saving";
+
+      // Check box decides save or publish, for now, save then publish in afterSave...
+      butter.project.save(function( e ) {
+        if ( e.status === "okay" ) {
+          afterSave();
+          return;
+        } else {
+          toggleSaveButton( true );
+          butter.project.useBackup();
+          showErrorDialog( "There was a problem saving your project" );
+        }
+      });
+    }
+
+    function saveProject() {
+      if ( butter.project.isSaved ) {
+        return;
+      } else {
+        submitSave();
+      }
+    }
+
+    function toggleSaveButton( on ) {
+      if ( butter.project.isSaved ) {
+        _saveButton.textContent = "Saved";
+      } else {
+        _saveButton.textContent = "Save";
+      }
+      if ( on ) {
+        _saveButton.classList.remove( "butter-disabled" );
+      } else {
+        _saveButton.classList.add( "butter-disabled" );
+      }
+
+      butter.project.isSaved = !butter.project.isSaved;
+    }
+
+    function toggleSaving( on ) {
+      if ( on ) {
+        _saveButton.classList.remove( "butter-button-waiting" );
+        _saveButton.addEventListener( "click", saveProject );
+      } else {
+        _saveButton.classList.add( "butter-button-waiting" );
+        _saveButton.removeEventListener( "click", saveProject, false );
+      }
+    }
+
+    function showErrorDialog( message ) {
+      var dialog = Dialog.spawn( "error-message", {
+        data: message,
+        events: {
+          cancel: function() {
+            dialog.close();
+          }
+        }
+      });
+      dialog.open();
+    }
+
     function onProjectSaved() {
       _viewSourceBtn.href = "view-source:" + _project.iframeUrl;
       _viewSourceBtn.classList.remove( "butter-disabled" );
@@ -100,6 +168,7 @@ define([ "localized", "editor/editor", "editor/base-editor",
     butter.listen( "autologinsucceeded", onLogin );
     butter.listen( "authenticated", onLogin );
     butter.listen( "projectchanged", onProjectChanged );
+    _saveButton.addEventListener( "click", saveProject );
     butter.listen( "logout", onLogout );
 
     _project = butter.project;
