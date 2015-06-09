@@ -22,17 +22,9 @@ define( [ "localized", "util/lang", "util/uri", "util/xhr", "util/keys", "util/m
 
       _clipTabs = {
         project: _parentElement.querySelector( ".media-tab" ),
-        YouTube: _parentElement.querySelector( ".youtube-tab" ),
-        SoundCloud: _parentElement.querySelector( ".soundcloud-tab" ),
-        Flickr: _parentElement.querySelector( ".flickr-tab" ),
-        Giphy: _parentElement.querySelector( ".giphy-tab" )
       },
       _itemContainers = {
         project: _galleryList,
-        YouTube: _galleryPanel.querySelector( "#YouTube-items" ),
-        SoundCloud: _galleryPanel.querySelector( "#SoundCloud-items" ),
-        Flickr: _galleryPanel.querySelector( "#Flickr-items" ),
-        Giphy: _galleryPanel.querySelector( "#Giphy-items" )
       },
       _currentContainer = _itemContainers.project,
       _currentTab = _clipTabs.project,
@@ -463,13 +455,11 @@ define( [ "localized", "util/lang", "util/uri", "util/xhr", "util/keys", "util/m
     search = search === "project" ? "all" : search;
 
     if ( search === "all" ) {
+      container = _currentContainer;
       // If we aren't the "My Media" tab, don't default it to the YouTube container
       if ( _currentContainer !== _itemContainers.project ) {
-        container = _currentContainer;
         tab = _clipTabs[ _currentContainer.dataset.container ];
       } else {
-        container = _itemContainers.YouTube;
-        tab = _clipTabs.YouTube;
       }
     } else {
       container = _itemContainers[ search ];
@@ -558,10 +548,6 @@ define( [ "localized", "util/lang", "util/uri", "util/xhr", "util/keys", "util/m
           resetInput();
         } else {
           // We had no results found so disable all containers and focus the "My Media" tab.
-          removeToggleListener( _clipTabs.YouTube );
-          removeToggleListener( _clipTabs.SoundCloud );
-          removeToggleListener( _clipTabs.Flickr );
-          removeToggleListener( _clipTabs.Giphy );
           toggleContainers( _clipTabs.project );
           onDenied( Localized.get( "Your search contained no results!" ) );
         }
