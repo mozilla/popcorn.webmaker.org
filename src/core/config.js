@@ -70,8 +70,9 @@
         variable = __variables[ variableName ];
         configValue = config[ variableName ];
         substitution = configValue ? configValue : variable.defaultValue;
+        re = RegExp(variable.name, 'g');
         newValue = newValue.replace ?
-          newValue.replace( variable.name, substitution, "g" ) :
+          newValue.replace( re, substitution ) :
           newValue;
       }
     }
