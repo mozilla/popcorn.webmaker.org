@@ -5,15 +5,12 @@
   </head>
   <body>
     <div id="editor" style="width: 100%; height: 100%;"></div>
+    <script src="src/cornpop.js"></script>
     <script>
-        var editor = document.getElementById('editor'),
-            iframe = document.createElement('iframe');
-
-        iframe.setAttribute('src', 'editor.html');
-        iframe.setAttribute('frameborder', '0');
-        iframe.style.width = '100%';
-        iframe.style.height = '100%';
-        editor.appendChild(iframe);
+        CornPop.setSaveHandler(function (message) {
+          console.log('message123: ', message);
+        });
+        CornPop.init('editor');
     </script>
   </body>
 </html>
