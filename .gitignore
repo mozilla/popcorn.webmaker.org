@@ -12,12 +12,10 @@
 *.wav
 *.webm
 *~
-/dist/
 /local.json
 /node_modules/
 /user_published/
-/static/bower/
-locale/
+/cornpop/static/bower/
 /templates/basic/*.css
 !locale/en_US/*
 !locale/localeinfo.json
