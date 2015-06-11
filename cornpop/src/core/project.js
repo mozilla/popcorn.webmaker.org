@@ -500,6 +500,7 @@ define( [ "localized", "core/eventmanager", "core/media", "util/sanitizer" ],
 
         _isSaved = true;
 
+        // posts message to outside of the iframe
         parent.postMessage(projectData, window.location.origin);
 
         callback({ status: "okay" });

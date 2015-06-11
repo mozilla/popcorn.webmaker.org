@@ -17,7 +17,6 @@ define( [ "core/eventmanager", "./unload-dialog", "crashreporter",
   var html = document.querySelector( "html" );
   var TRANSITION_DURATION = 500,
       BUTTER_CSS_FILE = "{css}/butter.ui.less.css";
-  console.log('buttercss', BUTTER_CSS_FILE);
 
   var __unwantedKeyPressElements = [
         "TEXTAREA",
