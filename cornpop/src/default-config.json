@@ -1,0 +1,61 @@
+{
+  "name": "default-config",
+  "baseDir": "./",
+  "crashReporter": true,
+  "cssRenderClientSide": false,
+  "snapshotHTMLOnReady": false,
+  "scrapePage": true,
+  "backupInterval": 30000,
+  "title": "Popcorn Maker",
+  "ui": {
+    "enabled": true,
+    "onLeaveDialog": true,
+    "trackEventHighlight": "click"
+  },
+  "makeVideoURLsUnique": true,
+  "mediaDefaults": {
+    "frameAnimation": true
+  },
+  "trackEvent": {
+    "defaultDuration": 5
+  },
+  "plugin": {
+    "plugins": [
+      {
+        "type": "text",
+        "icon": "./src/plugins/text/text-icon.png"
+      },
+      {
+        "type": "image",
+        "icon": "./src/plugins/image/image-icon.png"
+      },
+      {
+        "type": "loopPlugin",
+        "displayName": "loop",
+        "icon": "./src/plugins/loopPlugin/loop-icon.png"
+      },
+      {
+        "type": "skip",
+        "icon": "./src/plugins/skip/skip-icon.png"
+      },
+      {
+        "type": "pausePlugin",
+        "displayName": "Pause",
+        "icon": "./src/plugins/pausePlugin/pause-icon.png"
+      },
+      {
+        "type": "sequencer",
+        "hidden": true,
+        "icon": "./resources/icons/media.png"
+      }
+    ]
+  },
+  "dirs": {
+    "css": "./css/",
+    "resources": "./resources/"
+  },
+  "icons": {
+    "default": "popcorn-icon.png",
+    "image": "image-icon.png"
+  }
+}
