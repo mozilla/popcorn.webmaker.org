@@ -50,7 +50,7 @@ define([ "localized", "editor/editor", "editor/base-editor",
     }
 
     function onProjectTabClick( e ) {
-      if ( !_project.isSaved || !butter.cornfield.authenticated() ) {
+      if ( !_project.isSaved ) {
         return;
       }
       activateProjectTab( e.target );
@@ -174,7 +174,7 @@ define([ "localized", "editor/editor", "editor/base-editor",
     _project = butter.project;
 
     _viewSourceBtn.onclick = function() {
-      return _project.isSaved && butter.cornfield.authenticated();
+      return _project.isSaved;
     };
 
     Editor.BaseEditor.extend( this, butter, rootElement, {
@@ -184,12 +184,6 @@ define([ "localized", "editor/editor", "editor/base-editor",
           _viewSourceBtn.classList.add( "butter-disabled" );
         }
         _viewSourceBtn.href = "view-source:" + _project.iframeUrl;
-
-        if ( butter.cornfield.authenticated() ) {
-          onLogin();
-        } else {
-          onLogout();
-        }
 
         shareProject();
 

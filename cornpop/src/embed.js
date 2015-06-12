@@ -464,7 +464,7 @@ function init() {
           fullscreenClick();
         },
         init: function( setPopcorn ) {
-          // cornfield writes out the Popcorn initialization code as popcornDataFn()
+          // writes out the Popcorn initialization code as popcornDataFn()
           window.popcornDataFn();
           popcorn = Popcorn.byId( "Butter-Generated" );
           setPopcorn( popcorn );

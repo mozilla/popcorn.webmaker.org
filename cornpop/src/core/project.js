@@ -462,7 +462,6 @@ define( [ "localized", "core/eventmanager", "core/media", "util/sanitizer", "eve
         return;
       }
 
-      // butter.cornfield.remove( _id, callback );
     };
 
     // Save a project.  Saving only happens if project data needs
@@ -529,17 +528,6 @@ define( [ "localized", "core/eventmanager", "core/media", "util/sanitizer", "eve
         return;
       }
 
-      /*
-      // Now Publish and get URLs for embed
-      butter.cornfield.publish( _id, function( e ) {
-        if ( e.status === "okay" ) {
-          // Save + Publish is OK
-          _isPublished = true;
-        }
-
-        callback( e );
-      });
-      */
     };
   }
 
