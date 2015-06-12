@@ -2,8 +2,8 @@
  * If a copy of the MIT license was not distributed with this file, you can
  * obtain one at https://raw.github.com/mozilla/butter/master/LICENSE */
 
-define( [ "localized", "core/eventmanager", "core/media", "util/sanitizer" ],
-        function( Localized, EventManager, Media, Sanitizer ) {
+define( [ "localized", "core/eventmanager", "core/media", "util/sanitizer", "events/event" ],
+        function( Localized, EventManager, Media, Sanitizer, Event ) {
 
   var __butterStorage = window.localStorage,
       DATA_USAGE_WARNING = "Warning: Popcorn Maker LocalStorage quota exceeded. Stopping automatic backup. Will be restarted when project changes again.";
@@ -500,8 +500,7 @@ define( [ "localized", "core/eventmanager", "core/media", "util/sanitizer" ],
 
         _isSaved = true;
 
-        // posts message to outside of the iframe
-        parent.postMessage(projectData, window.location.origin);
+        Event.save(projectData);
 
         callback({ status: "okay" });
       }
