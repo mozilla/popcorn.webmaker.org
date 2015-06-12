@@ -16,6 +16,7 @@
 /node_modules/
 /user_published/
 /cornpop/static/bower/
-/templates/basic/*.css
+/cornpop/templates/basic/*.css
+/cornpop/css/butter.ui.less.css
 !locale/en_US/*
 !locale/localeinfo.json
