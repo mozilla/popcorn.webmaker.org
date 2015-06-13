@@ -23,8 +23,8 @@
     "RIM Tablet OS"
   ];
 
-  define([ "ua-parser", "util/warn", "localized" ],
-         function( UAParser, Warn, Localized ){
+  define([ "ua-parser", "util/warn" ],
+         function( UAParser, Warn ){
 
     // ua-parser uses the current browsers UA by default
     var ua = new UAParser().getResult(),
@@ -44,7 +44,7 @@
     }
 
     if ( !acceptedUA ) {
-      Warn.showWarning( Localized.get( "UA_WARNING_TEXT" ) );
+      Warn.showWarning( "UA_WARNING_TEXT" );
     }
   });
 }());

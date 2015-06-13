@@ -3,8 +3,8 @@
  * obtain one at https://raw.github.com/mozilla/butter/master/LICENSE */
 (function() {
 
-  define([ "../../external/PluginDetect/PluginDetect_Flash", "util/warn", "localized" ],
-         function( PluginDetect, Warn, Localized ){
+  define([ "../../external/PluginDetect/PluginDetect_Flash", "util/warn" ],
+         function( PluginDetect, Warn ){
 
     // Hard coded value for now. We need to chat with whoever is in charge of Mozilla's
     // PFS2 instance to see if we can use the service / what limitations there might be
@@ -14,7 +14,7 @@
       warn: function() {
         var flashVersion = PluginDetect.getVersion( "Flash" );
         if ( !flashVersion || +flashVersion.split( "," )[ 0 ] < MIN_FLASH_VERSION ) {
-          Warn.showWarning( Localized.get( "flashWarning" ) );
+          Warn.showWarning( "flashWarning" );
         }
       }
     };

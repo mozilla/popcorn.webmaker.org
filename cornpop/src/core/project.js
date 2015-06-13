@@ -2,8 +2,8 @@
  * If a copy of the MIT license was not distributed with this file, you can
  * obtain one at https://raw.github.com/mozilla/butter/master/LICENSE */
 
-define( [ "localized", "core/eventmanager", "core/media", "util/sanitizer", "events/event" ],
-        function( Localized, EventManager, Media, Sanitizer, Event ) {
+define( [ "core/eventmanager", "core/media", "util/sanitizer", "events/event" ],
+        function( EventManager, Media, Sanitizer, Event ) {
 
   var __butterStorage = window.localStorage,
       DATA_USAGE_WARNING = "Warning: Popcorn Maker LocalStorage quota exceeded. Stopping automatic backup. Will be restarted when project changes again.";
@@ -67,7 +67,7 @@ define( [ "localized", "core/eventmanager", "core/media", "util/sanitizer", "eve
         set: function( value ) {
           if ( value !== _name ) {
             _name = value;
-            document.title = _name + " - " + Localized.get( "Popcorn Maker" );
+            document.title = _name + " - " + "Popcorn Maker";
             invalidate();
           }
         },
@@ -291,7 +291,7 @@ define( [ "localized", "core/eventmanager", "core/media", "util/sanitizer", "eve
         // templating rules being applied to project metadata, with
         // their plain form counterparts ("&", etc).
         _name = Sanitizer.reconstituteHTML( json.name );
-        document.title = _name + " - " + Localized.get( "Popcorn Maker" );
+        document.title = _name + " - " + "Popcorn Maker";
       }
 
       if ( json.template ) {

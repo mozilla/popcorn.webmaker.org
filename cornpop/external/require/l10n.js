@@ -5,7 +5,7 @@
 
   Depends on text.js plugin.
   **/
-define( [ 'text', 'localized' ], function ( text, localized ) {
+define( [ 'text' ], function ( text ) {
   return {
     load: function(name, req, onLoad, config) {
       // Do not bother with the work if a build and text will
@@ -14,7 +14,7 @@ define( [ 'text', 'localized' ], function ( text, localized ) {
         onLoad();
         return;
       }
-      name = name.replace( /{{lang}}/, localized.getCurrentLang() );
+      name = name.replace( /{{lang}}/, 'en-US');
       text.load(name, req, onLoad, config);
     }
   };

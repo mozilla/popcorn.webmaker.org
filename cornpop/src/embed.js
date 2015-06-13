@@ -370,7 +370,6 @@ function init() {
     paths: {
       "json": "../external/require/json",
       "text": "../external/require/text",
-      "localized": "/static/bower/webmaker-i18n/localized",
       "analytics": "/static/bower/webmaker-analytics/analytics",
       "jquery": "/static/bower/jquery/dist/jquery.min",
       "ua-parser": "/static/bower/ua-parser-js/src/ua-parser.min"
@@ -669,10 +668,8 @@ function init() {
     }
   );
 
-  require(["localized", "util/shims"], function( Localized ) {
-    Localized.ready(function() {
-      require([ "embed-main" ]);
-    });
+  require(["util/shims"], function() {
+    require([ "embed-main" ]);
   });
 }
 

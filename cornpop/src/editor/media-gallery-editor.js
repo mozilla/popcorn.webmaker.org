@@ -2,9 +2,9 @@
  * If a copy of the MIT license was not distributed with this file, you can
  * obtain one at https://raw.github.com/mozilla/butter/master/LICENSE */
 
-define( [ "localized", "util/lang", "util/uri", "util/xhr", "util/keys", "util/mediatypes", "editor/editor",
+define( [ "util/lang", "util/uri", "util/xhr", "util/keys", "util/mediatypes", "editor/editor",
  "util/time", "util/dragndrop", "analytics", "l10n!../../{{lang}}/layouts/media-editor.html", "text!../../api/butterconfig" ],
-  function( Localized, LangUtils, URI, XHR, KeysUtils, MediaUtils, Editor, Time, DragNDrop, analytics, EDITOR_LAYOUT, CONFIG ) {
+  function( LangUtils, URI, XHR, KeysUtils, MediaUtils, Editor, Time, DragNDrop, analytics, EDITOR_LAYOUT, CONFIG ) {
 
   CONFIG = JSON.parse(CONFIG);
 
@@ -313,7 +313,7 @@ define( [ "localized", "util/lang", "util/uri", "util/xhr", "util/keys", "util/m
         });
       }
     } else {
-      onDenied( Localized.get( "Your gallery already has that media added to it" ) );
+      onDenied( "Your gallery already has that media added to it" );
     }
   }
 
@@ -333,13 +333,13 @@ define( [ "localized", "util/lang", "util/uri", "util/xhr", "util/keys", "util/m
     data.source = url;
     data.type = "sequencer";
     _mediaLoadTimeout = setTimeout( function() {
-      _errorMessage.innerHTML = Localized.get( "Your media source is taking too long to load" );
+      _errorMessage.innerHTML = "Your media source is taking too long to load";
       _errorMessage.classList.remove( "hidden" );
       _addMediaPanel.classList.add( "invalid-field" );
     }, MEDIA_LOAD_TIMEOUT );
     MediaUtils.getMetaData( data.source, onSuccess, function( errorMessage ) {
       // Unplayable clip, so display search term pages.
-      if (errorMessage === Localized.get( "This media source is unplayable" ) ) {
+      if (errorMessage === "This media source is unplayable" ) {
         clearTimeout( _cancelSpinner );
         clearTimeout( _mediaLoadTimeout );
         deactivateSpinner();
@@ -475,7 +475,7 @@ define( [ "localized", "util/lang", "util/uri", "util/xhr", "util/keys", "util/m
     _searchInput.value = value;
 
     if ( !value ) {
-      return onDenied( Localized.get( "Your search contained no results!" ) );
+      return onDenied( "Your search contained no results!" );
     }
 
     query = value;
@@ -551,12 +551,12 @@ define( [ "localized", "util/lang", "util/uri", "util/xhr", "util/keys", "util/m
         } else {
           // We had no results found so disable all containers and focus the "My Media" tab.
           toggleContainers( _clipTabs.project );
-          onDenied( Localized.get( "Your search contained no results!" ) );
+          onDenied( "Your search contained no results!" );
         }
 
         _this.scrollbar.update();
       } else {
-        onDenied( Localized.get( "An error occurred when making your request!" ), true );
+        onDenied( "An error occurred when making your request!", true );
       }
     });
   }

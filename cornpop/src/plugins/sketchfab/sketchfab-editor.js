@@ -66,7 +66,7 @@
         target = popcornOptions._target;
 
     this.draggable( trackEvent, container, target, {
-      tooltip: Butter.localized.get( "Double click to interact" )
+      tooltip: "Double click to interact"
     });
 
     this.resizable( trackEvent, container, target, {

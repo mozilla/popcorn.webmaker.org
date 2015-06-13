@@ -2,8 +2,8 @@
  * If a copy of the MIT license was not distributed with this file, you can
  * obtain one at https://raw.github.com/mozilla/butter/master/LICENSE */
 
-define( [ "localized", "util/uri", "util/xhr", "json!../../api/butterconfig", "jquery" ],
-  function( Localized, URI, xhr, config, $ ) {
+define( [ "util/uri", "util/xhr", "json!../../api/butterconfig", "jquery" ],
+  function( URI, xhr, config, $ ) {
   config = JSON.parse(config);
 
   var REGEX_MAP = {
@@ -17,15 +17,15 @@ define( [ "localized", "util/uri", "util/xhr", "json!../../api/butterconfig", "j
         Flickr: /^https?:\/\/(www\.)?flickr\.com/,
         Clyp: /^https?:\/\/(www\.)?(staging\.)?(?:clyp\.it|audiour\.com)/
       },
-      VIMEO_EMBED_UNPLAYABLE = Localized.get( "This Vimeo video is unplayable" ),
-      YOUTUBE_EMBED_DISABLED = Localized.get ( "Embedding of this YouTube video is disabled" ),
-      YOUTUBE_EMBED_UNPLAYABLE = Localized.get( "This YouTube video is unplayable" ),
-      YOUTUBE_EMBED_PRIVATE = Localized.get( "Private Video" ),
-      ARCHIVE_EMBED_DISABLED = Localized.get( "Embedding of this Archive item is not available yet" ),
-      EMBED_UNPLAYABLE = Localized.get( "This media source is unplayable" ),
-      CLYP_EMBED_UNPLAYABLE = Localized.get( "This Clyp source is unplayable" ),
-      SOUNDCLOUD_EMBED_UNPLAYABLE = Localized.get( "This SoundCloud source is unplayable" ),
-      SOUNDCLOUD_EMBED_DISABLED = Localized.get( "Embedding of this SoundCloud audio source is disabled" );
+      VIMEO_EMBED_UNPLAYABLE = "This Vimeo video is unplayable",
+      YOUTUBE_EMBED_DISABLED = "Embedding of this YouTube video is disabled",
+      YOUTUBE_EMBED_UNPLAYABLE = "This YouTube video is unplayable",
+      YOUTUBE_EMBED_PRIVATE = "Private Video",
+      ARCHIVE_EMBED_DISABLED = "Embedding of this Archive item is not available yet",
+      EMBED_UNPLAYABLE = "This media source is unplayable",
+      CLYP_EMBED_UNPLAYABLE = "This Clyp source is unplayable"
+      SOUNDCLOUD_EMBED_UNPLAYABLE = "This SoundCloud source is unplayable",
+      SOUNDCLOUD_EMBED_DISABLED = "Embedding of this SoundCloud audio source is disabled";
 
   var nodeHubbleEndpoint = config.node_hubble_endpoint.replace( /\/$/, "" ),
       clypEndpoint = config.clyp_endpoint.replace( /\/$/, "" );

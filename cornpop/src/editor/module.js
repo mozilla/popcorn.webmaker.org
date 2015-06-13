@@ -7,12 +7,12 @@
  *
  * Butter Module for Editors
  */
-define( [ "localized", "core/eventmanager", "core/trackevent", "./editor",
+define( [ "core/eventmanager", "core/trackevent", "./editor",
           "ui/toggler", "ui/resizeHandler", "util/lang", "l10n!../../{{lang}}/layouts/editor-area.html",
           "./default", "core/logger", "./header", "./editorhelper",
           // Included here to register themselves.
           "./media-gallery-editor", "./project-editor", "./sequencer-editor", "./tutorial-editor" ],
-  function( Localized, EventManager, TrackEvent, Editor,
+  function( EventManager, TrackEvent, Editor,
             Toggler, ResizeHandler, LangUtils, EDITOR_AREA_LAYOUT,
             DefaultEditor, Logger, Header, EditorHelper ){
 
@@ -201,7 +201,7 @@ define( [ "localized", "core/eventmanager", "core/trackevent", "./editor",
           }
           _this.dispatch( "editortoggled", !newState );
 
-        }, Localized.get( "Show/Hide Editor" ), true );
+        }, "Show/Hide Editor" , true );
 
       var editorsToLoad = [],
           editorsLoaded = 0;

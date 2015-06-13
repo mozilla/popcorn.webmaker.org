@@ -2,8 +2,8 @@
  * If a copy of the MIT license was not distributed with this file, you can
  * obtain one at https://raw.github.com/mozilla/butter/master/LICENSE */
 
-define( [ "localized", "core/eventmanager", "util/scrollbars", "ui/widget/tooltip", "ui/widget/textbox", "jquery" ],
-  function( Localized, EventManager, Scrollbars, ToolTip, TextboxWrapper, $ ) {
+define( [ "core/eventmanager", "util/scrollbars", "ui/widget/tooltip", "ui/widget/textbox", "jquery" ],
+  function( EventManager, Scrollbars, ToolTip, TextboxWrapper, $ ) {
 
   /**
    * Class: BaseEditor
@@ -143,7 +143,7 @@ define( [ "localized", "core/eventmanager", "util/scrollbars", "ui/widget/toolti
             i;
 
         if ( value.indexOf( "#" ) === -1 ) {
-          message = Localized.get( "Invalid Color update" ) + " ";
+          message = "Invalid Color update" + " ";
           for ( i in _colorHexCodes ) {
             if ( _colorHexCodes.hasOwnProperty( i ) ) {
               if ( i === value.toLowerCase() ) {
@@ -157,7 +157,7 @@ define( [ "localized", "core/eventmanager", "util/scrollbars", "ui/widget/toolti
 
           return message.substring( 0, message.lastIndexOf( "," ) ) + ".";
         } else if ( !value.match( /^#(?:[0-9a-fA-F]{3}){1,2}$/ ) ) {
-          return Localized.get( "Invalid Hex Color format" );
+          return "Invalid Hex Color format";
         }
 
         return "";

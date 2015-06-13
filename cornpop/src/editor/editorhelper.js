@@ -1,4 +1,4 @@
-define( [ "util/xhr", "util/keys", "localized", "jquery" ], function( XHR, KEYS, Localized, $ ) {
+define( [ "util/xhr", "util/keys", "jquery" ], function( XHR, KEYS, $ ) {
 
   var __plugins = {};
 
@@ -161,7 +161,7 @@ define( [ "util/xhr", "util/keys", "localized", "jquery" ], function( XHR, KEYS,
 
       if ( !options.disableTooltip ) {
         tooltipElement = document.createElement( "div" );
-        tooltipElement.innerHTML = options.tooltip || Localized.get( "Double click to edit" );
+        tooltipElement.innerHTML = options.tooltip || "Double click to edit";
         tooltipElement.classList.add( "butter-tooltip" );
         tooltipElement.classList.add( "butter-tooltip-middle" );
         dragContainer.appendChild( tooltipElement );

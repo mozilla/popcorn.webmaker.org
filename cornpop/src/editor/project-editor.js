@@ -2,11 +2,11 @@
  * If a copy of the MIT license was not distributed with this file, you can
  * obtain one at https://raw.github.com/mozilla/butter/master/LICENSE */
 
-define([ "localized", "editor/editor", "editor/base-editor",
+define([ "editor/editor", "editor/base-editor",
           "l10n!../../{{lang}}/layouts/project-editor.html",
           "util/social-media", "ui/widget/textbox",
           "ui/widget/tooltip", "analytics" ],
-  function( Localized, Editor, BaseEditor, LAYOUT_SRC, SocialMedia, TextboxWrapper, ToolTip, analytics ) {
+  function( Editor, BaseEditor, LAYOUT_SRC, SocialMedia, TextboxWrapper, ToolTip, analytics ) {
 
   Editor.register( "project-editor", LAYOUT_SRC, function( rootElement, butter ) {
 
@@ -62,7 +62,7 @@ define([ "localized", "editor/editor", "editor/base-editor",
     }
 
     butter.listen( "droppable-unsupported", function unSupported() {
-      _this.setErrorState( Localized.get( "Sorry, but your browser doesn't support this feature." ) );
+      _this.setErrorState( "Sorry, but your browser doesn't support this feature." );
     });
 
     butter.listen( "droppable-upload-failed", function failedUpload( e ) {

@@ -3,8 +3,8 @@
  * obtain one at https://raw.github.com/mozilla/butter/master/LICENSE */
 /*jshint evil:true*/
 
-define( [ "localized", "core/logger", "core/eventmanager", "util/uri", "util/accepted-flash" ],
-        function( Localized, Logger, EventManager, URI, FLASH ) {
+define( [ "core/logger", "core/eventmanager", "util/uri", "util/accepted-flash" ],
+        function( Logger, EventManager, URI, FLASH ) {
 
       // how long to wait for the status of something in checkTimeoutLoop
   var STATUS_INTERVAL = 100,

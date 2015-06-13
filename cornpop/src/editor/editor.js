@@ -5,9 +5,9 @@
 /**
  * Module: Editor
  */
-define( [ "localized", "util/lang", "util/xhr",
+define( [ "util/lang", "util/xhr",
           "./base-editor", "./trackevent-editor" ],
-  function( Localized, LangUtils, xhr,
+  function( LangUtils, xhr,
             BaseEditor, TrackEventEditor ) {
 
   var __editors = {},
@@ -18,7 +18,7 @@ define( [ "localized", "util/lang", "util/xhr",
     this.load = function( baseDir, readyCallback ) {
       baseDir = ( baseDir || "" ).replace( /\/?$/, "/" );
       if ( src.indexOf( "{{baseDir}}" ) > -1 ) {
-        src = src.replace( "{{baseDir}}", baseDir + Localized.getCurrentLang() + "/" );
+        src = src.replace( "{{baseDir}}", baseDir + "en-US/" );
       }
       xhr.get( src, readyCallback );
     };

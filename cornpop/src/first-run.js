@@ -7,7 +7,7 @@
  *
  * Determines whether or not a user should be shown a first-run dialog
  */
-define( [ "localized", "dialog/dialog" ], function( Localized, Dialog ) {
+define( [ "dialog/dialog" ], function( Dialog ) {
 
   var __butterStorage = window.localStorage;
 

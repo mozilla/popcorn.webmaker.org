@@ -40,8 +40,6 @@ requirejs.config({
     "farbtastic": "../static/bower/farbtastic/farbtastic",
     "jquery": "../static/bower/jquery/dist/jquery.min",
     "jquery-ui": "../static/bower/jquery-ui/ui/jquery-ui",
-    "localized": "../static/bower/webmaker-i18n/localized",
-    "languages": "../static/bower/webmaker-language-picker/js/languages",
     "list": "../static/bower/listjs/dist/list.min",
     "fuzzySearch": "../static/bower/list.fuzzysearch.js/dist/list.fuzzysearch.min",
     "selectize": "../static/bower/selectize/dist/js/standalone/selectize.min",

@@ -2,9 +2,9 @@
  * If a copy of the MIT license was not distributed with this file, you can
  * obtain one at https://raw.github.com/mozilla/popcorn.webmaker.org/master/LICENSE */
 
-define( [ "util/keys", "ui/widget/tooltip", "localized", "ui/widget/textbox",
+define( [ "util/keys", "ui/widget/tooltip", "ui/widget/textbox",
           "text!../../api/butterconfig", "jquery" ],
-  function( KEYS, ToolTip, Localized, TextboxWrapper, config, $ ) {
+  function( KEYS, ToolTip, TextboxWrapper, config, $ ) {
   config = JSON.parse(config);
 
   function ProjectDetails( butter ) {
@@ -293,7 +293,7 @@ define( [ "util/keys", "ui/widget/tooltip", "localized", "ui/widget/textbox",
         ToolTip.create({
           name: "description-tooltip",
           element: input.parentNode,
-          message: Localized.get( "Your description will show up when shared on social media!" ),
+          message: "Your description will show up when shared on social media!",
           top: "105%",
           left: "50%",
           error: true,
@@ -350,7 +350,7 @@ define( [ "util/keys", "ui/widget/tooltip", "localized", "ui/widget/textbox",
 
         _noProjectNameToolTip = ToolTip.create({
           name: "save-tooltip",
-          message: Localized.get( "Please give your project a name before saving" ),
+          message: "Please give your project a name before saving",
           hidden: false,
           element: yesButtonContainer,
           top: "40px"

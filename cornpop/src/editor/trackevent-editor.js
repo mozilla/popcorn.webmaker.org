@@ -2,9 +2,9 @@
  * If a copy of the MIT license was not distributed with this file, you can
  * obtain one at https://raw.github.com/mozilla/butter/master/LICENSE */
 
-define([ "localized", "util/lang", "util/keys", "util/time", "./base-editor", "ui/widget/tooltip",
+define([ "util/lang", "util/keys", "util/time", "./base-editor", "ui/widget/tooltip",
           "l10n!../../{{lang}}/layouts/trackevent-editor-defaults.html" ],
-  function( Localized, LangUtils, KeysUtils, TimeUtils, BaseEditor, ToolTip,
+  function( LangUtils, KeysUtils, TimeUtils, BaseEditor, ToolTip,
             DEFAULT_LAYOUT_SNIPPETS ) {
 
   var NULL_FUNCTION = function(){};
@@ -144,7 +144,7 @@ define([ "localized", "util/lang", "util/keys", "util/time", "./base-editor", "u
 
       if ( trackEvent.type ) {
         editorTitle.innerHTML = "";
-        editorTitle.appendChild( document.createTextNode( Localized.get( pluginName ) ) );
+        editorTitle.appendChild( document.createTextNode( pluginName ) );
       }
 
       oldTitleEl.parentNode.replaceChild( breadcrumbsLayout, oldTitleEl );
@@ -542,7 +542,7 @@ define([ "localized", "util/lang", "util/keys", "util/time", "./base-editor", "u
       var editorElement = __defaultLayouts.querySelector( ".checkbox" ).cloneNode( true ),
           span = editorElement.querySelector( ".butter-form-checkbox span" ),
           checkbox = editorElement.querySelector( ".butter-form-checkbox input" );
-      span.innerHTML = Localized.get( "Set as default" );
+      span.innerHTML = "Set as default";
       if ( trackEvent.isDefault ) {
         checkbox.checked = true;
       }
@@ -572,9 +572,9 @@ define([ "localized", "util/lang", "util/keys", "util/time", "./base-editor", "u
      */
     extendObject.createManifestItem = function( name, manifestEntry, data, trackEvent, itemCallback ) {
       var elem = manifestEntry.elem || "default",
-          itemLabel = Localized.get( manifestEntry.label ) || Localized.get( name ),
+          itemLabel = manifestEntry.label || name,
           isStartOrEnd = [ "start", "end" ].indexOf( name.toLowerCase() ) > -1,
-          units = Localized.get( manifestEntry.units ) || ( isStartOrEnd ? "seconds" : "" ),
+          units = manifestEntry.units || ( isStartOrEnd ? "seconds" : "" ),
           propertyArchetypeSelector,
           propertyArchetype,
           editorElement,
@@ -630,7 +630,7 @@ define([ "localized", "util/lang", "util/keys", "util/time", "./base-editor", "u
           for ( i = 0, l = manifestEntry.options.length; i < l; ++i ){
             option = document.createElement( "option" );
             // This is a safe fallback for select element where we don't want to translate options.
-            manifestEntryOption = Localized.get( manifestEntry.options[ i ] ) || manifestEntry.options[ i ];
+            manifestEntryOption = manifestEntry.options[ i ];
 
             // if the manifest has values for options, use the options as labels
             // and the values as values for the <option> elements
@@ -691,7 +691,7 @@ define([ "localized", "util/lang", "util/keys", "util/time", "./base-editor", "u
 
             attachCheckboxGroupChangeHandler( checkbox, trackEvent, name );
 
-            label.innerHTML = Localized.get( manifestEntry.labels[ item ] );
+            label.innerHTML = manifestEntry.labels[ item ];
             checkbox.value = manifestEntry.default[ item ];
             checkbox.setAttribute( "data-manifest-key", item );
 

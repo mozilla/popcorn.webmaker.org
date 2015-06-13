@@ -2,9 +2,9 @@
  * If a copy of the MIT license was not distributed with this file, you can
  * obtain one at https://raw.github.com/mozilla/butter/master/LICENSE */
 
-define( [ "localized", "core/logger", "core/eventmanager", "util/dragndrop",
+define( [ "core/logger", "core/eventmanager", "util/dragndrop",
           "util/lang", "text!../../layouts/trackevent.html" ],
-  function( Localized, Logger, EventManager, DragNDrop,
+  function( Logger, EventManager, DragNDrop,
             LangUtils, TRACKEVENT_LAYOUT ) {
 
   var TRACKEVENT_MIN_WIDTH = 50;
@@ -170,7 +170,7 @@ define( [ "localized", "core/logger", "core/eventmanager", "util/dragndrop",
         },
         set: function( val ) {
           _elementText = val;
-          _typeElement.innerHTML = Localized.get( _elementText ) || _elementText;
+          _typeElement.innerHTML = _elementText || _elementText;
         }
       },
       selected: {

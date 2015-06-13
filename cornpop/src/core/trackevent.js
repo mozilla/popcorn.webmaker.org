@@ -8,9 +8,9 @@
  * Supports a single event in the Media > Track > TrackEvent model.
  */
 define( [ "./logger", "./eventmanager", "./observer",
-          "util/lang", "util/time", "./views/trackevent-view", "localized" ],
+          "util/lang", "util/time", "./views/trackevent-view" ],
   function( Logger, EventManager, Observer,
-            LangUtil, TimeUtil, TrackEventView, Localized ) {
+            LangUtil, TimeUtil, TrackEventView ) {
 
   var __guid = 0;
 
@@ -149,7 +149,7 @@ define( [ "./logger", "./eventmanager", "./observer",
               newOptions[ prop ] = value;
               continue;
             }
-            newOptions[ prop ] = Localized.get( value ) ? Localized.get( value ) : value;
+            newOptions[ prop ] = value;
           }
         }
       }

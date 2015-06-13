@@ -2,7 +2,7 @@
  * If a copy of the MIT license was not distributed with this file, you can
  * obtain one at https://raw.github.com/mozilla/butter/master/LICENSE */
 
-define([ "localized", "ui/widget/tooltip" ], function( Localized, Tooltip ) {
+define([ "ui/widget/tooltip" ], function( Tooltip ) {
 
   return function( editorAreaDOMRoot, editorModule ) {
     var _mediaButton = editorAreaDOMRoot.querySelector( ".butter-editor-header-media" ),
@@ -23,7 +23,7 @@ define([ "localized", "ui/widget/tooltip" ], function( Localized, Tooltip ) {
     // Create a message for the disabled plugin list.
     _waitForMediaTooltip = Tooltip.create({
       name: "wait-for-media",
-      message: Localized.get( "Waiting for media to load" ),
+      message: "Waiting for media to load",
       element: _popcornButton,
       top: "60px"
     });

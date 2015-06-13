@@ -2,8 +2,8 @@
  * If a copy of the MIT license was not distributed with this file, you can
  * obtain one at https://raw.github.com/mozilla/butter/master/LICENSE */
 
-define( [ "localized", "util/dragndrop", "util/lang", "editor/editor", "analytics", "l10n!../../{{lang}}/layouts/plugin-list-editor.html" ],
-  function( Localized, DragNDrop, LangUtils, Editor, analytics, EDITOR_LAYOUT ) {
+define( [ "util/dragndrop", "util/lang", "editor/editor", "analytics", "l10n!../../{{lang}}/layouts/plugin-list-editor.html" ],
+  function( DragNDrop, LangUtils, Editor, analytics, EDITOR_LAYOUT ) {
 
   return function( butter ) {
 
@@ -75,7 +75,7 @@ define( [ "localized", "util/dragndrop", "util/lang", "editor/editor", "analytic
         icon.style.backgroundImage = "url('" + iconImg.src + "')";
       }
 
-      text.innerHTML = Localized.get( pluginName );
+      text.innerHTML = pluginName;
 
       element.setAttribute( "data-popcorn-plugin-type", e.data.type );
       element.setAttribute( "data-butter-draggable-type", "plugin" );

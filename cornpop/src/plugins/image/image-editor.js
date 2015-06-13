@@ -54,7 +54,7 @@
     }
 
     function unSupported() {
-      _this.setErrorState( Butter.localized.get( "Sorry, but your browser doesn't support this feature." ) );
+      _this.setErrorState( "Sorry, but your browser doesn't support this feature." );
     }
 
     function failedUpload( e ) {
@@ -225,7 +225,7 @@
         _this.createTooltip( _linkInput, {
           name: "image-link-tooltip" + Date.now(),
           element: _linkInput.parentElement,
-          message: Butter.localized.get( "Links will be clickable when shared." ),
+          message: "Links will be clickable when shared.",
           top: "105%",
           left: "50%",
           hidden: true,
@@ -240,7 +240,7 @@
               linkSrc: prop.linkSrc
             });
           } else if ( prop.linkSrc !== "" ) {
-            _this.setErrorState( Butter.localized.get( "Not a valid URL" ) );
+            _this.setErrorState( "Not a valid URL" );
           } else {
             updateTrackEvent( te, {
               linkSrc: ""
@@ -425,7 +425,7 @@
 
         // The current popcorn instance
         _popcornInstance.on( "invalid-flickr-image", function() {
-          _this.setErrorState( Butter.localized.get( "Invalid Flicker Gallery URL" ) );
+          _this.setErrorState( "Invalid Flicker Gallery URL" );
         });
 
         _popcornInstance.on( "popcorn-image-count-update", function( count ) {
@@ -435,7 +435,7 @@
         });
 
         _popcornInstance.on( "popcorn-image-failed-retrieve", function() {
-          _this.setErrorState( Butter.localized.get( "No Images" ) );
+          _this.setErrorState( "No Images" );
         });
 
         _trackEvent.listen( "trackeventupdated", onTrackEventUpdated );

@@ -39,7 +39,7 @@ window.Butter = {
             "util/xhr", "util/lang", "util/tutorial",
             "text!default-config.json",
             "ui/widget/tooltip", "crashreporter", "core/project",
-            "localized", "util/uri", "util/mediatypes",
+            "util/uri", "util/mediatypes",
             "util/accepted-ua", "jquery", "jquery-ui", "farbtastic"
           ],
           function(
@@ -50,14 +50,13 @@ window.Butter = {
             xhr, Lang, Tutorial,
             DEFAULT_CONFIG_JSON,
             ToolTip, CrashReporter, Project,
-            Localized, URI, MediaUtil
+            URI, MediaUtil
           ){
 
     var __guid = 0;
 
     var Butter = {};
 
-    Butter.localized = Localized;
 
     Butter.ToolTip = ToolTip;
 
@@ -891,7 +890,7 @@ window.Butter = {
 
         // the new way to load a project is with /editor/:id/edit
         if ( !savedDataUrl ) {
-          var pathname = parsedUri.path.replace( "/" + Localized.getCurrentLang() + "/", "/" );
+          var pathname = parsedUri.path.replace( "/" + "en-US" + "/", "/" );
           item = pathname.split( "/" );
           // item[ 2 ] is the id
           if ( item[ 2 ] ) {
@@ -1104,11 +1103,7 @@ window.Butter = {
   // butter depends on popcorn, so don't change this unless you know what you're doing
   require([ "util/shims" ], function() {
     require([ "popcorn" ], function() {
-      require([ "localized" ], function( Localized ) {
-        Localized.ready( function(){
-          require([ "butter-main" ]);
-        });
-      });
+      require([ "butter-main" ]);
     });
   });
 
