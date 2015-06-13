@@ -2,11 +2,12 @@ var CornPop = (function () {
   var cornpop = {},
       _savehandler = function () { return; };
 
-  cornpop.init = function (el) {
+  cornpop.init = function (el, url) {
     var editor = document.getElementById(el),
-        iframe = document.createElement('iframe');
+        iframe = document.createElement('iframe'),
+        url = url || 'cornpop/editor.html';
 
-    iframe.setAttribute('src', 'cornpop/editor.html');
+    iframe.setAttribute('src', url);
     iframe.setAttribute('frameborder', '0');
     iframe.style.width = '100%';
     iframe.style.height = '100%';
