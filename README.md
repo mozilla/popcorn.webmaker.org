@@ -24,7 +24,7 @@ Creating a new Popcorn Editor instance is as easy as:
 2.
 --
 ```html
-  <script src="Popcorn Editor.js"></script>
+  <script src="PopcornEditor.js"></script>
 ```
 
 
