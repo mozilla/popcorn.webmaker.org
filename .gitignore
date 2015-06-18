@@ -15,8 +15,8 @@
 /local.json
 /node_modules/
 /user_published/
-/cornpop/static/bower/
-/cornpop/templates/basic/*.css
-/cornpop/css/butter.ui.less.css
+/PopcornEditor/static/bower/
+/PopcornEditor/templates/basic/*.css
+/PopcornEditor/css/butter.ui.less.css
 !locale/en_US/*
 !locale/localeinfo.json

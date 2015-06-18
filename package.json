@@ -1,5 +1,5 @@
 {
-  "name": "cornpop",
+  "name": "Popcorn Editor",
   "version": "1.0.0",
   "description": "A fork of Web Maker's Popcorn Editor for local use.",
   "main": "gulpfile.js",
@@ -8,14 +8,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/Nolski/cornpop.git"
+    "url": "https://github.com/Nolski/popcorn-editor.git"
   },
   "author": "Nolski",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Nolski/cornpop/issues"
+    "url": "https://github.com/Nolski/popcorn-editor/issues"
   },
-  "homepage": "https://github.com/Nolski/cornpop",
+  "homepage": "https://github.com/Nolski/popcorn-editor",
   "dependencies": {
     "gulp-less": "^3.0.3",
     "gulp-rename": "^1.2.2",

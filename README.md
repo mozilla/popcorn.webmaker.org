@@ -1,17 +1,17 @@
 A Video Editor Powered by the Web
 =================================
 
-Cornpop is a forked version of the https://popcorn.webmaker.org website with the
+Popcorn Editor is a forked version of the https://popcorn.webmaker.org website with the
 server backend ripped out made to be embedded in pretty much any website needed.
 
 Why
 ===
 
 Video editors are normally large and normally very expensive client side
-applications with steep learning curves. Cornpop seeks to take the video editor
+applications with steep learning curves. Popcorn Editor seeks to take the video editor
 to the web by creating popcorn.js powered web videos.
 
-Creating a new cornpop instance is as easy as:
+Creating a new Popcorn Editor instance is as easy as:
 
 1.
 --
@@ -24,18 +24,18 @@ Creating a new cornpop instance is as easy as:
 2.
 --
 ```html
-  <script src="cornpop.js"></script>
+  <script src="Popcorn Editor.js"></script>
 ```
 
 
 3.
 --
 ```javascript
-    // Initialize the editor with the div id and path to cornpop.
-    CornPop.init('editor', '/path/to/cornpop/editor.html');
+    // Initialize the editor with the div id and path to Popcorn Editor.
+    PopcornEditor.init('editor', '/path/to/PopcornEditor/editor.html');
 
-    // Create event handlers for when specific events happen in cornpop.
-    CornPop.setSaveHandler(function (message) {
+    // Create event handlers for when specific events happen in Popcorn Editor.
+    PopcornEditor.setSaveHandler(function (message) {
       console.log('New save data: ', message);
     });
 ```
@@ -43,15 +43,15 @@ Creating a new cornpop instance is as easy as:
 API
 ===
 
-Cornpop.init([editor id], [URI to cornpop root])
+PopcornEditor.init([editor id], [URI to Popcorn Editor root])
 ------------------------------------------------
 
-**editor id [string]:** Cornpop requires the name of an element to bind to.
+**editor id [string]:** Popcorn Editor requires the name of an element to bind to.
 
-**URI to cornpop root [string]** (optional): Since cornpop loads in many HTML and CSS
-files outside of `cornpop.js`, you may want to specify the URI to the cornpop root.
+**URI to Popcorn Editor root [string]** (optional): Since Popcorn Editor loads in many HTML and CSS
+files outside of `PopcornEditor.js`, you may want to specify the URI to the Popcorn Editor root.
 
-Cornpop.setSaveHandler(onSave)
+PopcornEditor.setSaveHandler(onSave)
 ------------------------------
 
 **onSave [function]**: This function is called when the save button is clicked

@@ -1,11 +1,11 @@
-var CornPop = (function () {
-  var cornpop = {},
+var PopcornEditor = (function () {
+  var PopcornEditor = {},
       _savehandler = function () { return; };
 
-  cornpop.init = function (el, url) {
+  PopcornEditor.init = function (el, url) {
     var editor = document.getElementById(el),
         iframe = document.createElement('iframe'),
-        url = url || 'cornpop/editor.html';
+        url = url || 'PopcornEditor/editor.html';
 
     iframe.setAttribute('src', url);
     iframe.setAttribute('frameborder', '0');
@@ -20,7 +20,7 @@ var CornPop = (function () {
    *
    * @param handler : function - takes ( event )
    */
-  cornpop.setSaveHandler = function (handler) {
+  PopcornEditor.setSaveHandler = function (handler) {
     this._saveHandler = function (e) {
       if (e.origin !== window.location.origin)
         return;
@@ -30,5 +30,5 @@ var CornPop = (function () {
     window.addEventListener('message', this._saveHandler);
   };
 
-  return cornpop;
+  return PopcornEditor;
 })();
