@@ -1,0 +1,24 @@
+{
+  "name": "popcorn-editor",
+  "version": "0.0.0",
+  "homepage": "https://github.com/Nolski/popcorn-editor",
+  "authors": [
+    "Mike Nolan <me@nolski.rocks>"
+  ],
+  "description": "Fork of Webmaker's Popcorn Editor for local use",
+  "main": "PopcornEditor/src/PopcornEditor.js",
+  "keywords": [
+    "popcorn",
+    "video",
+    "editor",
+    "webmaker"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
