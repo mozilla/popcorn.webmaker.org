@@ -2,7 +2,7 @@ A Video Editor Powered by the Web
 =================================
 
 Popcorn Editor is a forked version of the https://popcorn.webmaker.org website with the
-server backend ripped out made to be embedded in pretty much any website needed.
+server backend ripped out that's made to be embedded in pretty much any website needed.
 
 Why
 ===
