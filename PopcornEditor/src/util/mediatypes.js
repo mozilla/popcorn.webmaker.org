@@ -328,7 +328,7 @@ define( [ "util/uri", "util/xhr", "json!../../api/butterconfig", "jquery" ],
           thumbnail: URI.makeUnique( encodedBaseUrl ).toString()
         };
 
-        Popcorn.getJSONP( nodeHubbleEndpoint + "/mime/" + encodeURIComponent(baseUrl), function( resp ) {
+        Popcorn.getJSONP( nodeHubbleEndpoint + "/mime/" + baseUrl, function( resp ) {
           var contentType = resp.contentType;
 
           if ( resp.error || !contentType ) {

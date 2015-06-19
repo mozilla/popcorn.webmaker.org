@@ -458,11 +458,9 @@ define( [ "util/lang", "util/uri", "util/xhr", "util/keys", "util/mediatypes", "
 
     if ( search === "all" ) {
       container = _currentContainer;
+
       // If we aren't the "My Media" tab, don't default it to the YouTube container
-      if ( _currentContainer !== _itemContainers.project ) {
-        tab = _clipTabs[ _currentContainer.dataset.container ];
-      } else {
-      }
+      tab = _clipTabs[ _currentContainer.dataset.container ];
     } else {
       container = _itemContainers[ search ];
       tab = _clipTabs[ search ];
