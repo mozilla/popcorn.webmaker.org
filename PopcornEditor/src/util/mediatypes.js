@@ -15,8 +15,9 @@ define( [ "util/uri", "util/xhr", "json!../../api/butterconfig", "jquery" ],
         // where start or duration can be: X, X.X or XX:XX
         "null": /^\s*#t=(?:\d*(?:(?:\.|\:)?\d+)?),?(\d+(?:(?:\.|\:)\d+)?)\s*$/,
         Flickr: /^https?:\/\/(www\.)?flickr\.com/,
-        Clyp: /^https?:\/\/(www\.)?(staging\.)?(?:clyp\.it|audiour\.com)/
-      },
+        Clyp: /^https?:\/\/(www\.)?(staging\.)?(?:clyp\.it|audiour\.com)/,
+        AirMozilla: /^https?:\/\/(?:www\.)?(?:air\.mozilla\.org|localhost:8000)\/(.+)\//
+  },
       VIMEO_EMBED_UNPLAYABLE = "This Vimeo video is unplayable",
       YOUTUBE_EMBED_DISABLED = "Embedding of this YouTube video is disabled",
       YOUTUBE_EMBED_UNPLAYABLE = "This YouTube video is unplayable",
@@ -308,6 +309,31 @@ define( [ "util/uri", "util/xhr", "json!../../api/butterconfig", "jquery" ],
           title: baseUrl,
           duration: +REGEX_MAP[ "null" ].exec( baseUrl )[ 1 ]
         });
+      } else if ( type === "AirMozilla" ) {
+        var parsedUri = URI.parse( baseUrl ),
+            re = /\/(.+)\//,
+            slug = re.exec(parsedUri.directory)[1],
+            encodedBaseUrl = encodeURI( baseUrl );
+
+        successOptions = {
+          type: type
+        };
+
+        xhr.get('https://air.mozilla.org/popcorn/meta/?slug=' + slug,
+        function ( resp ) {
+          var mediaElem = document.createElement( "video" );
+          successOptions.title = resp.title;
+          successOptions.source = resp.video_url;
+          successOptions.thumbnail = 'https:' + resp.preview_img;
+          mediaElem.src = resp.video_url;
+
+          mediaElem.addEventListener( "loadedmetadata", function() {
+            successOptions.duration = mediaElem.duration;
+            successCallback( successOptions );
+          } );
+
+        });
+
       } else {
         var title = baseUrl.substring( baseUrl.lastIndexOf( "/" ) + 1 ),
             mediaElem,

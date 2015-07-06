@@ -10,7 +10,7 @@
     <script src="PopcornEditor/src/PopcornEditor.js"></script>
     <script>
         PopcornEditor.setSaveHandler(function (message) {
-          console.log('message123: ', message);
+          console.log(JSON.stringify(message))
         });
         PopcornEditor.init('editor');
     </script>
