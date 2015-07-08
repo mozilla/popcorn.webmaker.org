@@ -264,6 +264,7 @@ define( [ "core/eventmanager", "core/media", "util/sanitizer", "events/event" ],
     _this.import = function( json ) {
       var oldTarget, targets, targetData,
           mediaData, media, m, i, l;
+
       // If JSON, convert to Object
       if ( typeof json === "string" ) {
         try {
@@ -529,6 +530,14 @@ define( [ "core/eventmanager", "core/media", "util/sanitizer", "events/event" ],
       }
 
     };
+
+    Event.listen('load', function (data) {
+      var json = data;
+      json.targets = data.data.targets;
+      json.media = data.data.media;
+
+      _this.import(json);
+    });
   }
 
   // Check for an existing project that was autosaved but not saved.

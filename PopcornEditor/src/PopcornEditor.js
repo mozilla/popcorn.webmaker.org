@@ -1,18 +1,20 @@
 var PopcornEditor = (function () {
   var PopcornEditor = {},
-      _savehandler = function () { return; };
+      _savehandler = function () { return; },
+      iframe;
 
   PopcornEditor.init = function (el, url) {
     var editor = document.getElementById(el),
-        iframe = document.createElement('iframe'),
         url = url || 'PopcornEditor/editor.html';
 
-    iframe.setAttribute('src', url);
-    iframe.setAttribute('frameborder', '0');
-    iframe.style.width = '100%';
-    iframe.style.height = '100%';
+    this.iframe = document.createElement('iframe'),
 
-    editor.appendChild(iframe);
+    this.iframe.setAttribute('src', url);
+    this.iframe.setAttribute('frameborder', '0');
+    this.iframe.style.width = '100%';
+    this.iframe.style.height = '100%';
+
+    editor.appendChild(this.iframe);
   };
 
   /**
@@ -28,6 +30,18 @@ var PopcornEditor = (function () {
       handler(e.data);
     };
     window.addEventListener('message', this._saveHandler);
+  };
+
+  /**
+   * Loads the popcorn json blob into the editor
+   *
+   * @param data : [object] json object
+   */
+  PopcornEditor.loadInfo = function (data) {
+      this.iframe.contentWindow.postMessage({
+         data: data,
+         type: 'load'
+      }, window.location.origin);
   };
 
   return PopcornEditor;
