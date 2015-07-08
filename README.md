@@ -61,13 +61,16 @@ to.
 in many HTML and CSS files outside of `PopcornEditor.js`, you may want to
 specify the URI to the Popcorn Editor root.
 
-PopcornEditor.setSaveHandler(onSave)
-------------------------------
+PopcornEditor.listen(event, handler)
+------------------------------------
 
-**onSave [function]**: This function is called when the save button is clicked
-within the editor. It takes one parameter which is the save data. The Schema
-for the save data looks like this:
+**event [string]:** This is the name of the event. Possible strings are below.
 
+**handler [function]**: This function is called when the event is triggered
+within the editor. It takes one parameter which is the data. The Schema
+for the data depends on the event:
+
+***save:***
 ```javascript
 {
     author: '', // Author name
@@ -76,3 +79,11 @@ for the save data looks like this:
     description: '' // Metadata description
 }
 ```
+
+PopcornEditor.loadInfo(data)
+----------------------------
+
+Loads project data into the editor.
+
+**data [object]:** The project data is the same schema as what is output from
+saving.

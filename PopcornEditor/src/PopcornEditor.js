@@ -1,6 +1,7 @@
 var PopcornEditor = (function () {
   var PopcornEditor = {},
       _savehandler = function () { return; },
+      listeners = {},
       iframe;
 
   PopcornEditor.init = function (el, url) {
@@ -17,20 +18,19 @@ var PopcornEditor = (function () {
     editor.appendChild(this.iframe);
   };
 
-  /**
-   * Sets the given handler as the function called when a save event happens
-   *
-   * @param handler : function - takes ( event )
-   */
-  PopcornEditor.setSaveHandler = function (handler) {
-    this._saveHandler = function (e) {
-      if (e.origin !== window.location.origin)
-        return;
+  // List of events that PopcornEditor supports
+  PopcornEditor.events = {save: 'save'};
 
-      handler(e.data);
-    };
-    window.addEventListener('message', this._saveHandler);
-  };
+  /**
+   * Sets the given handler as the handler for the event
+   *
+   * @param eventName : [string] name of the event (must be in events)
+   * @param handler : [function] takes event
+   */
+  PopcornEditor.listen = function (eventName, handler) {
+    console.log(this);
+    listeners[eventName] = handler;
+  }
 
   /**
    * Loads the popcorn json blob into the editor
@@ -43,6 +43,17 @@ var PopcornEditor = (function () {
          type: 'load'
       }, window.location.origin);
   };
+
+  window.addEventListener('message', function (e) {
+    if (e.origin !== window.location.origin)
+      return;
+
+    for (key in listeners) {
+      if (e.data.type === key) {
+        listeners[key](e.data.data);
+      }
+    }
+  });
 
   return PopcornEditor;
 })();

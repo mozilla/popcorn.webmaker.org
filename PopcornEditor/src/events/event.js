@@ -15,8 +15,12 @@ function() {
 
   return {
     save: function (data) {
+      message = {
+        data: data,
+        type: 'save'
+      };
       // posts message to outside of the iframe
-      parent.postMessage(data, window.location.origin);
+      parent.postMessage(message, window.location.origin);
     },
     listen: function (eventName, handler) {
       listeners[eventName] = handler;

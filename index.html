@@ -10,7 +10,7 @@
     <div id="editor" style="width: 100%; height: 100%;"></div>
     <script src="PopcornEditor/src/PopcornEditor.js"></script>
     <script>
-        PopcornEditor.setSaveHandler(function (message) {
+        PopcornEditor.listen(PopcornEditor.events.save, function(message) {
           console.log(JSON.stringify(message))
         });
         PopcornEditor.init('editor');
