@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tt xmlns:tts="http://www.w3.org/2006/04/ttaf1#styling" xmlns="http://www.w3.org/2006/04/ttaf1">
+  <head>
+    <metadata xmlns:ttm="http://www.w3.org/ns/ttml#metadata">
+      <ttm:title>Timed Text TTML Example</ttm:title>
+      <ttm:copyright>The Authors (c) 2006</ttm:copyright>
+    </metadata>
+    <styling xmlns:tts="http://www.w3.org/ns/ttml#styling">
+      <!-- s1 specifies default color, font, and text alignment -->
+      <style xml:id="s1"
+        tts:color="white"
+        tts:fontFamily="proportionalSansSerif"
+        tts:fontSize="22px"
+        tts:textAlign="center"
+      />
+      <!-- alternative using yellow text but otherwise the same as style s1 -->
+      <style xml:id="s2" style="s1" tts:color="yellow"/>
+      <!-- a style based on s1 but justified to the right -->
+      <style xml:id="s1Right" style="s1" tts:textAlign="end" />
+      <!-- a style based on s2 but justified to the left -->
+      <style xml:id="s2Left" style="s2" tts:textAlign="start" />
+    </styling>
+    <layout xmlns:tts="http://www.w3.org/ns/ttml#styling">
+      <region xml:id="subtitleArea"
+        style="s1"
+        tts:extent="560px 62px"
+        tts:padding="5px 3px"
+        tts:backgroundColor="black"
+        tts:displayAlign="after"
+      />
+      <region xml:id="nonExistentTarget"
+        style="s2"
+        tts:extent="560px 62px"
+        tts:padding="5px 3px"
+        tts:backgroundColor="black"
+        tts:displayAlign="after"
+      />
+    </layout>
+  </head>
+  <body region="subtitleArea">
+    <div>
+      <p xml:id="subtitle1" begin="1.12s" end="5.45s">
+        This is a subtitle on a separate target.
+      </p>
+      <p xml:id="subtitle1" begin="6.0s" end="10.0s">
+        It displays in the div with id 'subtitleArea'
+      </p>
+      <p xml:id="subtitle3" begin="10.0s" end="16.0s">
+        Not all subtitles need to be <br/>
+        directly overlaid on the film.
+      </p>
+      <p xml:id="subtitle4" begin="16.0s" end="19.0s" style="s2">
+        These timings are all absolute.
+      </p>
+    </div>
+    <div begin="00:00:22" region="">
+      <p xml:id="subtitle5" begin="0.76s" end="3.15s">
+        There was no target specified for this subtitle.
+      </p>
+      <p xml:id="subtitle6" begin="3.15s" end="6.0s">
+        So it has been overlaid on top of the video.
+      </p>
+      <p xml:id="subtitle7" begin="6.0s" end="8.75s" style="s2">
+        Its timings are specified relative to 22 seconds
+      </p>
+    </div>
+    <div begin="00:00:37" region="nonExistentTarget">
+      <p xml:id="subtitle8" begin="0.15s" end="3.0s">
+        A target was specified for this subtitle which didn't exist on the page...
+      </p>
+      <p xml:id="subtitle9" begin="3.0s" end="10.0s">
+        so it is in the default location<br />
+        on top of the video
+      </p>
+      <p xml:id="subtitle9" begin="10.0s" end="15.5s" region="subtitleArea">
+        This subtitle overrides the 'nonExistentTarget' target with an existing target.
+      </p>
+    </div>
+  </body>
+</tt>

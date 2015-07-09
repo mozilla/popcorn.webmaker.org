@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Popcorn Google Feed Plug-in Demo</title>
+
+  <script src="../../popcorn.js"></script>
+  <script src="popcorn.timeline.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var p = Popcorn('#video')
+      .volume( 0 )
+      .play()
+      .timeline({
+        start: 1,
+        target: "timeline",
+        title: "This is a title",
+        text: "this is some interesting text that goes inside",
+        innerHTML: "Click here for <a href='http://www.google.ca'>Google</a>" ,
+        direction: "up"
+      })
+      .timeline({
+        start: 3,
+        target: "timeline",
+        title: "double as interesting",
+        text: "this is some interesting text that goes inside",
+        innerHTML: "Maybe a button? <button onClick=\"window.location.href='http://www.google.com'\">Click Me</button>",
+        direction: "up"
+      })
+     .timeline({
+        start: 7,
+        end: 700,
+        target: "timeline",
+        title: "3x as interesting",
+        text: "this is some interesting text that goes inside",
+        innerHTML: "",
+        direction: "up"
+      })
+      .timeline({
+        start: 1,
+        target: "timeline2",
+        title: "This is a title",
+        text: "this is some interesting text that goes inside",
+        innerHTML: "Click here for <a href='http://www.google.ca'>Google</a>" ,
+        direction: "down"
+      })
+      .timeline({
+        start: 3,
+        target: "timeline2",
+        title: "double as interesting",
+        text: "this is some interesting text that goes inside",
+        innerHTML: "Maybe a button? <button onClick=\"window.location.href='http://www.google.com'\">Click Me</button>",
+        direction: "down"
+      })
+     .timeline({
+        start: 7,
+        end: 700,
+        target: "timeline2",
+        title: "3x as interesting",
+        text: "this is some interesting text that goes inside",
+        innerHTML: "",
+        direction: "down"
+      })
+    }, false);
+  </script>
+</head>
+<body>
+  <h1 id="qunit-header">Popcorn Timeline Plug-in Demo</h1>
+  <p>Continuos timeline elements will be added to the div throughout the video</p>
+  <div>
+    <video id="video"
+      controls
+      width="250px"
+      poster="../../test/poster.png">
+
+      <source id="mp4"
+        src="../../test/trailer.mp4"
+        type='video/mp4; codecs="avc1, mp4a"'>
+
+      <source id="ogv"
+        src="../../test/trailer.ogv"
+        type='video/ogg; codecs="theora, vorbis"'>
+
+      <p>Your user agent does not support the HTML5 Video element.</p>
+
+    </video>
+  </div>
+  <div style="width:1000px">
+    <div id="timeline" style="float:left;width: 250px; height: 250px;"></div>
+    <div id="timeline2" style="float:left;width: 250px; height: 250px;"></div>
+  </div>
+</body>
+</html>

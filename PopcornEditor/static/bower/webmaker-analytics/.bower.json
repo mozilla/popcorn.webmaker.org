@@ -1,0 +1,27 @@
+{
+  "name": "webmaker-analytics",
+  "main": "analytics.js",
+  "devDependencies": {
+    "qunit": "1.13.0"
+  },
+  "ignore": [
+    "**/.*",
+    "bower.json",
+    "package.json",
+    "node_modules",
+    "bower_components",
+    "test",
+    "Gruntfile.js"
+  ],
+  "version": "0.1.0",
+  "homepage": "https://github.com/mozilla/webmaker-analytics",
+  "_release": "0.1.0",
+  "_resolution": {
+    "type": "version",
+    "tag": "v0.1.0",
+    "commit": "32a591269a8a65ee90f72a1f2f0b9f54f51a5d0c"
+  },
+  "_source": "git://github.com/mozilla/webmaker-analytics.git",
+  "_target": "0.1.0",
+  "_originalSource": "webmaker-analytics"
+}

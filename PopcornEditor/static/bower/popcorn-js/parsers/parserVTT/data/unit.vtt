@@ -1,0 +1,32 @@
+WEBVTT
+
+00:00:02.400 --> 00:00:07.200
+A typical multiline
+subtitle.
+
+00:09.712-->00:13.399
+No whitespace between time tokens
+
+
+
+00:00:13.400 --> 00:00:20
+A bad cue, no milliseconds. Should be ignored
+
+00:00:9.456--> 00:00:20.000
+A bad cue, seconds are single digit. Should be ignored
+
+00:1:00.456--> 00:00:20.000
+A bad cue, minutes are single digit. Should be ignored
+
+1:00:00.456--> 00:00:20.000
+A bad cue, hours are supplied as single digit. Should be ignored
+
+00:00:00.46--> 00:00:20.000
+A bad cue, ms are not 3 digits. Should be ignored
+
+00:00:15.042 --> 00:00:18.042 A:start D:vertical L:98%
+It's a trap! Ignore the timeline styling for now!
+
+
+00:00:20.000--> 00:00:21.670
+This text is <b>boldy <i>italicized</i></b>

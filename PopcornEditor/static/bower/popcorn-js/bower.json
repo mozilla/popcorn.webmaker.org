@@ -1,0 +1,28 @@
+{
+  "name": "popcorn-js",
+  "version": "1.5.10",
+  "main": "popcorn.js",
+  "keywords": [
+    "html5",
+    "media",
+    "video",
+    "audio",
+    "popcornjs",
+    "popcorn",
+    "popcorn.js"
+  ],
+  "ignore": [
+    "AUTHORS",
+    "CHANGELOG.md",
+    "LICENSE_HEADER",
+    "Makefile",
+    "build",
+    "demos",
+    "effects",
+    "example.html",
+    "test",
+    "tests.conf",
+    "tools",
+    "unsupported"
+  ]
+}

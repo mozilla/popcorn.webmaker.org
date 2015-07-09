@@ -1,0 +1,65 @@
+{
+  "title": "UAParser.js",
+  "name": "ua-parser-js",
+  "version": "0.6.2",
+  "author": "Faisal Salman <fyzlman@gmail.com> (http://faisalman.com)",
+  "description": "Lightweight JavaScript-based user-agent string parser",
+  "keywords": [
+    "user-agent",
+    "parser",
+    "browser",
+    "engine",
+    "os",
+    "device",
+    "cpu"
+  ],
+  "homepage": "http://github.com/faisalman/ua-parser-js",
+  "contributors": [
+    "Faisal Salman <fyzlman@gmail.com>",
+    "Christopher De Cairos <chris.decairos@gmail.com>",
+    "John Tantalo <john.tantalo@gmail.com>",
+    "Jon Buckley <jon@jbuckley.ca>",
+    "Lee Treveil <leetreveil@gmail.com>"
+  ],
+  "main": "src/ua-parser.js",
+  "scripts": {
+    "test": "./build/build.sh"
+  },
+  "devDependencies": {
+    "jshint": ">= 1.1.0",
+    "mocha": ">= 1.7.1",
+    "uglify-js": ">= 1.3.4"
+  },
+  "repositories": [
+    {
+      "type": "git",
+      "url": "https://github.com/faisalman/ua-parser-js.git"
+    }
+  ],
+  "repository" :
+  {
+    "type": "git",
+    "url": "https://github.com/faisalman/ua-parser-js.git"
+  },
+  "licenses": [
+    {
+      "type": "GPLv2",
+      "url": "http://www.gnu.org/licenses/gpl-2.0.html"
+    },
+    {
+      "type": "MIT",
+      "url": "http://www.opensource.org/licenses/mit-license.php"
+    }
+  ],
+  "engines": {
+    "node": "*"
+  },
+  "directories": {
+    "lib": "src",
+    "test": "test"
+  },
+  "files": [
+    ""
+  ],
+  "repository": "git://github.com/faisalman/ua-parser-js.git"
+}

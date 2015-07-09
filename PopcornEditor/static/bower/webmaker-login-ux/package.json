@@ -1,0 +1,54 @@
+{
+  "name": "webmaker-login-ux",
+  "version": "1.3.5",
+  "description": "Extendable library for implemening Webmaker Login UX",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com/mozilla/webmaker-login-ux.git"
+  },
+  "main": "src/adapters/plain.js",
+  "bugs": "https://github.com/mozilla/webmaker-login-ux/issues",
+  "scripts": {
+    "build": "grunt build",
+    "lint": "grunt validate",
+    "test": "npm run lint"
+  },
+  "author": "Mozilla Webmaker <webmaker-staff@mozillafoundation.org>",
+  "contributors": [
+    "Christopher De Cairos <cade@mozillafoundation.org>",
+    "Jon Buckley <jbuck@mozillafoundation.org>",
+    "Ricardo Vazquez <ricardo@mozillafoundation.org",
+    "k88hudson <kate@mozillafoundation.org>"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "angular-expressions": "0.2.1",
+    "brfs": "1.2.0",
+    "browser-request": "0.3.2",
+    "cookie-js": "0.0.1",
+    "nunjucks": "1.0.7",
+    "request": "2.44.0",
+    "webmaker-analytics": "0.1.7",
+    "webmaker-i18n": "0.3.24",
+    "webmaker-locale-mapping": "0.0.4"
+  },
+  "devDependencies": {
+    "grunt": "0.4.5",
+    "grunt-browserify": "3.0.1",
+    "grunt-contrib-jshint": "0.10.0",
+    "grunt-contrib-less": "0.11.4",
+    "grunt-contrib-uglify": "0.6.0",
+    "grunt-contrib-watch": "0.6.1",
+    "grunt-express-server": "0.4.19",
+    "grunt-html2js": "0.2.8",
+    "grunt-jsbeautifier": "0.2.2",
+    "express": "3.4.5",
+    "html2js": "0.0.3",
+    "jit-grunt": "0.8.0"
+  },
+  "browserify": {
+    "transform": [
+      "brfs"
+    ]
+  }
+}

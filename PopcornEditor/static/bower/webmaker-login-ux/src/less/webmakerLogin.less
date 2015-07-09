@@ -1,0 +1,479 @@
+@wlux-screen-xs-min: 480px;
+@wlux-screen-xs-max: 479px;
+@wlux-green: #3fb58e;
+@wlux-red: #EB5D52;
+@wlux-white: #FFF;
+@wlux-turquoise: #32B2D2;
+@wlux-darkGrey: #638093;
+@wlux-mediumGrey: #A5BECE;
+@wlux-lightGrey: #E1EBF1;
+@wlux-lightGreyUnsaturated: #F5F5F5;
+
+.hidden-xs-login {
+  @media (max-width: @wlux-screen-xs-max) {
+    display: none !important;
+  }
+}
+
+.uppercase-label() {
+  font-weight: normal;
+  margin-bottom: 8px;
+  /*text-transform: uppercase;*/
+  font-weight: 600;
+  @media (min-width: @wlux-screen-xs-min) {
+    margin-bottom: 5px;
+    font-size: 13.333333333px;
+
+    color: #454545;
+  }
+}
+
+/*********************************************************
+* Mobile dialog display
+*/
+.modal-backdrop {
+  @media (max-width: @wlux-screen-xs-max) {
+    background: #F6F7F7;
+    &.in {
+      opacity: 1;
+    }
+  }
+}
+
+.modal-dialog,
+.modal-content {
+  @media (max-width: @wlux-screen-xs-max) {
+    background: none;
+    box-shadow: none;
+    margin: 0;
+    border: none;
+  }
+}
+
+/*********************************************************
+* Header
+*/
+.modal-header {
+    background: white;
+    height: 50px;
+    line-height: 50px;
+    padding: 0;
+    .close {
+      display: none;
+    }
+    @media (min-width: @wlux-screen-xs-min) {
+      .close {
+        display: block;
+        margin: 10px 0 0 0;
+      }
+      height: auto;
+      padding: 10px 30px 0 30px;
+      border-bottom-style: none;
+    }
+}
+.modal-title {
+  line-height: inherit;
+  font-size: 1.1em;
+  font-weight: 400;
+  text-align: center;
+  a, button {
+    padding: 0px 20px;
+    font-size: 13px;
+    height: 100%;
+    min-width: 40px;
+  }
+  a, button, span {
+    @media (max-width: @wlux-screen-xs-max) {
+      color: @wlux-green;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      text-align: center;
+      &[disabled] {
+        color: #CCC;
+      }
+    }
+  }
+  .modal-title-center {
+    display: inline-block;
+    text-align: center;
+    float: center;
+  }
+  .modal-title-left {
+    float: left;
+    text-align: left;
+  }
+  .modal-title-right {
+    float: right;
+    text-align: right;
+    margin-top: -2px;
+  }
+  @media (min-width: @wlux-screen-xs-min) {
+    .modal-title-center {
+      width: auto;
+      float: none;
+    }
+    font-size: 20px;
+    a, button {
+      display: none;
+    }
+  }
+}
+
+.modal-content {
+  padding: 0 0 20px 0;
+  .modal-body {
+    @media (min-width: @wlux-screen-xs-min) {
+      padding: 5px 30px;
+    }
+    label[for=webmaker-login-email], label[for=uid], label[for=key], label[for=persona-username], label[for=password] , label[for=value], label[for=confirmValue]{
+      .uppercase-label();
+    }
+    label[for=pre-username] {
+      display: block;
+      .uppercase-label();
+    }
+    label[for=username] {
+      float: left;
+      padding: 7px 12px;
+      font-weight: normal;
+      background-color: #e3eaee;
+      color: #454545;
+      text-align: center;
+      width: 100%;
+      margin-bottom: 0;
+      @media (min-width: @wlux-screen-xs-min) {
+        text-align: center;
+        width: auto;
+        text-align: left;
+      }
+    }
+    .align-left {
+      float: left;
+    }
+    .help-block {
+      font-size: 13px;
+    }
+    .form-control {
+      @media (max-width: @wlux-screen-xs-max) {
+        padding: 8px 11px;
+        height: auto;
+      }
+    }
+    .form-group {
+      margin-bottom: 10px;
+
+      &.half-width {
+        margin-left: 0;
+        width: 100%;
+        float: left;
+        @media (min-width: @wlux-screen-xs-min) {
+          width: 48%;
+        }
+        &:nth-of-type(3){
+          margin-left: 0;
+          @media (min-width: @wlux-screen-xs-min) {
+            margin-left: 4%;
+          }
+        }
+      }
+    }
+    .welcome {
+      text-align: center;
+      @media (min-width: @wlux-screen-xs-min) {
+        text-align: left;
+      }
+    }
+    .subheadline {
+      margin-top: -10px;
+    }
+    .tool-desc {
+      margin: 15px 0 0 0;
+      .icon {
+        @media (min-width: @wlux-screen-xs-min) {
+          float: left;
+          margin-right: 18.75px;
+        }
+        svg {
+          width: 130px;
+          height: 123px;
+        }
+      }
+      .btn-primary {
+        float: left;
+      }
+      .explore-link {
+        display: block;
+        font-size: 13px;
+        margin: 14px 0 0 12px;
+        @media (min-width: @wlux-screen-xs-min) {
+          float: left;
+        }
+      }
+    }
+
+    .enterToken {
+      text-align: left;
+      .email-container {
+        margin-top: 10px;
+        @media (min-width: @wlux-screen-xs-min) {
+          display: -webkit-flex;
+          display: flex;
+        }
+      }
+      .mailIcon {
+        text-align: center;
+        margin: -10px 0 20px 0;
+        @media (min-width: @wlux-screen-xs-min) {
+          -webkit-flex: 1;
+          flex: 1;
+          margin: 30px 0 0 0;
+        }
+        p {
+          width: 80%;
+          margin: 0 auto;
+        }
+      }
+      .key-group {
+        @media (min-width: @wlux-screen-xs-min) {
+          border-left: 1px solid #DDDDDD;
+          -webkit-flex: 3;
+          flex: 3;
+          padding: 10px 0 0 20px;
+        }
+      }
+    }
+
+    .checkEmail,
+    .resetRequestSent,
+    .enterPassword,
+    .enterToken {
+      hr {
+        margin: 10px 0 15px 0;
+        @media (min-width: @wlux-screen-xs-min) {
+          margin: 20px 0 15px 0;
+        }
+      }
+      .mailIcon {
+        svg {
+          display: block;
+          margin: 0 auto;
+          @media (min-width: @wlux-screen-xs-min) {
+            float: left;
+          }
+        }
+        p {
+          text-align: center;
+          margin: 20px 0 10px 15px;
+          @media (min-width: @wlux-screen-xs-min) {
+            float: left;
+            text-align: left;
+            margin: 33px 0 0 15px;
+          }
+        }
+      }
+      .enter-key {
+        margin: -10px 0 0 0;
+        text-align: right;
+      }
+    }
+
+    .help-footer {
+      padding: 0;
+      background: none;
+      text-align: center;
+      color: inherit;
+      font-size: 13px;
+      color: #999;
+      margin-bottom: -6px;
+      @media (min-width: @wlux-screen-xs-min) {
+        font-size: normal;
+        text-align: right;
+      }
+      p {
+        margin: 0;
+        padding: 0;
+        &.switch-back {
+          text-align: left;
+        }
+      }
+    }
+
+    .form-control.username {
+      width: 100%;
+      @media (min-width: @wlux-screen-xs-min) {
+        width: 70%;
+      }
+    }
+
+    // Styles for the customized checkbox
+    .checkbox {
+      label {
+        div {
+          // Creates the checkbox
+          float: left;
+          width: 24px;
+          height: 24px;
+          margin-right: 6px;
+          border: 1px solid @wlux-lightGrey;
+          text-align: center;
+          background-color: @wlux-white;
+          span {
+            display: inline-block;
+            position: relative;
+            height: 24px;
+            opacity: 0;
+            &:after {
+              // Creates the checkmark
+              content: "";
+              position: absolute;
+              width: 24px;
+              height: 9px;
+              border-bottom: 3px solid @wlux-darkGrey;
+              border-left: 3px solid @wlux-darkGrey;
+              top: 30%;
+              transform-origin: bottom left;
+              transform: rotate(-45deg);
+            }
+          }
+          & + span {
+            // Fixes text from wrapping and centers text vertically
+            display: block;
+            overflow: hidden; // Clearfix hack
+            line-height: 24px;
+          }
+        }
+        &:focus {
+          outline: none;
+          div {
+            -moz-box-shadow: 0 0 3px @wlux-mediumGrey;
+            -webkit-box-shadow: 0 0 3px @wlux-mediumGrey;
+            box-shadow: 0 0 3px @wlux-mediumGrey;
+          }
+        }
+        &:hover {
+          span, div {
+            opacity: 0.6;
+          }
+          div {
+            background: @wlux-turquoise;
+          }
+        }
+      }
+      input[type="checkbox"] {
+        display: none;
+      }
+      input[type="checkbox"]:disabled + label {
+        div {
+          background-color: @wlux-lightGreyUnsaturated !important;
+          span:after {
+            display: none;
+          }
+        }
+      }
+      input[type="checkbox"]:checked + label {
+        span, div {
+          opacity: 1;
+        }
+        div {
+          background: @wlux-turquoise;
+        }
+      }
+    }
+
+    .terms-checkbox, .mailing-list-checkbox, .remember-me-token, .remember-me-password {
+      padding: 0;
+      label {
+        font-weight: 300;
+        font-size: 13px;
+        cursor: pointer;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        display:inline;
+      }
+      input[type="checkbox"]:focus {
+        outline: 0;
+      }
+    }
+    .cta-links {
+      text-align: center;
+      @media (min-width: @wlux-screen-xs-min) {
+        text-align: left;
+        button, p {
+          float: left;
+        }
+        p {
+          margin: 13px 0 0 8px;
+        }
+      }
+    }
+    .btn-primary {
+      margin-top: 6.25px;
+    }
+    .btn-link {
+      margin: -6px;
+      float: left;
+      @media (min-width: @wlux-screen-xs-min) {
+        margin: 7px 0px 0px -6px;
+        float: none;
+      }
+    }
+    .password-label {
+      margin-bottom: 5px;
+      font-weight: 400;
+    }
+
+    ul.password-strength {
+      li {
+        color: #333;
+        font-weight: 300;
+      }
+      li.invalid {
+        color: @wlux-red;
+      }
+      li.valid {
+        color: @wlux-green;
+      }
+    }
+  }
+  .alert {
+    margin-bottom: 13px;
+  }
+  p {
+    line-height: 22px;
+    font-weight: 300;
+    text-align: left;
+  }
+}
+
+// Delete this, CSS is for test page only
+.navbar-btn {
+  margin-right: 0.7em;
+  &:last-child {
+    margin-right: 1em;
+  }
+}
+
+.navbar .test-buttons{
+  margin: 0;
+}
+
+.btn-secondary-nav {
+  color: #333;
+  background: none;
+  border-color: none;
+  &:hover {
+    background: #333;
+    color: white !important;
+  }
+  &.active {
+    background-color: darken(#333, 8%);
+  }
+}
+.webmaker {
+  img {
+    max-width: 100%;
+  }
+}

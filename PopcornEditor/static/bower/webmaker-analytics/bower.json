@@ -1,0 +1,17 @@
+{
+  "name": "webmaker-analytics",
+  "main": "analytics.js",
+  "devDependencies": {
+    "qunit": "1.13.0"
+  },
+  "ignore": [
+    "**/.*",
+    "bower.json",
+    "package.json",
+    "node_modules",
+    "bower_components",
+    "test",
+    "Gruntfile.js"
+  ],
+  "version": "0.1.0"
+}

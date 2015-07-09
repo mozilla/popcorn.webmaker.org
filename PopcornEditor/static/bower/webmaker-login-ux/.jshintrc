@@ -1,0 +1,19 @@
+{
+  "globals": {
+    "angular": true
+  },
+  "browser": true,
+  "bitwise": true,
+  "curly": true,
+  "eqeqeq": true,
+  "freeze": true,
+  "immed": true,
+  "indent": 2,
+  "latedef": true,
+  "newcap": true,
+  "node": true,
+  "noempty": true,
+  "trailing": true,
+  "undef": true,
+  "unused": "vars"
+}

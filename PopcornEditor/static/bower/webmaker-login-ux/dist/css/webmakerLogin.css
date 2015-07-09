@@ -1,0 +1,517 @@
+@media (max-width: 479px) {
+  .hidden-xs-login {
+    display: none !important;
+  }
+}
+/*********************************************************
+* Mobile dialog display
+*/
+@media (max-width: 479px) {
+  .modal-backdrop {
+    background: #F6F7F7;
+  }
+  .modal-backdrop.in {
+    opacity: 1;
+  }
+}
+@media (max-width: 479px) {
+  .modal-dialog,
+  .modal-content {
+    background: none;
+    box-shadow: none;
+    margin: 0;
+    border: none;
+  }
+}
+/*********************************************************
+* Header
+*/
+.modal-header {
+  background: white;
+  height: 50px;
+  line-height: 50px;
+  padding: 0;
+}
+.modal-header .close {
+  display: none;
+}
+@media (min-width: 480px) {
+  .modal-header {
+    height: auto;
+    padding: 10px 30px 0 30px;
+    border-bottom-style: none;
+  }
+  .modal-header .close {
+    display: block;
+    margin: 10px 0 0 0;
+  }
+}
+.modal-title {
+  line-height: inherit;
+  font-size: 1.1em;
+  font-weight: 400;
+  text-align: center;
+}
+.modal-title a,
+.modal-title button {
+  padding: 0px 20px;
+  font-size: 13px;
+  height: 100%;
+  min-width: 40px;
+}
+@media (max-width: 479px) {
+  .modal-title a,
+  .modal-title button,
+  .modal-title span {
+    color: #3fb58e;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: center;
+  }
+  .modal-title a[disabled],
+  .modal-title button[disabled],
+  .modal-title span[disabled] {
+    color: #CCC;
+  }
+}
+.modal-title .modal-title-center {
+  display: inline-block;
+  text-align: center;
+  float: center;
+}
+.modal-title .modal-title-left {
+  float: left;
+  text-align: left;
+}
+.modal-title .modal-title-right {
+  float: right;
+  text-align: right;
+  margin-top: -2px;
+}
+@media (min-width: 480px) {
+  .modal-title {
+    font-size: 20px;
+  }
+  .modal-title .modal-title-center {
+    width: auto;
+    float: none;
+  }
+  .modal-title a,
+  .modal-title button {
+    display: none;
+  }
+}
+.modal-content {
+  padding: 0 0 20px 0;
+}
+@media (min-width: 480px) {
+  .modal-content .modal-body {
+    padding: 5px 30px;
+  }
+}
+.modal-content .modal-body label[for=webmaker-login-email],
+.modal-content .modal-body label[for=uid],
+.modal-content .modal-body label[for=key],
+.modal-content .modal-body label[for=persona-username],
+.modal-content .modal-body label[for=password],
+.modal-content .modal-body label[for=value],
+.modal-content .modal-body label[for=confirmValue] {
+  font-weight: normal;
+  margin-bottom: 8px;
+  /*text-transform: uppercase;*/
+  font-weight: 600;
+}
+@media (min-width: 480px) {
+  .modal-content .modal-body label[for=webmaker-login-email],
+  .modal-content .modal-body label[for=uid],
+  .modal-content .modal-body label[for=key],
+  .modal-content .modal-body label[for=persona-username],
+  .modal-content .modal-body label[for=password],
+  .modal-content .modal-body label[for=value],
+  .modal-content .modal-body label[for=confirmValue] {
+    margin-bottom: 5px;
+    font-size: 13.333333333px;
+    color: #454545;
+  }
+}
+.modal-content .modal-body label[for=pre-username] {
+  display: block;
+  font-weight: normal;
+  margin-bottom: 8px;
+  /*text-transform: uppercase;*/
+  font-weight: 600;
+}
+@media (min-width: 480px) {
+  .modal-content .modal-body label[for=pre-username] {
+    margin-bottom: 5px;
+    font-size: 13.333333333px;
+    color: #454545;
+  }
+}
+.modal-content .modal-body label[for=username] {
+  float: left;
+  padding: 7px 12px;
+  font-weight: normal;
+  background-color: #e3eaee;
+  color: #454545;
+  text-align: center;
+  width: 100%;
+  margin-bottom: 0;
+}
+@media (min-width: 480px) {
+  .modal-content .modal-body label[for=username] {
+    text-align: center;
+    width: auto;
+    text-align: left;
+  }
+}
+.modal-content .modal-body .align-left {
+  float: left;
+}
+.modal-content .modal-body .help-block {
+  font-size: 13px;
+}
+@media (max-width: 479px) {
+  .modal-content .modal-body .form-control {
+    padding: 8px 11px;
+    height: auto;
+  }
+}
+.modal-content .modal-body .form-group {
+  margin-bottom: 10px;
+}
+.modal-content .modal-body .form-group.half-width {
+  margin-left: 0;
+  width: 100%;
+  float: left;
+}
+@media (min-width: 480px) {
+  .modal-content .modal-body .form-group.half-width {
+    width: 48%;
+  }
+}
+.modal-content .modal-body .form-group.half-width:nth-of-type(3) {
+  margin-left: 0;
+}
+@media (min-width: 480px) {
+  .modal-content .modal-body .form-group.half-width:nth-of-type(3) {
+    margin-left: 4%;
+  }
+}
+.modal-content .modal-body .welcome {
+  text-align: center;
+}
+@media (min-width: 480px) {
+  .modal-content .modal-body .welcome {
+    text-align: left;
+  }
+}
+.modal-content .modal-body .subheadline {
+  margin-top: -10px;
+}
+.modal-content .modal-body .tool-desc {
+  margin: 15px 0 0 0;
+}
+@media (min-width: 480px) {
+  .modal-content .modal-body .tool-desc .icon {
+    float: left;
+    margin-right: 18.75px;
+  }
+}
+.modal-content .modal-body .tool-desc .icon svg {
+  width: 130px;
+  height: 123px;
+}
+.modal-content .modal-body .tool-desc .btn-primary {
+  float: left;
+}
+.modal-content .modal-body .tool-desc .explore-link {
+  display: block;
+  font-size: 13px;
+  margin: 14px 0 0 12px;
+}
+@media (min-width: 480px) {
+  .modal-content .modal-body .tool-desc .explore-link {
+    float: left;
+  }
+}
+.modal-content .modal-body .enterToken {
+  text-align: left;
+}
+.modal-content .modal-body .enterToken .email-container {
+  margin-top: 10px;
+}
+@media (min-width: 480px) {
+  .modal-content .modal-body .enterToken .email-container {
+    display: -webkit-flex;
+    display: flex;
+  }
+}
+.modal-content .modal-body .enterToken .mailIcon {
+  text-align: center;
+  margin: -10px 0 20px 0;
+}
+@media (min-width: 480px) {
+  .modal-content .modal-body .enterToken .mailIcon {
+    -webkit-flex: 1;
+    flex: 1;
+    margin: 30px 0 0 0;
+  }
+}
+.modal-content .modal-body .enterToken .mailIcon p {
+  width: 80%;
+  margin: 0 auto;
+}
+@media (min-width: 480px) {
+  .modal-content .modal-body .enterToken .key-group {
+    border-left: 1px solid #DDDDDD;
+    -webkit-flex: 3;
+    flex: 3;
+    padding: 10px 0 0 20px;
+  }
+}
+.modal-content .modal-body .checkEmail hr,
+.modal-content .modal-body .resetRequestSent hr,
+.modal-content .modal-body .enterPassword hr,
+.modal-content .modal-body .enterToken hr {
+  margin: 10px 0 15px 0;
+}
+@media (min-width: 480px) {
+  .modal-content .modal-body .checkEmail hr,
+  .modal-content .modal-body .resetRequestSent hr,
+  .modal-content .modal-body .enterPassword hr,
+  .modal-content .modal-body .enterToken hr {
+    margin: 20px 0 15px 0;
+  }
+}
+.modal-content .modal-body .checkEmail .mailIcon svg,
+.modal-content .modal-body .resetRequestSent .mailIcon svg,
+.modal-content .modal-body .enterPassword .mailIcon svg,
+.modal-content .modal-body .enterToken .mailIcon svg {
+  display: block;
+  margin: 0 auto;
+}
+@media (min-width: 480px) {
+  .modal-content .modal-body .checkEmail .mailIcon svg,
+  .modal-content .modal-body .resetRequestSent .mailIcon svg,
+  .modal-content .modal-body .enterPassword .mailIcon svg,
+  .modal-content .modal-body .enterToken .mailIcon svg {
+    float: left;
+  }
+}
+.modal-content .modal-body .checkEmail .mailIcon p,
+.modal-content .modal-body .resetRequestSent .mailIcon p,
+.modal-content .modal-body .enterPassword .mailIcon p,
+.modal-content .modal-body .enterToken .mailIcon p {
+  text-align: center;
+  margin: 20px 0 10px 15px;
+}
+@media (min-width: 480px) {
+  .modal-content .modal-body .checkEmail .mailIcon p,
+  .modal-content .modal-body .resetRequestSent .mailIcon p,
+  .modal-content .modal-body .enterPassword .mailIcon p,
+  .modal-content .modal-body .enterToken .mailIcon p {
+    float: left;
+    text-align: left;
+    margin: 33px 0 0 15px;
+  }
+}
+.modal-content .modal-body .checkEmail .enter-key,
+.modal-content .modal-body .resetRequestSent .enter-key,
+.modal-content .modal-body .enterPassword .enter-key,
+.modal-content .modal-body .enterToken .enter-key {
+  margin: -10px 0 0 0;
+  text-align: right;
+}
+.modal-content .modal-body .help-footer {
+  padding: 0;
+  background: none;
+  text-align: center;
+  color: inherit;
+  font-size: 13px;
+  color: #999;
+  margin-bottom: -6px;
+}
+@media (min-width: 480px) {
+  .modal-content .modal-body .help-footer {
+    font-size: normal;
+    text-align: right;
+  }
+}
+.modal-content .modal-body .help-footer p {
+  margin: 0;
+  padding: 0;
+}
+.modal-content .modal-body .help-footer p.switch-back {
+  text-align: left;
+}
+.modal-content .modal-body .form-control.username {
+  width: 100%;
+}
+@media (min-width: 480px) {
+  .modal-content .modal-body .form-control.username {
+    width: 70%;
+  }
+}
+.modal-content .modal-body .checkbox label div {
+  float: left;
+  width: 24px;
+  height: 24px;
+  margin-right: 6px;
+  border: 1px solid #e1ebf1;
+  text-align: center;
+  background-color: #ffffff;
+}
+.modal-content .modal-body .checkbox label div span {
+  display: inline-block;
+  position: relative;
+  height: 24px;
+  opacity: 0;
+}
+.modal-content .modal-body .checkbox label div span:after {
+  content: "";
+  position: absolute;
+  width: 24px;
+  height: 9px;
+  border-bottom: 3px solid #638093;
+  border-left: 3px solid #638093;
+  top: 30%;
+  transform-origin: bottom left;
+  transform: rotate(-45deg);
+}
+.modal-content .modal-body .checkbox label div + span {
+  display: block;
+  overflow: hidden;
+  line-height: 24px;
+}
+.modal-content .modal-body .checkbox label:focus {
+  outline: none;
+}
+.modal-content .modal-body .checkbox label:focus div {
+  -moz-box-shadow: 0 0 3px #a5bece;
+  -webkit-box-shadow: 0 0 3px #a5bece;
+  box-shadow: 0 0 3px #a5bece;
+}
+.modal-content .modal-body .checkbox label:hover span,
+.modal-content .modal-body .checkbox label:hover div {
+  opacity: 0.6;
+}
+.modal-content .modal-body .checkbox label:hover div {
+  background: #32b2d2;
+}
+.modal-content .modal-body .checkbox input[type="checkbox"] {
+  display: none;
+}
+.modal-content .modal-body .checkbox input[type="checkbox"]:disabled + label div {
+  background-color: #f5f5f5 !important;
+}
+.modal-content .modal-body .checkbox input[type="checkbox"]:disabled + label div span:after {
+  display: none;
+}
+.modal-content .modal-body .checkbox input[type="checkbox"]:checked + label span,
+.modal-content .modal-body .checkbox input[type="checkbox"]:checked + label div {
+  opacity: 1;
+}
+.modal-content .modal-body .checkbox input[type="checkbox"]:checked + label div {
+  background: #32b2d2;
+}
+.modal-content .modal-body .terms-checkbox,
+.modal-content .modal-body .mailing-list-checkbox,
+.modal-content .modal-body .remember-me-token,
+.modal-content .modal-body .remember-me-password {
+  padding: 0;
+}
+.modal-content .modal-body .terms-checkbox label,
+.modal-content .modal-body .mailing-list-checkbox label,
+.modal-content .modal-body .remember-me-token label,
+.modal-content .modal-body .remember-me-password label {
+  font-weight: 300;
+  font-size: 13px;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  display: inline;
+}
+.modal-content .modal-body .terms-checkbox input[type="checkbox"]:focus,
+.modal-content .modal-body .mailing-list-checkbox input[type="checkbox"]:focus,
+.modal-content .modal-body .remember-me-token input[type="checkbox"]:focus,
+.modal-content .modal-body .remember-me-password input[type="checkbox"]:focus {
+  outline: 0;
+}
+.modal-content .modal-body .cta-links {
+  text-align: center;
+}
+@media (min-width: 480px) {
+  .modal-content .modal-body .cta-links {
+    text-align: left;
+  }
+  .modal-content .modal-body .cta-links button,
+  .modal-content .modal-body .cta-links p {
+    float: left;
+  }
+  .modal-content .modal-body .cta-links p {
+    margin: 13px 0 0 8px;
+  }
+}
+.modal-content .modal-body .btn-primary {
+  margin-top: 6.25px;
+}
+.modal-content .modal-body .btn-link {
+  margin: -6px;
+  float: left;
+}
+@media (min-width: 480px) {
+  .modal-content .modal-body .btn-link {
+    margin: 7px 0px 0px -6px;
+    float: none;
+  }
+}
+.modal-content .modal-body .password-label {
+  margin-bottom: 5px;
+  font-weight: 400;
+}
+.modal-content .modal-body ul.password-strength li {
+  color: #333;
+  font-weight: 300;
+}
+.modal-content .modal-body ul.password-strength li.invalid {
+  color: #eb5d52;
+}
+.modal-content .modal-body ul.password-strength li.valid {
+  color: #3fb58e;
+}
+.modal-content .alert {
+  margin-bottom: 13px;
+}
+.modal-content p {
+  line-height: 22px;
+  font-weight: 300;
+  text-align: left;
+}
+.navbar-btn {
+  margin-right: 0.7em;
+}
+.navbar-btn:last-child {
+  margin-right: 1em;
+}
+.navbar .test-buttons {
+  margin: 0;
+}
+.btn-secondary-nav {
+  color: #333;
+  background: none;
+  border-color: none;
+}
+.btn-secondary-nav:hover {
+  background: #333;
+  color: white !important;
+}
+.btn-secondary-nav.active {
+  background-color: #1f1f1f;
+}
+.webmaker img {
+  max-width: 100%;
+}
