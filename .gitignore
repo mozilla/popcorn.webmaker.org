@@ -15,7 +15,5 @@
 /local.json
 /node_modules/
 /user_published/
-/PopcornEditor/templates/basic/*.css
-/PopcornEditor/css/butter.ui.less.css
 !locale/en_US/*
 !locale/localeinfo.json
