@@ -134,3 +134,35 @@ body.editor-minimized .stage-wrapper {
   width: 100%;
   overflow: hidden;
 }
+
+.deprecation {
+  z-index: 9999;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2em;
+  background-color: red;
+  color: white;
+  text-align: center;
+  padding-top: 0.25em;
+  font-size: 115%;
+  height:32px;
+
+  .closeWarning {
+    position: absolute;
+    right: 0;
+    height: 100%;
+    width: 50px;
+    cursor: pointer;
+  }
+}
+
+body.deprecation-warning {
+  .butter-header, .body-wrapper, .butter-editor-header {
+    top: 32px;
+  }
+  .butter-editor-content {
+    top: 82px;
+  }
+}

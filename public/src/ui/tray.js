@@ -22,7 +22,9 @@ define( [ "util/lang",  "./logo-spinner", "./resizeHandler", "./toggler", "local
         addTrackButton = statusAreaFragment.querySelector( "button.add-track" ),
         loadingContainer = trayRoot.querySelector( ".butter-loading-container" ),
         resizeHandler = new ResizeHandler( { margin: 26, border: 15 } ),
-        trayHeight = 205,
+
+        //remove 42 for the deprecation warning
+        trayHeight = 205 - 42,
         minHeight = 50,
         minimized = true,
         logoSpinner = new LogoSpinner( loadingContainer );
