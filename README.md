@@ -43,7 +43,7 @@ Creating a new Popcorn Editor instance is as easy as:
 PopcornEditor.init('editor', '/path/to/PopcornEditor/editor.html');
 
 // Create event handlers for when specific events happen in Popcorn Editor.
-PopcornEditor.setSaveHandler(function (message) {
+PopcornEditor.listen('save', function (message) {
   console.log('New save data: ', message);
 });
 ```
