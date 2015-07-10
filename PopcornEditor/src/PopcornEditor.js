@@ -19,7 +19,7 @@ var PopcornEditor = (function () {
   };
 
   // List of events that PopcornEditor supports
-  PopcornEditor.events = {save: 'save'};
+  PopcornEditor.events = {save: 'save', loaded: 'loaded'};
 
   /**
    * Sets the given handler as the handler for the event

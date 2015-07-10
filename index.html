@@ -13,6 +13,10 @@
         PopcornEditor.listen(PopcornEditor.events.save, function(message) {
           console.log(JSON.stringify(message))
         });
+
+        PopcornEditor.listen(PopcornEditor.events.loaded, function () {
+          loadInfo();
+        });
         PopcornEditor.init('editor');
 
         function loadInfo() {

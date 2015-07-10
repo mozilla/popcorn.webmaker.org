@@ -10,6 +10,7 @@
         butter.listen( "mediaready", function mediaReady() {
           butter.unlisten( "mediaready", mediaReady );
           document.querySelector( "#embed-wrapper" ).classList.remove( "faded" );
+          parent.postMessage({type: 'loaded'}, window.location.origin);
         });
       }
     });
