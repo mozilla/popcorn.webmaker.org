@@ -3,8 +3,10 @@
  * obtain one at https://raw.github.com/mozilla/butter/master/LICENSE */
 
 define( [ "util/lang", "util/uri", "util/xhr", "util/keys", "util/mediatypes", "editor/editor",
- "util/time", "util/dragndrop", "analytics", "l10n!../../{{lang}}/layouts/media-editor.html", "text!../../api/butterconfig" ],
-  function( LangUtils, URI, XHR, KeysUtils, MediaUtils, Editor, Time, DragNDrop, analytics, EDITOR_LAYOUT, CONFIG ) {
+ "util/time", "util/dragndrop", "analytics", "l10n!../../{{lang}}/layouts/media-editor.html",
+ "text!../../api/butterconfig", "events/event" ],
+  function( LangUtils, URI, XHR, KeysUtils, MediaUtils, Editor, Time, DragNDrop,
+           analytics, EDITOR_LAYOUT, CONFIG, Event) {
 
   CONFIG = JSON.parse(CONFIG);
 
@@ -284,11 +286,11 @@ define( [ "util/lang", "util/uri", "util/xhr", "util/keys", "util/mediatypes", "
     resetInput();
   }
 
-  function onSuccess( data ) {
+  function onSuccess( data, imported ) {
     var el = _GALLERYITEM.cloneNode( true ),
         source = data.source;
 
-    if ( !_media.clipData[ source ] ) {
+    if ( !_media.clipData[ source ]  || imported !== undefined) {
       _media.clipData[ source ] = data;
       _butter.dispatch( "mediaclipadded" );
 
@@ -700,6 +702,16 @@ define( [ "util/lang", "util/uri", "util/xhr", "util/keys", "util/mediatypes", "
     _searchInput.addEventListener( "keydown", onEnter );
 
     _addBtn.addEventListener( "click", onAddMediaClick );
+
+    Event.listen('load', function (data) {
+      var clipData = data.data.media[0].clipData,
+          clip;
+
+      for (url in clipData) {
+        clip = clipData[url];
+        onSuccess(clip, true);
+      }
+    });
   }
 
   Editor.register( "media-editor", null, function( rootElement, butter ) {

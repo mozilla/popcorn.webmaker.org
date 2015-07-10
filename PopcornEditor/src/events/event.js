@@ -8,7 +8,9 @@ function() {
 
     for (key in listeners) {
       if (e.data.type === key) {
-        listeners[key](e.data.data);
+        listeners[key].forEach(function (handler) {
+          handler(e.data.data);
+        });
       }
     }
   });
@@ -23,7 +25,11 @@ function() {
       parent.postMessage(message, window.location.origin);
     },
     listen: function (eventName, handler) {
-      listeners[eventName] = handler;
+      if (listeners[eventName] === undefined) {
+        listeners[eventName] = [handler];
+      } else {
+        listeners[eventName].push(handler);
+      }
     }
   }
 });
