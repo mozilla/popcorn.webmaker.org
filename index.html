@@ -15,7 +15,15 @@
         });
 
         PopcornEditor.listen(PopcornEditor.events.loaded, function () {
-          loadInfo();
+          var video = {
+                "thumbnail": "http://localhost:8000/media/cache/ff/6b/ff6beb78892298e3d2bec09c166bba2d.png",
+                "url": "https://d3fenhwk93s16g.cloudfront.net/3i9x0m/webm.webm",
+                "title": "Assessments San Francisco Move",
+                "duration": 3192,
+                "type": "AirMozilla"
+          };
+
+          PopcornEditor.createTemplate(video);
         });
         PopcornEditor.init('editor');
 
