@@ -44,6 +44,12 @@ var PopcornEditor = (function () {
       }, window.location.origin);
   };
 
+  /**
+   * Given a javascript object which fits the schema defined below, popcorn
+   * editor will load that video into the editor.
+   *
+   * @param video : javascript object of video
+   */
   PopcornEditor.createTemplate = function (video) {
     var videoUrl = video.url;
     data = {

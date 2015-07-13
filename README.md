@@ -87,3 +87,19 @@ Loads project data into the editor.
 
 **data [object]:** The project data is the same schema as what is output from
 saving.
+
+PopcornEditor.createTemplate(video)
+-----------------------------------
+
+Given a javascript object which fits the schema defined below, popcorn editor
+will load that video into the editor.
+
+```javascript
+{
+  "thumbnail": "",
+  "url": "",
+  "title": "",
+  "duration": 0,
+  "type": ""
+}
+```
