@@ -17,7 +17,7 @@ Installation
 
 Popcorn Editor can be installed through bower
 
-`$ bower install popcorn-editor`
+```$ bower install popcorn-editor```
 
 Creating a new Popcorn Editor instance is as easy as:
 
@@ -102,4 +102,23 @@ will load that video into the editor.
   "duration": 0,
   "type": ""
 }
+```
+
+Contributing
+============
+
+If you find any issues or have any questions, feel free to create a bug and I'll
+do my best to get back to you ASAP.
+
+Building
+--------
+
+Building the project is currently pretty simple.
+
+Make sure you have `node v0.10.38` with an up to date `gulp` installed.
+
+To build simply run
+```
+$ npm install
+$ gulp
 ```
