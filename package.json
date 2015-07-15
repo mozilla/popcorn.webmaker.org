@@ -1,5 +1,5 @@
 {
-  "name": "Popcorn Editor",
+  "name": "popcorn-editor",
   "version": "1.0.0",
   "description": "A fork of Web Maker's Popcorn Editor for local use.",
   "main": "gulpfile.js",
