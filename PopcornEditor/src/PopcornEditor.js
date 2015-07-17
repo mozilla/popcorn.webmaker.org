@@ -28,7 +28,6 @@ var PopcornEditor = (function () {
    * @param handler : [function] takes event
    */
   PopcornEditor.listen = function (eventName, handler) {
-    console.log(this);
     listeners[eventName] = handler;
   }
 
