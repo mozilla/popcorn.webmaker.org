@@ -120,7 +120,7 @@ var PopcornEditor = (function () {
         },
         "tags": ["popcorn"],
     }
-    this.loadInfo(data);
+    return data;
   };
 
   window.addEventListener('message', function (e) {
