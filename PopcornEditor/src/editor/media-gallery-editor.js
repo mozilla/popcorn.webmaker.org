@@ -290,6 +290,8 @@ define( [ "util/lang", "util/uri", "util/xhr", "util/keys", "util/mediatypes", "
     var el = _GALLERYITEM.cloneNode( true ),
         source = data.source;
 
+    // This prevents you from loading in a video (through the import media
+    // dialogue) when it was already loaded in through the API
     if ( !_media.clipData[ source ]  || imported !== undefined) {
       _media.clipData[ source ] = data;
       _butter.dispatch( "mediaclipadded" );
