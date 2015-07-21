@@ -136,7 +136,7 @@ define( [ "localized", "util/uri", "util/xhr", "json!/api/butterconfig", "jquery
             return;
           }
 
-          if ( resp.items[0].status.embeddable === true ) {
+          if ( resp.items[0].status.embeddable !== true ) {
             errorCallback( YOUTUBE_EMBED_DISABLED );
             return;
           }
