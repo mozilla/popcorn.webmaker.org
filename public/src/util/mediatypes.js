@@ -110,7 +110,7 @@ define( [ "localized", "util/uri", "util/xhr", "json!/api/butterconfig", "jquery
           return;
         }
 
-        xhrURL = "https://www.googleapis.com/youtube/v3/videos?part=snippet&id=" + id + "&key=AIzaSyBAYnjTdheTdR38IPicYk2iGbbxP03ctkQ&alt=json&callback=?";
+        xhrURL = "https://www.googleapis.com/youtube/v3/videos?part=snippet,status&id=" + id + "&key=AIzaSyBAYnjTdheTdR38IPicYk2iGbbxP03ctkQ&alt=json&callback=?";
         Popcorn.getJSONP( xhrURL, function( resp ) {
           var respData = resp.items[0].snippet,
               from = parsedUri.queryKey.t,
@@ -136,10 +136,10 @@ define( [ "localized", "util/uri", "util/xhr", "json!/api/butterconfig", "jquery
             return;
           }
 
-          /*if ( respData.accessControl.embed === "denied" ) {
+          if ( resp.items[0].status.embeddable === true ) {
             errorCallback( YOUTUBE_EMBED_DISABLED );
             return;
-          }*/ // does not work (API v3)
+          }
 
           function errorEvent() {
             popcorn.off( "loadedmetadata", readyEvent );
