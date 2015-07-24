@@ -147,6 +147,18 @@ To enable New Relic monitoring with Popcorn Maker, the following environment var
 
 * NEW\_RELIC\_HOME
 
+#### Localization
+
+To add a new language simply add a directory with a locale code under the `locale` directory with a JSON file(s) for your strings for example: 
+locale/**id_ID**/strings.json
+
+You also need to make sure you enable the language in your config by changing the value of `SUPPORTED_LANGS`
+``` json
+  "SUPPORTED_LANGS": [
+    "en-US", "id-ID"
+  ]
+```
+
 Getting Involved
 ----------------
 
