@@ -40,8 +40,21 @@
   </script>
   {% endif %}
 </head>
-<body>
-
+<body class="deprecation-warning">
+  <div class="deprecation" id="deprecation">
+    <a class="closeWarning" id="closeWarning">&times;</a>
+    Our tools for teaching the Web are evolving. As of September 30th, Mozilla will no longer support Popcorn Maker. To learn more, read  <a href="http://mzl.la/webmaker-tools-transition" target="_blank">our blog post.</a>
+    <script>
+      (function () {
+        var closeWarning = document.querySelector('#closeWarning');
+        var deprecation = document.querySelector('#deprecation');
+        closeWarning.onclick = function (e) {
+          deprecation.parentNode.removeChild(deprecation);
+          document.body.classList.remove('deprecation-warning');
+        };
+      })();
+    </script>
+  </div>
   <div class="body-wrapper">
     <div class="stage-wrapper">
       <div id="embed-wrapper" class="wrapper cf faded embed">
