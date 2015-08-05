@@ -236,20 +236,25 @@ app.post( "/auth/v2/verify-password", webmakerAuth.handlers.verifyPassword );
 app.post( "/auth/v2/request-reset-code", webmakerAuth.handlers.requestResetCode );
 app.post( "/auth/v2/reset-password", webmakerAuth.handlers.resetPassword );
 
-app.get( "/", routes.pages.editor );
-app.get( "/index.html", routes.pages.editor );
-app.get( "/editor", routes.pages.editor );
-app.get( "/editor/:id", routes.pages.editor );
-app.get( "/editor/:id/edit", routes.pages.editor );
-app.get( "/editor/:id/remix", routes.pages.editor );
-app.get( "/templates/basic", routes.pages.editor );
-app.get( "/templates/basic/index.html", routes.pages.editor );
+var csp = middleware.csp({
+  audiourEndpoint: config.AUDIOUR_ENDPOINT,
+  hubbleEndpint: config.NODE_HUBBLE_ENDPOINT
+});
+
+app.get( "/", csp, routes.pages.editor );
+app.get( "/index.html", csp, routes.pages.editor );
+app.get( "/editor", csp, routes.pages.editor );
+app.get( "/editor/:id", csp, routes.pages.editor );
+app.get( "/editor/:id/edit", csp, routes.pages.editor );
+app.get( "/editor/:id/remix", csp, routes.pages.editor );
+app.get( "/templates/basic", csp, routes.pages.editor );
+app.get( "/templates/basic/index.html", csp, routes.pages.editor );
 
 app.get( "/external/make-api.js", function( req, res ) {
   res.sendfile( path.resolve( __dirname, "node_modules/makeapi-client/src/make-api.js" ) );
 });
 app.get( "/external/jwplayer.js", function( req, res ) {
-  res.redirect( "//jwpsrv.com/library/" + app.locals.config.jwplayer_key + ".js" );
+  res.redirect( "https://jwpsrv.com/library/" + app.locals.config.jwplayer_key + ".js" );
 });
 
 // Project Endpoints
