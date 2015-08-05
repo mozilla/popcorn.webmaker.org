@@ -106,18 +106,19 @@ var PopcornEditor = (function () {
                     }]
                 }],
                 "clipData": {
-                    videoUrl : {
-                        "type": video.type,
-                        "title": video.title,
-                        "source": video.url,
-                        "thumbnail": video.thumbnail,
-                        "duration": video.duration
-                    }
                 },
                 "currentTime": 0,
             }]
         },
         "tags": ["popcorn"],
+    }
+    // Need to dynamically set the clipdata key
+    data.data.media.clipData[videoUrl] = {
+        "type": video.type,
+        "title": video.title,
+        "source": video.url,
+        "thumbnail": video.thumbnail,
+        "duration": video.duration
     }
     return data;
   };
