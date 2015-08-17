@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/mozilla/popcorn-editor.svg)](https://travis-ci.org/mozilla/popcorn-editor)
 A Video Editor Powered by the Web
 =================================
 
