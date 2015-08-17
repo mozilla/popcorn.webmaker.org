@@ -1,0 +1,16 @@
+# http://travis-ci.org/#!/nolski/popcorn-editor
+
+# This indicates to Travis that we will not use or need sudo
+# so that we can benefit from and use the cache->directories
+# directive.
+sudo: no
+
+language: node_js
+
+node_js:
+    - 0.12
+    - 0.10
+
+before_script:
+  - npm install gulp
+script: gulp build

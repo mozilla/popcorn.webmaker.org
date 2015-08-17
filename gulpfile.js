@@ -33,4 +33,6 @@ gulp.task('watch', ['clean'], function () {
   gulp.watch('PopcornEditor/css/*.less', ['less-src']);
 })
 
-gulp.task('default', ['clean', 'less', 'watch'], function () {});
+gulp.task('default', ['clean', 'less', 'watch']);
+
+gulp.task('build', ['clean', 'less']);
