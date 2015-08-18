@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/Nolski/popcorn-editor",
   "dependencies": {
+    "gulp": "^3.9.0",
     "gulp-less": "^3.0.3",
     "gulp-rename": "^1.2.2",
     "gulp-rimraf": "^0.1.1"
