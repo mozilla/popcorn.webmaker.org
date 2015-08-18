@@ -1,14 +1,15 @@
-# http://travis-ci.org/#!/nolski/popcorn-editor
-
-# This indicates to Travis that we will not use or need sudo
-# so that we can benefit from and use the cache->directories
-# directive.
-sudo: no
-
+sudo: false
 language: node_js
-
 node_js:
-    - 0.12
-    - 0.10
-
+- 0.12
+- 0.1
 script: gulp build
+deploy:
+  provider: s3
+  access_key_id: AKIAJEEMPYC637H2RKRQ
+  secret_access_key:
+    secure: efeDoawmVjUZhEQNuWFQytDaMS9+nPCH86Ks1MPvDRfzovIf4clELK3UoID2xGkR+BeDvU2o1LGPrrw3D9p8vZ2gR+NNH3TT3c+9+M4YcZy09XKf10SFo4WvLjIBdQMcj1kLGNvDfuieP9YgTAZzUmplq+4Hxjn16zKsMJ/gR7xYiy8mpdvqKCMcEf3u7kBtb7JFLboA4TiWWMZZetipPAx58Hyvz8tYM3FpHU/rMs61UkZTa0CMb9BeThpXsHuLOjUoPEQo/6ElOgDHnzVlqY7vi1T39JyT6NPeLUDrdgwwb36bevtlRQ1a8xG9anL0l1e00MWPSJTeE6drD35RQ+xqRgEMVjqbxsbjHO6q3yiQhoUTPCRODhPGhJjeHqPvwgmXOwNjXlWb2E39CqmTKwZXptuQ1O9hPLYY9Kj3dPmfEpIu2bW4Tm5+iSKQqib0F3Dh7SJg0jtXP8j8XJMuES6plrZbrHww0z6BJ1uaDGKJeHiLPsQ7c/8+caRVy6Y405MUie7v6wX3Umlu3JCM26kwgCzp1POOxtO1k+9TLU3+Rp0qyw9UgfYcCLh61t5hPVVTtolvQlx78G34nbMdqnwoyNV/fNqy7SoJlIvNBic7PACHxlA5ulOe/y3WwSJk6/KhR07dUzLPMjtaU4kGQLeVMKURILB9B5poRkGKkOk=
+  bucket: org.mozilla.air.popcorneditor
+  acl: public_read
+  on:
+    repo: mozilla/popcorn-editor
