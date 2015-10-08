@@ -15,6 +15,11 @@ if ( process.env.NEW_RELIC_HOME ) {
 var express = require( "express" ),
     path = require( "path" ),
     helmet = require( "helmet" ),
+    nunjucks = require( "nunjucks" ),
+    nunjucksEnv = new nunjucks.Environment([
+      new nunjucks.FileSystemLoader( __dirname + "/views" ),
+      new nunjucks.FileSystemLoader( __dirname + "/public" )
+    ]),
     app = express(),
     lessMiddleware = require( "less-middleware" ),
     rtltrForLess = require("rtltr-for-less"),
@@ -29,6 +34,8 @@ var express = require( "express" ),
     emulate_s3 = config.S3_EMULATION || !config.S3_KEY,
     messina,
     logger;
+
+nunjucksEnv.express( app );
 
 app.disable( "x-powered-by" );
 
@@ -161,7 +168,13 @@ app.get( "/api/butterconfig", middleware.crossOrigin, function( req, res ) {
 // Localized Strings
 app.get( "/strings/:lang?", middleware.crossOrigin, i18n.stringsRoute( "en-US" ) );
 
-// app.put( "/api/image", middleware.processForm, filter.isImage, routes.api.image );
+app.get("/", function(req, res) {
+  res.render('views/deprecated.html');
+});
+
+app.get("*", function(req, res) {
+  res.redirect('/');
+});
 
 app.listen( config.PORT, function() {
   console.log( "HTTP Server started on " + APP_HOSTNAME );
