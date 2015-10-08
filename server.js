@@ -25,8 +25,6 @@ var express = require( "express" ),
     rtltrForLess = require("rtltr-for-less"),
     requirejsMiddleware = require( "requirejs-middleware" ),
     config = require( "./lib/config" ),
-    Project,
-    filter,
     middleware,
     APP_HOSTNAME = config.APP_HOSTNAME,
     WWW_ROOT =  __dirname + "/public",
@@ -169,11 +167,11 @@ app.get( "/api/butterconfig", middleware.crossOrigin, function( req, res ) {
 app.get( "/strings/:lang?", middleware.crossOrigin, i18n.stringsRoute( "en-US" ) );
 
 app.get("/", function(req, res) {
-  res.render('views/deprecated.html');
+  res.render("views/deprecated.html");
 });
 
 app.get("*", function(req, res) {
-  res.redirect('/');
+  res.redirect("/");
 });
 
 app.listen( config.PORT, function() {
