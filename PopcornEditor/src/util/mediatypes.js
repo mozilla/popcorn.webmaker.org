@@ -16,7 +16,8 @@ define( [ "util/uri", "util/xhr", "json!../../api/butterconfig", "jquery" ],
         "null": /^\s*#t=(?:\d*(?:(?:\.|\:)?\d+)?),?(\d+(?:(?:\.|\:)\d+)?)\s*$/,
         Flickr: /^https?:\/\/(www\.)?flickr\.com/,
         Clyp: /^https?:\/\/(www\.)?(staging\.)?(?:clyp\.it|audiour\.com)/,
-        AirMozilla: /^https?:\/\/(?:www\.)?(?:air\.mozilla\.org|localhost:8000)\/(.+)\//
+        AirMozilla: /^https?:\/\/(?:www\.)?(?:air\.mozilla\.org|localhost:8000)\/(.+)\//,
+        Wikimedia: /^https?:\/\/commons.wikimedia.org\/wiki\/(File(?::|%3A).*)/,
   },
       VIMEO_EMBED_UNPLAYABLE = "This Vimeo video is unplayable",
       YOUTUBE_EMBED_DISABLED = "Embedding of this YouTube video is disabled",
@@ -26,7 +27,8 @@ define( [ "util/uri", "util/xhr", "json!../../api/butterconfig", "jquery" ],
       EMBED_UNPLAYABLE = "This media source is unplayable",
       CLYP_EMBED_UNPLAYABLE = "This Clyp source is unplayable"
       SOUNDCLOUD_EMBED_UNPLAYABLE = "This SoundCloud source is unplayable",
-      SOUNDCLOUD_EMBED_DISABLED = "Embedding of this SoundCloud audio source is disabled";
+      SOUNDCLOUD_EMBED_DISABLED = "Embedding of this SoundCloud audio source is disabled",
+      WIKIMEDIA_EMBED_UNPLAYABLE = "This Wikimedia Commons video is unplayable";
 
   var nodeHubbleEndpoint = config.node_hubble_endpoint.replace( /\/$/, "" ),
       clypEndpoint = config.clyp_endpoint.replace( /\/$/, "" );
@@ -332,6 +334,58 @@ define( [ "util/uri", "util/xhr", "json!../../api/butterconfig", "jquery" ],
             successCallback( successOptions );
           } );
 
+        });
+
+      } else if ( type === "Wikimedia" ) {
+        var parsedUri = URI.parse( baseUrl ),
+            filename = parsedUri.file.replace( /_/g, ' ' ),
+            commonsApi = 'https://commons.wikimedia.org/w/api.php',
+            xhrUrl = commonsApi +
+                     '?action=query' +
+                     '&format=json' +
+                     '&formatversion=2' +
+                     '&prop=videoinfo' +
+                     '&viprop=size|canonicaltitle|url|derivatives|commonmetadata|extmetadata' +
+                     '&viurlwidth=640' +
+                     '&titles=' + encodeURIComponent( filename ) +
+                     '&callback=?'
+                     ;
+
+        Popcorn.getJSONP( xhrUrl, function( respData ) {
+
+          if ( respData.query && respData.query.pages && respData.query.pages.length &&
+               respData.query.pages[0].videoinfo && respData.query.pages[0].videoinfo.length &&
+               respData.query.pages[0].videoinfo[0].duration ) {
+
+            var page = respData.query.pages[0],
+                videoinfo = page.videoinfo[0],
+                extmetadata = videoinfo.extmetadata;
+
+            successOptions = {
+              type: type,
+              title: page.title,
+              source: videoinfo.url, // @fixme use an appropriate derivative maybe?
+              thumbnail: videoinfo.thumburl,
+              duration: videoinfo.duration,
+              linkback: videoinfo.descriptionurl
+            };
+
+            // https://www.mediawiki.org/wiki/Extension:CommonsMetadata#Returned_data
+            if ( extmetadata && extmetadata.Artist ) {
+                successOptions.author = extmetadata.Artist.value;
+            }
+            if ( extmetadata && extmetadata.ImageDescription ) {
+                // Description may be long, but is localizable which is better
+                // than filenames that may be a bunch of random numbers and letters
+                // or in a foreign language or otherwise illegible.
+                successOptions.title = extmetadata.ImageDescription.value;
+            }
+            // @fixme add license / attribution information
+
+            successCallback( successOptions );
+          } else {
+            errorCallback( WIKIMEDIA_EMBED_UNPLAYABLE );
+          }
         });
 
       } else {
