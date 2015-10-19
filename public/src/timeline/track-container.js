@@ -354,7 +354,7 @@ define( [ "core/logger", "util/dragndrop", "./ghost-manager", "analytics" ],
 
       function onTrackEventResizeStopped() {
         var popcornOptions = {},
-            newEnd, newStart;
+            newEnd, newStart,sign=1;
 
         // Finish off by making sure the values are correct depending on the direction.
         if ( direction === "right" ) {
@@ -373,10 +373,17 @@ define( [ "core/logger", "util/dragndrop", "./ghost-manager", "analytics" ],
           if ( newStart < _nextEventMin ) {
             newStart = _nextEventMin;
           }
-
+          
           popcornOptions.start = newStart;
         }
-
+        
+        if (trackEvent.popcornOptions.start - newStart > 0 ) sign=sign*(-1);
+        
+        popcornOptions.from = Math.abs(
+        Math.abs(trackEvent.popcornOptions.start - (trackEventView.element.offsetLeft / _container.clientWidth * _media.duration))
+        + (trackEvent.popcornOptions.from*sign)
+        );
+        
         trackEvent.update( popcornOptions );
 
         // Stop using the handler set above.
