@@ -26,7 +26,6 @@ define( [ "localized", "core/logger", "core/eventmanager", "util/uri", "util/acc
         _mediaReady = false,
         _interruptLoad = false,
         _this = this,
-        _makeVideoURLsUnique = options.makeVideoURLsUnique,
         _checkedFlashVersion = false;
 
     /* Destroy popcorn bindings specifically without touching other discovered
@@ -135,7 +134,7 @@ define( [ "localized", "core/logger", "core/eventmanager", "util/uri", "util/acc
      * before we actually create the Popcorn instance and notify the
      * user.
      */
-    this.prepare = function( url, target, popcornOptions, callbacks, scripts ){
+    this.prepare = function( url, target, popcornOptions ){
       var urlsFromString;
 
       _mediaReady = false;
@@ -180,7 +179,7 @@ define( [ "localized", "core/logger", "core/eventmanager", "util/uri", "util/acc
       if ( !_popcorn ) {
         try {
           // generate a function which will create a popcorn instance when entered into the page
-          createPopcorn( generatePopcornString( popcornOptions, url, target, null, callbacks, scripts ) );
+          createPopcorn( popcornOptions, url, target );
           // once popcorn is created, attach listeners to it to detect state
           addPopcornHandlers();
           // wait for the media to become available and notify the user, or timeout
@@ -193,139 +192,13 @@ define( [ "localized", "core/logger", "core/eventmanager", "util/uri", "util/acc
       }
     };
 
-    /* Create a stringified representation of the Popcorn constructor (usually to
-     * insert in a script tag).
+    /* 
+     * Create a Popcorn instance in the page.
      */
-    var generatePopcornString = this.generatePopcornString = function( popcornOptions, url, target, method, callbacks, scripts, trackEvents ){
+    function createPopcorn( popcornOptions, url, target ){
+      var popcorn = Popcorn.smart( "#" + target, url, popcornOptions );
 
-      callbacks = callbacks || {};
-      scripts = scripts || {};
-
-      var popcornString = "",
-          optionString,
-          saveOptions,
-          i,
-          option;
-
-      // Chrome currently won't load multiple copies of the same video.
-      // See http://code.google.com/p/chromium/issues/detail?id=31014.
-      // Munge the url so we get a unique media resource key.
-      // However if set in the config, don't append this
-      url = typeof url === "string" ? [ url ] : url;
-      if ( _makeVideoURLsUnique ) {
-        for( i=0; i<url.length; i++ ){
-          url[ i ] = URI.makeUnique( url[ i ] ).toString();
-        }
-      }
-      // Transform into a string of URLs (i.e., array string)
-      url = JSON.stringify( url );
-
-      // prepare popcornOptions as a string
-      if ( popcornOptions ) {
-        popcornOptions = ", " + JSON.stringify( popcornOptions );
-      } else {
-        popcornOptions = ", {}";
-      }
-
-      // attempt to get the target element, and continue with a warning if a failure occurs
-      if ( typeof( target ) !== "string" ) {
-        if ( target && target.id ) {
-          target = target.id;
-        }
-        else{
-          _logger.log( "WARNING: Unexpected non-string Popcorn target: " + target );
-        }
-      } //if
-
-      if ( scripts.init ) {
-        popcornString += scripts.init + "\n";
-      }
-      if ( callbacks.init ) {
-        popcornString += callbacks.init + "();\n";
-      }
-
-      // just try to use Popcorn.smart to detect/setup video
-      popcornString += "var popcorn = Popcorn.smart( '#" + target + "', " + url + popcornOptions + " );\n";
-
-      if ( scripts.beforeEvents ) {
-        popcornString += scripts.beforeEvents + "\n";
-      }
-      if ( callbacks.beforeEvents ) {
-        popcornString += callbacks.beforeEvents + "( popcorn );\n";
-      }
-
-      // if popcorn was built successfully
-      if ( _popcorn ) {
-
-        if ( trackEvents ) {
-          for ( i = trackEvents.length - 1; i >= 0; i-- ) {
-            popcornOptions = trackEvents[ i ].popcornOptions;
-
-            saveOptions = {};
-            for ( option in popcornOptions ) {
-              if ( popcornOptions.hasOwnProperty( option ) ) {
-                if ( popcornOptions[ option ] !== undefined ) {
-                  saveOptions[ option ] = popcornOptions[ option ];
-                }
-              }
-            }
-
-            //stringify will throw an error on circular data structures
-            try {
-              //pretty print with 4 spaces per indent
-              optionString = JSON.stringify( saveOptions, null, 4 );
-            } catch ( jsonError ) {
-              optionString = false;
-              _logger.log( "WARNING: Unable to export event options: \n" + jsonError.message );
-            }
-
-            if ( optionString ) {
-              popcornString += "popcorn." + trackEvents[ i ].type + "(" +
-                optionString + ");\n";
-            }
-
-          }
-
-        }
-
-      }
-
-      if ( scripts.afterEvents ) {
-        popcornString += scripts.afterEvents + "\n";
-      }
-      if ( callbacks.afterEvents ) {
-        popcornString += callbacks.afterEvents + "( popcorn );\n";
-      }
-
-      popcornString += "popcorn.controls( false );\n";
-
-      // if the `method` var is blank, the user probably just wanted an inline function without an onLoad wrapper
-      method = method || "inline";
-
-      // ... otherwise, wrap the function in an onLoad wrapper
-      if ( method === "event" ) {
-        popcornString = "\ndocument.addEventListener('DOMContentLoaded',function(e){\n" + popcornString;
-        popcornString += "\n} );";
-      }
-      else {
-        popcornString = popcornString + "\nreturn popcorn;";
-      } //if
-
-      return popcornString;
-    };
-
-    /* Create a Popcorn instance in the page. Try just running the generated function first (from popcornString)
-     * and insert it as a script in the head if that fails.
-     */
-    function createPopcorn( popcornString ){
-      var popcornFunction = new Function( "", popcornString ),
-          popcorn = popcornFunction();
-      if ( !popcorn ) {
-        var popcornScript = document.createElement( "script" );
-        popcornScript.innerHTML = popcornString;
-        document.head.appendChild( popcornScript );
-        popcorn = window.Popcorn.instances[ window.Popcorn.instances.length - 1 ];
-      }
+      popcorn.controls( false );
       _popcorn = popcorn;
     }
 
