@@ -23,6 +23,15 @@ define( [ "./ghost-track" ], function( GhostTrack ) {
       return track.ghost;
     }
 
+    function createGhostTrackForPreviousTrack( track, previousTrack ) {
+      var ghostTrack;
+      if ( !track.ghost ) {
+        ghostTrack = track.ghost = new GhostTrack( previousTrack, track );
+        _tracksContainerElement.insertBefore( ghostTrack.view.element, track.view.element );
+      }
+      return track.ghost;
+    }
+
     function cleanUpGhostTracks() {
       var tracks = _media.tracks;
       for ( var i = 0, l = tracks.length; i < l; ++i ) {
